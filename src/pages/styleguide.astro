@@ -1,0 +1,1714 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+
+// All icons in src/assets/icons/, sorted case-insensitively by name.
+const iconFiles = import.meta.glob<string>('../assets/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const iconNames = Object.keys(iconFiles)
+  .map((p) => p.split('/').pop()!.replace('.svg', ''))
+  .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+const brandAttributes = [
+  'Strategic and long-term oriented, not reactive or trend-driven',
+  'Global in outlook, but grounded in lived realities and material conditions',
+  'Serious about power and systems, without visual austerity or dryness',
+  'Optimistic and future-facing, while remaining politically lucid',
+];
+
+const voiceIs = ['Confident, never arrogant', 'Provocative, never cynical', 'Inspiring, never naïve', 'Clear, never wonky'];
+const voiceIsMore = ['Strategist than commentator', 'Facilitator than lecturer', 'Builder than critic', 'Global without being generic', 'Political without shallow partisanship'];
+const voiceIsNot = ['A distant academic voice', 'A performative NGO', 'An expensive but hollow consultancy', 'A bureaucratic network', 'A platform for pretty progressive speeches without consequence'];
+const wordsAvoid = ['Wonky', 'Preachy', 'Traditional', 'Aloof', 'Vague', 'Inspirational-only'];
+const wordsFit = ['Power', 'Strategy', 'Win', 'Build', 'Shift', 'Deliver', 'Train', 'Scale', 'Rooted', 'Ethical', 'Global South'];
+
+const colorFamilies = [
+  { key: 'violet', label: 'Centella Violet', role: 'Principal brand — synthesis, depth, ethical seriousness', primary: '#C77DFF', dark: '#1E1A28', light: '#F7EDFF' },
+  { key: 'advisory', label: 'Advisory Blue', role: 'Strategy & guidance — trust, stability, precision', primary: '#00E5FF', dark: '#0E2228', light: '#E1FCFF' },
+  { key: 'networking', label: 'Networking Red', role: 'Mobilization & power — urgency, connection', primary: '#FF6B6B', dark: '#22181C', light: '#FFE8E8' },
+  { key: 'investment', label: 'Investment Green', role: 'Capital & impact — growth, long-term sustainability', primary: '#CCFF00', dark: '#1E2413', light: '#FAFFE6' },
+  { key: 'global', label: 'Global Orange', role: 'Scale & reach — expansion, cross-border connection', primary: '#FF9500', dark: '#301C00', light: '#FFF3E1' },
+  { key: 'tech', label: 'Tech Pink', role: 'Innovation & experimentation — used sparingly', primary: '#FF66C4', dark: '#FF66C4', light: '#FF66C4' },
+];
+
+const typeScale = [
+  { token: '--text-4xl', size: '2.5rem', sample: 'Theory in motion' },
+  { token: '--text-3xl', size: '1.875rem', sample: 'Theory in motion' },
+  { token: '--text-2xl', size: '1.5rem', sample: 'Theory in motion' },
+  { token: '--text-xl', size: '1.25rem', sample: 'Theory in motion' },
+  { token: '--text-lg', size: '1.125rem', sample: 'Theory in motion' },
+  { token: '--text-base', size: '1rem', sample: 'Theory in motion' },
+  { token: '--text-sm', size: '0.875rem', sample: 'Theory in motion' },
+  { token: '--text-xs', size: '0.75rem', sample: 'Theory in motion' },
+];
+
+const spacing = [
+  { token: '--space-1', px: '4px' },
+  { token: '--space-2', px: '8px' },
+  { token: '--space-3', px: '12px' },
+  { token: '--space-4', px: '16px' },
+  { token: '--space-6', px: '24px' },
+  { token: '--space-8', px: '32px' },
+  { token: '--space-12', px: '48px' },
+  { token: '--space-16', px: '64px' },
+  { token: '--space-24', px: '96px' },
+];
+
+const gradients = [
+  { name: 'violet → coral', css: 'linear-gradient(135deg, #C77DFF, #FF6B6B)' },
+  { name: 'cyan → lime', css: 'linear-gradient(135deg, #00E5FF, #CCFF00)' },
+  { name: 'coral → orange', css: 'linear-gradient(135deg, #FF6B6B, #FF9500)' },
+  { name: 'pink → violet', css: 'linear-gradient(135deg, #FF66C4, #C77DFF)' },
+  { name: 'cyan → violet', css: 'linear-gradient(135deg, #00E5FF, #C77DFF)' },
+];
+
+const subbrands = [
+  { name: 'Centella Global Advisory', accent: 'advisory', desc: 'Rigorous, strategic; credible in high-stakes environments. Calm, serious, precise.' },
+  { name: 'Centella Institute', accent: 'violet', desc: 'Energetic, convening-oriented, pedagogical and participatory. Most flexible of the sub-brands.' },
+  { name: 'Centella Impact', accent: 'investment', desc: 'Serious, disciplined, systems-oriented. Trustworthy to partners and investors.' },
+];
+---
+
+<Base title="Design System">
+  <div class="styleguide container">
+    <header class="sg-hero">
+      <p class="sg-eyebrow">v0.1 · Design System</p>
+      <h1>Design System</h1>
+      <p class="sg-lede">
+        A living reference, structured from the <em>Centella Brand Guidelines v1.0</em>.
+        Every token shown here is wired to <code>src/styles/global.css</code>. The guide
+        is not a collection of assets to copy and paste — it is a framework for making
+        deliberate visual decisions.
+      </p>
+    </header>
+
+    <!-- ── 1. Brand Essence ─────────────────────────── -->
+    <section id="essence" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">01</span>
+        <h2>Brand Essence & Positioning</h2>
+      </div>
+      <p class="sg-paragraph">
+        Centella operates at the intersection of politics, technology, organizing, and
+        ideas. The brand communicates <strong>intellectual seriousness without rigidity</strong>,
+        optimism without cutesy naïveté, and global ambition without abstraction.
+      </p>
+      <p class="sg-paragraph">
+        Centella is not a consultancy in the conventional sense, nor a think tank in
+        the academic mold. It is <em>an applied ideas platform: theory in motion</em>.
+        The visual and verbal identity is confident and contemporary, editorial rather
+        than corporate, principled rather than decorative.
+      </p>
+
+      <h3>Key brand attributes</h3>
+      <ul class="sg-list">
+        {brandAttributes.map((a) => <li>{a}</li>)}
+      </ul>
+
+      <aside class="sg-callout">
+        The Centella brand should always feel intentional. Nothing is ornamental or
+        by accident; nothing is casual by default.
+      </aside>
+    </section>
+
+    <!-- ── 2. Voice & Tone ──────────────────────────── -->
+    <section id="voice" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">02</span>
+        <h2>Voice & Tone</h2>
+      </div>
+      <p class="sg-paragraph">
+        Confidence comes from experience, not bravado. Provocation comes from clarity,
+        not outrage. This is the voice of people who have tried, failed, learned, and
+        returned sharper.
+      </p>
+
+      <div class="sg-voice-grid">
+        <div class="sg-voice-card">
+          <div class="sg-voice-label" style="color: var(--advisory);">Centella's Tone Is</div>
+          <ul class="sg-list">{voiceIs.map((v) => <li>{v}</li>)}</ul>
+        </div>
+        <div class="sg-voice-card">
+          <div class="sg-voice-label" style="color: var(--investment);">Centella Is More…</div>
+          <ul class="sg-list">{voiceIsMore.map((v) => <li>{v}</li>)}</ul>
+        </div>
+        <div class="sg-voice-card">
+          <div class="sg-voice-label" style="color: var(--networking);">Centella Is Not</div>
+          <ul class="sg-list">{voiceIsNot.map((v) => <li>{v}</li>)}</ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Words that fit — and words to avoid</h3>
+      <div class="sg-word-grid">
+        <div class="sg-word-col">
+          <div class="sg-voice-label" style="color: var(--investment);">Use deliberately</div>
+          <div class="sg-chips">
+            {wordsFit.map((w) => <span class="sg-chip sg-chip--good">{w}</span>)}
+          </div>
+        </div>
+        <div class="sg-word-col">
+          <div class="sg-voice-label" style="color: var(--networking);">Avoid</div>
+          <div class="sg-chips">
+            {wordsAvoid.map((w) => <span class="sg-chip sg-chip--bad">{w}</span>)}
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Quick voice test</h3>
+      <p class="sg-paragraph">Before publishing, ask:</p>
+      <ol class="sg-list sg-list--ordered">
+        <li>Does this point to a real power problem?</li>
+        <li>Is it clear who gains what?</li>
+        <li>Does it show how something changes in practice?</li>
+        <li>Would this sound honest if said in a closed room, not just on a website?</li>
+      </ol>
+    </section>
+
+    <!-- ── 3. Logo ──────────────────────────────────── -->
+    <section id="logo" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">03</span>
+        <h2>Logo & Wordmark</h2>
+      </div>
+      <p class="sg-paragraph">
+        The Spark Logo and the wordmark form the <strong>Logo Lockup</strong> — the
+        authoritative mark for the Centella brand, and the structural foundation of
+        the visual system. The two share a common <em>horizon</em>; that horizon can
+        extend outward as a rule or divider across layouts.
+      </p>
+
+      <div class="sg-logo-demo">
+        <div class="sg-logo-stage sg-logo-stage--dark">
+          <img src="/logo.svg" alt="Centella lockup on dark" />
+          <span class="sg-stage-label">On dark</span>
+        </div>
+        <div class="sg-logo-stage sg-logo-stage--light">
+          <img src="/logo.svg" alt="Centella lockup on light" class="sg-logo-invert" />
+          <span class="sg-stage-label">On light</span>
+        </div>
+      </div>
+
+      <div class="sg-do-dont">
+        <div class="sg-do-dont-col">
+          <div class="sg-voice-label" style="color: var(--investment);">Do</div>
+          <ul class="sg-list">
+            <li>Use the full lockup in formal applications</li>
+            <li>Preserve proportions and spacing exactly</li>
+            <li>Use light lockup on dark, saturated, or photographic backgrounds</li>
+            <li>Respect minimums — 25 mm print, 120 px digital</li>
+          </ul>
+        </div>
+        <div class="sg-do-dont-col">
+          <div class="sg-voice-label" style="color: var(--networking);">Don't</div>
+          <ul class="sg-list">
+            <li>Separate the Spark from the wordmark</li>
+            <li>Recolor outside the approved palette</li>
+            <li>Rotate, skew, or distort the lockup</li>
+            <li>Add shadows, glows, gradients, or textures</li>
+            <li>Place the lockup on visually noisy or low-contrast backgrounds</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 4. Typography ────────────────────────────── -->
+    <section id="type" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">04</span>
+        <h2>Typography</h2>
+      </div>
+      <p class="sg-paragraph">
+        Barlow is Centella's core typeface — a contemporary grotesk with industrial
+        roots. Its functional clarity and public-facing DNA align with Centella's
+        commitment to precision, legibility, and accountability.
+        <strong>Barlow Condensed</strong> is the default voice: focused, urgent, efficient.
+      </p>
+
+      <div class="sg-fonts">
+        <article class="sg-font">
+          <div class="sg-font-label" style="color: var(--violet);">Display · Default Voice</div>
+          <div class="sg-font-name" style="font-family: var(--font-display); font-weight: 800;">Barlow Condensed</div>
+          <p class="sg-muted">Headlines, display, section headers, program names, posters, event materials.</p>
+          <div class="sg-font-sample" style="font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em;">We re-energize movements.</div>
+        </article>
+
+        <article class="sg-font">
+          <div class="sg-font-label" style="color: var(--advisory);">Heading & Sub-Headline</div>
+          <div class="sg-font-name" style="font-family: var(--font-heading); font-weight: 700;">Barlow Regular</div>
+          <p class="sg-muted">Card titles, sub-headlines, where comfort matters more than punch.</p>
+          <div class="sg-font-sample" style="font-family: var(--font-heading); font-weight: 700;">Building networks across borders.</div>
+        </article>
+
+        <article class="sg-font">
+          <div class="sg-font-label" style="color: var(--global);">Labels · UI · Navigation</div>
+          <div class="sg-font-name" style="font-family: var(--font-semi); font-weight: 600;">Barlow Semi Condensed</div>
+          <p class="sg-muted">Uppercase eyebrows, nav, buttons, ticker. Always tracked out.</p>
+          <div class="sg-font-sample sg-eyebrow" style="font-size: var(--text-sm);">DEMOCRATIC RENEWAL · BANGKOK 2026</div>
+        </article>
+
+        <article class="sg-font">
+          <div class="sg-font-label" style="color: var(--investment);">Body · Interface</div>
+          <div class="sg-font-name" style="font-family: var(--font-body); font-weight: 400;">Barlow</div>
+          <p class="sg-muted">Paragraphs, form fields, interface copy, long-form reading. Set at regular width for comfort and endurance.</p>
+          <div class="sg-font-sample" style="font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6;">Centella answers the call to re-energize movements, restore citizen power, and build the next generation of democratic leaders.</div>
+        </article>
+      </div>
+
+      <aside class="sg-callout" style="margin-top: var(--space-12);">
+        <strong>One family, many voices.</strong> The Barlow superfamily does all the
+        work — Condensed for action and display, Regular for headings and body,
+        Semi Condensed for labels and UI. Discipline inside one family reinforces
+        authority more than reaching for a second typeface ever could.
+      </aside>
+
+      <h3 style="margin-top: var(--space-12);">Type Scale</h3>
+      <p class="sg-muted">Hierarchy comes from weight, width, and scale — not from mixing families.</p>
+      <div class="sg-scale">
+        {typeScale.map((t) => (
+          <div class="sg-scale-row">
+            <code class="sg-code">{t.token}</code>
+            <span class="sg-muted sg-scale-size">{t.size}</span>
+            <span class="sg-scale-sample" style={`font-size: ${t.size};`}>{t.sample}</span>
+          </div>
+        ))}
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Gradient display type</h3>
+      <p class="sg-muted">A novel extension for web: Barlow Condensed, heavy weight, clipped to a brand gradient. Reserve for hero moments.</p>
+      <div class="sg-grad-demo">
+        <span style="background: linear-gradient(135deg, var(--violet), var(--networking));">re-energize</span>
+        <span style="background: linear-gradient(135deg, var(--advisory), var(--investment));">citizen power</span>
+        <span style="background: linear-gradient(135deg, var(--advisory), var(--violet));">democratic leaders</span>
+      </div>
+    </section>
+
+    <!-- ── 5. Color System ──────────────────────────── -->
+    <section id="color" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">05</span>
+        <h2>Color System</h2>
+      </div>
+      <p class="sg-paragraph">
+        Colors are organized into <strong>functional families</strong>, not arbitrary
+        swatches. Each family includes a primary, dark, and light variant. Deep tones
+        establish credibility; bright hues introduce urgency and momentum.
+      </p>
+
+      <div class="sg-families">
+        {colorFamilies.map((f) => (
+          <article class="sg-family">
+            <header class="sg-family-head">
+              <h3 style={`color: ${f.primary};`}>{f.label}</h3>
+              <p class="sg-muted">{f.role}</p>
+            </header>
+            <div class="sg-family-swatches">
+              <div class="sg-fs">
+                <div class="sg-fs-chip" style={`background: ${f.primary};`}></div>
+                <div class="sg-fs-meta">
+                  <code class="sg-code">--{f.key}</code>
+                  <span class="sg-muted">{f.primary}</span>
+                  <span class="sg-fs-role">Primary</span>
+                </div>
+              </div>
+              <div class="sg-fs">
+                <div class="sg-fs-chip" style={`background: ${f.dark};`}></div>
+                <div class="sg-fs-meta">
+                  <code class="sg-code">--{f.key}-dark</code>
+                  <span class="sg-muted">{f.dark}</span>
+                  <span class="sg-fs-role">Authority · gravity</span>
+                </div>
+              </div>
+              <div class="sg-fs">
+                <div class="sg-fs-chip" style={`background: ${f.light}; border-color: rgba(0,0,0,0.15);`}></div>
+                <div class="sg-fs-meta">
+                  <code class="sg-code">--{f.key}-light</code>
+                  <span class="sg-muted">{f.light}</span>
+                  <span class="sg-fs-role">Openness · space</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">System rules</h3>
+      <ul class="sg-list">
+        <li>Do not mix more than two color families in a single composition</li>
+        <li>Use dark variants for authority, light variants for space</li>
+        <li>Avoid treating all colors as equal — hierarchy matters</li>
+        <li>Color should support meaning, not replace it</li>
+      </ul>
+
+      <h3 style="margin-top: var(--space-12);">Gradients</h3>
+      <p class="sg-muted">Permitted as a web-only expression — never on the logo lockup.</p>
+      <div class="sg-gradients">
+        {gradients.map((g) => (
+          <div class="sg-gradient">
+            <div class="sg-gradient-chip" style={`background: ${g.css};`}></div>
+            <div class="sg-gradient-meta">
+              <span class="sg-gradient-name">{g.name}</span>
+              <code class="sg-code">{g.css}</code>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── 6. Color Scale Generator ─────────────────── -->
+    <section id="generator" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">06</span>
+        <h2>Color Scale Generator</h2>
+      </div>
+      <p class="sg-paragraph">
+        Extend the system for campaigns, sub-brands, or new contexts. Enter any base
+        color — the tool generates primary, alternate, dark, and light variants using
+        the same tonal logic that produced the core families above.
+      </p>
+
+      <div class="csg" id="csg">
+        <div class="csg-controls">
+          <label class="csg-control">
+            <span class="sg-voice-label">Base color</span>
+            <div class="csg-input-row">
+              <input type="color" id="csg-picker" value="#C77DFF" aria-label="Base color picker" />
+              <input type="text" id="csg-hex" value="#C77DFF" maxlength="7" aria-label="Base color hex" />
+            </div>
+          </label>
+          <label class="csg-control">
+            <span class="sg-voice-label">Name <span class="sg-muted">(optional)</span></span>
+            <input type="text" id="csg-name" placeholder="e.g. Campaign Teal" class="csg-name-input" />
+          </label>
+          <div class="csg-presets">
+            <span class="sg-voice-label">Quick start</span>
+            <div class="csg-preset-row">
+              <button type="button" data-hex="#C77DFF" data-name="Centella Violet" style="background: #C77DFF;"></button>
+              <button type="button" data-hex="#00E5FF" data-name="Advisory Blue" style="background: #00E5FF;"></button>
+              <button type="button" data-hex="#FF6B6B" data-name="Networking Red" style="background: #FF6B6B;"></button>
+              <button type="button" data-hex="#CCFF00" data-name="Investment Green" style="background: #CCFF00;"></button>
+              <button type="button" data-hex="#FF9500" data-name="Global Orange" style="background: #FF9500;"></button>
+              <button type="button" data-hex="#FF66C4" data-name="Tech Pink" style="background: #FF66C4;"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="csg-output" id="csg-output">
+          <!-- swatches injected by script -->
+        </div>
+
+        <details class="csg-css">
+          <summary>Copy as CSS custom properties</summary>
+          <pre><code id="csg-css-out"></code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ── 7. Visual Language ───────────────────────── -->
+    <section id="visual" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">07</span>
+        <h2>Visual Language</h2>
+      </div>
+      <p class="sg-paragraph">
+        Architectural and assertive. Built from a small set of strong structural
+        ideas — <em>axes, horizons, diagonals, and panels</em> — recombined into
+        flexible but unmistakable compositions. The goal is not visual softness;
+        the goal is <strong>clarity under pressure</strong>.
+      </p>
+
+      <h3>Structural axes</h3>
+      <p class="sg-muted">
+        The Centella logo determines axis points at 0°, 90°, 120°, and 150°. These
+        axes align type, anchor layouts, and act as directional separators.
+      </p>
+      <div class="sg-axes-demo">
+        <div class="sg-axes-inner">
+          <div class="sg-axis sg-axis--0"></div>
+          <div class="sg-axis sg-axis--90"></div>
+          <div class="sg-axis sg-axis--120"></div>
+          <div class="sg-axis sg-axis--150"></div>
+          <span class="sg-axes-label">0° · 90° · 120° · 150°</span>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Colored panels</h3>
+      <p class="sg-muted">
+        Color is deployed through bold panels — not soft backgrounds. Hard edges preferred,
+        but always a corner radius of <code class="sg-code">4px</code>,
+        <code class="sg-code">8px</code>, or <code class="sg-code">16px</code>. Each
+        panel sits in space with an inner frame aligned to the underlying grid.
+      </p>
+      <div class="sg-panel-demo">
+        <div class="sg-panel" style="background: var(--violet); color: var(--violet-dark); border-radius: 4px;">
+          <div class="sg-panel-frame" style="border-color: rgba(30,26,40,0.3);">
+            <div class="sg-voice-label" style="color: var(--violet-dark); opacity: 0.7;">Radius 4px</div>
+            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--violet-dark); margin: 0;">Theory in motion.</p>
+          </div>
+        </div>
+        <div class="sg-panel" style="background: var(--advisory-dark); color: var(--advisory); border-radius: 8px;">
+          <div class="sg-panel-frame" style="border-color: rgba(0,229,255,0.3);">
+            <div class="sg-voice-label" style="color: var(--advisory); opacity: 0.7;">Radius 8px</div>
+            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--advisory); margin: 0;">Strategic spine.</p>
+          </div>
+        </div>
+        <div class="sg-panel" style="background: var(--investment); color: var(--investment-dark); border-radius: 16px;">
+          <div class="sg-panel-frame" style="border-color: rgba(30,36,19,0.3);">
+            <div class="sg-voice-label" style="color: var(--investment-dark); opacity: 0.7;">Radius 16px</div>
+            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--investment-dark); margin: 0;">Build. Scale. Deliver.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Photography</h3>
+      <ul class="sg-list">
+        <li>Treated as raw material, not precious imagery</li>
+        <li>High contrast, crushed shadows, duotone overlays, heavy grain, hard cropping</li>
+        <li>Should feel political, not illustrative; bold, not polite</li>
+        <li>Sourced from Unsplash or original commissioned work — never stock-photo in tone</li>
+      </ul>
+    </section>
+
+    <!-- ── 8. Icon Library ──────────────────────────── -->
+    <section id="icons" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">08</span>
+        <h2>Icon Library</h2>
+      </div>
+      <p class="sg-paragraph">
+        Icons play a critical supporting role in the system — functional symbols
+        that reinforce meaning, structure, and attention. They are
+        <strong>structural, not ornamental</strong>. All icons are sourced from
+        <a href="https://thenounproject.com/" target="_blank" rel="noopener">The Noun Project</a>
+        and shipped as inline SVG that inherits <code class="sg-code">currentColor</code>,
+        so every icon respects whichever brand token wraps it.
+      </p>
+
+      <h3>Usage</h3>
+      <p class="sg-muted">Inline via the <code class="sg-code">&lt;Icon /&gt;</code> component:</p>
+      <pre class="sg-pre"><code>{`---
+import Icon from '../components/Icon.astro';
+---
+<Icon name="checkmark" size={24} label="Completed" />
+<Icon name="money-bag" size={48} class="text-accent" />`}</code></pre>
+
+      <h3 style="margin-top: var(--space-12);">Color behavior</h3>
+      <p class="sg-muted">Wrap an icon in any element with a <code class="sg-code">color</code> to recolor it. Multi-color icons are not permitted — one accent per composition.</p>
+      <div class="sg-icon-colors">
+        <div style="color: var(--color-text);"><Icon name="power-fist" size={56} /></div>
+        <div style="color: var(--violet);"><Icon name="power-fist" size={56} /></div>
+        <div style="color: var(--advisory);"><Icon name="power-fist" size={56} /></div>
+        <div style="color: var(--networking);"><Icon name="power-fist" size={56} /></div>
+        <div style="color: var(--investment);"><Icon name="power-fist" size={56} /></div>
+        <div style="color: var(--global);"><Icon name="power-fist" size={56} /></div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Scale</h3>
+      <p class="sg-muted">Icons align to typography. Default UI icon is 24px; labels and eyebrows 16px; feature icons 48–72px.</p>
+      <div class="sg-icon-scale">
+        <div class="sg-icon-scale-item"><Icon name="rocket" size={16} /><span class="sg-muted">16</span></div>
+        <div class="sg-icon-scale-item"><Icon name="rocket" size={24} /><span class="sg-muted">24</span></div>
+        <div class="sg-icon-scale-item"><Icon name="rocket" size={32} /><span class="sg-muted">32</span></div>
+        <div class="sg-icon-scale-item"><Icon name="rocket" size={48} /><span class="sg-muted">48</span></div>
+        <div class="sg-icon-scale-item"><Icon name="rocket" size={72} /><span class="sg-muted">72</span></div>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Library</h3>
+      <p class="sg-muted">{iconNames.length} icons. Hover to copy the name string; use it as the <code class="sg-code">name</code> prop.</p>
+      <ul class="sg-icon-grid" role="list">
+        {iconNames.map((n) => {
+          const path = Object.keys(iconFiles).find((k) => k.endsWith(`/${n}.svg`))!;
+          const raw = iconFiles[path];
+          return (
+            <li class="sg-icon-tile" data-name={n} data-svg={raw} title={`<Icon name="${n}" />`}>
+              <button
+                type="button"
+                class="sg-icon-download"
+                data-download={n}
+                aria-label={`Download ${n}.svg`}
+                title={`Download ${n}.svg`}
+              >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 4v12" />
+                  <path d="M6 11l6 6 6-6" />
+                  <path d="M5 21h14" />
+                </svg>
+              </button>
+              <div class="sg-icon-tile-glyph"><Icon name={n} size={40} label={n} /></div>
+              <code class="sg-icon-tile-name">{n}</code>
+            </li>
+          );
+        })}
+      </ul>
+
+      <h3 style="margin-top: var(--space-12);">Principles</h3>
+      <ul class="sg-list">
+        <li>SVG only — never PNG or raster</li>
+        <li>Simple, geometric, utilitarian — never playful or branded</li>
+        <li>Single style per composition; never mix outline and filled</li>
+        <li>May appear in primary dark tones or a single accent color — never multi-color</li>
+        <li>Align to the same axes and grid as typography</li>
+        <li>Never overpower text or imagery</li>
+        <li>To add a new icon: drop its SVG into <code class="sg-code">src/assets/icons/</code> — it becomes available to <code class="sg-code">&lt;Icon name="…" /&gt;</code> on next build</li>
+      </ul>
+    </section>
+
+    <!-- ── 9. Layout ───────────────────────────────── -->
+    <section id="layout" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">09</span>
+        <h2>Layout & Spacing</h2>
+      </div>
+      <p class="sg-paragraph">
+        Layouts prioritize clarity, rhythm, and breathing room. Space is an
+        <em>active</em> design element, not an absence. Generous margins, strong
+        vertical rhythm, modular flexible grids.
+      </p>
+
+      <h3>Spacing scale</h3>
+      <div class="sg-spacing">
+        {spacing.map((s) => (
+          <div class="sg-spacing-row">
+            <code class="sg-code">{s.token}</code>
+            <span class="sg-muted">{s.px}</span>
+            <div class="sg-spacing-bar" style={`width: ${s.px};`}></div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── 10. Components ───────────────────────────── -->
+    <section id="components" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">10</span>
+        <h2>Components</h2>
+      </div>
+
+      <h3>Buttons & links</h3>
+      <div class="sg-cluster">
+        <button class="btn btn--primary">Primary action</button>
+        <button class="btn btn--secondary">Secondary action</button>
+        <a href="#" class="sg-inline-link">Inline link →</a>
+      </div>
+
+      <h3 style="margin-top: var(--space-12);">Form elements</h3>
+      <form class="sg-form" onsubmit="event.preventDefault();">
+        <label>
+          <span class="sg-form-label">Email address</span>
+          <input type="email" placeholder="name@email.com" class="sg-input" />
+        </label>
+        <label>
+          <span class="sg-form-label">Message</span>
+          <textarea rows="4" placeholder="Tell us what's on your mind" class="sg-input"></textarea>
+        </label>
+        <button type="submit" class="btn btn--primary">Submit</button>
+      </form>
+    </section>
+
+    <!-- ── 11. Sub-brands ───────────────────────────── -->
+    <section id="subbrands" class="sg-section">
+      <div class="sg-section-head">
+        <span class="sg-section-num">11</span>
+        <h2>Sub-Brands</h2>
+      </div>
+      <p class="sg-paragraph">
+        Centella operates as an umbrella brand for structurally distinct but
+        strategically aligned entities. All three share the Spark logo, typography,
+        and color system; each is assigned a single accent for differentiation.
+      </p>
+      <div class="sg-subbrands">
+        {subbrands.map((s) => (
+          <article class="sg-subbrand" style={`--sb: var(--${s.accent});`}>
+            <div class="sg-subbrand-bar"></div>
+            <h3>{s.name}</h3>
+            <p class="sg-muted">{s.desc}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <footer class="sg-footer">
+      <p class="sg-muted">
+        These guidelines are living documents and will be updated as the Centella
+        brand evolves. Source: <em>Centella Brand Guidelines v1.0 — February 2026</em>.
+      </p>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  // ── Color scale generator ──────────────────────────
+  type RGB = { r: number; g: number; b: number };
+  type HSL = { h: number; s: number; l: number };
+
+  function hexToRgb(hex: string): RGB | null {
+    const h = hex.replace('#', '').trim();
+    if (!/^[0-9a-f]{6}$/i.test(h)) return null;
+    return {
+      r: parseInt(h.slice(0, 2), 16),
+      g: parseInt(h.slice(2, 4), 16),
+      b: parseInt(h.slice(4, 6), 16),
+    };
+  }
+  function rgbToHex({ r, g, b }: RGB): string {
+    const p = (n: number) => Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, '0');
+    return `#${p(r)}${p(g)}${p(b)}`.toUpperCase();
+  }
+  function rgbToHsl({ r, g, b }: RGB): HSL {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0, s = 0;
+    const l = (max + min) / 2;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    return { h: h * 360, s: s * 100, l: l * 100 };
+  }
+  function hslToRgb({ h, s, l }: HSL): RGB {
+    h /= 360; s /= 100; l /= 100;
+    if (s === 0) { const v = l * 255; return { r: v, g: v, b: v }; }
+    const hue2rgb = (p: number, q: number, t: number) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    return {
+      r: hue2rgb(p, q, h + 1/3) * 255,
+      g: hue2rgb(p, q, h) * 255,
+      b: hue2rgb(p, q, h - 1/3) * 255,
+    };
+  }
+  function hexToHsl(hex: string): HSL | null {
+    const rgb = hexToRgb(hex);
+    return rgb ? rgbToHsl(rgb) : null;
+  }
+  function hslToHex(hsl: HSL): string {
+    return rgbToHex(hslToRgb(hsl));
+  }
+
+  // Relative luminance → contrast-safe text color
+  function textOn(hex: string): string {
+    const rgb = hexToRgb(hex);
+    if (!rgb) return '#000';
+    const lum = (c: number) => {
+      c /= 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    };
+    const L = 0.2126 * lum(rgb.r) + 0.7152 * lum(rgb.g) + 0.0722 * lum(rgb.b);
+    return L > 0.5 ? '#060607' : '#F7EDFF';
+  }
+
+  // Derive the family — modeled on Centella core palette relationships.
+  function derive(hex: string) {
+    const hsl = hexToHsl(hex);
+    if (!hsl) return null;
+    const primary = hslToHex(hsl);
+    const alt = hslToHex({
+      h: (hsl.h + 18) % 360,
+      s: Math.max(20, Math.min(100, hsl.s + 6)),
+      l: Math.max(35, Math.min(80, hsl.l - 8)),
+    });
+    const dark = hslToHex({
+      h: (hsl.h + 6) % 360,
+      s: Math.min(30, hsl.s * 0.32),
+      l: 11,
+    });
+    const light = hslToHex({
+      h: hsl.h,
+      s: Math.max(hsl.s, 60),
+      l: 95,
+    });
+    return { primary, alt, dark, light };
+  }
+
+  function slug(name: string) {
+    return name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'custom';
+  }
+
+  const picker = document.getElementById('csg-picker') as HTMLInputElement;
+  const hexInput = document.getElementById('csg-hex') as HTMLInputElement;
+  const nameInput = document.getElementById('csg-name') as HTMLInputElement;
+  const output = document.getElementById('csg-output')!;
+  const cssOut = document.getElementById('csg-css-out')!;
+  const presetRow = document.querySelector('.csg-preset-row')!;
+
+  function render(hex: string, name: string) {
+    const family = derive(hex);
+    if (!family) return;
+    const s = slug(name || 'custom');
+    const variants: Array<[string, string, string]> = [
+      ['Primary', family.primary, `--${s}`],
+      ['Alternate', family.alt, `--${s}-alt`],
+      ['Dark', family.dark, `--${s}-dark`],
+      ['Light', family.light, `--${s}-light`],
+    ];
+    output.innerHTML = variants
+      .map(([label, val, token]) => `
+        <div class="csg-swatch">
+          <div class="csg-chip" style="background: ${val}; color: ${textOn(val)};">
+            <span class="csg-chip-name">${label}</span>
+            <button type="button" class="csg-copy" data-copy="${val}" aria-label="Copy ${val}">copy</button>
+          </div>
+          <div class="csg-meta">
+            <code class="sg-code">${token}</code>
+            <span class="sg-muted">${val}</span>
+          </div>
+        </div>
+      `).join('');
+
+    cssOut.textContent = variants.map(([, val, token]) => `${token}: ${val};`).join('\n');
+
+    output.querySelectorAll<HTMLButtonElement>('.csg-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(btn.dataset.copy!);
+        const prev = btn.textContent;
+        btn.textContent = 'copied';
+        setTimeout(() => { btn.textContent = prev; }, 1200);
+      });
+    });
+  }
+
+  function sync(hex: string, name?: string) {
+    if (!/^#[0-9a-f]{6}$/i.test(hex)) return;
+    picker.value = hex;
+    hexInput.value = hex.toUpperCase();
+    if (name !== undefined) nameInput.value = name;
+    render(hex, nameInput.value);
+  }
+
+  picker.addEventListener('input', () => sync(picker.value));
+  hexInput.addEventListener('input', () => {
+    const v = hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value;
+    if (/^#[0-9a-f]{6}$/i.test(v)) sync(v);
+  });
+  nameInput.addEventListener('input', () => render(hexInput.value, nameInput.value));
+
+  presetRow.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+    b.addEventListener('click', () => sync(b.dataset.hex!, b.dataset.name));
+  });
+
+  // initial render
+  render('#C77DFF', 'Centella Violet');
+  nameInput.value = 'Centella Violet';
+
+  // ── Icon tile click-to-copy ────────────────────────
+  document.querySelectorAll<HTMLLIElement>('.sg-icon-tile').forEach((tile) => {
+    tile.addEventListener('click', async (e) => {
+      // Don't copy when the download button was clicked.
+      if ((e.target as HTMLElement).closest('.sg-icon-download')) return;
+      const name = tile.dataset.name!;
+      const snippet = `<Icon name="${name}" />`;
+      try {
+        await navigator.clipboard.writeText(snippet);
+        tile.classList.add('sg-icon-tile--copied');
+        setTimeout(() => tile.classList.remove('sg-icon-tile--copied'), 1000);
+      } catch {
+        /* clipboard unavailable; no-op */
+      }
+    });
+  });
+
+  // ── Icon download ──────────────────────────────────
+  document.querySelectorAll<HTMLButtonElement>('.sg-icon-download').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tile = btn.closest<HTMLLIElement>('.sg-icon-tile');
+      if (!tile) return;
+      const name = btn.dataset.download!;
+      const svg = tile.dataset.svg ?? '';
+      const blob = new Blob([svg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${name}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+
+      btn.classList.add('sg-icon-download--done');
+      setTimeout(() => btn.classList.remove('sg-icon-download--done'), 1000);
+    });
+  });
+</script>
+
+<style>
+  .styleguide { padding-block: var(--space-16); max-width: 72rem; }
+
+  /* Hero */
+  .sg-hero { margin-bottom: var(--space-24); max-width: 52rem; }
+  .sg-eyebrow {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    margin-bottom: var(--space-4);
+  }
+  .sg-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-6);
+    padding-bottom: 0.12em;
+    background: linear-gradient(135deg, var(--violet), var(--networking));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sg-lede {
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    font-weight: 300;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+  .sg-lede code, .sg-paragraph code, .sg-muted code {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.85em;
+    background: var(--bg-elevated);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    color: var(--accent-lime);
+  }
+
+  /* Section structure */
+  .sg-section {
+    padding-block: var(--space-16);
+    border-top: 1px solid var(--color-border);
+  }
+  .sg-section-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .sg-section-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    color: var(--color-text-dim);
+    letter-spacing: -0.04em;
+  }
+  .sg-section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .sg-section h3 {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-4);
+    color: var(--color-text);
+  }
+
+  .sg-paragraph {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+  .sg-paragraph strong { color: var(--color-text); font-weight: 600; }
+  .sg-paragraph em { color: var(--violet); font-style: normal; font-weight: 500; }
+
+  .sg-muted { color: var(--color-text-muted); }
+
+  .sg-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+  .sg-list li {
+    padding-left: var(--space-4);
+    position: relative;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  .sg-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 8px;
+    height: 1.5px;
+    background: var(--violet);
+  }
+  .sg-list--ordered {
+    counter-reset: sg;
+  }
+  .sg-list--ordered li { counter-increment: sg; padding-left: var(--space-8); }
+  .sg-list--ordered li::before {
+    content: counter(sg);
+    background: none;
+    width: auto;
+    height: auto;
+    top: 0;
+    font-family: var(--font-semi);
+    font-weight: 600;
+    color: var(--violet);
+    font-size: var(--text-sm);
+  }
+
+  .sg-callout {
+    padding: var(--space-6);
+    background: var(--bg-surface);
+    border-left: 3px solid var(--violet);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    color: var(--color-text);
+    max-width: 60ch;
+  }
+  .sg-callout strong {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--violet);
+  }
+
+  .sg-code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--bg-elevated);
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    color: var(--accent-lime);
+    border: 1px solid var(--color-border);
+  }
+
+  .sg-voice-label {
+    display: block;
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-3);
+  }
+
+  /* Voice grid */
+  .sg-voice-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-voice-grid { grid-template-columns: repeat(3, 1fr); } }
+  .sg-voice-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: var(--space-6);
+  }
+
+  /* Words grid */
+  .sg-word-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-word-grid { grid-template-columns: 1fr 1fr; } }
+  .sg-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .sg-chip {
+    font-family: var(--font-semi);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    border: 1px solid;
+  }
+  .sg-chip--good { color: var(--investment); border-color: rgba(204,255,0,0.4); background: rgba(204,255,0,0.05); }
+  .sg-chip--bad { color: var(--networking); border-color: rgba(255,107,107,0.4); background: rgba(255,107,107,0.05); text-decoration: line-through; opacity: 0.85; }
+
+  /* Logo demo */
+  .sg-logo-demo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-logo-demo { grid-template-columns: 1fr 1fr; } }
+  .sg-logo-stage {
+    border-radius: 8px;
+    padding: var(--space-12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 180px;
+    border: 1px solid var(--color-border);
+  }
+  .sg-logo-stage img { max-height: 48px; width: auto; }
+  .sg-logo-stage--dark { background: var(--bg-deep); }
+  .sg-logo-stage--dark img { filter: brightness(0) invert(1); }
+  .sg-logo-stage--light { background: var(--violet-light); }
+  .sg-logo-stage--light img { filter: brightness(0); }
+  .sg-stage-label {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-4);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-dim);
+  }
+  .sg-logo-stage--light .sg-stage-label { color: rgba(30,26,40,0.5); }
+
+  .sg-do-dont {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-do-dont { grid-template-columns: 1fr 1fr; } }
+
+  /* Fonts */
+  .sg-fonts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-fonts { grid-template-columns: repeat(2, 1fr); } }
+  .sg-font {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: var(--space-6);
+  }
+  .sg-font-label {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-3);
+  }
+  .sg-font-name {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+  .sg-font-sample {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px dashed var(--color-border);
+    font-size: var(--text-2xl);
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  /* Type scale */
+  .sg-scale { display: flex; flex-direction: column; gap: var(--space-3); }
+  .sg-scale-row {
+    display: grid;
+    grid-template-columns: 10rem 4rem 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .sg-scale-sample {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+  @media (max-width: 640px) {
+    .sg-scale-row { grid-template-columns: 1fr; }
+    .sg-scale-size { grid-row: 1; grid-column: 2; }
+  }
+
+  /* Gradient demo */
+  .sg-grad-demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6) var(--space-8);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .sg-grad-demo span {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Color families */
+  .sg-families {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-4);
+  }
+  .sg-family {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sg-family-head {
+    padding: var(--space-6) var(--space-6) var(--space-4);
+  }
+  .sg-family-head h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.02em;
+  }
+  .sg-family-swatches {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-border);
+  }
+  @media (min-width: 640px) { .sg-family-swatches { grid-template-columns: repeat(3, 1fr); } }
+  .sg-fs {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-border);
+  }
+  .sg-fs:last-child { border-right: none; }
+  @media (max-width: 639px) {
+    .sg-fs { border-right: none; border-top: 1px solid var(--color-border); }
+    .sg-fs:first-of-type { border-top: none; }
+  }
+  .sg-fs-chip {
+    height: 90px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .sg-fs-meta {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+  }
+  .sg-fs-role {
+    color: var(--color-text-dim);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: var(--space-1);
+  }
+
+  /* Gradients */
+  .sg-gradients {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+  .sg-gradient {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: var(--bg-surface);
+  }
+  .sg-gradient-chip { height: 120px; }
+  .sg-gradient-meta {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .sg-gradient-name {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── Color Scale Generator ── */
+  .csg {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--space-8);
+    margin-top: var(--space-6);
+  }
+  .csg-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+  @media (min-width: 720px) {
+    .csg-controls { grid-template-columns: 1fr 1fr 1fr; align-items: end; }
+  }
+  .csg-control { display: flex; flex-direction: column; gap: var(--space-2); }
+  .csg-input-row {
+    display: flex;
+    gap: var(--space-2);
+    align-items: stretch;
+  }
+  .csg-input-row input[type="color"] {
+    width: 56px;
+    height: 48px;
+    padding: 0;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    cursor: pointer;
+  }
+  .csg-input-row input[type="text"],
+  .csg-name-input {
+    flex: 1;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-elevated);
+    color: var(--color-text);
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .csg-name-input {
+    font-family: var(--font-body);
+  }
+  .csg-input-row input:focus, .csg-name-input:focus {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgba(199,125,255,0.15);
+  }
+
+  .csg-presets { display: flex; flex-direction: column; gap: var(--space-2); }
+  .csg-preset-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .csg-preset-row button {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+  .csg-preset-row button:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-text);
+  }
+
+  .csg-output {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+  .csg-swatch {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-elevated);
+  }
+  .csg-chip {
+    height: 110px;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+  }
+  .csg-chip-name {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .csg-copy {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    background: rgba(0,0,0,0.25);
+    color: inherit;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity var(--transition-fast);
+  }
+  .csg-copy:hover { opacity: 1; }
+  .csg-meta {
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+  }
+
+  .csg-css {
+    margin-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-6);
+  }
+  .csg-css summary {
+    font-family: var(--font-semi);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--violet);
+  }
+  .csg-css pre {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-deep);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+  .csg-css code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--accent-lime);
+    white-space: pre;
+  }
+
+  /* Axes demo */
+  .sg-axes-demo {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: var(--space-8);
+    margin-block: var(--space-6);
+  }
+  .sg-axes-inner {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-width: 520px;
+    margin: 0 auto;
+    background: var(--bg-elevated);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .sg-axis {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 1px;
+    background: var(--violet);
+    transform-origin: 0 0;
+    opacity: 0.7;
+  }
+  .sg-axis--0 { transform: translate(-50%, -50%) rotate(0deg); }
+  .sg-axis--90 { transform: translate(-50%, -50%) rotate(90deg); background: var(--advisory); }
+  .sg-axis--120 { transform: translate(-50%, -50%) rotate(30deg); background: var(--networking); }
+  .sg-axis--150 { transform: translate(-50%, -50%) rotate(60deg); background: var(--investment); }
+  .sg-axes-label {
+    position: absolute;
+    bottom: var(--space-3);
+    right: var(--space-4);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  /* Panel demo */
+  .sg-panel-demo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-panel-demo { grid-template-columns: repeat(3, 1fr); } }
+  .sg-panel {
+    padding: var(--space-3);
+  }
+  .sg-panel-frame {
+    border: 1px solid;
+    border-radius: inherit;
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-height: 180px;
+    justify-content: space-between;
+  }
+
+  /* Spacing */
+  .sg-spacing { display: flex; flex-direction: column; gap: var(--space-3); }
+  .sg-spacing-row {
+    display: grid;
+    grid-template-columns: 10rem 4rem 1fr;
+    gap: var(--space-4);
+    align-items: center;
+    padding-block: var(--space-2);
+  }
+  .sg-spacing-bar {
+    height: 14px;
+    background: var(--violet);
+    border-radius: 2px;
+  }
+  @media (max-width: 640px) { .sg-spacing-row { grid-template-columns: 8rem 3rem 1fr; } }
+
+  /* Cluster */
+  .sg-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .sg-inline-link {
+    font-family: var(--font-semi);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--violet);
+  }
+
+  /* Form */
+  .sg-form {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 32rem;
+  }
+  .sg-form label { display: flex; flex-direction: column; gap: var(--space-2); }
+  .sg-form-label {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+  }
+  .sg-input {
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-elevated);
+    color: var(--color-text);
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    resize: vertical;
+  }
+  .sg-input::placeholder { color: var(--color-text-dim); }
+  .sg-input:focus {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);
+  }
+
+  /* Sub-brands */
+  .sg-subbrands {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) { .sg-subbrands { grid-template-columns: repeat(3, 1fr); } }
+  .sg-subbrand {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: var(--space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .sg-subbrand-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--sb);
+  }
+  .sg-subbrand h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    color: var(--sb);
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .sg-footer {
+    margin-top: var(--space-24);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .sg-footer em { font-style: italic; color: var(--color-text); }
+
+  /* Icons */
+  .sg-pre {
+    background: var(--bg-deep);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: var(--space-4);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--accent-lime);
+    line-height: 1.55;
+    margin-top: var(--space-3);
+    max-width: 52rem;
+  }
+  .sg-icon-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+  }
+  .sg-icon-colors > div {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-elevated);
+    border-radius: 6px;
+  }
+  .sg-icon-scale {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--violet);
+  }
+  .sg-icon-scale-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .sg-icon-scale-item .sg-muted {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sg-icon-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+  .sg-icon-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-3);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--transition-base);
+  }
+  .sg-icon-download {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: var(--bg-elevated);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+  }
+  .sg-icon-download svg { width: 16px; height: 16px; }
+  .sg-icon-tile:hover .sg-icon-download {
+    color: var(--color-text);
+  }
+  .sg-icon-download:hover {
+    color: var(--violet);
+    border-color: rgba(199, 125, 255, 0.5);
+    background: var(--bg-deep);
+    transform: translateY(-1px);
+  }
+  .sg-icon-download:focus-visible {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);
+  }
+  .sg-icon-download.sg-icon-download--done { color: var(--investment); border-color: rgba(204, 255, 0, 0.4); }
+  .sg-icon-tile:hover {
+    transform: translateY(-2px);
+    border-color: rgba(199, 125, 255, 0.3);
+    color: var(--violet);
+    background: var(--bg-elevated);
+  }
+  .sg-icon-tile-glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+  }
+  .sg-icon-tile-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: center;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+  .sg-icon-tile:hover .sg-icon-tile-name { color: var(--color-text); }
+  .sg-icon-tile.sg-icon-tile--copied { border-color: var(--investment); color: var(--investment); }
+  .sg-icon-tile.sg-icon-tile--copied .sg-icon-tile-name { color: var(--investment); }
+</style>

@@ -1,14 +1,63 @@
 /* ============================================================
    Centella Global — Base Styles
-   Clean foundation: reset, typography, layout primitives.
-   No branding yet — just solid defaults we can theme later.
+   Dark theme, Barlow + Barlow Condensed typography.
    ============================================================ */
 
-/* --- Custom Properties --- */
 :root {
+  /* Brand palette */
+  --bg-deep: #060607;
+  --bg-primary: #080809;
+  --bg-surface: #0D0D0F;
+  --bg-elevated: #151517;
+  --bg-lavender: #F7EDFF;
+
+  --accent-teal: #00A3B6;
+  --accent-cyan: #00E5FF;
+  --accent-coral: #FF6B6B;
+  --accent-green: #6EA92B;
+  --accent-lime: #CCFF00;
+  --accent-purple: #C77DFF;
+  --accent-orange: #FF9500;
+  --accent-pink: #FF66C4;
+
+  /* Brand color families — per Centella Brand Guidelines v1.0 */
+  /* Principal brand */
+  --violet: #C77DFF;
+  --violet-dark: #1E1A28;
+  --violet-light: #F7EDFF;
+  /* Work colors */
+  --advisory: #00E5FF;
+  --advisory-dark: #0E2228;
+  --advisory-light: #E1FCFF;
+  --networking: #FF6B6B;
+  --networking-dark: #22181C;
+  --networking-light: #FFE8E8;
+  --investment: #CCFF00;
+  --investment-dark: #1E2413;
+  --investment-light: #FAFFE6;
+  /* Theme colors */
+  --global: #FF9500;
+  --global-dark: #301C00;
+  --global-light: #FFF3E1;
+  --tech: #FF66C4;
+
+  /* Semantic colors */
+  --color-bg: var(--bg-deep);
+  --color-bg-alt: var(--bg-surface);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text: #F7EDFF;
+  --color-text-muted: rgba(247, 237, 255, 0.6);
+  --color-text-dim: rgba(247, 237, 255, 0.35);
+  --color-border: rgba(247, 237, 255, 0.08);
+  --color-accent: var(--accent-purple);
+  --color-accent-hover: var(--accent-coral);
+  --color-accent-text: var(--bg-deep);
+
   /* Typography */
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-heading: var(--font-body);
+  --font-display: 'Barlow Condensed', system-ui, sans-serif;
+  --font-heading: 'Barlow', system-ui, sans-serif;
+  --font-semi: 'Barlow Semi Condensed', system-ui, sans-serif;
+  --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 
   --text-xs: 0.75rem;
@@ -18,9 +67,9 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
+  --text-4xl: 2.5rem;
 
-  --leading-tight: 1.25;
+  --leading-tight: 1.15;
   --leading-normal: 1.6;
   --leading-relaxed: 1.75;
 
@@ -35,30 +84,19 @@
   --space-16: 4rem;
   --space-24: 6rem;
 
-  /* Colors — neutral palette for now, swap for brand later */
-  --color-bg: #ffffff;
-  --color-bg-alt: #f7f7f8;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b6b6b;
-  --color-border: #e0e0e0;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-accent-text: #ffffff;
-
   /* Layout */
   --max-width: 72rem;
   --max-width-narrow: 48rem;
   --gutter: var(--space-6);
 
-  /* Transitions */
+  /* Motion */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --- Reset --- */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -92,15 +130,18 @@ input, button, textarea, select {
 }
 
 a {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  color: var(--accent-purple);
+  text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-accent-hover);
+  color: var(--accent-coral);
+}
+
+::selection {
+  background: rgba(199, 125, 255, 0.25);
+  color: var(--color-text);
 }
 
 /* --- Typography --- */
@@ -108,6 +149,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   line-height: var(--leading-tight);
   font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 h1 { font-size: var(--text-4xl); }
@@ -119,7 +168,7 @@ h6 { font-size: var(--text-base); }
 
 p + p { margin-top: var(--space-4); }
 
-/* --- Layout Primitives --- */
+/* --- Layout --- */
 .container {
   width: 100%;
   max-width: var(--max-width);
@@ -164,37 +213,40 @@ p + p { margin-top: var(--space-4); }
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
-  font-size: var(--text-base);
+  font-family: var(--font-semi);
+  font-size: var(--text-sm);
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   line-height: 1;
   text-decoration: none;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  transition: all var(--transition-base);
 }
 
 .btn--primary {
-  background-color: var(--color-accent);
-  color: var(--color-accent-text);
-  border-color: var(--color-accent);
+  background-color: var(--accent-coral);
+  color: var(--bg-deep);
+  border-color: var(--accent-coral);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-  color: var(--color-accent-text);
+  transform: translateY(-1px);
+  box-shadow: 0 0 24px rgba(255, 107, 107, 0.35);
+  color: var(--bg-deep);
 }
 
 .btn--secondary {
   background-color: transparent;
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  color: var(--accent-purple);
+  border-color: var(--accent-purple);
 }
 
 .btn--secondary:hover {
-  background-color: var(--color-accent);
-  color: var(--color-accent-text);
+  background-color: var(--accent-purple);
+  color: var(--bg-deep);
 }
 
 /* --- Utilities --- */
@@ -215,37 +267,57 @@ p + p { margin-top: var(--space-4); }
 }
 
 /* --- Notion Content Blocks --- */
-.notion-content h2 { margin-top: var(--space-12); margin-bottom: var(--space-4); }
-.notion-content h3 { margin-top: var(--space-8); margin-bottom: var(--space-3); }
-.notion-content p { margin-bottom: var(--space-4); }
+.notion-content {
+  font-family: var(--font-body);
+  line-height: var(--leading-relaxed);
+}
+.notion-content h2 {
+  font-family: var(--font-display);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-4);
+}
+.notion-content h3 {
+  font-family: var(--font-heading);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+.notion-content p { margin-bottom: var(--space-4); color: var(--color-text-muted); }
 .notion-content ul,
-.notion-content ol { margin-bottom: var(--space-4); padding-left: var(--space-6); }
+.notion-content ol { margin-bottom: var(--space-4); padding-left: var(--space-6); color: var(--color-text-muted); }
 .notion-content li { margin-bottom: var(--space-2); }
 .notion-content blockquote {
-  border-left: 3px solid var(--color-border);
+  border-left: 3px solid var(--accent-purple);
   padding-left: var(--space-4);
   color: var(--color-text-muted);
   margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 300;
 }
 .notion-content img {
-  border-radius: 4px;
+  border-radius: 6px;
   margin-block: var(--space-6);
 }
 .notion-content code {
   font-family: var(--font-mono);
   font-size: 0.9em;
-  background: var(--color-bg-alt);
-  padding: 0.1em 0.3em;
+  background: var(--bg-elevated);
+  padding: 0.1em 0.4em;
   border-radius: 3px;
+  color: var(--accent-lime);
 }
 .notion-content pre {
-  background: var(--color-bg-alt);
+  background: var(--bg-elevated);
   padding: var(--space-4);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow-x: auto;
   margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
 }
 .notion-content pre code {
   background: none;
   padding: 0;
+  color: inherit;
 }
+</content>
+</invoke>

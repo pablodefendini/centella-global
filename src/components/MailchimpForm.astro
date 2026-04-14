@@ -96,28 +96,33 @@ const formId = `signup-${tag}`;
   .signup-form__input {
     flex: 1;
     padding: var(--space-3) var(--space-4);
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
+    background: var(--bg-elevated);
+    color: var(--color-text);
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    transition: border-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   }
+
+  .signup-form__input::placeholder { color: var(--color-text-dim); }
 
   .signup-form__input:focus {
     outline: none;
-    border-color: var(--color-accent);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);
   }
+
+  .signup-form__submit:disabled { opacity: 0.6; cursor: wait; }
 
   .signup-form__status {
+    font-family: var(--font-semi);
     font-size: var(--text-sm);
-    margin-top: var(--space-2);
+    margin-top: var(--space-3);
     min-height: 1.5em;
+    color: var(--color-text-muted);
   }
 
-  .signup-form__status--success {
-    color: #16a34a;
-  }
-
-  .signup-form__status--error {
-    color: #dc2626;
-  }
+  .signup-form__status--success { color: var(--accent-lime); }
+  .signup-form__status--error { color: var(--accent-coral); }
 </style>

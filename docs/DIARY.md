@@ -6,6 +6,20 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 3 — April 14, 2026: Writing the design spec the machine will actually read
+
+I added a `design.md` file to the root of the repo today. On the surface it looks like a design system doc — colors, type scale, spacing, components, the usual. But the reason it exists is a little more specific than that: it's a spec written for Claude Code to read, not for a human designer to skim.
+
+Here's the problem I kept running into. I've been building this site with Claude as my pair, and every time I'd ask it to style a new component, it would reach for whatever looked reasonable. Tailwind defaults. Random hex values that were "close enough" to the brand palette. Arbitrary border radii. One time it gave me a primary button with a 4px radius and a 12px radius in the same view, because the two sections of code didn't know about each other. The tokens existed in `global.css`, but CSS variables alone don't tell you *when* to use what. They're a vocabulary, not a grammar.
+
+So I wrote the grammar down. `design.md` takes everything on the `/styleguide` page — which itself was built from our Notion brand guidelines — and restructures it in a format an LLM can parse and apply deterministically. Every color has a token, a hex, and a role. Every component spec lists the exact states (hover, focus, active, disabled) with the exact values. The rules from the brand guide that don't fit neatly into tokens — "don't mix more than two color families," "panel radii must be 4, 8, or 16," "Barlow Condensed for action, Barlow Regular for gravity" — are written down as prose Claude can reason about.
+
+Then I added a short block to `CLAUDE.md` telling Claude to always consult `design.md` before generating UI, to use only values defined there, and to match states to the documented patterns. That's the part that makes the whole thing work. The spec is only useful if the agent knows to look at it.
+
+It's a small thing, but it feels like the right move for a codebase that's going to be evolved mostly through prompts. The brand guide in Notion is the source of truth for *what we believe about the brand*. `design.md` is the source of truth for *how that belief gets expressed in code*. Two different jobs, same underlying system. And now when I ask for a new component, I get one that belongs to the rest of the site instead of one that was invented on the spot.
+
+---
+
 ## Entry 2 — April 14, 2026: First successful build
 
 Got the full site building from Notion today. The dev server starts, the homepage renders, and when I add a test event to the Notion database with Status set to "Published" and the Featured checkbox checked, it shows up on the homepage. That's the core loop working: edit in Notion, see it on the site.

@@ -7,12 +7,14 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  hideChrome?: boolean;
 }
 
 const {
   title,
   description = 'Centella works with political leaders and movement builders across the Global South.',
   ogImage = '/og-default.png',
+  hideChrome = false,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centellaglobal.com');
@@ -41,12 +43,20 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centella
   <meta name="twitter:image" content={ogImage} />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <slot name="head" />
 </head>
 <body>
-  <Nav />
+  {!hideChrome && <Nav />}
   <main>
     <slot />
   </main>
-  <Footer />
+  {!hideChrome && <Footer />}
 </body>
 </html>
