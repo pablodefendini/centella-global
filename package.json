@@ -10,13 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/vercel": "^10.0.4",
+    "@astrojs/vercel": "^8.0.0",
     "@notionhq/client": "^2.2.0",
     "astro": "^5.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "@vercel/node": "^5.7.5",
-    "typescript": "^6.0.2"
+    "@vercel/node": "^5.0.0",
+    "typescript": "^5.7.0"
   }
 }

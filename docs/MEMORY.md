@@ -6,6 +6,18 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-14 — Notion workspace: personal now, corporate later
+
+### CMS databases are in Pablo's personal Notion for beta testing
+
+The five Website CMS databases live in Pablo's personal Notion workspace right now. This is intentional — it's faster for testing the integration. The plan is to migrate to the Centella corporate Notion account before the site goes into production use by the content team.
+
+The architecture already handles this cleanly: all database IDs and the API key come from environment variables. Migration means: create a new Notion integration in the corporate workspace, duplicate or recreate the databases (same schemas), update the `.env` values. Zero code changes.
+
+Things to watch for during migration: (1) Notion file URLs are workspace-specific and expire — any images uploaded in the personal workspace won't carry over automatically, (2) the integration needs to be connected to the databases in the new workspace (the step people always forget), (3) if the corporate account has different permission levels, the integration may need broader access than just "Read content."
+
+---
+
 ## 2026-04-14 — Mailchimp ↔ Attendees integration deferred
 
 ### Attendees component shelved for v1

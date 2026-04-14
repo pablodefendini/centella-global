@@ -6,6 +6,22 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 2 — April 14, 2026: First successful build
+
+Got the full site building from Notion today. The dev server starts, the homepage renders, and when I add a test event to the Notion database with Status set to "Published" and the Featured checkbox checked, it shows up on the homepage. That's the core loop working: edit in Notion, see it on the site.
+
+The setup was more plumbing than I expected. SSH keys for GitHub (my MacBook didn't have one — first time setting up a fresh dev environment on this machine in a while), Node version too old for Astro 5, dependency version conflicts between the Vercel adapter and TypeScript. The kind of stuff that eats an afternoon if you're not paying attention, but it's all resolved now.
+
+The Notion databases are live — Events, Blog Posts, Speakers, Attendees, and Sponsors, all under a "Website CMS" page. Events has relations to the other three people/org databases, so linking a speaker to an event is just picking from a dropdown in Notion. The content team won't need to learn anything new.
+
+One thing I'm keeping in mind: these databases are in my personal Notion workspace right now. The plan is to migrate to the Centella corporate account before the site goes into real production use. The architecture handles this cleanly — every database ID and the API key come from environment variables, so migration is just "recreate the integration, duplicate the databases, update the `.env` file." No code changes. But I want to make sure we don't accumulate a bunch of content in the personal workspace that then needs to be manually moved. The beta testing phase should stay short.
+
+The Notion file URL expiration issue is worth flagging here too. When you upload an image to a Notion database (say, a speaker photo), the URL Notion gives you through the API is temporary — it expires after an hour. For a static site that rebuilds on deploy, that's fine: we fetch the URLs at build time and they're valid for the life of that build. But it means we can't cache images across builds, and if a build takes unusually long, URLs could expire mid-build. Something to watch for, but not a problem yet.
+
+What's next: get Mailchimp wired up, deploy to Vercel, and set up the deploy hooks so the content team can trigger rebuilds from Slack and Notion. Then we start putting real content in.
+
+---
+
 ## Entry 1 — April 14, 2026: Why we're leaving Framer
 
 The current site is on Framer, and it's been fine for what it is — but it's creating friction in the two places that actually matter. Every time we run an event, someone has to manually build the event page in Framer. That means layout work, copy-pasting speaker bios, fiddling with responsive breakpoints. For an organization that runs at least four events a year, each with speakers, schedules, sponsors, and registration links, that's a lot of manual labor that should be automated.
