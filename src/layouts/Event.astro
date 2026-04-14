@@ -1,0 +1,128 @@
+---
+import Base from './Base.astro';
+import SpeakerCard from '../components/SpeakerCard.astro';
+import SponsorGrid from '../components/SponsorGrid.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+import type { Event, RenderedContent } from '../lib/types';
+
+interface Props {
+  event: Event;
+  content: RenderedContent;
+}
+
+const { event, content } = Astro.props;
+
+function formatDateRange(start: string, end: string | null): string {
+  const opts: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+  const startDate = new Date(start).toLocaleDateString('en-US', opts);
+  if (!end) return startDate;
+  const endDate = new Date(end).toLocaleDateString('en-US', opts);
+  return `${startDate} — ${endDate}`;
+}
+---
+
+<Base title={event.name} description={event.tagline} ogImage={event.heroImage ?? undefined}>
+  <article class="event">
+    <header class="event__header section">
+      <div class="container">
+        {event.heroImage && (
+          <img
+            src={event.heroImage}
+            alt={event.name}
+            class="event__hero"
+            loading="eager"
+          />
+        )}
+        <h1 class="event__title">{event.name}</h1>
+        {event.tagline && <p class="event__tagline text-muted">{event.tagline}</p>}
+        <div class="event__meta">
+          <time>{formatDateRange(event.dateStart, event.dateEnd)}</time>
+          {event.location && <span class="event__location">{event.location}</span>}
+        </div>
+        {event.registrationUrl && (
+          <a href={event.registrationUrl} class="btn btn--primary event__register">
+            {event.registrationCta}
+          </a>
+        )}
+      </div>
+    </header>
+
+    <div class="event__body section">
+      <div class="container container--narrow">
+        <div class="notion-content" set:html={content.html} />
+      </div>
+    </div>
+
+    {event.speakers.length > 0 && (
+      <section class="event__speakers section">
+        <div class="container">
+          <h2>Speakers</h2>
+          <div class="grid grid--3">
+            {event.speakers.map((speaker) => (
+              <SpeakerCard speaker={speaker} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {event.sponsors.length > 0 && (
+      <section class="event__sponsors section">
+        <div class="container">
+          <h2>Partners & Sponsors</h2>
+          <SponsorGrid sponsors={event.sponsors} />
+        </div>
+      </section>
+    )}
+
+    <section class="event__signup section">
+      <div class="container container--narrow">
+        <h2>Stay Updated</h2>
+        <p class="text-muted">Get updates about this event and future Centella events.</p>
+        <MailchimpForm tag={event.mailchimpTag} />
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .event__hero {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: var(--space-8);
+  }
+
+  .event__title {
+    margin-bottom: var(--space-3);
+  }
+
+  .event__tagline {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .event__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .event__location::before {
+    content: '·';
+    margin-right: var(--space-4);
+  }
+
+  .event__register {
+    margin-top: var(--space-4);
+  }
+
+  .event__speakers h2,
+  .event__sponsors h2,
+  .event__signup h2 {
+    margin-bottom: var(--space-8);
+  }
+</style>

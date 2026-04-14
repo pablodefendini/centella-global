@@ -1,0 +1,75 @@
+---
+import type { BlogPost } from '../lib/types';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<a href={`/blog/${post.slug}/`} class="post-card">
+  {post.heroImage && (
+    <img
+      src={post.heroImage}
+      alt={post.title}
+      class="post-card__image"
+      loading="lazy"
+    />
+  )}
+  <div class="post-card__body">
+    <time class="post-card__date text-muted">{formatDate(post.publishedDate)}</time>
+    <h3 class="post-card__title">{post.title}</h3>
+    {post.summary && <p class="post-card__summary text-muted">{post.summary}</p>}
+  </div>
+</a>
+
+<style>
+  .post-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .post-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .post-card__image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .post-card__body {
+    padding: var(--space-4) var(--space-6);
+  }
+
+  .post-card__date {
+    display: block;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-1);
+  }
+
+  .post-card__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-card__summary {
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+import EventLayout from '../../layouts/Event.astro';
+import { getPublishedEvents, getEventBySlug, getPageContent } from '../../lib/notion';
+
+export async function getStaticPaths() {
+  const events = await getPublishedEvents();
+  return events.map((event) => ({
+    params: { slug: event.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const event = await getEventBySlug(slug!);
+
+if (!event) {
+  return Astro.redirect('/events/');
+}
+
+const content = await getPageContent(event.id);
+---
+
+<EventLayout event={event} content={content} />

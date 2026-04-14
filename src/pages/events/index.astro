@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import EventCard from '../../components/EventCard.astro';
+import { getPublishedEvents } from '../../lib/notion';
+
+const events = await getPublishedEvents();
+
+// Split into upcoming and past
+const now = new Date();
+const upcoming = events.filter((e) => new Date(e.dateStart) >= now);
+const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
+---
+
+<Base title="Events" description="Upcoming and past Centella events.">
+  <section class="section">
+    <div class="container">
+      <h1>Events</h1>
+
+      {upcoming.length > 0 && (
+        <div class="events-section">
+          <h2 class="events-section__label text-muted">Upcoming</h2>
+          <div class="grid grid--2">
+            {upcoming.map((event) => (
+              <EventCard event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {past.length > 0 && (
+        <div class="events-section">
+          <h2 class="events-section__label text-muted">Past Events</h2>
+          <div class="grid grid--2">
+            {past.map((event) => (
+              <EventCard event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {events.length === 0 && (
+        <p class="text-muted" style="margin-top: var(--space-8);">
+          No events published yet. Check back soon.
+        </p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-bottom: var(--space-8);
+  }
+
+  .events-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .events-section__label {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-6);
+  }
+</style>

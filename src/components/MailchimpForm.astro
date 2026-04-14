@@ -1,0 +1,123 @@
+---
+/**
+ * Email signup form that submits to /api/subscribe.
+ * Uses progressive enhancement: works as a standard form POST,
+ * enhanced with client-side JS for inline feedback.
+ *
+ * Props:
+ *   tag - Mailchimp tag to apply (e.g., event slug or "homepage-signup")
+ */
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const formId = `signup-${tag}`;
+---
+
+<form
+  id={formId}
+  class="signup-form"
+  action="/api/subscribe"
+  method="POST"
+  data-tag={tag}
+>
+  <div class="signup-form__fields">
+    <label for={`${formId}-email`} class="sr-only">Email address</label>
+    <input
+      id={`${formId}-email`}
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="signup-form__input"
+      autocomplete="email"
+    />
+    <input type="hidden" name="tag" value={tag} />
+    <button type="submit" class="btn btn--primary signup-form__submit">
+      Subscribe
+    </button>
+  </div>
+  <p class="signup-form__status" aria-live="polite"></p>
+</form>
+
+<script>
+  // Progressive enhancement: intercept form submit for inline feedback
+  document.querySelectorAll('.signup-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formEl = e.target as HTMLFormElement;
+      const statusEl = formEl.querySelector('.signup-form__status') as HTMLElement;
+      const submitBtn = formEl.querySelector('.signup-form__submit') as HTMLButtonElement;
+      const emailInput = formEl.querySelector('input[type="email"]') as HTMLInputElement;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing...';
+      statusEl.textContent = '';
+      statusEl.className = 'signup-form__status';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value,
+            tag: formEl.dataset.tag,
+          }),
+        });
+
+        if (res.ok) {
+          statusEl.textContent = 'Thanks for subscribing!';
+          statusEl.classList.add('signup-form__status--success');
+          emailInput.value = '';
+        } else {
+          const data = await res.json();
+          statusEl.textContent = data.error ?? 'Something went wrong. Please try again.';
+          statusEl.classList.add('signup-form__status--error');
+        }
+      } catch {
+        statusEl.textContent = 'Network error. Please try again.';
+        statusEl.classList.add('signup-form__status--error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+      }
+    });
+  });
+</script>
+
+<style>
+  .signup-form__fields {
+    display: flex;
+    gap: var(--space-2);
+    max-width: 28rem;
+  }
+
+  .signup-form__input {
+    flex: 1;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    font-size: var(--text-base);
+    transition: border-color var(--transition-fast);
+  }
+
+  .signup-form__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .signup-form__status {
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+    min-height: 1.5em;
+  }
+
+  .signup-form__status--success {
+    color: #16a34a;
+  }
+
+  .signup-form__status--error {
+    color: #dc2626;
+  }
+</style>

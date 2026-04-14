@@ -1,0 +1,81 @@
+---
+import type { Event } from '../lib/types';
+
+interface Props {
+  event: Event;
+}
+
+const { event } = Astro.props;
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<a href={`/events/${event.slug}/`} class="event-card">
+  {event.heroImage && (
+    <img
+      src={event.heroImage}
+      alt={event.name}
+      class="event-card__image"
+      loading="lazy"
+    />
+  )}
+  <div class="event-card__body">
+    <time class="event-card__date text-muted">{formatDate(event.dateStart)}</time>
+    <h3 class="event-card__title">{event.name}</h3>
+    {event.tagline && <p class="event-card__tagline text-muted">{event.tagline}</p>}
+    {event.location && <p class="event-card__location text-muted">{event.location}</p>}
+  </div>
+</a>
+
+<style>
+  .event-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .event-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .event-card__image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .event-card__body {
+    padding: var(--space-4) var(--space-6);
+  }
+
+  .event-card__date {
+    display: block;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-1);
+  }
+
+  .event-card__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .event-card__tagline {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-1);
+  }
+
+  .event-card__location {
+    font-size: var(--text-sm);
+  }
+</style>

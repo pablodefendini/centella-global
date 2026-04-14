@@ -6,6 +6,16 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-14 — Mailchimp ↔ Attendees integration deferred
+
+### Attendees component shelved for v1
+
+We explored connecting the Notion Attendees database to Mailchimp signups — the idea being that the content team could tag a subscriber `feature-on-website` in Mailchimp and have them appear on the event page. Two approaches considered: (1) query Mailchimp directly at build time, (2) Mailchimp tag triggers a sync to Notion where the content team enriches the profile. The second was stronger because editorial control (photos, bios) is better in Notion than Mailchimp's merge fields.
+
+Decision: shelve the whole thing. Not enough value to justify the complexity at launch. The Attendees database schema stays in the types file as a future consideration, but no integration work, no sync, no Mailchimp-to-Notion pipeline. If the need becomes clear after a few events, we revisit — and the thinking is captured here so we don't start from scratch.
+
+---
+
 ## 2026-04-14 — Project inception and architecture decisions
 
 ### Why we're leaving Framer

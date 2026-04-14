@@ -1,0 +1,117 @@
+---
+import type { Sponsor } from '../lib/types';
+
+interface Props {
+  sponsors: Sponsor[];
+}
+
+const { sponsors } = Astro.props;
+
+// Group by tier
+const lead = sponsors.filter((s) => s.tier === 'Lead');
+const supporting = sponsors.filter((s) => s.tier === 'Supporting');
+const community = sponsors.filter((s) => s.tier === 'Community');
+---
+
+<div class="sponsor-grid">
+  {lead.length > 0 && (
+    <div class="sponsor-grid__tier">
+      <h3 class="sponsor-grid__tier-label text-muted">Lead Partners</h3>
+      <div class="sponsor-grid__logos sponsor-grid__logos--lead">
+        {lead.map((sponsor) => (
+          <a href={sponsor.url ?? '#'} class="sponsor-grid__item" target="_blank" rel="noopener noreferrer">
+            {sponsor.logo ? (
+              <img src={sponsor.logo} alt={sponsor.name} loading="lazy" />
+            ) : (
+              <span>{sponsor.name}</span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {supporting.length > 0 && (
+    <div class="sponsor-grid__tier">
+      <h3 class="sponsor-grid__tier-label text-muted">Supporting Partners</h3>
+      <div class="sponsor-grid__logos sponsor-grid__logos--supporting">
+        {supporting.map((sponsor) => (
+          <a href={sponsor.url ?? '#'} class="sponsor-grid__item" target="_blank" rel="noopener noreferrer">
+            {sponsor.logo ? (
+              <img src={sponsor.logo} alt={sponsor.name} loading="lazy" />
+            ) : (
+              <span>{sponsor.name}</span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {community.length > 0 && (
+    <div class="sponsor-grid__tier">
+      <h3 class="sponsor-grid__tier-label text-muted">Community Partners</h3>
+      <div class="sponsor-grid__logos sponsor-grid__logos--community">
+        {community.map((sponsor) => (
+          <a href={sponsor.url ?? '#'} class="sponsor-grid__item" target="_blank" rel="noopener noreferrer">
+            {sponsor.logo ? (
+              <img src={sponsor.logo} alt={sponsor.name} loading="lazy" />
+            ) : (
+              <span>{sponsor.name}</span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  .sponsor-grid__tier {
+    margin-bottom: var(--space-8);
+  }
+
+  .sponsor-grid__tier:last-child {
+    margin-bottom: 0;
+  }
+
+  .sponsor-grid__tier-label {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-4);
+  }
+
+  .sponsor-grid__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .sponsor-grid__item {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: opacity var(--transition-fast);
+  }
+
+  .sponsor-grid__item:hover {
+    opacity: 0.7;
+  }
+
+  .sponsor-grid__logos--lead img {
+    max-height: 60px;
+    width: auto;
+  }
+
+  .sponsor-grid__logos--supporting img {
+    max-height: 44px;
+    width: auto;
+  }
+
+  .sponsor-grid__logos--community img {
+    max-height: 32px;
+    width: auto;
+  }
+</style>

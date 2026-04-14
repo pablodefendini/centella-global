@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import MailchimpForm from '../../components/MailchimpForm.astro';
+import { getPublishedBlogPosts, getBlogPostBySlug, getPageContent } from '../../lib/notion';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedBlogPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getBlogPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect('/blog/');
+}
+
+const content = await getPageContent(post.id);
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<Base title={post.title} description={post.summary} ogImage={post.heroImage ?? undefined}>
+  <article class="blog-post">
+    <header class="blog-post__header section">
+      <div class="container container--narrow">
+        <time class="blog-post__date text-muted">{formatDate(post.publishedDate)}</time>
+        <h1 class="blog-post__title">{post.title}</h1>
+        {post.author && <p class="blog-post__author text-muted">By {post.author}</p>}
+      </div>
+    </header>
+
+    {post.heroImage && (
+      <div class="container container--narrow">
+        <img
+          src={post.heroImage}
+          alt={post.title}
+          class="blog-post__hero"
+          loading="eager"
+        />
+      </div>
+    )}
+
+    <div class="blog-post__body section">
+      <div class="container container--narrow">
+        <div class="notion-content" set:html={content.html} />
+      </div>
+    </div>
+
+    <section class="blog-post__signup section">
+      <div class="container container--narrow">
+        <h2>Stay connected</h2>
+        <p class="text-muted">Get updates from Centella in your inbox.</p>
+        <MailchimpForm tag="blog-signup" />
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .blog-post__date {
+    display: block;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .blog-post__title {
+    margin-bottom: var(--space-3);
+  }
+
+  .blog-post__author {
+    font-size: var(--text-sm);
+  }
+
+  .blog-post__hero {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .blog-post__signup h2 {
+    margin-bottom: var(--space-3);
+  }
+</style>

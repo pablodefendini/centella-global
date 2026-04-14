@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import EventCard from '../components/EventCard.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+import { getFeaturedEvents } from '../lib/notion';
+
+const events = await getFeaturedEvents();
+---
+
+<Base title="Home">
+  <!-- Hero -->
+  <section class="hero section">
+    <div class="container">
+      <h1 class="hero__headline">Building the next generation of democratic infrastructure.</h1>
+      <p class="hero__sub">
+        Centella works with political leaders and movement builders across the
+        Global South — re-energizing democratic movements, building civic tech,
+        and investing in political infrastructure that lasts.
+      </p>
+      <div class="hero__signup">
+        <p>Stay connected with our work.</p>
+        <MailchimpForm tag="homepage-signup" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Events -->
+  {events.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <h2>Upcoming Events</h2>
+        <div class="grid grid--2" style="margin-top: var(--space-8);">
+          {events.map((event) => (
+            <EventCard event={event} />
+          ))}
+        </div>
+        <p style="margin-top: var(--space-8);">
+          <a href="/events/">View all events &rarr;</a>
+        </p>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero__headline {
+    max-width: 36rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__sub {
+    max-width: 40rem;
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-8);
+  }
+
+  .hero__signup p {
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+</style>
