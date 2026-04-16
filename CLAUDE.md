@@ -16,7 +16,7 @@ Always refer to this file when generating or modifying any UI component.
 
 ## Hard constraints
 
-- **Static-first.** Every page is pre-rendered HTML. No client-side data fetching from Notion. The only runtime code is the Mailchimp serverless function.
+- **Static-first.** Every page is pre-rendered HTML. No client-side data fetching from Notion. Runtime code is limited to: (1) the Mailchimp serverless function, and (2) a small **inline** script on the homepage hero that decides whether to load background video (Network Information / `saveData` / `prefers-reduced-motion`). No extra bundles, no hydration framework for that behavior.
 - **Notion is the CMS.** The content team edits in Notion. They should never need to touch code, open a terminal, or learn a new tool. If a workflow requires anything beyond "edit in Notion, trigger deploy," it's wrong.
 - **Mailchimp API key stays off the client.** All Mailchimp interactions go through the serverless function in `api/subscribe.ts`.
 - **Mobile-first, Global South context.** Many visitors are on mid-range phones with variable connectivity. Lighthouse mobile performance ≥ 90. No heavy JS bundles, no client-side rendering for content.
@@ -38,7 +38,7 @@ src/
 ├── components/       # Nav, Footer, MailchimpForm, EventCard, SpeakerCard,
 │                     # AttendeeCard, ScheduleBlock, SponsorGrid, BlogPostCard
 ├── pages/
-│   ├── index.astro           # Homepage
+│   ├── index.astro           # Minimal homepage: nav, hero (poster + optional video), latest event from Notion, footer
 │   ├── events/
 │   │   ├── index.astro       # Events listing
 │   │   └── [slug].astro      # Dynamic event pages
@@ -54,6 +54,12 @@ src/
 
 api/
 └── subscribe.ts              # Vercel serverless function for Mailchimp
+
+public/
+└── media/hero/               # Homepage hero: WebP poster + 540p/720p MP4s (regenerate via npm run media:hero)
+
+scripts/
+└── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
 
 docs/
 ├── PRD.md                    # Product requirements
@@ -83,6 +89,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 ## Patterns
 
+- **Homepage is intentionally minimal** — In-page nav (logo + Home / Events / Blog), hero headline, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), and footer links. `Base` is called with `hideChrome` so global Nav/Footer are not duplicated.
+- **Hero media** — Decorative background: eager WebP poster (`public/media/hero/centella-hero-bg-poster.webp`) for first paint; 540p / 720p MP4 variants committed to the repo. Do not commit a full-size master MP4; regenerate outputs with `npm run media:hero` from a local master file.
 - **Slugs are manually set in Notion**, not auto-generated. This gives the content team control over URLs.
 - **Event visibility is controlled by Status property.** Only `Published` events render. `Draft` and `Archived` are filtered out at build time.
 - **Past events have a dedicated archive page** at `/events/past`, separate from the main events listing.
@@ -95,6 +103,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 npm run dev          # Astro dev server (fetches from Notion on each page load)
 npm run build        # Production build (fetches all Notion data, generates static site)
 npm run preview      # Preview production build locally
+npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p/720p MP4s (needs ffmpeg + cwebp)
 ```
 
 ## Development diary

@@ -6,6 +6,32 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-16 — PRD §11: product-level video and progressive enhancement
+
+### Cross-cutting policy, not homepage-only
+
+`docs/PRD.md` v1.3 adds **§11 Media, video, and progressive enhancement policy**: poster-first ambient video, encoded resolution ladder, no full masters in git, reproducible `ffmpeg`/WebP pipeline, `preload` discipline, and client gates (`prefers-reduced-motion`, `saveData`, `effectiveType` for slow classifications). **§8** now states the only deliberate runtime JS beyond Mailchimp is inline scripts that implement this section. Deviations require `MEMORY.md` plus a PRD version note.
+
+---
+
+## 2026-04-16 — Homepage shell, hero video policy, and asset pipeline
+
+### Minimal homepage and latest-event logic
+
+The homepage is a thin marketing shell: custom header/footer links only (via `hideChrome` on `Base`), hero, one “Latest event” row powered by `getHomepageLatestEvent()` (upcoming published event first, else most recent past published), and no other sections. Full-site Nav/Footer components are not rendered on that page to avoid duplicate chrome.
+
+### Hero background: static-first, video as enhancement
+
+Hero uses a committed **WebP poster** as the always-on background layer (`fetchpriority="high"`). **H.264 variants** live at 540p (narrow viewports) and 720p (wider); they are small enough to ship in `public/media/hero/` (~1.5 MB combined vs a single ~7 MB source). The **full-size source MP4 is not kept in git**; editors regenerate outputs with `scripts/optimize-hero-media.sh` / `npm run media:hero -- <path>` after installing `ffmpeg` and `cwebp` (e.g. Homebrew).
+
+The `<video>` element ships with **`preload="none"`** and **no `src` in HTML**. An **inline** script (no Astro island, no extra client bundle) assigns `src` and calls `play()` only when `prefers-reduced-motion` is not reduced and `navigator.connection` (when present) does not indicate `saveData` or `slow-2g` / `2g` / `3g`. Otherwise visitors see the poster only — no MP4 download. This is an explicit exception to the “zero JS” ideal for the rest of the site; it is narrowly scoped and justified for Global South bandwidth.
+
+### PRD alignment entry unchanged in substance
+
+The same-day PRD lock-in (Notion deploy trigger, multi-author blog, `/events/past`) remains authoritative; this entry documents **implementation** choices that followed.
+
+---
+
 ## 2026-04-16 — PRD alignment decisions locked
 
 ### Manual Notion deploy trigger selected for v1

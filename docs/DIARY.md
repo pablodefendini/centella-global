@@ -6,6 +6,16 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 5 — April 16, 2026: A homepage that stops selling and a hero that respects the wire
+
+I stripped the homepage down to what I actually want people to see right now: navigation with the logo and real links, one hero line about what Centella does, a single “latest event” pulled from Notion with a straight link to the event page, and the same links in the footer. No manifesto sections, no extra components, no duplicate global chrome — `hideChrome` on the layout so I'm not rendering Nav and Footer twice.
+
+The hero had picked up a full-screen background video, which looked good on my connection but was the wrong default for a lot of the audience I care about. So I treated the video as optional: there's always a WebP poster behind the headline (fast first paint), and the MP4 only loads after a tiny inline script checks `prefers-reduced-motion` and, when the browser exposes it, `navigator.connection` — if you're on save-data or a tagged slow connection, you never pay for the bytes. I re-encoded what we ship into 540p and 720p variants and dropped the seven-megabyte master from the repo; if I need to re-cut the loop, I run `npm run media:hero` against a file on disk and commit the new outputs.
+
+I updated `CLAUDE.md`, `docs/MEMORY.md`, and this diary so the next session (human or model) doesn't have to reverse-engineer that from the diff.
+
+---
+
 ## Entry 4 — April 16, 2026: PRD consistency pass and decision lock-in
 
 I did a full consistency pass across the PRD and aligned the rest of the repo docs to match it. The big shift is that deploy triggering is now explicitly Notion-only for v1: manual "Deploy now" from Notion automation, with Slack reserved for notifications instead of control.

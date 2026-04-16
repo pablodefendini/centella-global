@@ -1,6 +1,6 @@
 # Centella Global Website — Product Requirements Document
 
-**Version:** 1.2  
+**Version:** 1.3  
 **Author:** Pablo Defendini  
 **Date:** April 16, 2026  
 **Status:** Draft
@@ -153,7 +153,7 @@ Goal: let non-developers publish updates from Notion without opening a terminal.
 | Slack integration | Notifications only (deploy status/alerts), not trigger control |
 
 **Build pipeline:** `notion.ts` fetches CMS data at build time -> Astro generates static HTML -> Vercel deploys.  
-**Runtime code:** only the Mailchimp subscribe function.
+**Runtime code:** Mailchimp subscribe function, plus **narrow exceptions** for product-approved **inline scripts** that implement [§11](#11-media-video-and-progressive-enhancement-policy) (gating only: no Notion access, no third-party beacons).
 
 ## 9. Delivery Plan
 
@@ -175,3 +175,58 @@ Goal: let non-developers publish updates from Notion without opening a terminal.
 - [ ] Lighthouse mobile performance >= 90 on key templates.
 - [ ] Event and blog social metadata validated on representative pages.
 - [ ] RSS endpoint validates and includes latest published posts.
+- [ ] Any page that uses autoplay or ambient video complies with [§11](#11-media-video-and-progressive-enhancement-policy) (poster-first, encoded ladder, connection/motion gates, documented regenerate path).
+
+## 11. Media, video, and progressive enhancement policy
+
+This section is **site-wide product policy**, not implementation detail. Every surface that uses video (homepage hero today; event headers, blog heroes, campaign landings tomorrow) must satisfy it unless the PRD is explicitly amended.
+
+### 11.1 Design intent
+
+| # | Rule | Rationale |
+|---|------|-----------|
+| 1 | **Meaning never depends on motion.** Headlines, CTAs, dates, and navigation must be fully usable from HTML, typography, and **static** imagery alone. | Visitors on save-data, slow networks, reduced motion, or without JS must not miss core content. |
+| 2 | **Video is progressive enhancement.** Autoplay loops, ambient clips, and decorative backgrounds sit **on top of** a static baseline, not in place of it. | Aligns with Global South connectivity and Goal #3 (mobile performance). |
+| 3 | **Smallest shippable master.** Source masters used for encoding may live **outside** the repo or in private storage; the **git-tracked site** ships only optimized outputs (see §11.3). | Keeps clones and CI fast; avoids accidental multi‑MB binaries on `main`. |
+
+### 11.2 First paint and loading behavior
+
+| # | Requirement | Acceptance criteria |
+|---|-------------|---------------------|
+| A | **Poster / still always ships** | A WebP (preferred) or JPEG poster of a representative frame is committed and referenced from HTML so the hero/background region has a meaningful paint **before** any video bytes. |
+| B | **Eager, prioritized still** | The primary poster image uses appropriate priority hints (e.g. `fetchpriority="high"`) when it is above the fold, without blocking interactivity. |
+| C | **No eager full video by default** | Default markup uses `preload="none"` or `metadata` and **does not** include a video `src` / `<source>` that would trigger a full download before product policy runs (see §11.4). First paint must not require the MP4. |
+
+### 11.3 Encoding and asset ladder
+
+| # | Requirement | Acceptance criteria |
+|---|-------------|---------------------|
+| D | **Resolution ladder** | At minimum, provide a **narrow-viewport** encode (e.g. ≤540p height) and a **default** encode (e.g. ≤720p height) chosen by breakpoint or device heuristic. Additional steps (1080p, WebM/AV1) are optional if they measurably improve quality per byte. |
+| E | **Sensible codecs for web** | H.264 (yuv420p) in MP4 for broad compatibility; `faststart` / moov-at-front for streaming starts. Secondary codecs (WebM, AV1) are optional policy extensions, not v1 blockers. |
+| F | **Silent decorative loops** | No audio track on ambient/background loops unless the product explicitly requires sound; `muted` plus no track reduces bytes and autoplay restrictions. |
+| G | **Reproducible pipeline** | A documented script or Makefile target (e.g. `npm run media:hero`) regenerates poster + ladder from a named source file using **ffmpeg** (and **cwebp** or equivalent for WebP). New hero loops are not hand-tweaked one-offs without a repeatable command. |
+
+**Guidance (not a hard cap):** combined weight of all committed encodes + poster for a single ambient loop should stay **under ~2 MB** unless there is a written editorial exception in this PRD or an appendix. If exceeded, justify in `docs/MEMORY.md` and reference the exception from the PR or this PRD’s version notes.
+
+### 11.4 Client-side gating (when JavaScript runs)
+
+Policy applies whenever optional video is offered. The page may ship a **small inline script** (no Astro island, no extra client bundle for this purpose alone) that:
+
+| Condition | Behavior |
+|-----------|----------|
+| `prefers-reduced-motion: reduce` | **Do not** assign a video URL or call `play()`. Still image only. |
+| `navigator.connection.saveData === true` (when API present) | **Do not** load video. |
+| `navigator.connection.effectiveType` in `slow-2g`, `2g`, or `3g` (when API present) | **Do not** load video. |
+| `4g`, `ethernet`, unknown / API missing | **May** load and play the appropriate ladder rung after still has painted. |
+
+**Accessibility:** decorative video stays `aria-hidden` or equivalent; meaningful alternatives are never conveyed only through video.
+
+### 11.5 Scope and exceptions
+
+- **In scope:** Autoplay, muted, looped, or ambient background video anywhere on the site.  
+- **Out of v1 scope:** Full adaptive streaming (HLS/DASH), DRM, long-form narrative video with user-visible controls (treat as separate feature with its own PRD section when needed).  
+- **Exceptions:** Any deviation from §11.1–§11.4 requires a dated entry in `docs/MEMORY.md` and a one-line pointer in this PRD’s version notes.
+
+### 11.6 Version notes (1.3)
+
+Introduced §11 to codify homepage-derived practice as **cross-cutting product policy** for video and motion progressive enhancement. Updated §8 runtime description to allow the narrow inline gating exception described here.
