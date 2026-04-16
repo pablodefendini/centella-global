@@ -66,7 +66,7 @@ docs/
 Five Notion databases:
 
 - **Events** — core content type. Has Status (Draft/Published/Archived), Featured flag, date range, slug, hero image, registration URL, Mailchimp tag. Page body contains description and schedule. Relations to Speakers, Attendees, Sponsors.
-- **Blog Posts** — Title, Slug, Status, Published Date, Author, Tags, Summary, Hero Image. Page body is the post content.
+- **Blog Posts** — Title, Slug, Status, Published Date, Authors (multi-author), Tags, Summary, Hero Image. Page body is the post content.
 - **Speakers** — Name, Title/Role, Organization, Photo, Bio.
 - **Attendees** — Name, Title/Role, Organization, Photo, Bio.
 - **Sponsors** — Name, Logo, URL, Tier (Lead/Supporting/Community).
@@ -85,6 +85,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 - **Slugs are manually set in Notion**, not auto-generated. This gives the content team control over URLs.
 - **Event visibility is controlled by Status property.** Only `Published` events render. `Draft` and `Archived` are filtered out at build time.
+- **Past events have a dedicated archive page** at `/events/past`, separate from the main events listing.
 - **Mailchimp tags match the event's `Mailchimp Tag` property.** The homepage form uses a generic tag (e.g., `homepage-signup`). Event pages pass the event-specific tag.
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 
@@ -104,5 +105,4 @@ Maintained in `docs/DIARY.md`. Update every session or after any substantial cha
 
 - **Mailchimp audience ID** — which list/audience do forms feed into?
 - **Notion workspace + database IDs** — needed to configure the API client
-- **Slack channel for deploy hook** — where should the deploy button live?
-- **Blog post author handling** — single author for now, but should the schema support multiple?
+- **Slack channel for deploy notifications** — where should deploy status updates be posted?

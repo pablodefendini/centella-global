@@ -6,6 +6,16 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 4 — April 16, 2026: PRD consistency pass and decision lock-in
+
+I did a full consistency pass across the PRD and aligned the rest of the repo docs to match it. The big shift is that deploy triggering is now explicitly Notion-only for v1: manual "Deploy now" from Notion automation, with Slack reserved for notifications instead of control.
+
+I also locked two scope decisions that were previously open: (1) blog schema will support multiple authors, and (2) we're adding a dedicated past events archive at `/events/past`. Those decisions are now reflected in the requirements and no longer treated as open questions.
+
+Finally, I updated `CLAUDE.md` and `MEMORY.md` so they stop contradicting the PRD. That should reduce drift going forward, especially when we prompt against docs as source of truth.
+
+---
+
 ## Entry 3 — April 14, 2026: Writing the design spec the machine will actually read
 
 I added a `design.md` file to the root of the repo today. On the surface it looks like a design system doc — colors, type scale, spacing, components, the usual. But the reason it exists is a little more specific than that: it's a spec written for Claude Code to read, not for a human designer to skim.
@@ -32,7 +42,7 @@ One thing I'm keeping in mind: these databases are in my personal Notion workspa
 
 The Notion file URL expiration issue is worth flagging here too. When you upload an image to a Notion database (say, a speaker photo), the URL Notion gives you through the API is temporary — it expires after an hour. For a static site that rebuilds on deploy, that's fine: we fetch the URLs at build time and they're valid for the life of that build. But it means we can't cache images across builds, and if a build takes unusually long, URLs could expire mid-build. Something to watch for, but not a problem yet.
 
-What's next: get Mailchimp wired up, deploy to Vercel, and set up the deploy hooks so the content team can trigger rebuilds from Slack and Notion. Then we start putting real content in.
+What's next: get Mailchimp wired up, deploy to Vercel, and set up the deploy workflow so the content team can trigger rebuilds directly from Notion. Then we start putting real content in.
 
 ---
 
@@ -52,6 +62,6 @@ The interesting decision was around event schedules. We could build a separate N
 
 We also added a blog section and an Attendees component. The blog gives Centella a place to publish thinking and updates beyond events — something the site was missing. Attendees are distinct from speakers: they're the notable people in the room, the "who's going" social proof that makes events feel worth attending. They get their own Notion database with the same shape as speakers.
 
-For deploys, we're setting up manual triggers in both Slack and Notion — the team splits between those two tools, and nobody should need terminal access to publish a page. Both hit the same Vercel deploy hook.
+For deploys, we're setting up a manual Notion-triggered workflow, with Slack reserved for deployment notifications. Nobody should need terminal access to publish a page.
 
 What's next: setting up the Notion databases, building the data-fetching layer, and getting the first event page rendering from real content. The scaffolding is done — now we build.

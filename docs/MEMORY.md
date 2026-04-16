@@ -6,6 +6,22 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-16 — PRD alignment decisions locked
+
+### Manual Notion deploy trigger selected for v1
+
+We finalized the publishing trigger model: deploys are triggered from Notion automation only (manual "Deploy now" flow for v1). Slack is reserved for deploy notifications and alerts, not trigger control.
+
+### Multi-author blog schema confirmed
+
+Blog schema direction is now explicit: support multiple authors. This is no longer an open question and should be reflected in Notion schema and type decisions going forward.
+
+### Dedicated past events archive confirmed
+
+We will include a dedicated archive page at `/events/past`, rather than relying only on the general events listing for historical events.
+
+---
+
 ## 2026-04-14 — Notion workspace: personal now, corporate later
 
 ### CMS databases are in Pablo's personal Notion for beta testing
@@ -54,11 +70,11 @@ Both would work at free tier. Vercel's serverless functions live in `api/` at th
 
 The site rebuilds when someone triggers a deploy, not on every request. Content changes maybe a few times a week at most. SSG means the site loads from CDN with no runtime dependency on Notion. If Notion goes down, the site stays up.
 
-The rebuild is triggered manually via deploy hooks in both Slack and Notion. Automatic rebuilds via Notion webhooks are a P1 — not needed yet because the content cadence is low enough that manual triggers are fine.
+Historical note: at project inception we planned manual deploy hooks in both Slack and Notion. This is superseded by the 2026-04-16 decision: Notion publish trigger for deploys, Slack for notifications only.
 
-### Deploy hooks in both Slack and Notion
+### Deploy hooks in both Slack and Notion (superseded)
 
-The content team splits between these two tools. Slack hook = a webhook URL wired to a Slack workflow or a simple slash command. Notion hook = either a button property that triggers an automation, or a Notion automation that fires on a specific database change. Both hit the same Vercel deploy hook URL.
+This was an earlier approach. Superseded on 2026-04-16: v1 deploy triggering is Notion automation only, with Slack used for notifications.
 
 ### Schedule as page body content, not a separate database
 
@@ -72,7 +88,7 @@ Attendees get their own Notion database with the same shape as Speakers — Name
 
 ### Blog section added to scope
 
-Originally listed as a non-goal ("blog or news section"), but reconsidered. Centella needs a place to publish thinking and updates beyond events. Blog Posts get their own Notion database (Title, Slug, Status, Published Date, Author, Tags, Summary, Hero Image) and the same build-time fetching pattern as events.
+Originally listed as a non-goal ("blog or news section"), but reconsidered. Centella needs a place to publish thinking and updates beyond events. Blog Posts get their own Notion database (Title, Slug, Status, Published Date, Authors, Tags, Summary, Hero Image) and the same build-time fetching pattern as events.
 
 ### Mailchimp tagging strategy
 
@@ -88,7 +104,5 @@ We're writing our own block-to-HTML mapper rather than using `@notion-render/cli
 
 - **Mailchimp audience ID**: which list/audience do the forms feed into? Blocks API integration.
 - **Notion workspace + database IDs**: needed to configure `notion.ts`. Pablo needs to set up or share the databases.
-- **Slack deploy channel**: which channel gets the deploy button?
-- **Notion deploy trigger mechanism**: button property vs. automation vs. something else.
-- **Blog author model**: single author field for now, but should we design the schema for multiple authors from the start?
+- **Slack notification channel/workflow**: where should deploy status notifications be posted?
 - **Image hosting strategy**: Notion file URLs expire. We may need to download and cache images at build time, or use a proxy. Needs research.

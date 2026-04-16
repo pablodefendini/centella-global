@@ -1,126 +1,143 @@
 # Centella Global Website — Product Requirements Document
 
-**Version:** 1.0
-**Author:** Pablo Defendini
-**Date:** April 14, 2026
+**Version:** 1.2  
+**Author:** Pablo Defendini  
+**Date:** April 16, 2026  
 **Status:** Draft
 
 ---
 
 ## 1. Problem Statement
 
-Centella's current website is on Framer, and it's creating friction in two places that matter: capturing email addresses for Mailchimp, and spinning up event mini sites quickly. The content team edits in Notion daily, but Framer doesn't connect to that workflow — every event page is a manual build. Centella runs at least four events per year, each needing its own page with speakers, schedule, registration, and sponsors. The current setup is too slow and too disconnected from how the team already works.
+Centella's current Framer site creates operational friction in two critical workflows:
+
+1. Capturing email signups in Mailchimp with reliable source attribution.
+2. Launching event mini-sites quickly and consistently.
+
+The content team already works in Notion, but the website pipeline is disconnected from that workflow. Event pages require manual assembly, which slows publishing and introduces avoidable inconsistency. Centella runs at least four events per year, each needing structured content (speakers, schedule, registration, sponsors), so the current process does not scale.
 
 ## 2. Goals
 
-| # | Goal | Measure |
-|---|------|---------|
-| 1 | Content team can publish a new event page by editing Notion and triggering a deploy | Event page live within 15 minutes of Notion update + deploy trigger |
-| 2 | Every email signup is captured in Mailchimp with a tag indicating source page/event | 100% of form submissions arrive in Mailchimp with correct tag |
-| 3 | Site is mobile-first, fast on Global South connections (variable connectivity, mid-range devices) | Lighthouse performance score ≥ 90 on mobile |
-| 4 | Event pages have a consistent, professional structure without manual layout work | All event pages render from same template with no per-event code changes |
-| 5 | Blog posts can be published from Notion with minimal friction | New post live within 15 minutes of Notion update + deploy trigger |
+| # | Goal | Success Measure |
+|---|------|-----------------|
+| 1 | Publish events from Notion without code changes | Event page live within 15 minutes of Notion update + Notion publish trigger |
+| 2 | Capture every signup in Mailchimp with correct source tag | 100% of tested submissions stored with expected tag |
+| 3 | Deliver fast mobile performance for Global South connectivity realities | Lighthouse mobile performance score >= 90 on production build |
+| 4 | Enforce consistent event page structure | All published events use one template with no per-event code edits |
+| 5 | Publish blog posts from Notion with minimal operational friction | Blog post live within 15 minutes of Notion update + Notion publish trigger |
 
-## 3. Non-Goals
+## 3. Non-Goals (for v1)
 
 | # | Non-Goal | Rationale |
 |---|----------|-----------|
-| 1 | Final visual design or branding | We're laying foundations first — design layer comes after the structure works |
-| 2 | Authentication or member areas | No user accounts needed; the site is public |
-| 3 | Payment processing | Events use external registration (Eventbrite, Lu.ma, etc.) |
-| 4 | CMS admin interface | Notion IS the admin interface — no need to build another one |
-| 5 | Real-time content updates | Static site with manual deploy triggers is fast enough for this content cadence |
-| 6 | Multi-language support | English-first for now; i18n is a future consideration |
-| 7 | Search functionality | Site is small enough that nav + event listing covers discoverability |
+| 1 | Final visual branding rollout | Foundation and content pipeline come first |
+| 2 | Authentication or member areas | Site is fully public |
+| 3 | Payment processing | Registration occurs on external platforms |
+| 4 | Custom CMS UI | Notion is the CMS interface |
+| 5 | Real-time content sync | Manual Notion publish triggers are sufficient for current cadence |
+| 6 | Multi-language implementation | English-first launch; i18n can be layered later |
+| 7 | On-site search | Site size is small enough for nav + listings |
 
-## 4. User Personas & Stories
+## 4. Users and Key Stories
 
-### Content Editor (Centella team member)
+### 4.1 Content Editor (Centella team)
 
-Someone on the Centella team who needs to publish event pages and blog posts. They work in Notion daily. They are not a developer and should never need to touch code.
+- As a content editor, I can create a new event in Notion and publish it with the Notion publish trigger.
+- As a content editor, I can author blog posts in Notion with no code workflow.
+- As a content editor, I can manage speakers/sponsors/schedule in Notion and see them rendered correctly.
+- As a content editor, I can trigger rebuilds from Notion automation without CLI access.
 
-- As a content editor, I want to create a new event by filling in a Notion database entry so that the event page appears on the site after I trigger a deploy.
-- As a content editor, I want to write blog posts in Notion so that they publish to the site without any code changes.
-- As a content editor, I want to add speakers, sponsors, and schedule details in Notion so that the event page renders them automatically.
-- As a content editor, I want to trigger a site rebuild from Slack or Notion so that I can publish updates without asking a developer.
+### 4.2 Site Visitor
 
-### Site Visitor (potential event attendee, mailing list subscriber)
+- As a visitor, I can discover upcoming events from the homepage.
+- As a visitor, I can view complete event details on one event page.
+- As a visitor, I can subscribe from homepage or event pages.
+- As a visitor, I can click through to register on external event platforms.
+- As a visitor, I can read Centella blog content.
 
-Someone interested in Centella's work — a political leader, movement builder, funder, journalist, or researcher. They're visiting to learn about an event or to stay connected.
+### 4.3 Site Maintainer
 
-- As a visitor, I want to see upcoming events on the homepage so that I know what's happening.
-- As a visitor, I want to read an event's full details — description, speakers, schedule, sponsors — on a single page.
-- As a visitor, I want to sign up for Centella's mailing list from the homepage or an event page.
-- As a visitor, I want to register for an event by clicking through to the registration platform.
-- As a visitor, I want to read blog posts about Centella's work and thinking.
-
-### Pablo (site maintainer / developer)
-
-Maintains the site, adds features, and troubleshoots. Needs a codebase that's clean, well-documented, and doesn't require babysitting.
-
-- As the maintainer, I want the site to build from Notion data at deploy time so there's no runtime dependency on external APIs.
-- As the maintainer, I want deploy hooks that I can trigger from Slack or Notion so rebuilds don't require CLI access.
-- As the maintainer, I want a single serverless function for Mailchimp so the API key stays off the client.
+- As maintainer, I can rely on build-time Notion fetches (no runtime CMS dependency).
+- As maintainer, I can operate deploy hooks through Notion automation while using Slack for deploy notifications.
+- As maintainer, I keep Mailchimp credentials server-side only.
 
 ## 5. Requirements
 
-### Must-Have (P0)
+### 5.1 Must-Have for Launch (P0)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| P0-1 | Homepage with email capture form and featured events | Form submits to Mailchimp via serverless function; featured events pulled from Notion |
-| P0-2 | Event page template rendering from Notion | All event database fields render correctly; page body (description, schedule) renders as HTML |
-| P0-3 | Dynamic event routing (`/events/[slug]`) | Each published event gets a unique URL based on its slug property |
-| P0-4 | Events listing page (`/events/`) | Shows all published events, sorted by date |
-| P0-5 | Mailchimp integration with per-page tagging | Serverless function accepts email + tag, adds subscriber to list with tag applied |
-| P0-6 | Notion as CMS for events | Events database with all required fields; data fetched at build time |
-| P0-7 | Blog section with Notion as CMS | Blog posts database; listing page at `/blog/`; individual post pages at `/blog/[slug]` |
-| P0-8 | Speaker, Attendee, and Sponsor components | Render from related Notion databases; display on event pages |
-| P0-9 | Mobile-first base layout | Nav, footer, clean typography; designed for mobile, scales up to desktop |
-| P0-10 | Deploy hooks (Slack + Notion) | Manual deploy button in Slack channel; deploy trigger accessible from Notion |
-| P0-11 | Vercel hosting | Site deployed on Vercel; serverless functions work |
+| P0-1 | Homepage with email form + featured events | Homepage renders featured published events from Notion; form posts to `/api/subscribe`; successful submission returns success state |
+| P0-2 | Event page template from Notion | `/events/[slug]` renders all required fields; page body content renders from Notion blocks without runtime fetch |
+| P0-3 | Dynamic event routing | Each published event with valid slug is generated at unique URL |
+| P0-4 | Events listing page | `/events/` lists all published events sorted by date |
+| P0-5 | Mailchimp integration + tagging | API accepts `email` and optional `tag`; Mailchimp subscriber is created/updated and tag applied |
+| P0-6 | Notion events CMS model | Events DB fields and relations are mapped and validated in build pipeline |
+| P0-7 | Blog from Notion | `/blog/` lists published posts; `/blog/[slug]` pages are generated from Notion |
+| P0-8 | Related entities rendering | Speaker and Sponsor components render related records on event pages |
+| P0-9 | Mobile-first base layout | Core pages are responsive on mobile and desktop breakpoints |
+| P0-10 | Deploy hook operations | Notion automation trigger invokes Vercel deploy hook successfully for editorial publishing |
+| P0-11 | Vercel deployment | Production build deploys successfully with functional serverless endpoint |
+| P0-12 | Per-page social metadata | Event and blog pages provide unique title/description/image metadata |
+| P0-13 | Blog RSS feed | Valid feed served at `/blog/rss.xml` |
+| P0-14 | Event status indicators | Event UI distinguishes upcoming, ongoing, and past states |
+| P0-15 | Dedicated past events archive page | `/events/past` lists only past published events, sorted most recent first |
 
-| P0-12 | Open Graph / social meta tags per page | Event and blog pages generate unique OG title, description, and image |
-| P0-13 | RSS feed for blog | Valid RSS feed at `/blog/rss.xml` |
-| P0-14 | Event status indicators | Visual distinction between upcoming, ongoing, and past events |
-
-### Future Considerations (P2)
+### 5.2 Deferred / Future (P2)
 
 | ID | Requirement | Design Consideration |
 |----|-------------|---------------------|
-| P2-1 | Multi-language support (EN/ES) | Use Astro's i18n routing from the start if possible; at minimum, don't hardcode English strings |
-| P2-2 | Event sub-pages (separate pages for schedule, speakers) | Keep slug structure extensible: `/events/[slug]/speakers` should be possible later |
-| P2-3 | Analytics integration | Leave room for a script tag in the base layout |
-| P2-4 | Newsletter archive | Blog infrastructure could double as newsletter archive later |
+| P2-1 | Multi-language support (EN/ES) | Keep routing/content model compatible with future i18n |
+| P2-2 | Event sub-pages | Preserve URL structure extensibility (e.g. `/events/[slug]/speakers`) |
+| P2-3 | Analytics | Reserve layout slot/integration point for tracking scripts |
+| P2-4 | Newsletter archive | Reuse blog infrastructure where practical |
+| P2-5 | Attendee directory experience | Revisit Attendees display depth after launch usage data |
+| P2-6 | Notion webhook-based auto deploys | Evaluate replacing manual triggers once content cadence increases |
 
 ## 6. Success Metrics
 
-### Leading Indicators (days to weeks)
+### 6.1 Leading Indicators (days to weeks)
 
-| Metric | Target | Stretch | Measurement |
-|--------|--------|---------|-------------|
-| Time to publish new event page | < 15 min from Notion edit to live | < 5 min | Stopwatch test |
-| Lighthouse mobile performance | ≥ 90 | ≥ 95 | Lighthouse CI |
-| Mailchimp tag accuracy | 100% correct tags | — | Manual audit of first 20 signups |
+| Metric | Target | Stretch | Measurement Method |
+|--------|--------|---------|--------------------|
+| Time to publish new event page | <= 15 minutes | <= 5 minutes | Timed editorial workflow test |
+| Lighthouse mobile performance | >= 90 | >= 95 | Lighthouse run on production build |
+| Mailchimp tag accuracy | 100% in sample | - | Manual audit of first 20 submissions |
 
-### Lagging Indicators (weeks to months)
+### 6.2 Lagging Indicators (weeks to months)
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Email signups per event | Baseline from first two events | Mailchimp dashboard |
-| Event page bounce rate | < 50% | Analytics (once added) |
-| Content team satisfaction | "This is easier than Framer" | Ask them |
+| Metric | Target | Measurement Method |
+|--------|--------|--------------------|
+| Email signups per event | Establish baseline from first two events | Mailchimp reporting |
+| Event page bounce rate | < 50% once analytics enabled | Analytics dashboard |
+| Content team confidence | "Easier than Framer" qualitative signal | Structured team feedback check-in |
 
-## 7. Open Questions
+## 7. Open Items
 
-| # | Question | Owner | Blocking? |
-|---|----------|-------|-----------|
-| 1 | Which Mailchimp list/audience should the forms feed into? | Pablo | Yes — needed for API integration |
-| 2 | What's the Notion workspace ID and which databases to use? | Pablo | Yes — needed for API integration |
-| 3 | Should blog posts support multiple authors? | Pablo | No — can add later |
-| 4 | Do we need a separate "Past Events" archive page, or does the events listing suffice? | Pablo | No |
-| 5 | What's the deploy notification channel in Slack? | Pablo | Yes — needed for deploy hook setup |
-| 6 | How should the Notion deploy trigger work? (Button property? Automation?) | Pablo | No — multiple options available |
+### 7.1 Blocking Decisions (must resolve before launch)
+
+| # | Decision | Owner | Needed By | Status |
+|---|----------|-------|-----------|--------|
+| 1 | Confirm Mailchimp audience/list ID | Pablo | Before production API testing | Open |
+| 2 | Confirm production Notion workspace + database IDs | Pablo | Before production build config | Open |
+| 3 | Confirm Slack channel/workflow for deploy notifications | Pablo | Before operational handoff | Open |
+
+### 7.2 Non-Blocking Open Decisions
+
+None currently.
+
+### 7.3 Selected Trigger Policy (v1)
+
+Goal: let non-developers publish updates from Notion without opening a terminal.
+
+| Option | How it works | Pros | Cons | Recommendation |
+|---|---|---|---|---|
+| A. Manual "Deploy now" button in Notion | Editor clicks a button/automation that calls the Vercel deploy hook | Simple mental model, explicit control, low accidental deploy risk | Requires one manual click after edits | **Selected for v1** |
+| B. Automatic deploy on database change | Notion automation triggers deploy whenever selected properties change | Fastest publishing loop, minimal manual steps | Can trigger many deploys, noisy during active editing, harder guardrails | Consider for v2 |
+| C. Hybrid (manual for drafts, automatic on publish) | Deploy triggers automatically only when `Status` changes to `Published`; manual trigger still available | Balances control and speed | Slightly more setup complexity | Good upgrade path after v1 |
+
+**v1 decision:** use **Option A** (manual trigger), with editorial guidance: "Edit in Notion -> click Publish Trigger -> verify deploy notification in Slack."  
+**Future upgrade path:** move to **Option C** once team behavior is stable and accidental-trigger risk is low.
 
 ## 8. Technical Architecture (Summary)
 
@@ -128,22 +145,33 @@ Maintains the site, adds features, and troubleshoots. Needs a codebase that's cl
 |-------|-----------|
 | Framework | Astro (static-first, islands architecture) |
 | CMS | Notion API (`@notionhq/client`) |
-| Email | Mailchimp API (via serverless function) |
-| Hosting | Vercel (free tier) |
+| Email | Mailchimp API via serverless function |
+| Hosting | Vercel |
 | Serverless | Vercel Functions (Node.js) |
-| Styling | CSS custom properties + global stylesheet (no framework yet) |
-| Deploy triggers | Vercel deploy hooks → Slack webhook + Notion automation |
+| Styling | CSS custom properties + global stylesheet |
+| Deploy triggers | Vercel deploy hooks via Notion automation only |
+| Slack integration | Notifications only (deploy status/alerts), not trigger control |
 
-**Build pipeline:** `notion.ts` fetches data → Astro builds static HTML → Vercel deploys. The only runtime code is the Mailchimp subscribe function.
+**Build pipeline:** `notion.ts` fetches CMS data at build time -> Astro generates static HTML -> Vercel deploys.  
+**Runtime code:** only the Mailchimp subscribe function.
 
-**Data flow:** Notion databases (Events, Blog Posts, Speakers, Attendees, Sponsors) → Notion API at build time → Astro `getStaticPaths()` generates pages → static HTML served from Vercel CDN.
-
-## 9. Timeline & Phases
+## 9. Delivery Plan
 
 | Phase | Duration | Deliverables |
 |-------|----------|-------------|
-| 1: Scaffold | This session | Project structure, docs, Notion schema design, git repo |
-| 2: Core build | 1–2 weeks | Notion integration, event template, homepage, Mailchimp form, blog |
-| 3: Deploy pipeline | 1–2 days | Vercel deployment, deploy hooks (Slack + Notion) |
-| 4: Content + polish | Ongoing | Real content, typography refinement, responsive QA |
-| 5: Design layer | Future | Visual identity, branding, custom styling |
+| 1. Scaffold | Complete | Repo structure, docs, schema, baseline architecture |
+| 2. Core build | 1-2 weeks | Notion integration, event template, homepage, Mailchimp form, blog |
+| 3. Deploy pipeline | 1-2 days | Vercel production deploy + Notion publish trigger + Slack notifications |
+| 4. Content + polish | Ongoing | Real content population, responsive QA, typography polish |
+| 5. Design layer | Future | Full visual identity pass and advanced component styling |
+
+## 10. Launch Readiness Checklist
+
+- [ ] Production environment variables are set and validated.
+- [ ] Notion integration has access to all required databases.
+- [ ] Mailchimp audience/list and tag behavior are verified end-to-end.
+- [ ] Notion deploy trigger is tested by non-developer users.
+- [ ] Slack deploy notifications are delivered to the agreed channel/workflow.
+- [ ] Lighthouse mobile performance >= 90 on key templates.
+- [ ] Event and blog social metadata validated on representative pages.
+- [ ] RSS endpoint validates and includes latest published posts.
