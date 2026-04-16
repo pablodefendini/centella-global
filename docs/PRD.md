@@ -17,7 +17,7 @@ Centella's current website is on Framer, and it's creating friction in two place
 |---|------|---------|
 | 1 | Content team can publish a new event page by editing Notion and triggering a deploy | Event page live within 15 minutes of Notion update + deploy trigger |
 | 2 | Every email signup is captured in Mailchimp with a tag indicating source page/event | 100% of form submissions arrive in Mailchimp with correct tag |
-| 3 | Site loads fast on mobile in Global South contexts (variable connectivity) | Lighthouse performance score ≥ 90 on mobile |
+| 3 | Site is mobile-first, fast on Global South connections (variable connectivity, mid-range devices) | Lighthouse performance score ≥ 90 on mobile |
 | 4 | Event pages have a consistent, professional structure without manual layout work | All event pages render from same template with no per-event code changes |
 | 5 | Blog posts can be published from Notion with minimal friction | New post live within 15 minutes of Notion update + deploy trigger |
 
@@ -76,18 +76,13 @@ Maintains the site, adds features, and troubleshoots. Needs a codebase that's cl
 | P0-6 | Notion as CMS for events | Events database with all required fields; data fetched at build time |
 | P0-7 | Blog section with Notion as CMS | Blog posts database; listing page at `/blog/`; individual post pages at `/blog/[slug]` |
 | P0-8 | Speaker, Attendee, and Sponsor components | Render from related Notion databases; display on event pages |
-| P0-9 | Responsive base layout | Nav, footer, clean typography; works on mobile through desktop |
+| P0-9 | Mobile-first base layout | Nav, footer, clean typography; designed for mobile, scales up to desktop |
 | P0-10 | Deploy hooks (Slack + Notion) | Manual deploy button in Slack channel; deploy trigger accessible from Notion |
 | P0-11 | Vercel hosting | Site deployed on Vercel; serverless functions work |
 
-### Nice-to-Have (P1)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| P1-1 | Open Graph / social meta tags per page | Event and blog pages generate unique OG title, description, and image |
-| P1-2 | RSS feed for blog | Valid RSS feed at `/blog/rss.xml` |
-| P1-3 | Event status indicators | Visual distinction between upcoming, ongoing, and past events |
-| P1-4 | Automatic rebuild on Notion changes | Notion webhook triggers Vercel deploy hook without manual intervention |
+| P0-12 | Open Graph / social meta tags per page | Event and blog pages generate unique OG title, description, and image |
+| P0-13 | RSS feed for blog | Valid RSS feed at `/blog/rss.xml` |
+| P0-14 | Event status indicators | Visual distinction between upcoming, ongoing, and past events |
 
 ### Future Considerations (P2)
 
