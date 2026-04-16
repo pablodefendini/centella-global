@@ -28,14 +28,29 @@ const navLinks = [
       </nav>
     </header>
 
-    <div class="home-min__main">
-      <section class="home-min__hero" aria-labelledby="home-hero-heading">
+    <section class="home-min__hero" aria-labelledby="home-hero-heading">
+      <div class="home-min__hero-media" aria-hidden="true">
+        <video
+          class="home-min__hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+        >
+          <source src="/media/centella-hero-bg.mp4" type="video/mp4" />
+        </video>
+        <div class="home-min__hero-scrim"></div>
+      </div>
+      <div class="home-min__hero-inner">
         <h1 id="home-hero-heading" class="home-min__headline">
           We re-energize movements,<br />
           restore citizen power, and build the next generation of democratic leaders
         </h1>
-      </section>
+      </div>
+    </section>
 
+    <div class="home-min__main">
       {latestEvent && (
         <section class="home-min__event" aria-labelledby="home-event-heading">
           <h2 id="home-event-heading" class="home-min__event-label">Latest event</h2>
@@ -136,9 +151,46 @@ const navLinks = [
   }
 
   .home-min__hero {
-    flex: 1;
+    position: relative;
     display: flex;
     align-items: center;
+    min-height: clamp(20rem, 56vh, 40rem);
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .home-min__hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .home-min__hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-min__hero-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      165deg,
+      rgba(6, 6, 7, 0.25) 0%,
+      rgba(6, 6, 7, 0.55) 42%,
+      rgba(6, 6, 7, 0.88) 100%
+    );
+  }
+
+  .home-min__hero-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding: var(--space-12) var(--gutter);
   }
 
   .home-min__headline {
@@ -150,6 +202,21 @@ const navLinks = [
     color: var(--color-text);
     max-width: min(100%, var(--prose-max-ch));
     margin: 0;
+    text-shadow: 0 0.06em 0.35em rgba(6, 6, 7, 0.65);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-min__hero-video {
+      display: none;
+    }
+
+    .home-min__hero {
+      background-color: var(--color-bg);
+    }
+
+    .home-min__hero-scrim {
+      background: rgba(6, 6, 7, 0.72);
+    }
   }
 
   .home-min__event {
