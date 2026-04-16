@@ -18,6 +18,16 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
 <Base title="Home" hideChrome={true}>
   <div class="home-min">
     <header class="home-min__header">
+      <a href="/" class="home-min__logo" aria-label="Centella — home">
+        <img
+          src="/logo.svg"
+          alt=""
+          width="8694"
+          height="1079"
+          class="home-min__logo-img"
+          decoding="async"
+        />
+      </a>
       <div class="home-min__header-bar">
         <button
           type="button"
@@ -34,16 +44,6 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
           </span>
         </button>
       </div>
-      <a href="/" class="home-min__logo" aria-label="Centella — home">
-        <img
-          src="/logo.svg"
-          alt=""
-          width="8694"
-          height="1079"
-          class="home-min__logo-img"
-          decoding="async"
-        />
-      </a>
       <div id="home-min-menu" class="home-min__menu" hidden role="dialog" aria-modal="true" aria-label="Site navigation">
         <div class="home-min__menu-panel">
           <button type="button" class="home-min__menu-close" aria-label="Close menu">Close</button>
@@ -281,6 +281,7 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
     width: 100vw;
     margin-left: calc(50% - 50vw);
     line-height: 0;
+    min-height: 60px;
     background: transparent;
   }
 
