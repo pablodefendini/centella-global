@@ -89,7 +89,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 ## Patterns
 
-- **Homepage is intentionally minimal** — In-page nav (logo + Home / Events / Blog), hero headline, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), and footer links. `Base` is called with `hideChrome` so global Nav/Footer are not duplicated.
+- **Homepage is intentionally minimal** — Full-bleed wordmark logo (`100vw`), hamburger menu (mobile-first; links in overlay), hero headline, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), and footer links. `Base` is called with `hideChrome` so global Nav/Footer are not duplicated.
 - **Hero media** — Decorative background: eager WebP poster (`public/media/hero/centella-hero-bg-poster.webp`) for first paint; 540p / 720p MP4 variants committed to the repo. Do not commit a full-size master MP4; regenerate outputs with `npm run media:hero` from a local master file.
 - **Slugs are manually set in Notion**, not auto-generated. This gives the content team control over URLs.
 - **Event visibility is controlled by Status property.** Only `Published` events render. `Draft` and `Archived` are filtered out at build time.
