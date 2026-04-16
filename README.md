@@ -33,33 +33,39 @@ npm run preview  # serve the contents of dist/ locally
 
 Copy `.env.example` to `.env` and fill in:
 
-| Area | Variables |
-|------|-----------|
-| Notion | `NOTION_API_KEY`, `NOTION_*_DB_ID` for events, blog, speakers, attendees, sponsors |
-| Mailchimp | `MAILCHIMP_API_KEY`, `MAILCHIMP_AUDIENCE_ID`, `MAILCHIMP_SERVER_PREFIX` |
-| Deploy | `VERCEL_DEPLOY_HOOK_URL` (for Notion/Slack-triggered rebuilds) |
+
+| Area      | Variables                                                                          |
+| --------- | ---------------------------------------------------------------------------------- |
+| Notion    | `NOTION_API_KEY`, `NOTION_*_DB_ID` for events, blog, speakers, attendees, sponsors |
+| Mailchimp | `MAILCHIMP_API_KEY`, `MAILCHIMP_AUDIENCE_ID`, `MAILCHIMP_SERVER_PREFIX`            |
+| Deploy    | `VERCEL_DEPLOY_HOOK_URL` (for Notion/Slack-triggered rebuilds)                     |
+
 
 Never commit `.env`. It is listed in `.gitignore`.
 
 ## Scripts
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Astro dev server |
-| `npm run build` | Static production build |
-| `npm run preview` | Preview built site |
-| `npx astro check` | Type-check Astro components |
+
+| Command                                      | Purpose                                                           |
+| -------------------------------------------- | ----------------------------------------------------------------- |
+| `npm run dev`                                | Astro dev server                                                  |
+| `npm run build`                              | Static production build                                           |
+| `npm run preview`                            | Preview built site                                                |
+| `npx astro check`                            | Type-check Astro components                                       |
 | `npm run media:hero -- <path/to/source.mp4>` | Regenerate `public/media/hero/` poster WebP and 540p/720p encodes |
+
 
 ## Project docs
 
-| File | Contents |
-|------|----------|
-| [`CLAUDE.md`](./CLAUDE.md) | AI/editor orientation: constraints, structure, commands |
-| [`docs/PRD.md`](./docs/PRD.md) | Product requirements, including media and progressive enhancement (**§11**) |
-| [`docs/MEMORY.md`](./docs/MEMORY.md) | Decision log |
-| [`docs/DIARY.md`](./docs/DIARY.md) | Development diary |
-| [`design.md`](./design.md) | Visual design tokens and UI rules |
+
+| File                                 | Contents                                                                    |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| `[CLAUDE.md](./CLAUDE.md)`           | AI/editor orientation: constraints, structure, commands                     |
+| `[docs/PRD.md](./docs/PRD.md)`       | Product requirements, including media and progressive enhancement (**§11**) |
+| `[docs/MEMORY.md](./docs/MEMORY.md)` | Decision log                                                                |
+| `[docs/DIARY.md](./docs/DIARY.md)`   | Development diary                                                           |
+| `[design.md](./design.md)`           | Visual design tokens and UI rules                                           |
+
 
 ## Repo layout (short)
 
