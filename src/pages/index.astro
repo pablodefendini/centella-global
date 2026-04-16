@@ -195,14 +195,21 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: var(--space-3) var(--gutter);
-    border-bottom: 1px solid transparent;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
     background: transparent;
     position: relative;
     z-index: 2;
+    overflow: visible;
   }
 
   .home-min__menu-toggle {
+    position: fixed;
+    top: 32px;
+    right: var(--gutter);
+    z-index: 201;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -231,13 +238,6 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
 
   .home-min__menu-toggle:focus-visible {
     box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--accent-purple);
-  }
-
-  .home-min__menu-toggle[aria-expanded='true'] {
-    position: fixed;
-    top: var(--space-3);
-    right: var(--gutter);
-    z-index: 201;
   }
 
   .home-min__menu-icon {
@@ -279,6 +279,7 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
   .home-min__logo {
     display: block;
     width: 100vw;
+    min-width: 60px;
     margin-left: calc(50% - 50vw);
     line-height: 0;
     min-height: 60px;
@@ -288,6 +289,7 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
   .home-min__logo-img {
     display: block;
     width: 100%;
+    min-width: 60px;
     height: auto;
     filter: brightness(0) invert(1);
   }
