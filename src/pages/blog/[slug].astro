@@ -73,7 +73,9 @@ function formatDate(dateStr: string): string {
   }
 
   .blog-post__title {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+    max-width: min(100%, 42ch);
   }
 
   .blog-post__author {
@@ -82,12 +84,34 @@ function formatDate(dateStr: string): string {
 
   .blog-post__hero {
     width: 100%;
-    max-height: 400px;
+    max-height: 320px;
     object-fit: cover;
     border-radius: 4px;
   }
 
   .blog-post__signup h2 {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .blog-post__signup .container > p {
+    margin-bottom: var(--space-6);
+    max-width: min(100%, var(--prose-max-ch));
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (min-width: 640px) {
+    .blog-post__hero {
+      max-height: 400px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .blog-post__header.section {
+      padding-bottom: var(--space-8);
+    }
+
+    .blog-post__author {
+      font-size: var(--text-xs);
+    }
   }
 </style>

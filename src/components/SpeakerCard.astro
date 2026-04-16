@@ -28,6 +28,10 @@ const { speaker } = Astro.props;
 
 <style>
   .speaker-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
     text-align: center;
   }
 
@@ -37,7 +41,6 @@ const { speaker } = Astro.props;
     border-radius: 50%;
     object-fit: cover;
     margin-inline: auto;
-    margin-bottom: var(--space-4);
   }
 
   .speaker-card__photo--placeholder {
@@ -52,12 +55,14 @@ const { speaker } = Astro.props;
 
   .speaker-card__name {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-1);
+    text-wrap: balance;
+    max-width: 28ch;
   }
 
   .speaker-card__role,
   .speaker-card__org {
     font-size: var(--text-sm);
-    line-height: var(--leading-tight);
+    line-height: var(--leading-normal);
+    max-width: min(100%, var(--prose-max-ch));
   }
 </style>

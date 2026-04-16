@@ -15,6 +15,7 @@ const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
   <section class="section">
     <div class="container">
       <h1>Events</h1>
+      <p class="events-intro text-muted">Upcoming gatherings and our archive of past events.</p>
 
       {upcoming.length > 0 && (
         <div class="events-section">
@@ -49,7 +50,13 @@ const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
 
 <style>
   h1 {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .events-intro {
+    margin-bottom: var(--space-12);
+    max-width: min(100%, var(--prose-max-ch));
+    line-height: var(--leading-relaxed);
   }
 
   .events-section {
@@ -61,5 +68,11 @@ const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: var(--space-6);
+  }
+
+  @media (max-width: 639px) {
+    .events-section__label {
+      margin-bottom: var(--space-4);
+    }
   }
 </style>

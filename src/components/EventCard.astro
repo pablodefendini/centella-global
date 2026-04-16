@@ -68,7 +68,7 @@ function formatDate(dateStr: string): string {
     padding: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
 
   .event-card__date {
@@ -93,6 +93,7 @@ function formatDate(dateStr: string): string {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.6;
+    max-width: min(100%, var(--prose-max-ch));
   }
 
   .event-card__location {

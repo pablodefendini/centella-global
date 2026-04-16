@@ -68,7 +68,7 @@ const community = sponsors.filter((s) => s.tier === 'Community');
 
 <style>
   .sponsor-grid__tier {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-12);
   }
 
   .sponsor-grid__tier:last-child {
@@ -86,11 +86,16 @@ const community = sponsors.filter((s) => s.tier === 'Community');
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-4) var(--space-8);
   }
 
   .sponsor-grid__item {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    padding: var(--space-2);
     text-decoration: none;
     color: var(--color-text-muted);
     transition: opacity var(--transition-fast);

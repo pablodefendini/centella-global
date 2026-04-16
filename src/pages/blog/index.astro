@@ -10,8 +10,9 @@ const posts = await getPublishedBlogPosts();
   <section class="section">
     <div class="container">
       <h1>Blog</h1>
+      <p class="blog-intro text-muted">Writing and updates from Centella.</p>
       {posts.length > 0 ? (
-        <div class="grid grid--2" style="margin-top: var(--space-8);">
+        <div class="blog-grid grid grid--2">
           {posts.map((post) => (
             <BlogPostCard post={post} />
           ))}
@@ -27,6 +28,16 @@ const posts = await getPublishedBlogPosts();
 
 <style>
   h1 {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .blog-intro {
+    margin-bottom: var(--space-12);
+    max-width: min(100%, var(--prose-max-ch));
+    line-height: var(--leading-relaxed);
+  }
+
+  .blog-grid {
+    margin-top: 0;
   }
 </style>
