@@ -105,6 +105,42 @@ export async function getFeaturedEvents(): Promise<Event[]> {
   return Promise.all(response.results.map(pageToEvent));
 }
 
+/** Next upcoming published event, or if none, the most recently started past event. */
+export async function getHomepageLatestEvent(): Promise<Event | null> {
+  const now = new Date().toISOString().split('T')[0];
+
+  const upcoming = await notion.databases.query({
+    database_id: EVENTS_DB,
+    filter: {
+      and: [
+        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Date Start', date: { on_or_after: now } },
+      ],
+    },
+    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    page_size: 1,
+  });
+
+  if (upcoming.results.length) {
+    return pageToEvent(upcoming.results[0]);
+  }
+
+  const past = await notion.databases.query({
+    database_id: EVENTS_DB,
+    filter: {
+      and: [
+        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Date Start', date: { before: now } },
+      ],
+    },
+    sorts: [{ property: 'Date Start', direction: 'descending' }],
+    page_size: 1,
+  });
+
+  if (!past.results.length) return null;
+  return pageToEvent(past.results[0]);
+}
+
 export async function getEventBySlug(slug: string): Promise<Event | null> {
   const response = await notion.databases.query({
     database_id: EVENTS_DB,
