@@ -110,14 +110,16 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 | Token         | Size       | Typical use                                                     |
 | ------------- | ---------- | --------------------------------------------------------------- |
-| `--text-4xl`  | `2.5rem`   | H1 default. Page titles.                                        |
-| `--text-3xl`  | `1.875rem` | H2. Section titles.                                             |
-| `--text-2xl`  | `1.5rem`   | H3. Card titles, sub-section headers.                           |
-| `--text-xl`   | `1.25rem`  | H4. Lead paragraphs, emphasized body.                           |
-| `--text-lg`   | `1.125rem` | H5 / large body.                                                |
+| `--text-6xl`  | `4.507rem` | Hero display / campaign moments (use sparingly).               |
+| `--text-5xl`  | `3.634rem` | Large hero headline / section feature callouts.                |
+| `--text-4xl`  | `2.931rem` | H1 default. Page titles.                                        |
+| `--text-3xl`  | `2.364rem` | H2. Section titles.                                             |
+| `--text-2xl`  | `1.907rem` | H3. Card titles, sub-section headers.                           |
+| `--text-xl`   | `1.538rem` | H4. Lead paragraphs, emphasized body.                           |
+| `--text-lg`   | `1.24rem`  | H5 / large body.                                                |
 | `--text-base` | `1rem`     | Body default.                                                   |
-| `--text-sm`   | `0.875rem` | Small body, secondary copy, form labels.                        |
-| `--text-xs`   | `0.75rem`  | Eyebrows, meta, uppercase labels, ticker, captions.             |
+| `--text-sm`   | `0.806rem` | Small body, secondary copy, form labels.                        |
+| `--text-xs`   | `0.65rem`  | Eyebrows, meta, uppercase labels, ticker, captions.             |
 
 **Hero headlines** may scale above `--text-4xl` using a fluid clamp — e.g. `clamp(3rem, 9vw, 6rem)` — always in `--font-display`, weight `400–500`, letter-spacing `-0.03em`, line-height `0.92–0.95`.
 

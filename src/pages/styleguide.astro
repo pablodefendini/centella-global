@@ -35,14 +35,16 @@ const colorFamilies = [
 ];
 
 const typeScale = [
-  { token: '--text-4xl', size: '2.5rem', sample: 'Theory in motion' },
-  { token: '--text-3xl', size: '1.875rem', sample: 'Theory in motion' },
-  { token: '--text-2xl', size: '1.5rem', sample: 'Theory in motion' },
-  { token: '--text-xl', size: '1.25rem', sample: 'Theory in motion' },
-  { token: '--text-lg', size: '1.125rem', sample: 'Theory in motion' },
+  { token: '--text-6xl', size: '4.507rem', sample: 'Theory in motion' },
+  { token: '--text-5xl', size: '3.634rem', sample: 'Theory in motion' },
+  { token: '--text-4xl', size: '2.931rem', sample: 'Theory in motion' },
+  { token: '--text-3xl', size: '2.364rem', sample: 'Theory in motion' },
+  { token: '--text-2xl', size: '1.907rem', sample: 'Theory in motion' },
+  { token: '--text-xl', size: '1.538rem', sample: 'Theory in motion' },
+  { token: '--text-lg', size: '1.24rem', sample: 'Theory in motion' },
   { token: '--text-base', size: '1rem', sample: 'Theory in motion' },
-  { token: '--text-sm', size: '0.875rem', sample: 'Theory in motion' },
-  { token: '--text-xs', size: '0.75rem', sample: 'Theory in motion' },
+  { token: '--text-sm', size: '0.806rem', sample: 'Theory in motion' },
+  { token: '--text-xs', size: '0.65rem', sample: 'Theory in motion' },
 ];
 
 const spacing = [
@@ -88,7 +90,6 @@ const subbrands = [
     <!-- ── 1. Brand Essence ─────────────────────────── -->
     <section id="essence" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">01</span>
         <h2>Brand Essence & Positioning</h2>
       </div>
       <p class="sg-paragraph">
@@ -117,7 +118,6 @@ const subbrands = [
     <!-- ── 2. Voice & Tone ──────────────────────────── -->
     <section id="voice" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">02</span>
         <h2>Voice & Tone</h2>
       </div>
       <p class="sg-paragraph">
@@ -170,7 +170,6 @@ const subbrands = [
     <!-- ── 3. Logo ──────────────────────────────────── -->
     <section id="logo" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">03</span>
         <h2>Logo & Wordmark</h2>
       </div>
       <p class="sg-paragraph">
@@ -217,7 +216,6 @@ const subbrands = [
     <!-- ── 4. Typography ────────────────────────────── -->
     <section id="type" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">04</span>
         <h2>Typography</h2>
       </div>
       <p class="sg-paragraph">
@@ -265,15 +263,28 @@ const subbrands = [
       </aside>
 
       <h3 style="margin-top: var(--space-12);">Type Scale</h3>
-      <p class="sg-muted">Hierarchy comes from weight, width, and scale — not from mixing families.</p>
-      <div class="sg-scale">
-        {typeScale.map((t) => (
-          <div class="sg-scale-row">
-            <code class="sg-code">{t.token}</code>
-            <span class="sg-muted sg-scale-size">{t.size}</span>
-            <span class="sg-scale-sample">{t.sample}</span>
-          </div>
-        ))}
+      <p class="sg-muted">Reference table from a 1rem base using the 1.24 modular ratio.</p>
+      <div class="sg-table-wrap">
+        <table class="sg-table">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>1.24 ratio value</th>
+              <th>1.24 visual sample</th>
+            </tr>
+          </thead>
+          <tbody>
+            {typeScale.map((row) => (
+              <tr>
+                <td><code class="sg-code">{row.token}</code></td>
+                <td>{row.size}</td>
+                <td class="sg-table-sample-cell">
+                  <span class="sg-table-sample" style={`font-size: ${row.size};`}>{row.sample}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <h3 style="margin-top: var(--space-12);">Gradient display type</h3>
@@ -288,7 +299,6 @@ const subbrands = [
     <!-- ── 5. Color System ──────────────────────────── -->
     <section id="color" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">05</span>
         <h2>Color System</h2>
       </div>
       <p class="sg-paragraph">
@@ -360,7 +370,6 @@ const subbrands = [
     <!-- ── 6. Color Scale Generator ─────────────────── -->
     <section id="generator" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">06</span>
         <h2>Color Scale Generator</h2>
       </div>
       <p class="sg-paragraph">
@@ -409,7 +418,6 @@ const subbrands = [
     <!-- ── 7. Visual Language ───────────────────────── -->
     <section id="visual" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">07</span>
         <h2>Visual Language</h2>
       </div>
       <p class="sg-paragraph">
@@ -474,7 +482,6 @@ const subbrands = [
     <!-- ── 8. Icon Library ──────────────────────────── -->
     <section id="icons" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">08</span>
         <h2>Icon Library</h2>
       </div>
       <p class="sg-paragraph">
@@ -558,7 +565,6 @@ import Icon from '../components/Icon.astro';
     <!-- ── 9. Layout ───────────────────────────────── -->
     <section id="layout" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">09</span>
         <h2>Layout & Spacing</h2>
       </div>
       <p class="sg-paragraph">
@@ -582,7 +588,6 @@ import Icon from '../components/Icon.astro';
     <!-- ── 10. Components ───────────────────────────── -->
     <section id="components" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">10</span>
         <h2>Components</h2>
       </div>
 
@@ -610,7 +615,6 @@ import Icon from '../components/Icon.astro';
     <!-- ── 11. Sub-brands ───────────────────────────── -->
     <section id="subbrands" class="sg-section">
       <div class="sg-section-head">
-        <span class="sg-section-num">11</span>
         <h2>Sub-Brands</h2>
       </div>
       <p class="sg-paragraph">
@@ -881,11 +885,7 @@ import Icon from '../components/Icon.astro';
   .sg-section-head {
     display: flex;
     align-items: baseline;
-    gap: var(--space-4);
     margin-bottom: var(--space-8);
-  }
-  .sg-section-num {
-    color: var(--color-text-dim);
   }
   .sg-section h2 {
   }
@@ -1066,23 +1066,109 @@ import Icon from '../components/Icon.astro';
   }
 
   /* Type scale */
-  .sg-scale { display: flex; flex-direction: column; gap: var(--space-3); }
-  .sg-scale-row {
-    display: grid;
-    grid-template-columns: 10rem 4rem 1fr;
-    gap: var(--space-4);
-    align-items: baseline;
-    padding-block: var(--space-2);
-    border-bottom: 1px solid var(--color-border);
+  .sg-table-wrap {
+    margin-top: var(--space-4);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--bg-surface);
   }
-  .sg-scale-sample {
+  .sg-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sg-table th,
+  .sg-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+  .sg-table thead th {
     color: var(--color-text);
+    background: rgba(247, 237, 255, 0.02);
+  }
+  .sg-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .sg-table tbody td {
+    color: var(--color-text-muted);
+  }
+  .sg-table-sample-cell {
+    width: 30%;
+  }
+  .sg-table-sample {
+    display: inline-block;
+    color: var(--color-text);
+    line-height: 1.1;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 641px) {
+    .sg-table th:nth-child(1),
+    .sg-table td:nth-child(1),
+    .sg-table th:nth-child(2),
+    .sg-table td:nth-child(2) {
+      width: 1%;
+      white-space: nowrap;
+    }
+    .sg-table th:nth-child(3),
+    .sg-table td:nth-child(3) {
+      width: auto;
+    }
+    .sg-table-sample-cell {
+      width: auto;
+    }
   }
   @media (max-width: 640px) {
-    .sg-scale-row { grid-template-columns: 1fr; }
-    .sg-scale-size { grid-row: 1; grid-column: 2; }
+    .sg-table-wrap {
+      overflow: visible;
+    }
+    .sg-table thead {
+      display: none;
+    }
+    .sg-table,
+    .sg-table tbody,
+    .sg-table tr,
+    .sg-table td {
+      display: block;
+      width: 100%;
+    }
+    .sg-table tr {
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-3) var(--space-4);
+    }
+    .sg-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    .sg-table td {
+      border-bottom: none;
+      padding: var(--space-1) 0;
+      display: grid;
+      grid-template-columns: 6.5rem 1fr;
+      gap: var(--space-2);
+      align-items: baseline;
+    }
+    .sg-table td::before {
+      color: var(--color-text-muted);
+    }
+    .sg-table td:nth-child(1)::before {
+      content: 'Token';
+    }
+    .sg-table td:nth-child(2)::before {
+      content: 'Size';
+    }
+    .sg-table td:nth-child(3)::before {
+      content: 'Sample';
+    }
+    .sg-table-sample-cell {
+      width: auto;
+    }
+    .sg-table-sample {
+      display: block;
+      white-space: normal;
+    }
   }
-
   /* Gradient demo */
   .sg-grad-demo {
     display: flex;
