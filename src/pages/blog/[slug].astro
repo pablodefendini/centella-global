@@ -68,18 +68,15 @@ function formatDate(dateStr: string): string {
 <style>
   .blog-post__date {
     display: block;
-    font-size: var(--text-sm);
     margin-bottom: var(--space-3);
   }
 
   .blog-post__title {
     margin-bottom: var(--space-4);
-    text-wrap: balance;
     max-width: min(100%, 42ch);
   }
 
   .blog-post__author {
-    font-size: var(--text-sm);
   }
 
   .blog-post__hero {
@@ -96,7 +93,6 @@ function formatDate(dateStr: string): string {
   .blog-post__signup .container > p {
     margin-bottom: var(--space-6);
     max-width: min(100%, var(--prose-max-ch));
-    line-height: var(--leading-relaxed);
   }
 
   @media (min-width: 640px) {
@@ -111,7 +107,6 @@ function formatDate(dateStr: string): string {
     }
 
     .blog-post__author {
-      font-size: var(--text-xs);
     }
   }
 </style>

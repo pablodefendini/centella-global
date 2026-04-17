@@ -96,15 +96,12 @@ function formatDateRange(start: string, end: string | null): string {
 
   .event__title {
     margin-bottom: var(--space-4);
-    text-wrap: balance;
     max-width: min(100%, 42ch);
   }
 
   .event__tagline {
-    font-size: var(--text-lg);
     margin-bottom: var(--space-6);
     max-width: min(100%, var(--prose-max-ch));
-    line-height: var(--leading-relaxed);
   }
 
   .event__meta {
@@ -133,7 +130,6 @@ function formatDateRange(start: string, end: string | null): string {
   .event__signup p.text-muted {
     margin-bottom: var(--space-6);
     max-width: min(100%, var(--prose-max-ch));
-    line-height: var(--leading-relaxed);
   }
 
   @media (min-width: 640px) {
@@ -143,7 +139,6 @@ function formatDateRange(start: string, end: string | null): string {
     }
 
     .event__tagline {
-      font-size: var(--text-xl);
     }
 
     .event__speakers h2,
@@ -156,7 +151,6 @@ function formatDateRange(start: string, end: string | null): string {
   @media (max-width: 639px) {
     .event__meta {
       gap: var(--space-2) var(--space-4);
-      font-size: var(--text-sm);
     }
 
     .event__location::before {
