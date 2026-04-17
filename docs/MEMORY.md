@@ -6,6 +6,29 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-17 — Global utility-first CSS pass and typography weight shift
+
+### Local style duplication reduced
+
+We completed a broad CSS consolidation pass so pages/components rely more on shared global styles instead of local hardcoded declarations. New reusable utilities now live in `src/styles/global.css`:
+
+- `.page-heading`
+- `.page-intro`
+- `.page-simple`
+- `.page-copy`
+
+These replace repeated per-page heading/intro/copy blocks across blog/events index and the three pillar destination pages.
+
+### Card base styling now centralized
+
+`EventCard` and `BlogPostCard` now compose the shared `.card` class for base surface, border, hover lift, and shadow behavior. Component-local CSS remains only for content-specific internals (image sizing, metadata layout), reducing drift from design tokens.
+
+### Headline weight direction changed
+
+Design direction now favors lighter headline/display weights. Global heading defaults were reduced from heavy display values to medium values (`500`), and homepage/styleguide local overrides were updated to visually reflect this. The styleguide typography specimens were also adjusted so examples match the actual implemented system.
+
+---
+
 ## 2026-04-17 — Global chrome unification and menu hidden-state fix
 
 ### Homepage chrome became the site-wide shell

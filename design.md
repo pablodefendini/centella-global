@@ -152,7 +152,7 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 ### Gradient display type (novel — web only)
 
-Hero moments may use Barlow Condensed 800 with text clipped to a brand gradient. Reserve for hero headlines; never on logo, nav, or body copy.
+Hero moments may use Barlow Condensed in lighter display weights (`400–500`) with text clipped to a brand gradient. Reserve for hero headlines; never on logo, nav, or body copy.
 
 ```css
 h1 {
@@ -232,6 +232,22 @@ Signature marketing pages may widen to `1200px` (`src/pages/index.astro`).
 ---
 
 ## Components
+
+### Global utility classes
+
+Prefer these shared utilities before creating page-local CSS:
+
+- `.section` — standard vertical section spacing
+- `.container` / `.container--narrow` — shared width + gutters
+- `.grid`, `.grid--2`, `.grid--3` — responsive grid primitives
+- `.card` — canonical card surface, border, and hover treatment
+- `.text-muted` — semantic secondary text color
+- `.page-heading` — standard top-level page heading spacing
+- `.page-intro` — standard intro paragraph width/spacing
+- `.page-simple` — narrow single-column content wrapper
+- `.page-copy` — standard long-form body copy style for simple pages
+
+Rule: if a local selector only repeats tokenized spacing/typography already represented by these utilities, use the utility class instead of adding new local CSS.
 
 ### Buttons
 

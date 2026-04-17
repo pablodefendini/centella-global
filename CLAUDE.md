@@ -94,6 +94,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 - **Shared chrome is canonical** — `Base.astro` renders `SiteHeader` and `SiteFooter` across the site. Do not implement route-specific duplicate nav/footer shells unless explicitly required.
 - **Homepage composition** — Hero headline over poster-first media, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), plus a three-panel foundational pillars section that links to static destination pages.
+- **Prefer global CSS utilities over local page CSS** — before adding page-local styles, check `src/styles/global.css` utilities/tokens and compose those first (`.page-heading`, `.page-intro`, `.page-simple`, `.page-copy`, `.card`, `.grid`, `.section`, `.container`).
+- **Typography direction** — Headlines and large type should default to lighter Barlow-family weights (generally around `500`) unless a specific artifact requires heavier emphasis.
 - **Hero media** — Decorative background: eager WebP poster (`public/media/hero/centella-hero-bg-poster.webp`) for first paint; 540p / 720p MP4 variants committed to the repo. Do not commit a full-size master MP4; regenerate outputs with `npm run media:hero` from a local master file.
 - **Slugs are manually set in Notion**, not auto-generated. This gives the content team control over URLs.
 - **Event visibility is controlled by Status property.** Only `Published` events render. `Draft` and `Archived` are filtered out at build time.
