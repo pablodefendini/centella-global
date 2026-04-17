@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 6 — April 17, 2026: Unifying chrome, fixing nav state, and shipping pillar pages
+
+I standardized the site shell so every route now uses the same header and footer as the homepage. Instead of maintaining separate chrome patterns, I extracted the homepage behavior into shared `SiteHeader` and `SiteFooter` components and wired them into `Base.astro`. That means blog pages, event pages, styleguide, and the new pillar pages all run through one global navigation experience.
+
+I also added the new homepage section below Latest event with the three vertical pillar panels (advising leaders, building networks, investing in tech), then created the CTA destinations at `/centella-advisory`, `/centella-institute`, and `/centella-impact` with the exact panel title/body copy.
+
+There was one regression after the header extraction: the menu looked permanently open. Root cause was simple — the menu container had `display: flex`, which overrode the native `[hidden]` behavior. I fixed it by explicitly adding `.site-header__menu[hidden] { display: none; }` so closed state is reliable.
+
+I cleaned up icons to match repo policy (no ad hoc new icon files), documented that rule in `design.md`, and updated the rest of the docs so the next session sees the real current architecture instead of the older `hideChrome` split model.
+
+---
+
 ## Entry 5 — April 16, 2026: A homepage that stops selling and a hero that respects the wire
 
 I stripped the homepage down to what I actually want people to see right now: navigation with the logo and real links, one hero line about what Centella does, a single “latest event” pulled from Notion with a straight link to the event page, and the same links in the footer. No manifesto sections, no extra components, no duplicate global chrome — `hideChrome` on the layout so I'm not rendering Nav and Footer twice.

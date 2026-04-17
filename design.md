@@ -326,12 +326,15 @@ Primary button hover never changes hue — only elevation and glow.
 
 ### Navigation
 
-- Sticky on interior pages, fixed on homepage. Background `rgba(6, 6, 7, 0.85)` with `backdrop-filter: blur(12px)`.
+- Site-wide header/footer chrome is shared through `SiteHeader` and `SiteFooter` components via `Base.astro`.
+- Header uses a full-bleed logo plus a fixed-position hamburger trigger; menu opens as a right-side overlay.
+- Background uses dark surface treatment with blur (`backdrop-filter: blur(12px)`) on the overlay.
 - Logo is `/logo-divider.svg` (white filter `brightness(0) invert(1)` on dark). Minimum digital size `120px` width.
 - Two-row layout: logo on row 1; menu links wrap in a row below.
 - Menu links: `--font-semi` 500, `--text-sm`, uppercase, letter-spacing `0.06em`–`0.08em`.
 - Link hover / active: text fades to `--color-text`, underline grows from 0 → 100% width (`1.5px`, `--violet`).
 - Menu items must wrap (`flex-wrap: wrap`) on all viewports — never collapse to a burger.
+- Any overlay menu using the `hidden` attribute must include explicit CSS fallback for display rules (for example, `[hidden] { display: none; }`) when base styles set `display`.
 
 ### Panels (colored context blocks per brand guide)
 

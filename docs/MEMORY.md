@@ -6,6 +6,34 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-17 — Global chrome unification and menu hidden-state fix
+
+### Homepage chrome became the site-wide shell
+
+The homepage header/footer pattern is now canonical across the whole site. We extracted that UI into `src/components/SiteHeader.astro` and `src/components/SiteFooter.astro`, and `src/layouts/Base.astro` now renders those by default. This replaces the previous split where homepage used `hideChrome` and other routes used separate `Nav` / `Footer` components.
+
+### Pillar section and CTA destination pages added
+
+Homepage now includes a post-event “three foundational pillars” section with stacked panels. CTA targets are implemented as static pages:
+
+- `/centella-advisory`
+- `/centella-institute`
+- `/centella-impact`
+
+Each page currently carries the panel title + body copy as its initial content.
+
+### Important implementation detail
+
+When using `[hidden]` for overlays/drawers, never rely on native behavior if the base class sets `display`. The extracted menu initially stayed visible because `.site-header__menu { display: flex; }` overrode hidden rendering. Canonical fix now in place:
+
+` .site-header__menu[hidden] { display: none; } `
+
+### Icon governance tightened
+
+Icon usage is now explicitly repository-gated: only pre-existing icons in `src/assets/icons/` are allowed unless a task explicitly approves adding new assets. This rule is documented in `design.md`.
+
+---
+
 ## 2026-04-16 — PRD §11: product-level video and progressive enhancement
 
 ### Cross-cutting policy, not homepage-only

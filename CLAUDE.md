@@ -35,10 +35,13 @@ Always refer to this file when generating or modifying any UI component.
 ```
 src/
 ├── layouts/          # Base.astro (HTML shell), Event.astro (event page layout)
-├── components/       # Nav, Footer, MailchimpForm, EventCard, SpeakerCard,
+├── components/       # SiteHeader, SiteFooter, MailchimpForm, EventCard, SpeakerCard,
 │                     # AttendeeCard, ScheduleBlock, SponsorGrid, BlogPostCard
 ├── pages/
-│   ├── index.astro           # Minimal homepage: nav, hero (poster + optional video), latest event from Notion, footer
+│   ├── index.astro           # Homepage: shared site chrome + hero, latest event, pillars section
+│   ├── centella-advisory.astro
+│   ├── centella-institute.astro
+│   ├── centella-impact.astro
 │   ├── events/
 │   │   ├── index.astro       # Events listing
 │   │   └── [slug].astro      # Dynamic event pages
@@ -89,7 +92,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 ## Patterns
 
-- **Homepage is intentionally minimal** — Full-bleed wordmark logo (`100vw`), hamburger menu (mobile-first; links in overlay), hero headline, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), and footer links. `Base` is called with `hideChrome` so global Nav/Footer are not duplicated.
+- **Shared chrome is canonical** — `Base.astro` renders `SiteHeader` and `SiteFooter` across the site. Do not implement route-specific duplicate nav/footer shells unless explicitly required.
+- **Homepage composition** — Hero headline over poster-first media, one “Latest event” block from Notion (`getHomepageLatestEvent()` in `src/lib/notion.ts`: next upcoming published event, else latest past published), plus a three-panel foundational pillars section that links to static destination pages.
 - **Hero media** — Decorative background: eager WebP poster (`public/media/hero/centella-hero-bg-poster.webp`) for first paint; 540p / 720p MP4 variants committed to the repo. Do not commit a full-size master MP4; regenerate outputs with `npm run media:hero` from a local master file.
 - **Slugs are manually set in Notion**, not auto-generated. This gives the content team control over URLs.
 - **Event visibility is controlled by Status property.** Only `Published` events render. `Draft` and `Archived` are filtered out at build time.
