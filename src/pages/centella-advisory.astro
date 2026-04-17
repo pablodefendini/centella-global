@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Centella Advisory"
+  description="We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change."
+>
+  <section class="section">
+    <div class="container page-simple">
+      <h1>Advising leaders</h1>
+      <p>
+        We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-simple {
+    display: grid;
+    gap: var(--space-6);
+    max-width: var(--max-width-narrow);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+  }
+</style>

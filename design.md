@@ -327,7 +327,7 @@ Primary button hover never changes hue — only elevation and glow.
 ### Navigation
 
 - Sticky on interior pages, fixed on homepage. Background `rgba(6, 6, 7, 0.85)` with `backdrop-filter: blur(12px)`.
-- Logo is `/logo.svg` (white filter `brightness(0) invert(1)` on dark). Minimum digital size `120px` width.
+- Logo is `/logo-divider.svg` (white filter `brightness(0) invert(1)` on dark). Minimum digital size `120px` width.
 - Two-row layout: logo on row 1; menu links wrap in a row below.
 - Menu links: `--font-semi` 500, `--text-sm`, uppercase, letter-spacing `0.06em`–`0.08em`.
 - Link hover / active: text fades to `--color-text`, underline grows from 0 → 100% width (`1.5px`, `--violet`).
@@ -354,7 +354,9 @@ Primary button hover never changes hue — only elevation and glow.
 
 ### Icons
 
-**Location.** All icons live in `src/assets/icons/` as SVG files whose fills are normalized to `currentColor`. Add a new icon by dropping its SVG in that folder; it's picked up on next build.
+**Location.** All icons live in `src/assets/icons/` as SVG files whose fills are normalized to `currentColor`.
+
+**Repository rule.** Use only icons that already exist in `src/assets/icons/`. Do not add new icon files unless there is explicit approval in the task requirements.
 
 **Usage.** Inline via the `<Icon />` component:
 

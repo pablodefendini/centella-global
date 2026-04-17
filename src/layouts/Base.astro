@@ -1,6 +1,6 @@
 ---
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -53,10 +53,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centella
   <slot name="head" />
 </head>
 <body>
-  {!hideChrome && <Nav />}
+  {!hideChrome && <SiteHeader />}
   <main>
     <slot />
   </main>
-  {!hideChrome && <Footer />}
+  {!hideChrome && <SiteFooter />}
 </body>
 </html>

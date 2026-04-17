@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Centella Institute"
+  description="We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action."
+>
+  <section class="section">
+    <div class="container page-simple">
+      <h1>Building networks</h1>
+      <p>
+        We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-simple {
+    display: grid;
+    gap: var(--space-6);
+    max-width: var(--max-width-narrow);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/events/', label: 'Events' },
+  { href: '/blog/', label: 'Blog' },
+] as const;
+---
+
+<footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer">
+    <ul class="site-footer__list">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a href={href} class="site-footer__link">{label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</footer>
+
+<style>
+  .site-footer {
+    padding: var(--space-6) var(--gutter);
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
+  }
+
+  .site-footer__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-footer__link {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    min-height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    transition: color var(--transition-fast);
+  }
+
+  .site-footer__link:hover,
+  .site-footer__link:focus-visible {
+    color: var(--color-text);
+    outline: none;
+  }
+</style>

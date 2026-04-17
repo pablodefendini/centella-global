@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Centella Impact"
+  description="We fuel and advise next-generation civic tech created in the Global South, where scarce resources can go further."
+>
+  <section class="section">
+    <div class="container page-simple">
+      <h1>Investing in tech</h1>
+      <p>
+        We fuel and advise next-generation civic tech created in the Global South, where scarce resources can go further.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-simple {
+    display: grid;
+    gap: var(--space-6);
+    max-width: var(--max-width-narrow);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+  }
+</style>

@@ -1,104 +1,43 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
 import { getHomepageLatestEvent } from '../lib/notion';
 
 const latestEvent = await getHomepageLatestEvent();
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/events/', label: 'Events' },
-  { href: '/blog/', label: 'Blog' },
-] as const;
-
 const heroPoster = '/media/hero/centella-hero-bg-poster.webp';
 const heroVideo720 = '/media/hero/centella-hero-bg-720.mp4';
 const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
+const foundationalPillars = [
+  {
+    icon: 'hands-clasping',
+    title: 'Advising leaders',
+    body: 'We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change.',
+    cta: 'Learn more about Centella Advisory',
+    href: '/centella-advisory/',
+    tone: 'advisory',
+  },
+  {
+    icon: 'globe-grid',
+    title: 'Building networks',
+    body: 'We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action.',
+    cta: 'Learn more about the Centella Institute',
+    href: '/centella-institute/',
+    tone: 'networking',
+  },
+  {
+    icon: 'money-bag',
+    title: 'Investing in tech',
+    body: 'We fuel and advise next-generation civic tech created in the Global South, where scarce resources can go further.',
+    cta: 'Learn more about Centella Impact',
+    href: '/centella-impact/',
+    tone: 'investment',
+  },
+] as const;
 ---
 
-<Base title="Home" hideChrome={true}>
+<Base title="Home">
   <div class="home-min">
-    <header class="home-min__header">
-      <a href="/" class="home-min__logo" aria-label="Centella — home">
-        <img
-          src="/logo.svg"
-          alt=""
-          width="8694"
-          height="1079"
-          class="home-min__logo-img"
-          decoding="async"
-        />
-      </a>
-      <div class="home-min__header-bar">
-        <button
-          type="button"
-          id="home-min-menu-toggle"
-          class="home-min__menu-toggle"
-          aria-expanded="false"
-          aria-controls="home-min-menu"
-          aria-label="Open menu"
-        >
-          <span class="home-min__menu-icon" aria-hidden="true">
-            <span class="home-min__menu-line"></span>
-            <span class="home-min__menu-line"></span>
-            <span class="home-min__menu-line"></span>
-          </span>
-        </button>
-      </div>
-      <div id="home-min-menu" class="home-min__menu" hidden role="dialog" aria-modal="true" aria-label="Site navigation">
-        <div class="home-min__menu-panel">
-          <button type="button" class="home-min__menu-close" aria-label="Close menu">Close</button>
-          <nav class="home-min__menu-nav" aria-label="Main">
-            <ul class="home-min__menu-list">
-              {navLinks.map(({ href, label }) => (
-                <li>
-                  <a href={href} class="home-min__nav-link home-min__menu-link">{label}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
-
-    <script is:inline>
-      (function () {
-        var toggle = document.getElementById('home-min-menu-toggle');
-        var menu = document.getElementById('home-min-menu');
-        if (!toggle || !menu) return;
-        var closeBtn = menu.querySelector('.home-min__menu-close');
-
-        function setOpen(open) {
-          menu.hidden = !open;
-          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-          toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-          document.body.style.overflow = open ? 'hidden' : '';
-        }
-
-        function isOpen() {
-          return !menu.hidden;
-        }
-
-        toggle.addEventListener('click', function () {
-          setOpen(!isOpen());
-        });
-        if (closeBtn) {
-          closeBtn.addEventListener('click', function () {
-            setOpen(false);
-            toggle.focus();
-          });
-        }
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && isOpen()) {
-            setOpen(false);
-            toggle.focus();
-          }
-        });
-        menu.addEventListener('click', function (e) {
-          if (e.target === menu) setOpen(false);
-        });
-      })();
-    </script>
-
     <section class="home-min__hero" aria-labelledby="home-hero-heading">
       <div class="home-min__hero-media" aria-hidden="true">
         <img
@@ -159,19 +98,28 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
           </a>
         </section>
       )}
+
+      <section class="home-min__pillars" aria-labelledby="home-pillars-heading">
+        <h2 id="home-pillars-heading" class="home-min__pillars-title">
+          Centella focuses on three foundational pillars of work:
+        </h2>
+        <div class="home-min__pillars-list" role="list">
+          {foundationalPillars.map((pillar) => (
+            <article class:list={['home-min__pillar', `home-min__pillar--${pillar.tone}`]} role="listitem">
+              <div class="home-min__pillar-frame">
+                <div class="home-min__pillar-icon-wrap">
+                  <Icon name={pillar.icon} size={32} class="home-min__pillar-icon" label={`${pillar.title} icon`} />
+                </div>
+                <h3 class="home-min__pillar-title">{pillar.title}</h3>
+                <p class="home-min__pillar-body">{pillar.body}</p>
+                <a href={pillar.href} class="home-min__pillar-cta">{pillar.cta}</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
 
-    <footer class="home-min__footer">
-      <nav class="home-min__footer-nav" aria-label="Footer">
-        <ul class="home-min__footer-list">
-          {navLinks.map(({ href, label }) => (
-            <li>
-              <a href={href} class="home-min__footer-link">{label}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </footer>
   </div>
 </Base>
 
@@ -290,7 +238,10 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
     display: block;
     width: 100%;
     min-width: 60px;
+    aspect-ratio: 8694 / 1079;
+    min-height: 60px;
     height: auto;
+    object-fit: contain;
     filter: brightness(0) invert(1);
   }
 
@@ -521,6 +472,112 @@ const heroVideo540 = '/media/hero/centella-hero-bg-540.mp4';
   .home-min__event-link:hover,
   .home-min__event-link:focus-visible {
     color: var(--accent-coral);
+  }
+
+  .home-min__pillars {
+    margin-top: var(--space-16);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .home-min__pillars-title {
+    margin: 0;
+    max-width: min(100%, 32ch);
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 4.5vw, var(--text-3xl));
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+  }
+
+  .home-min__pillars-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .home-min__pillar {
+    border-radius: 8px;
+    padding: var(--space-2);
+    color: var(--color-text);
+  }
+
+  .home-min__pillar-frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .home-min__pillar--advisory {
+    background: var(--advisory-dark);
+    color: var(--advisory);
+  }
+
+  .home-min__pillar--networking {
+    background: var(--networking-dark);
+    color: var(--networking);
+  }
+
+  .home-min__pillar--investment {
+    background: var(--investment-dark);
+    color: var(--investment);
+  }
+
+  .home-min__pillar-icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    padding: var(--space-2);
+  }
+
+  .home-min__pillar-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+  }
+
+  .home-min__pillar-body {
+    margin: 0;
+    max-width: 62ch;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  .home-min__pillar-cta {
+    width: fit-content;
+    text-decoration: none;
+    min-height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-semi);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    border-bottom: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .home-min__pillar-cta:hover,
+  .home-min__pillar-cta:focus-visible {
+    color: color-mix(in srgb, currentColor 72%, var(--color-text));
+    border-color: currentColor;
   }
 
   .home-min__footer {
