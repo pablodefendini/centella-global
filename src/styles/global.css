@@ -40,6 +40,8 @@
   --global-dark: #301C00;
   --global-light: #FFF3E1;
   --tech: #FF66C4;
+  --tech-dark: #2A1522;
+  --tech-light: #FFE6F5;
 
   /* Semantic colors */
   --color-bg: var(--bg-deep);

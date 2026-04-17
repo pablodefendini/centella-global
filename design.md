@@ -40,7 +40,9 @@ Colors are organized into **functional families**, not arbitrary swatches. Each 
 | `--global`      | `#FF9500` | Scale & reach. Cross-border connection. Accent only.    |
 | `--global-dark` | `#301C00` | Anchor moments of emphasis.                             |
 | `--global-light`| `#FFF3E1` | Warmth and openness.                                    |
-| `--tech`        | `#FF66C4` | Innovation & experimentation. Use sparingly.            |
+| `--tech`        | `#FF66C4` | Innovation & experimentation. Primary accent.           |
+| `--tech-dark`   | `#2A1522` | Dark grounding for tech-driven moments.                 |
+| `--tech-light`  | `#FFE6F5` | Soft supporting surface for tech accents.               |
 
 ### Surface & text (semantic)
 
