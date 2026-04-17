@@ -14,8 +14,8 @@ const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
 <Base title="Events" description="Upcoming and past Centella events.">
   <section class="section">
     <div class="container">
-      <h1>Events</h1>
-      <p class="events-intro text-muted">Upcoming gatherings and our archive of past events.</p>
+      <h1 class="page-heading">Events</h1>
+      <p class="page-intro text-muted">Upcoming gatherings and our archive of past events.</p>
 
       {upcoming.length > 0 && (
         <div class="events-section">
@@ -49,16 +49,6 @@ const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
 </Base>
 
 <style>
-  h1 {
-    margin-bottom: var(--space-4);
-  }
-
-  .events-intro {
-    margin-bottom: var(--space-12);
-    max-width: min(100%, var(--prose-max-ch));
-    line-height: var(--leading-relaxed);
-  }
-
   .events-section {
     margin-bottom: var(--space-12);
   }

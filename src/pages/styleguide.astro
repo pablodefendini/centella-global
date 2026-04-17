@@ -182,11 +182,11 @@ const subbrands = [
 
       <div class="sg-logo-demo">
         <div class="sg-logo-stage sg-logo-stage--dark">
-          <img src="/logo-divider.svg" alt="Centella lockup on dark" />
+          <img src="/centella-logo.svg" alt="Centella lockup on dark" />
           <span class="sg-stage-label">On dark</span>
         </div>
         <div class="sg-logo-stage sg-logo-stage--light">
-          <img src="/logo-divider.svg" alt="Centella lockup on light" class="sg-logo-invert" />
+          <img src="/centella-logo.svg" alt="Centella lockup on light" class="sg-logo-invert" />
           <span class="sg-stage-label">On light</span>
         </div>
       </div>
@@ -230,21 +230,21 @@ const subbrands = [
       <div class="sg-fonts">
         <article class="sg-font">
           <div class="sg-font-label" style="color: var(--violet);">Display · Default Voice</div>
-          <div class="sg-font-name" style="font-family: var(--font-display); font-weight: 800;">Barlow Condensed</div>
+          <div class="sg-font-name" style="font-family: var(--font-display); font-weight: 500;">Barlow Condensed</div>
           <p class="sg-muted">Headlines, display, section headers, program names, posters, event materials.</p>
-          <div class="sg-font-sample" style="font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em;">We re-energize movements.</div>
+          <div class="sg-font-sample" style="font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em;">We re-energize movements.</div>
         </article>
 
         <article class="sg-font">
           <div class="sg-font-label" style="color: var(--advisory);">Heading & Sub-Headline</div>
-          <div class="sg-font-name" style="font-family: var(--font-heading); font-weight: 700;">Barlow Regular</div>
+          <div class="sg-font-name" style="font-family: var(--font-heading); font-weight: 500;">Barlow Regular</div>
           <p class="sg-muted">Card titles, sub-headlines, where comfort matters more than punch.</p>
-          <div class="sg-font-sample" style="font-family: var(--font-heading); font-weight: 700;">Building networks across borders.</div>
+          <div class="sg-font-sample" style="font-family: var(--font-heading); font-weight: 500;">Building networks across borders.</div>
         </article>
 
         <article class="sg-font">
           <div class="sg-font-label" style="color: var(--global);">Labels · UI · Navigation</div>
-          <div class="sg-font-name" style="font-family: var(--font-semi); font-weight: 600;">Barlow Semi Condensed</div>
+          <div class="sg-font-name" style="font-family: var(--font-semi); font-weight: 500;">Barlow Semi Condensed</div>
           <p class="sg-muted">Uppercase eyebrows, nav, buttons, ticker. Always tracked out.</p>
           <div class="sg-font-sample sg-eyebrow" style="font-size: var(--text-sm);">DEMOCRATIC RENEWAL · BANGKOK 2026</div>
         </article>
@@ -445,19 +445,19 @@ const subbrands = [
         <div class="sg-panel" style="background: var(--violet); color: var(--violet-dark); border-radius: 4px;">
           <div class="sg-panel-frame" style="border-color: rgba(30,26,40,0.3);">
             <div class="sg-voice-label" style="color: var(--violet-dark); opacity: 0.7;">Radius 4px</div>
-            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--violet-dark); margin: 0;">Theory in motion.</p>
+            <p style="font-family: var(--font-display); font-weight: 500; font-size: var(--text-2xl); color: var(--violet-dark); margin: 0;">Theory in motion.</p>
           </div>
         </div>
         <div class="sg-panel" style="background: var(--advisory-dark); color: var(--advisory); border-radius: 8px;">
           <div class="sg-panel-frame" style="border-color: rgba(0,229,255,0.3);">
             <div class="sg-voice-label" style="color: var(--advisory); opacity: 0.7;">Radius 8px</div>
-            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--advisory); margin: 0;">Strategic spine.</p>
+            <p style="font-family: var(--font-display); font-weight: 500; font-size: var(--text-2xl); color: var(--advisory); margin: 0;">Strategic spine.</p>
           </div>
         </div>
         <div class="sg-panel" style="background: var(--investment); color: var(--investment-dark); border-radius: 16px;">
           <div class="sg-panel-frame" style="border-color: rgba(30,36,19,0.3);">
             <div class="sg-voice-label" style="color: var(--investment-dark); opacity: 0.7;">Radius 16px</div>
-            <p style="font-family: var(--font-display); font-weight: 800; font-size: var(--text-2xl); color: var(--investment-dark); margin: 0;">Build. Scale. Deliver.</p>
+            <p style="font-family: var(--font-display); font-weight: 500; font-size: var(--text-2xl); color: var(--investment-dark); margin: 0;">Build. Scale. Deliver.</p>
           </div>
         </div>
       </div>
@@ -862,7 +862,7 @@ import Icon from '../components/Icon.astro';
   }
   .sg-hero h1 {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 500;
     font-size: clamp(3rem, 9vw, 6rem);
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -903,7 +903,7 @@ import Icon from '../components/Icon.astro';
   }
   .sg-section-num {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 500;
     font-size: var(--text-xl);
     color: var(--color-text-dim);
     letter-spacing: -0.04em;
@@ -911,14 +911,14 @@ import Icon from '../components/Icon.astro';
   .sg-section h2 {
     font-family: var(--font-display);
     font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
+    font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 1;
   }
   .sg-section h3 {
     font-family: var(--font-heading);
     font-size: var(--text-xl);
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.01em;
     margin-bottom: var(--space-4);
     color: var(--color-text);
@@ -1143,7 +1143,7 @@ import Icon from '../components/Icon.astro';
   }
   .sg-scale-sample {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 1.1;
     color: var(--color-text);
@@ -1159,7 +1159,7 @@ import Icon from '../components/Icon.astro';
     flex-wrap: wrap;
     gap: var(--space-6) var(--space-8);
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 500;
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     line-height: 1;
     letter-spacing: -0.03em;
@@ -1188,7 +1188,7 @@ import Icon from '../components/Icon.astro';
   }
   .sg-family-head h3 {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 500;
     font-size: var(--text-2xl);
     margin-bottom: var(--space-2);
     letter-spacing: -0.02em;

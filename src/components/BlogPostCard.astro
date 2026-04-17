@@ -16,7 +16,7 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<a href={`/blog/${post.slug}/`} class="post-card">
+<a href={`/blog/${post.slug}/`} class="post-card card">
   {post.heroImage && (
     <img
       src={post.heroImage}
@@ -37,15 +37,6 @@ function formatDate(dateStr: string): string {
     display: block;
     text-decoration: none;
     color: inherit;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  }
-
-  .post-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
   .post-card__image {

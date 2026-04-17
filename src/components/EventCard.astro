@@ -16,7 +16,7 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<a href={`/events/${event.slug}/`} class="event-card">
+<a href={`/events/${event.slug}/`} class="event-card card">
   {event.heroImage && (
     <img
       src={event.heroImage}
@@ -38,18 +38,6 @@ function formatDate(dateStr: string): string {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    color: inherit;
-    background: var(--bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    overflow: hidden;
-    transition: all var(--transition-base);
-  }
-
-  .event-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(199, 125, 255, 0.3);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
     color: inherit;
   }
 

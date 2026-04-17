@@ -117,18 +117,18 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 | `--text-sm`   | `0.875rem` | Small body, secondary copy, form labels.                        |
 | `--text-xs`   | `0.75rem`  | Eyebrows, meta, uppercase labels, ticker, captions.             |
 
-**Hero headlines** may scale above `--text-4xl` using a fluid clamp — e.g. `clamp(3rem, 9vw, 6rem)` — always in `--font-display`, weight 800, letter-spacing `-0.03em`, line-height `0.92–0.95`.
+**Hero headlines** may scale above `--text-4xl` using a fluid clamp — e.g. `clamp(3rem, 9vw, 6rem)` — always in `--font-display`, weight `400–500`, letter-spacing `-0.03em`, line-height `0.92–0.95`.
 
 ### Heading assignments
 
 | Element | Family           | Weight | Letter-spacing | Line-height          |
 | ------- | ---------------- | ------ | -------------- | -------------------- |
-| H1      | `--font-display` | 800    | `-0.02em`      | `--leading-tight` (1.15) |
-| H2      | `--font-display` | 800    | `-0.02em`      | `--leading-tight`    |
-| H3      | `--font-heading` | 700    | `-0.01em`      | `--leading-tight`    |
-| H4      | `--font-heading` | 700    | `-0.01em`      | `--leading-tight`    |
-| H5      | `--font-heading` | 700    | `-0.01em`      | `--leading-tight`    |
-| H6      | `--font-heading` | 700    | `-0.01em`      | `--leading-tight`    |
+| H1      | `--font-display` | 500    | `-0.02em`      | `--leading-tight` (1.15) |
+| H2      | `--font-display` | 500    | `-0.02em`      | `--leading-tight`    |
+| H3      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
+| H4      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
+| H5      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
+| H6      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
 
 ### Body, labels, serif
 
@@ -138,7 +138,7 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 ### Font weights used
 
-`300` (light) · `400` (regular) · `500` (medium) · `600` (semibold) · `700` (bold) · `800` (extrabold) · `900` (black, display-only).
+`300` (light) · `400` (regular) · `500` (medium) · `600` (semibold) · `700` (bold) · `800` (extrabold) · `900` (black, avoid for headline/body UI).
 
 **Rule:** avoid using more than 2–3 weights in a single composition.
 
