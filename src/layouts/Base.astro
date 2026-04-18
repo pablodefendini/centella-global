@@ -1,6 +1,7 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import RandomDisplayAccents from '../components/RandomDisplayAccents.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -58,5 +59,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centella
     <slot />
   </main>
   {!hideChrome && <SiteFooter />}
+  <RandomDisplayAccents />
 </body>
 </html>

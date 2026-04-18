@@ -1,0 +1,25 @@
+<script is:inline>
+  (function () {
+    var VARIANTS = [
+      'violet-coral',
+      'cyan-lime',
+      'coral-orange',
+      'pink-violet',
+      'cyan-violet',
+      'lime-teal',
+    ];
+    function pick() {
+      return VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
+    }
+    function init() {
+      document.querySelectorAll('[data-random-accent-gradient]').forEach(function (el) {
+        el.classList.add('display__accent--' + pick());
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>

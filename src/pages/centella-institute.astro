@@ -1,17 +1,71 @@
 ---
 import Base from '../layouts/Base.astro';
+import EventCard from '../components/EventCard.astro';
+import { getPublishedEvents } from '../lib/notion';
+
+const events = await getPublishedEvents();
+const now = new Date();
+const upcoming = events.filter((e) => new Date(e.dateStart) >= now);
+const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
 ---
 
 <Base
   title="Centella Institute"
-  description="We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action."
+  description="Centella Institute events: upcoming gatherings and our archive of past convenings."
 >
   <section class="section">
-    <div class="container page-simple">
-      <h1 class="page-heading">Building networks</h1>
-      <p class="page-copy">
+    <div class="container">
+      <h1 class="page-heading">Centella Institute</h1>
+      <p class="page-intro text-muted">
         We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action.
       </p>
+      <p class="page-intro text-muted">
+        Explore upcoming gatherings and our archive of past events.
+      </p>
+
+      {upcoming.length > 0 && (
+        <div class="events-section">
+          <h2 class="events-section__label text-muted">Upcoming</h2>
+          <div class="grid grid--2">
+            {upcoming.map((event) => (
+              <EventCard event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {past.length > 0 && (
+        <div class="events-section">
+          <h2 class="events-section__label text-muted">Past Events</h2>
+          <div class="grid grid--2">
+            {past.map((event) => (
+              <EventCard event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {events.length === 0 && (
+        <p class="text-muted" style="margin-top: var(--space-8);">
+          No events published yet. Check back soon.
+        </p>
+      )}
     </div>
   </section>
 </Base>
+
+<style>
+  .events-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .events-section__label {
+    margin-bottom: var(--space-6);
+  }
+
+  @media (max-width: 639px) {
+    .events-section__label {
+      margin-bottom: var(--space-4);
+    }
+  }
+</style>

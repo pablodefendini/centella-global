@@ -6,6 +6,26 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-18 — Homepage display headline, accent gradient variants, and text-clip fix
+
+### Hero typography
+
+The homepage hero `h1` uses the global `.display` utility (Barlow Condensed 300, fluid size) with inline `.display__accent` spans for emphasized phrases.
+
+### Six gradient variants + optional random assignment
+
+Each approved `--grad-*` token maps to a modifier class `display__accent--violet-coral`, `display__accent--cyan-lime`, `display__accent--coral-orange`, `display__accent--pink-violet`, `display__accent--cyan-violet`, and `display__accent--lime-teal` (always paired with `.display__accent`). Spans may carry `data-random-accent-gradient`; `src/components/RandomDisplayAccents.astro` (included from `Base.astro`) runs a tiny end-of-body inline script that picks one variant per marked element on each page load. Logo rule unchanged: no gradients on the logo mark.
+
+### `background-image` vs `background` shorthand on clipped text
+
+Using the `background` shorthand for gradient fills resets `background-clip` to its initial `border-box`, which breaks `background-clip: text` and shows a gradient rectangle behind glyphs. Accent styles set **`background-image`** for the gradient and keep clip/fill on the shared `.display__accent` / `.display--gradient` rules.
+
+### Node version
+
+`.nvmrc` pins **20** (Astro 5). Run `nvm use` in the repo before `npm run dev` / `npm run build` if the shell default is older Node.
+
+---
+
 ## 2026-04-17 — Global utility-first CSS pass and typography weight shift
 
 ### Local style duplication reduced

@@ -16,7 +16,7 @@ Always refer to this file when generating or modifying any UI component.
 
 ## Hard constraints
 
-- **Static-first.** Every page is pre-rendered HTML. No client-side data fetching from Notion. Runtime code is limited to: (1) the Mailchimp serverless function, and (2) a small **inline** script on the homepage hero that decides whether to load background video (Network Information / `saveData` / `prefers-reduced-motion`). No extra bundles, no hydration framework for that behavior.
+- **Static-first.** Every page is pre-rendered HTML. No client-side data fetching from Notion. Runtime code is limited to: (1) the Mailchimp serverless function, (2) a small **inline** script on the homepage hero that decides whether to load background video (Network Information / `saveData` / `prefers-reduced-motion`), and (3) a tiny **inline** script from `RandomDisplayAccents.astro` (included in `Base.astro`) that assigns a random `display__accent--*` gradient class to elements with `data-random-accent-gradient`. No extra bundles and no hydration framework for those behaviors.
 - **Notion is the CMS.** The content team edits in Notion. They should never need to touch code, open a terminal, or learn a new tool. If a workflow requires anything beyond "edit in Notion, trigger deploy," it's wrong.
 - **Mailchimp API key stays off the client.** All Mailchimp interactions go through the serverless function in `api/subscribe.ts`.
 - **Mobile-first, Global South context.** Many visitors are on mid-range phones with variable connectivity. Lighthouse mobile performance ≥ 90. No heavy JS bundles, no client-side rendering for content.
@@ -35,8 +35,9 @@ Always refer to this file when generating or modifying any UI component.
 ```
 src/
 ├── layouts/          # Base.astro (HTML shell), Event.astro (event page layout)
-├── components/       # SiteHeader, SiteFooter, MailchimpForm, EventCard, SpeakerCard,
-│                     # AttendeeCard, ScheduleBlock, SponsorGrid, BlogPostCard
+├── components/       # SiteHeader, SiteFooter, RandomDisplayAccents (gradient class helper),
+│                     # MailchimpForm, EventCard, SpeakerCard, AttendeeCard, ScheduleBlock,
+│                     # SponsorGrid, BlogPostCard
 ├── pages/
 │   ├── index.astro           # Homepage: shared site chrome + hero, latest event, pillars section
 │   ├── centella-advisory.astro
@@ -104,6 +105,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 
 ## Commands
+
+Use **Node 20** (see `.nvmrc`). With nvm: `nvm use` in the repo root, then:
 
 ```bash
 npm run dev          # Astro dev server (fetches from Notion on each page load)

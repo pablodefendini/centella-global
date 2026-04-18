@@ -6,6 +6,16 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 7 — April 18, 2026: Display hero type, gradient accents that actually clip, and docs in sync
+
+I put the homepage hero headline on the real `.display` rail — Barlow Condensed light at the big fluid size — and wrapped the phrases I care about in `.display__accent` so the 300 vs 800 contrast reads the way the brand spec intended. I did not want every accent stuck on violet→coral forever, so I wired all six approved `--grad-*` tokens to explicit modifier classes and added an optional `data-random-accent-gradient` hook: a tiny inline script at the end of `Base.astro` picks one gradient per marked span on each load. No island, no bundle — just class toggles after the DOM exists.
+
+Immediately after, the hero looked wrong: gradient blocks behind letters instead of color inside the glyphs. I had used the `background` shorthand on the variant rules, which resets `background-clip` away from `text`. Switching those fills to **`background-image`** keeps the clip rules intact; problem gone.
+
+I refreshed `design.md`, `CLAUDE.md`, `MEMORY.md`, and this diary so the machine-readable spec and agent entry points match what shipped. Ran a full `npm run build` before commit.
+
+---
+
 ## Entry 6 — April 17, 2026: Unifying chrome, fixing nav state, and shipping pillar pages
 
 I standardized the site shell so every route now uses the same header and footer as the homepage. Instead of maintaining separate chrome patterns, I extracted the homepage behavior into shared `SiteHeader` and `SiteFooter` components and wired them into `Base.astro`. That means blog pages, event pages, styleguide, and the new pillar pages all run through one global navigation experience.

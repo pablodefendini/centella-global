@@ -287,8 +287,32 @@ const subbrands = [
         </table>
       </div>
 
-      <h3 style="margin-top: var(--space-12);">Gradient display type</h3>
-      <p class="sg-muted">A novel extension for web: Barlow Condensed, heavy weight, clipped to a brand gradient. Reserve for hero moments.</p>
+      <h3 style="margin-top: var(--space-12);">Display type</h3>
+      <p class="sg-muted">
+        Barlow Condensed, <strong>300 light</strong> base with an <strong>800 extrabold</strong> accent phrase
+        clipped to an <strong>approved brand gradient</strong> (default <code>--grad-violet-coral</code>, or one of the
+        <code>.display__accent--*</code> modifiers). Add <code>data-random-accent-gradient</code> on each accent span
+        for a random gradient on every page load. The 300 ↔ 800 contrast is the signature.
+      </p>
+      <p class="display" style="margin: var(--space-6) 0 var(--space-2);">
+        <span class="display__accent" data-random-accent-gradient>Power. Strategy.</span> Win.
+      </p>
+      <p class="sg-muted" style="font-family: var(--font-mono); font-size: var(--text-xs);">
+        <code>&lt;h1 class="display"&gt;&lt;span class="display__accent" data-random-accent-gradient&gt;…&lt;/span&gt; …&lt;/h1&gt;</code>
+      </p>
+      <p class="sg-muted" style="margin-top: var(--space-4);">
+        Explicit classes (no script):
+        <code>display__accent--violet-coral</code>, <code>display__accent--cyan-lime</code>,
+        <code>display__accent--coral-orange</code>, <code>display__accent--pink-violet</code>,
+        <code>display__accent--cyan-violet</code>, <code>display__accent--lime-teal</code>
+        (each paired with <code>display__accent</code>).
+      </p>
+
+      <h3 style="margin-top: var(--space-12);">Other approved gradients</h3>
+      <p class="sg-muted">
+        Same tokens as surfaces, borders, and UI accents — also mapped to display accent classes above. Never apply
+        gradients to the logo.
+      </p>
       <div class="sg-grad-demo">
         <span style="background: linear-gradient(135deg, var(--violet), var(--networking));">re-energize</span>
         <span style="background: linear-gradient(135deg, var(--advisory), var(--investment));">citizen power</span>
@@ -350,7 +374,20 @@ const subbrands = [
         <li>Use dark variants for authority, light variants for space</li>
         <li>Avoid treating all colors as equal — hierarchy matters</li>
         <li>Color should support meaning, not replace it</li>
+        <li>Inline-link hover/focus states should always use a contrasting tone relative to base link color</li>
+        <li>Links inside tone-coded surfaces like panels should inherit tone and keep contrasting tone-based hover/focus states</li>
       </ul>
+      <p class="sg-muted">
+        Implementation note: use the shared inline-link token pattern (<code class="sg-code">--inline-link-color</code>,
+        <code class="sg-code">--inline-link-hover-color</code>) so hover/focus always resolve to a
+        contrasting tone. For tone-coded surfaces, apply <code class="sg-code">.tone-surface</code> and
+        set base link color with <code class="sg-code">currentColor</code>.
+      </p>
+      <p class="sg-muted">
+        Rationale: tone-consistent links strengthen information scent and reduce visual contradiction.
+        When link color matches the surface context, actions read as part of that context rather than as
+        generic global UI accents.
+      </p>
 
       <h3 style="margin-top: var(--space-12);">Gradients</h3>
       <p class="sg-muted">Permitted as a web-only expression — never on the logo lockup.</p>
@@ -448,6 +485,10 @@ const subbrands = [
         but always a corner radius of <code class="sg-code">4px</code>,
         <code class="sg-code">8px</code>, or <code class="sg-code">16px</code>. Each
         panel sits in space with an inner frame aligned to the underlying grid.
+      </p>
+      <p class="sg-muted">
+        Panels are tone-coded surfaces: text and links inside them should inherit
+        panel tone so actions remain contextually coherent.
       </p>
       <div class="sg-panel-demo">
         <div class="sg-panel" style="background: var(--violet); color: var(--violet-dark); border-radius: 4px;">

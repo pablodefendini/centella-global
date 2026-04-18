@@ -86,7 +86,34 @@ linear-gradient(135deg, var(--investment), var(--advisory));     /* lime → tea
 - Use `-dark` variants for authority, `-light` variants for space.
 - Avoid treating all colors as equal — hierarchy matters.
 - Color should support meaning, not replace it.
+- **Hard rule:** inline-link hover/focus states should always use a contrasting tone relative to the link's base color.
+- **Hard rule:** links inside tone-coded surfaces must inherit the surface tone and keep contrasting tone-based hover/focus states (never switch to unrelated global accents).
 - Never recolor the logo lockup outside the approved palette.
+
+**Implementation note (required):**
+
+```css
+.inline-link {
+  --inline-link-color: var(--accent-purple);
+  --inline-link-hover-color: var(--accent-coral); /* contrasting tone */
+  color: var(--inline-link-color);
+}
+
+.inline-link:hover,
+.inline-link:focus-visible {
+  color: var(--inline-link-hover-color);
+}
+
+.tone-surface a:not(.btn) {
+  --inline-link-color: currentColor;
+  --inline-link-hover-color: color-mix(in srgb, currentColor 82%, white);
+}
+
+.tone-surface a:not(.btn):hover,
+.tone-surface a:not(.btn):focus-visible {
+  color: var(--inline-link-hover-color);
+}
+```
 
 ---
 
@@ -102,7 +129,7 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 | `--font-heading` | `Barlow`                 | Card titles, sub-headlines, contexts where comfort matters.        |
 | `--font-semi`    | `Barlow Semi Condensed`  | Labels, nav, buttons, eyebrows, metadata. Always tracked out.      |
 | `--font-body`    | `Barlow`                 | Paragraphs, form fields, interface copy, long-form reading. Regular width for comfort and endurance. |
-| `--font-mono`    | `SF Mono, Fira Code, …`  | Code, technical values, hex codes.                                 |
+| `--font-mono`    | `Barlow Condensed`       | Code, technical values, hex codes. One family, many voices — monospaced contexts use Barlow Condensed rather than a separate mono face. |
 
 **One family, many voices.** The Barlow superfamily — Condensed, Regular, and Semi Condensed — does all the work. Discipline inside one family reinforces authority more than reaching for a second typeface ever could. Hierarchy comes from width, weight, and scale, not from introducing a serif.
 
@@ -121,7 +148,7 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 | `--text-sm`   | `0.806rem` | Small body, secondary copy, form labels.                        |
 | `--text-xs`   | `0.65rem`  | Eyebrows, meta, uppercase labels, ticker, captions.             |
 
-**Hero headlines** may scale above `--text-4xl` using a fluid clamp — e.g. `clamp(3rem, 9vw, 6rem)` — always in `--font-display`, weight `400–500`, letter-spacing `-0.03em`, line-height `0.92–0.95`.
+**Hero headlines** use the `.display` utility: `--font-display` (Barlow Condensed) at weight `300` (light), fluid `clamp(3rem, 9vw, 6rem)`, letter-spacing `-0.03em`, line-height `0.92`. Accent phrases inline with `.display__accent` (weight `800` + an approved brand gradient **clipped to text** via `background-clip: text`). Default gradient fill is `--grad-violet-coral`; other fills use modifier classes `display__accent--cyan-lime`, `display__accent--coral-orange`, `display__accent--pink-violet`, `display__accent--cyan-violet`, `display__accent--lime-teal`, or `display__accent--violet-coral` (explicit). Add **`data-random-accent-gradient`** on a span for a per-load random choice among those six. The 300 ↔ 800 contrast is the signature — don't approximate it with 500/700.
 
 ### Heading assignments
 
@@ -156,16 +183,38 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 ### Gradient display type (novel — web only)
 
-Hero moments may use Barlow Condensed in lighter display weights (`400–500`) with text clipped to a brand gradient. Reserve for hero headlines; never on logo, nav, or body copy.
+The signature display treatment pairs a light (`300`) Barlow Condensed base with an inline extrabold (`800`) accent phrase, with the gradient clipped to the glyph shapes (`background-clip: text`). Reserve for hero headlines; never on logo, nav, or body copy. Any of the six approved `--grad-*` tokens may back accent text via the `display__accent--*` modifiers (see `src/styles/global.css`); surfaces and borders still use the same tokens where appropriate — the split is *context*, not a different palette.
+
+**Implementation rule:** set gradient fills with **`background-image`**, not the `background` shorthand, on accent or whole-headline treatments. The shorthand resets `background-clip` and produces a rectangular gradient behind the text.
+
+```html
+<h1 class="display">
+  <span class="display__accent" data-random-accent-gradient>Power. Strategy.</span> Win.
+</h1>
+```
 
 ```css
-h1 {
-  background: linear-gradient(135deg, var(--violet), var(--networking));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
 }
+.display__accent {
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-color: transparent;
+  background-image: var(--grad-violet-coral);
+  background-repeat: no-repeat;
+}
+/* Variants: .display__accent.display__accent--cyan-lime { background-image: var(--grad-cyan-lime); } … */
 ```
+
+Use `.display--gradient` on the whole element only in the rare case where the entire headline is the accent.
 
 ---
 
@@ -250,6 +299,13 @@ Prefer these shared utilities before creating page-local CSS:
 - `.page-intro` — standard intro paragraph width/spacing
 - `.page-simple` — narrow single-column content wrapper
 - `.page-copy` — standard long-form body copy style for simple pages
+- `.display` — hero display type (`--font-display` 300 light, fluid `clamp(3rem, 9vw, 6rem)`, tight tracking, line-height `0.92`)
+- `.display__accent` — inline span inside `.display`: weight 800 + default `--grad-violet-coral` via `background-image`, clipped to text; pair with `display__accent--*` for other approved gradients or `data-random-accent-gradient` for a per-load random variant (see `RandomDisplayAccents.astro`)
+- `.display--gradient` — element-level fallback that clips the whole headline to the default gradient (rare; hero only; never on logo/nav/body); variant classes use the same `display__accent--*` naming when needed
+- `.eyebrow`, `.label` — Barlow Semi Condensed 600, uppercase, tracked `0.15em`, muted color
+- `.lede`, `.pull-quote` — Barlow 300, `--text-xl`, line-height 1.5
+
+**Element-level typography is intentionally unstyled.** `h1`–`h6` and `p` use browser defaults; reach for the utilities above (or compose directly with `--font-*` / `--text-*` tokens) to apply hierarchy. Do not add element-level selectors (`h1 { … }`) to `global.css`.
 
 Rule: if a local selector only repeats tokenized spacing/typography already represented by these utilities, use the utility class instead of adding new local CSS.
 
@@ -374,6 +430,9 @@ Primary button hover never changes hue — only elevation and glow.
   padding: var(--space-8) var(--space-6);
 }
 ```
+
+- **Hard rule:** any text link inside a panel must inherit panel tone (`currentColor`) and use tone-based hover/focus states.
+- Add `.tone-surface` to any tone-coded panel/container to enforce this behavior site-wide.
 
 ### Icons
 
@@ -530,6 +589,26 @@ All three share the Spark lockup, typography, and color system. Each has a singl
 | Centella Impact            | `--investment` (`#CCFF00`) | Serious, disciplined, systems-oriented.                     |
 
 Programs and events (e.g. Spark Summit, Leadership Labs) are nested under sub-brands — never parallel to them.
+
+---
+
+## Pending / planned work
+
+Tracked here so it doesn't get lost across sessions.
+
+### Token vocabulary (canonical vs legacy)
+
+The canonical token names are the brand-family names: `--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech` (+ `-dark` / `-light` variants). An older `--accent-*` vocabulary (`--accent-purple`, `--accent-coral`, `--accent-lime`, `--accent-cyan`, `--accent-orange`, `--accent-pink`) still exists in `global.css` as **deprecated aliases** pointing at the canonical tokens. Two legacy names — `--accent-teal` (`#00A3B6`) and `--accent-green` (`#6EA92B`) — have **no canonical equivalent** in the brand palette and should be treated as stale.
+
+- **New code:** always use canonical names.
+- **Deferred work (separate PR):** mechanical rename pass across `src/` to replace every `--accent-*` reference with its canonical equivalent, then delete the alias block from `global.css`. Kept out of the design-system consolidation to limit blast radius.
+
+### Self-host Barlow & Barlow Condensed
+
+All font families are loaded from Google Fonts today via `Base.astro`. The Centella Design System handoff bundle includes local TTFs for Barlow (100–900 + italics) and Barlow Condensed (100–900 + italics) — not Barlow Semi Condensed.
+
+- **Deferred work:** copy the TTFs to `public/fonts/`, register `@font-face` declarations in `global.css`, drop Barlow + Barlow Condensed from the Google Fonts request, preload the 2–3 weights used above the fold. Barlow Semi Condensed stays on Google Fonts until brand delivers local files.
+- **Why defer:** this is a perf win (fewer third-party requests, better Global South latency) but orthogonal to the current design-system consolidation. Worth its own PR with before/after Lighthouse numbers.
 
 ---
 

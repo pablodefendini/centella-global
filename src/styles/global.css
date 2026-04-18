@@ -11,15 +11,6 @@
   --bg-elevated: #151517;
   --bg-lavender: #F7EDFF;
 
-  --accent-teal: #00A3B6;
-  --accent-cyan: #00E5FF;
-  --accent-coral: #FF6B6B;
-  --accent-green: #6EA92B;
-  --accent-lime: #CCFF00;
-  --accent-purple: #C77DFF;
-  --accent-orange: #FF9500;
-  --accent-pink: #FF66C4;
-
   /* Brand color families — per Centella Brand Guidelines v1.0 */
   /* Principal brand */
   --violet: #C77DFF;
@@ -43,6 +34,37 @@
   --tech-dark: #2A1522;
   --tech-light: #FFE6F5;
 
+  /* ---------------------------------------------------------------
+     DEPRECATED: legacy --accent-* names. Aliased to canonical tokens
+     above. Do NOT use in new code. A full rename pass is planned —
+     see `design.md` → "Token vocabulary (canonical vs legacy)".
+     --accent-teal / --accent-green have no canonical equivalent
+     in the brand palette and are kept only to avoid breaking any
+     stray references; treat them as stale.
+     --------------------------------------------------------------- */
+  --accent-purple: var(--violet);
+  --accent-coral:  var(--networking);
+  --accent-lime:   var(--investment);
+  --accent-cyan:   var(--advisory);
+  --accent-orange: var(--global);
+  --accent-pink:   var(--tech);
+  --accent-teal:   #00A3B6;  /* stale — no canonical equivalent */
+  --accent-green:  #6EA92B;  /* stale — no canonical equivalent */
+
+  /* Semantic state */
+  --success: var(--investment);
+  --error:   var(--networking);
+  --warning: var(--global);
+  --info:    var(--advisory);
+
+  /* Approved gradients (web only — never on logo) */
+  --grad-violet-coral: linear-gradient(135deg, var(--violet),     var(--networking));
+  --grad-cyan-lime:    linear-gradient(135deg, var(--advisory),   var(--investment));
+  --grad-coral-orange: linear-gradient(135deg, var(--networking), var(--global));
+  --grad-pink-violet:  linear-gradient(135deg, var(--tech),       var(--violet));
+  --grad-cyan-violet:  linear-gradient(135deg, var(--advisory),   var(--violet));
+  --grad-lime-teal:    linear-gradient(135deg, var(--investment), var(--advisory));
+
   /* Semantic colors */
   --color-bg: var(--bg-deep);
   --color-bg-alt: var(--bg-surface);
@@ -55,12 +77,18 @@
   --color-accent-hover: var(--accent-coral);
   --color-accent-text: var(--bg-deep);
 
-  /* Typography */
+  /* Typography
+     NOTE: fonts are currently loaded from Google Fonts in Base.astro.
+     TODO(perf): migrate Barlow + Barlow Condensed to self-hosted
+     @font-face files under /public/fonts/ (TTFs supplied in the
+     Centella Design System handoff bundle). Keeps Barlow Semi
+     Condensed on Google Fonts until brand delivers local files. */
   --font-display: 'Barlow Condensed', system-ui, sans-serif;
   --font-heading: 'Barlow', system-ui, sans-serif;
   --font-semi: 'Barlow Semi Condensed', system-ui, sans-serif;
   --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  /* Mono uses Barlow Condensed by design — "one family, many voices". */
+  --font-mono: 'Barlow Condensed', ui-monospace, 'SF Mono', monospace;
 
   --text-xs: 0.65rem;
   --text-sm: 0.806rem;
@@ -98,10 +126,29 @@
   --touch-target-min: 2.75rem;
   --prose-max-ch: 60ch;
 
+  /* Radius — panels/framed surfaces must use 4 / 8 / 16 only.
+     Other sizes exist for cards, chips, pills, avatars. */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px; /* alias of --radius-pill for handoff compatibility */
+
+  /* Shadow — low-shadow system; never stack more than two */
+  --shadow-focus: 0 0 0 3px rgba(199, 125, 255, 0.15);
+  --shadow-glow:  0 0 24px rgba(255, 107, 107, 0.4);
+  --shadow-hover: 0 0 30px rgba(255, 107, 107, 0.35), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-card:  0 12px 32px rgba(0, 0, 0, 0.4);
+
   /* Motion */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-dramatic: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration: 200ms;
 }
 
 /* --- Reset --- */
@@ -138,13 +185,28 @@ input, button, textarea, select {
 }
 
 a {
-  color: var(--accent-purple);
+  --inline-link-color: var(--accent-purple);
+  --inline-link-hover-color: var(--accent-coral);
+  color: var(--inline-link-color);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
-a:hover {
-  color: var(--accent-coral);
+a:hover,
+a:focus-visible {
+  color: var(--inline-link-hover-color);
+}
+
+/* Links inside tone-coded surfaces stay contextual but use the same hover contrast pattern. */
+.tone-surface a:not(.btn) {
+  --inline-link-color: currentColor;
+  --inline-link-hover-color: color-mix(in srgb, currentColor 82%, white);
+}
+
+.tone-surface a:not(.btn):focus-visible {
+  outline: 2px solid color-mix(in srgb, currentColor 65%, transparent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 ::selection {
@@ -285,6 +347,79 @@ p + p { margin-top: var(--space-6); }
 .page-copy {
   margin: 0;
   color: var(--color-text-muted);
+}
+
+/* --- Typography utilities (element styles intentionally left to the
+       browser default; reach for these utilities instead) --- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+/* Inline accent inside .display — heavy weight + approved gradient clipped to
+   the highlighted phrase. The contrast between 300 light and 800 extrabold
+   is the signature; don't approximate it with 500/700. Use .display--gradient
+   on the whole element only when the entire headline is the accent.
+   Gradient variants: .display__accent--{violet-coral|cyan-lime|…} (see below),
+   or add data-random-accent-gradient for a per-load random pick (see Base layout). */
+/* Use background-image (not background shorthand) so background-clip: text is
+   not reset to border-box — shorthand would paint a gradient box behind glyphs. */
+.display__accent,
+.display--gradient {
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-color: transparent;
+  background-image: var(--grad-violet-coral);
+  background-repeat: no-repeat;
+}
+
+.display__accent.display__accent--violet-coral,
+.display--gradient.display__accent--violet-coral {
+  background-image: var(--grad-violet-coral);
+}
+.display__accent.display__accent--cyan-lime,
+.display--gradient.display__accent--cyan-lime {
+  background-image: var(--grad-cyan-lime);
+}
+.display__accent.display__accent--coral-orange,
+.display--gradient.display__accent--coral-orange {
+  background-image: var(--grad-coral-orange);
+}
+.display__accent.display__accent--pink-violet,
+.display--gradient.display__accent--pink-violet {
+  background-image: var(--grad-pink-violet);
+}
+.display__accent.display__accent--cyan-violet,
+.display--gradient.display__accent--cyan-violet {
+  background-image: var(--grad-cyan-violet);
+}
+.display__accent.display__accent--lime-teal,
+.display--gradient.display__accent--lime-teal {
+  background-image: var(--grad-lime-teal);
+}
+
+.eyebrow,
+.label {
+  font-family: var(--font-semi);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+}
+
+.lede,
+.pull-quote {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--text-xl);
+  line-height: 1.5;
 }
 
 /* --- Notion Content Blocks --- */

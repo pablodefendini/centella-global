@@ -61,9 +61,10 @@ const foundationalPillars = [
         <div class="home-min__hero-scrim"></div>
       </div>
       <div class="home-min__hero-inner">
-        <h1 id="home-hero-heading" class="home-min__headline">
-          We re-energize movements,<br />
-          restore citizen power, and build the next generation of democratic leaders
+        <h1 id="home-hero-heading" class="display home-min__headline">
+          We <span class="display__accent" data-random-accent-gradient>re-energize</span> movements,<br />
+          restore <span class="display__accent" data-random-accent-gradient>citizen power</span>, and build the next generation of{' '}
+          <span class="display__accent" data-random-accent-gradient>democratic leaders</span>
         </h1>
       </div>
     </section>
@@ -105,14 +106,17 @@ const foundationalPillars = [
         </h2>
         <div class="home-min__pillars-list" role="list">
           {foundationalPillars.map((pillar) => (
-            <article class:list={['home-min__pillar', `home-min__pillar--${pillar.tone}`]} role="listitem">
+            <article class:list={['home-min__pillar', 'tone-surface', `home-min__pillar--${pillar.tone}`]} role="listitem">
               <div class="home-min__pillar-frame">
                 <div class="home-min__pillar-icon-wrap">
                   <Icon name={pillar.icon} size={32} class="home-min__pillar-icon" label={`${pillar.title} icon`} />
                 </div>
                 <h3 class="home-min__pillar-title">{pillar.title}</h3>
                 <p class="home-min__pillar-body">{pillar.body}</p>
-                <a href={pillar.href} class="home-min__pillar-cta">{pillar.cta}</a>
+                <a href={pillar.href} class="home-min__pillar-cta">
+                  {pillar.cta}
+                  <span aria-hidden="true"> →</span>
+                </a>
               </div>
             </article>
           ))}
@@ -331,20 +335,7 @@ const foundationalPillars = [
   }
 
   .home-min__pillar-cta {
-    width: fit-content;
-    text-decoration: none;
-    min-height: var(--touch-target-min);
-    display: inline-flex;
-    align-items: center;
-    color: var(--color-text);
-    border-bottom: 1px solid color-mix(in srgb, currentColor 55%, transparent);
-    transition: color var(--transition-fast), border-color var(--transition-fast);
-  }
-
-  .home-min__pillar-cta:hover,
-  .home-min__pillar-cta:focus-visible {
-    color: color-mix(in srgb, currentColor 72%, var(--color-text));
-    border-color: currentColor;
+    color: currentColor;
   }
 
 </style>

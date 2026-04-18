@@ -1,8 +1,11 @@
 ---
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/events/', label: 'Events' },
+  { href: '/centella-advisory/', label: 'Centella Advisory' },
+  { href: '/centella-institute/', label: 'Centella Institute events' },
+  { href: '/centella-impact/', label: 'Centella Impact' },
   { href: '/blog/', label: 'Blog' },
+  { href: '/styleguide/', label: 'Styleguide' },
 ] as const;
 ---
 
@@ -129,7 +132,7 @@ const navLinks = [
 
   .site-header__menu-toggle {
     position: fixed;
-    top: 32px;
+    top: clamp(14px, 2.4vw, 32px);
     right: var(--gutter);
     z-index: 201;
     display: inline-flex;
@@ -241,7 +244,7 @@ const navLinks = [
   .site-header__menu-nav {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .site-header__menu-list {

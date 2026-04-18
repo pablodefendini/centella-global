@@ -1,12 +1,25 @@
 ---
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/events/', label: 'Events' },
+  { href: '/centella-advisory/', label: 'Centella Advisory' },
+  { href: '/centella-institute/', label: 'Centella Institute events' },
+  { href: '/centella-impact/', label: 'Centella Impact' },
   { href: '/blog/', label: 'Blog' },
+  { href: '/styleguide/', label: 'Styleguide' },
 ] as const;
 ---
 
 <footer class="site-footer">
+  <div class="site-footer__logo-wrap">
+    <img
+      src="/logo-divider.svg"
+      alt=""
+      width="8694"
+      height="1079"
+      class="site-footer__logo-divider"
+      decoding="async"
+    />
+  </div>
   <nav class="site-footer__nav" aria-label="Footer">
     <ul class="site-footer__list">
       {navLinks.map(({ href, label }) => (
@@ -23,6 +36,21 @@ const navLinks = [
     padding: var(--space-6) var(--gutter);
     border-top: 1px solid var(--color-border);
     margin-top: auto;
+  }
+
+  .site-footer__logo-wrap {
+    margin-bottom: var(--space-6);
+    overflow: hidden;
+  }
+
+  .site-footer__logo-divider {
+    display: block;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    height: auto;
+    opacity: 0.9;
+    filter: brightness(0) invert(1) brightness(1.35) contrast(1.12);
   }
 
   .site-footer__list {
