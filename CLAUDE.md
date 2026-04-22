@@ -43,6 +43,7 @@ src/
 │   ├── centella-advisory.astro
 │   ├── centella-institute.astro
 │   ├── centella-impact.astro
+│   ├── styleguide.astro      # Living styleguide — tokens, typography, components
 │   ├── events/
 │   │   ├── index.astro       # Events listing
 │   │   └── [slug].astro      # Dynamic event pages
@@ -90,6 +91,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Don't put the Mailchimp API key in client-side code.** The form POSTs to `/api/subscribe`, which handles the Mailchimp call server-side.
 - **Don't use heavy JS frameworks for components.** Astro components are zero-JS by default. Only use `client:load` or `client:visible` directives when a component genuinely needs interactivity (the Mailchimp form is the main case).
 - **Don't assume Notion page body structure.** The block renderer should handle any block type gracefully — headings, paragraphs, lists, images, toggles, callouts. If it encounters an unknown block type, render nothing rather than crashing.
+- **Don't treat `presentations/` as part of the site.** It's an untracked local scratch folder for standalone HTML decks (e.g. NGL Barcelona). It is not in git, not referenced from `src/`, and not shipped by the build. Leave it alone unless I ask you to touch a deck explicitly.
 
 ## Patterns
 

@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 8 — April 22, 2026: README catches up with the repo
+
+Quick one. I noticed the README was still describing this project as if it were a two-section site — events and blog — with a note about Mailchimp on top. That was true three entries ago. Since then I've added the three pillar pages (`/centella-advisory`, `/centella-institute`, `/centella-impact`), a `/styleguide` route that mirrors what `design.md` documents, and `design.md` itself has grown from "some tokens" into a full design system the agent reads before it styles anything. The README hadn't heard any of that news.
+
+So I rewrote the overview to actually describe what the site is: a Global-South-facing org site with a homepage, three pillar pages, events, blog, and a living styleguide, all statically rendered from Notion at build time. I filled in the repo-layout section with the routes that were missing, the layouts, the real component list, and the `mailchimp.ts` helper and `optimize-hero-media.sh` script that had been quietly doing work without getting credit. I also fixed the `design.md` line so a newcomer doesn't read "visual tokens and UI rules" and think it's a tiny file.
+
+While I was in there, I tightened up `CLAUDE.md` too. The `src/pages/` tree in the structure section was missing `styleguide.astro`, and I added a new "Things to avoid" bullet: the `presentations/` directory at the repo root is an untracked local scratch folder — the NGL Barcelona deck lives there — and future-me (human or agent) should not try to wire it into the build or reference it from `src/`. It's ignored on purpose.
+
+No code changed. This was a docs-drift pass.
+
+---
+
 ## Entry 7 — April 18, 2026: Display hero type, gradient accents that actually clip, and docs in sync
 
 I put the homepage hero headline on the real `.display` rail — Barlow Condensed light at the big fluid size — and wrapped the phrases I care about in `.display__accent` so the 300 vs 800 contrast reads the way the brand spec intended. I did not want every accent stuck on violet→coral forever, so I wired all six approved `--grad-*` tokens to explicit modifier classes and added an optional `data-random-accent-gradient` hook: a tiny inline script at the end of `Base.astro` picks one gradient per marked span on each load. No island, no bundle — just class toggles after the DOM exists.

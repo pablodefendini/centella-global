@@ -1,6 +1,8 @@
 # Centella Global — Website
 
-Static marketing site for [Centella](https://centellaglobal.com): events and blog content from **Notion**, email signups via **Mailchimp**, hosted on **Vercel**. Built with **Astro** (static output, minimal client JavaScript).
+Static marketing site for [Centella](https://centellaglobal.com), an organization that works with political leaders and movement builders across the Global South. Built with **Astro** (static output, minimal client JavaScript), content managed in **Notion**, email capture via **Mailchimp**, hosted on **Vercel**.
+
+The site covers the homepage, the three foundational pillars (Advisory, Institute, Impact), an events section (upcoming, past, and dynamic event pages), a blog, and a living styleguide. All content — events, blog posts, speakers, attendees, sponsors — is fetched from Notion at build time; nothing is fetched client-side.
 
 ## Requirements
 
@@ -60,20 +62,24 @@ Never commit `.env`. It is listed in `.gitignore`.
 
 | File                                 | Contents                                                                    |
 | ------------------------------------ | --------------------------------------------------------------------------- |
-| `[CLAUDE.md](./CLAUDE.md)`           | AI/editor orientation: constraints, structure, commands                     |
+| `[CLAUDE.md](./CLAUDE.md)`           | AI/editor orientation: constraints, structure, commands, patterns           |
+| `[design.md](./design.md)`           | Full design system — tokens, typography, components, states, accessibility  |
 | `[docs/PRD.md](./docs/PRD.md)`       | Product requirements, including media and progressive enhancement (**§11**) |
 | `[docs/MEMORY.md](./docs/MEMORY.md)` | Decision log                                                                |
-| `[docs/DIARY.md](./docs/DIARY.md)`   | Development diary                                                           |
-| `[design.md](./design.md)`           | Visual design tokens and UI rules                                           |
+| `[docs/DIARY.md](./docs/DIARY.md)`   | Development diary (Pablo's voice, reverse chronological)                    |
 
 
 ## Repo layout (short)
 
-- `src/pages/` — Routes (`/`, `/events/`, `/blog/`, etc.)
-- `src/lib/notion.ts` — Notion client and build-time queries
-- `src/styles/global.css` — Global styles and CSS variables
-- `api/subscribe.ts` — Vercel serverless handler for Mailchimp
-- `public/` — Static assets (logos, optimized hero media under `public/media/hero/`)
+- `src/pages/` — Routes: `/` (homepage), `/centella-advisory`, `/centella-institute`, `/centella-impact`, `/events/` (+ `[slug]`), `/blog/` (+ `[slug]`), `/styleguide`
+- `src/layouts/` — `Base.astro` (site chrome), `Event.astro` (event page layout)
+- `src/components/` — `SiteHeader`, `SiteFooter`, `MailchimpForm`, `EventCard`, `SpeakerCard`, `AttendeeCard`, `ScheduleBlock`, `SponsorGrid`, `BlogPostCard`, `RandomDisplayAccents`
+- `src/lib/notion.ts` — Notion client and build-time queries (events, blog, speakers, attendees, sponsors)
+- `src/lib/mailchimp.ts` — Mailchimp API helper (server-side only)
+- `src/styles/global.css` — Reset, typography, custom properties, utility classes
+- `api/subscribe.ts` — Vercel serverless handler for Mailchimp signups
+- `public/media/hero/` — Optimized homepage hero assets (WebP poster + 540p/720p MP4s)
+- `scripts/optimize-hero-media.sh` — ffmpeg + cwebp pipeline for regenerating hero media
 
 ## License
 
