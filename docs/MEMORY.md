@@ -6,6 +6,39 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-26 — Presentation decks as first-class Astro pages
+
+### Decision
+
+Decks (NGL Barcelona was the first) live at `src/pages/presentations/[slug].astro` and ship with the site build. The earlier rule that `presentations/` was an untracked scratch folder is reversed.
+
+### Why
+
+If a deck has to be sent to anyone — speakers, sponsors, colleagues — it needs a URL. Hosting it elsewhere just to get a URL is silly when the site is already a static deploy on Vercel.
+
+### Layout
+
+`src/layouts/Presentation.astro` is a minimal full-bleed shell: `<html><head>{meta + title}</head><body><slot/></body></html>`. No `SiteHeader`, no `SiteFooter`. Decks own the viewport — site chrome would fight the design.
+
+### Astro directives for self-contained decks
+
+Decks brought in from external tools (Pencil, Keynote exports, hand-built HTML) typically have their own scaler, fonts, web components, and inline JS. To stop Astro from touching any of it:
+
+- Every `<style>` block in the page → `<style is:global>` (no scope hashing).
+- Every `<script>` block in the page → `<script is:inline>` (no bundling, no hoisting).
+
+Astro will still extract `is:global` styles to a `/_astro/*.css` file at build, which is fine.
+
+### Asset paths
+
+Per-deck assets (fonts, images, logos) live at `public/presentations/[slug]/assets/`, referenced from CSS/HTML with absolute paths (`/presentations/[slug]/assets/...`). Absolute paths avoid surprises with trailing-slash and prefetch behavior.
+
+### CLAUDE.md / design.md updates
+
+Both updated to document the convention. The previous "don't touch `presentations/`" rule in `CLAUDE.md` is replaced with the actual convention.
+
+---
+
 ## 2026-04-18 — Homepage display headline, accent gradient variants, and text-clip fix
 
 ### Hero typography

@@ -6,6 +6,24 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 9 — April 26, 2026: Decks become first-class pages
+
+Four days ago I told future-me — in this diary, in `CLAUDE.md`, in the rule against touching `presentations/` — that the NGL Barcelona deck was a local scratch artifact and the build had no business knowing about it. Today I reversed that. The reasoning was simple once I said it out loud: if I ever want to send someone a link to the deck, it has to live at a URL. A folder on my laptop is not a URL.
+
+So the deck is now a first-class Astro page at `/presentations/ngl-barcelona/`. The mechanics:
+
+- New `Presentation.astro` layout — minimal full-bleed shell, no `SiteHeader`, no `SiteFooter`. Decks own the viewport. The site chrome would only fight the design.
+- The deck itself is one `.astro` file at `src/pages/presentations/ngl-barcelona.astro`. Three `<style>` blocks marked `is:global` so Astro doesn't scope-rewrite the CSS, five `<script>` blocks marked `is:inline` so it doesn't try to bundle them. The deck has its own internal scaler, web component, and edit-mode hooks — the Astro toolchain doesn't need to be clever about any of it.
+- Fonts and the institute logo moved from `presentations/ngl-barcelona/assets/` to `public/presentations/ngl-barcelona/assets/`. URLs rewritten to absolute paths so they resolve regardless of trailing-slash behavior.
+
+I updated `CLAUDE.md` so the directory tree shows `Presentation.astro` and the new `src/pages/presentations/[slug].astro` slot, and replaced the old "don't touch `presentations/`" rule with the actual convention: where decks live, where their assets live, what directives the inline `<style>`/`<script>` blocks need. `design.md` and `MEMORY.md` got the same treatment so the agent and the human reading either file see the same story.
+
+Build is green. The whole deck — 138 woff2 files and all — comes through the build at 12ms because it's just static assets and one templated HTML page. The deck reaching production is a one-line Vercel deploy away.
+
+The lesson, mostly for me: when I write a "don't touch this" rule for an agent, I should ask whether I'm protecting a real boundary or just deferring a decision. This one was deferred. Now it isn't.
+
+---
+
 ## Entry 8 — April 22, 2026: README catches up with the repo
 
 Quick one. I noticed the README was still describing this project as if it were a two-section site — events and blog — with a note about Mailchimp on top. That was true three entries ago. Since then I've added the three pillar pages (`/centella-advisory`, `/centella-institute`, `/centella-impact`), a `/styleguide` route that mirrors what `design.md` documents, and `design.md` itself has grown from "some tokens" into a full design system the agent reads before it styles anything. The README hadn't heard any of that news.

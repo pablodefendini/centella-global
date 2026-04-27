@@ -637,6 +637,17 @@ Programs and events (e.g. Spark Summit, Leadership Labs) are nested under sub-br
 
 ---
 
+## Presentation decks
+
+Standalone HTML decks (e.g. NGL Barcelona) ship as first-class Astro pages under `/presentations/[slug]/` so they're shareable as URLs.
+
+- **Layout:** `src/layouts/Presentation.astro` — minimal full-bleed HTML shell. No `SiteHeader`, no `SiteFooter`. The deck owns the viewport.
+- **Page:** `src/pages/presentations/[slug].astro` — the deck markup itself. All inline `<style>` blocks must use `is:global` and all inline `<script>` blocks must use `is:inline` so Astro doesn't scope-rewrite the CSS or hoist/bundle the JS. Decks brought in from external tools usually have their own scaler, web components, and font loading; the toolchain should leave them alone.
+- **Assets:** `public/presentations/[slug]/assets/` for fonts, images, logos. Reference with absolute paths (`/presentations/[slug]/assets/...`) so URLs resolve regardless of trailing-slash or prefetch behavior.
+- **Branding:** decks may diverge from the global token system when the venue or audience demands it (custom palettes, custom type pairings), but should keep the Centella Spark lockup and one of the brand-anchor accent colors as the through-line.
+
+---
+
 ## Pending / planned work
 
 Tracked here so it doesn't get lost across sessions.
