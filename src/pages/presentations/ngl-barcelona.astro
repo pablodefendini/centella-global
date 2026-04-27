@@ -1,6 +1,8 @@
-<!DOCTYPE html>
-<html lang="es"><head>
-<script>
+---
+import Presentation from '../../layouts/Presentation.astro';
+---
+<Presentation title="NGL Barcelona — Centella Institute" lang="es">
+<script is:inline>
   (function() {
     const isRO = (s) => typeof s === 'string' && s.indexOf('ResizeObserver') !== -1;
     const orig = console.error;
@@ -38,9 +40,7 @@
     }
   })();
 </script>
-<meta charset="utf-8">
-<title>NGL Barcelona — Centella Institute</title>
-<style>/* ============================================================
+<style is:global>/* ============================================================
    Centella Design System — Colors & Typography Tokens
    Derived from Centella Brand Guidelines v1.0 — February 2026
    Source: pablodefendini/centella-global @ src/styles/global.css + design.md
@@ -59,7 +59,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/7ee1a107-ac2f-4c81-88ef-1d38e9ada6f8.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/7ee1a107-ac2f-4c81-88ef-1d38e9ada6f8.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -68,7 +68,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/de9fdbf7-2700-4af2-aad9-e74c3a7ea298.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/de9fdbf7-2700-4af2-aad9-e74c3a7ea298.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -77,7 +77,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/795e92af-67ca-4045-bd10-b86ba29a3829.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/795e92af-67ca-4045-bd10-b86ba29a3829.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -86,7 +86,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/b2115f50-26c2-4b40-bd84-6dac6c39e761.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b2115f50-26c2-4b40-bd84-6dac6c39e761.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -95,7 +95,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/26517f58-b5a4-4b55-af85-e1c9086093d9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/26517f58-b5a4-4b55-af85-e1c9086093d9.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -104,7 +104,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/91f6a61e-658a-4961-8a5d-db3a166d6db9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/91f6a61e-658a-4961-8a5d-db3a166d6db9.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -113,7 +113,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/e65d51b8-dba2-4010-8cb5-62dd1abe9293.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/e65d51b8-dba2-4010-8cb5-62dd1abe9293.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -122,7 +122,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/1c8666de-54ce-4f63-93aa-49f98662b38a.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/1c8666de-54ce-4f63-93aa-49f98662b38a.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -131,7 +131,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/901055e8-8e21-46ac-8c56-2c93ca30da6b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/901055e8-8e21-46ac-8c56-2c93ca30da6b.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -140,7 +140,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/3017b371-5c6f-48ed-b2d1-259a57135b9d.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/3017b371-5c6f-48ed-b2d1-259a57135b9d.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -149,7 +149,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/bf07e719-c9cf-43e6-9f95-13b9af4a6c21.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/bf07e719-c9cf-43e6-9f95-13b9af4a6c21.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -158,7 +158,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/274fd5d9-be42-40cf-9dab-f1bb1b1dafc0.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/274fd5d9-be42-40cf-9dab-f1bb1b1dafc0.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -167,7 +167,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/8965b96f-f784-47f6-aaaf-df12bca36e13.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8965b96f-f784-47f6-aaaf-df12bca36e13.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -176,7 +176,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/a232a2ed-cabc-4aee-a195-9a72fe1cbdef.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a232a2ed-cabc-4aee-a195-9a72fe1cbdef.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -185,7 +185,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/a0e82a29-46a3-486b-a4c8-4d240c0acd61.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a0e82a29-46a3-486b-a4c8-4d240c0acd61.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -194,7 +194,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/bc962457-642d-40ca-996b-8924ada6d589.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/bc962457-642d-40ca-996b-8924ada6d589.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -203,7 +203,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/deffe764-c3ad-40fd-a113-cba2934513b4.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/deffe764-c3ad-40fd-a113-cba2934513b4.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -212,7 +212,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/aa1a3876-a804-4d53-9cca-fd608c6dbc6b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/aa1a3876-a804-4d53-9cca-fd608c6dbc6b.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -221,7 +221,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/0fc04c9d-be06-4c0f-b6ae-0e732c4442e9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/0fc04c9d-be06-4c0f-b6ae-0e732c4442e9.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -230,7 +230,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/5e978fcc-4ffb-46f3-8f4f-59f1a7ef3e1f.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/5e978fcc-4ffb-46f3-8f4f-59f1a7ef3e1f.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -239,7 +239,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/e1ac36ec-9c6e-4e11-a6cb-f6965d2546e7.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/e1ac36ec-9c6e-4e11-a6cb-f6965d2546e7.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -248,7 +248,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/4ff5d449-7f7f-4f50-9769-716334abc067.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/4ff5d449-7f7f-4f50-9769-716334abc067.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -257,7 +257,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/77bc380a-3da9-4cce-97e0-e67258865883.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/77bc380a-3da9-4cce-97e0-e67258865883.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -266,7 +266,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/02c006e6-3367-442e-9e05-6251ca216d52.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/02c006e6-3367-442e-9e05-6251ca216d52.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -275,7 +275,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/a747e16a-38ae-401b-bf63-d21fc4417a2c.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a747e16a-38ae-401b-bf63-d21fc4417a2c.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -284,7 +284,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/c42ca10f-1f01-45bc-b8f0-f301a666e16a.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c42ca10f-1f01-45bc-b8f0-f301a666e16a.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -293,7 +293,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/ebb47108-b278-4e3d-9f79-513e98f9bdfa.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/ebb47108-b278-4e3d-9f79-513e98f9bdfa.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -302,7 +302,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/752b458c-1b07-4fae-a759-c8987462f45e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/752b458c-1b07-4fae-a759-c8987462f45e.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -311,7 +311,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/5fc272c4-44f5-4092-98e1-8787f4506377.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/5fc272c4-44f5-4092-98e1-8787f4506377.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -320,7 +320,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/c44eea50-a2f0-487c-8574-a5ac9e5a024e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c44eea50-a2f0-487c-8574-a5ac9e5a024e.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -329,7 +329,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/367be415-aa5b-441c-a5ed-c25ef6a98aff.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/367be415-aa5b-441c-a5ed-c25ef6a98aff.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -338,7 +338,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/a74f4f0a-c112-44c9-8178-0b7fe2b6c44a.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a74f4f0a-c112-44c9-8178-0b7fe2b6c44a.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -347,7 +347,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/ae4bb931-5ec9-414d-86ed-338d5fb60251.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/ae4bb931-5ec9-414d-86ed-338d5fb60251.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -356,7 +356,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/30cb3209-b2e6-4d96-8782-8871e4fc20f9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/30cb3209-b2e6-4d96-8782-8871e4fc20f9.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -365,7 +365,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/6d877998-7b85-426b-b4a6-dad963351405.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6d877998-7b85-426b-b4a6-dad963351405.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -374,7 +374,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/4c8755cf-057f-46ea-9513-91f188f7da95.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/4c8755cf-057f-46ea-9513-91f188f7da95.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -383,7 +383,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/61c3d8bf-a8e6-43f5-8231-e274b7ad6b1e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/61c3d8bf-a8e6-43f5-8231-e274b7ad6b1e.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -392,7 +392,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/29a82ab1-47c9-4288-ac52-be61fdafb9f2.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/29a82ab1-47c9-4288-ac52-be61fdafb9f2.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -401,7 +401,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/9fdc5497-6cc7-4f15-a02d-62ab7b584c04.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/9fdc5497-6cc7-4f15-a02d-62ab7b584c04.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -410,7 +410,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/1a9f1eeb-e435-407c-91f4-20cd8f60f725.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/1a9f1eeb-e435-407c-91f4-20cd8f60f725.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -419,7 +419,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/90683e3f-8ecc-4409-bebe-424e66dfd861.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/90683e3f-8ecc-4409-bebe-424e66dfd861.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -428,7 +428,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/020ed42e-a2d6-48ae-9e3b-311bec4c6944.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/020ed42e-a2d6-48ae-9e3b-311bec4c6944.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -437,7 +437,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/d7ece0e3-f762-4a5d-aced-9648aa5eb732.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d7ece0e3-f762-4a5d-aced-9648aa5eb732.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -446,7 +446,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/8e95808e-ed29-492f-bb20-dae10257a2e8.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8e95808e-ed29-492f-bb20-dae10257a2e8.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -455,7 +455,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/329746e6-0f1f-4bb5-ab26-8fedd1056e60.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/329746e6-0f1f-4bb5-ab26-8fedd1056e60.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -464,7 +464,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/e4e50e9f-1702-4767-9ed7-674d1fec9949.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/e4e50e9f-1702-4767-9ed7-674d1fec9949.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -473,7 +473,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/d3cff59b-f950-4398-b9bc-6b47194492d1.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d3cff59b-f950-4398-b9bc-6b47194492d1.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -482,7 +482,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/8b97dea7-2f2f-4d21-8943-d2c374abc29e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8b97dea7-2f2f-4d21-8943-d2c374abc29e.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -491,7 +491,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/1b75f942-16fd-40f6-9e7f-7ecd1c8c9325.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/1b75f942-16fd-40f6-9e7f-7ecd1c8c9325.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -500,7 +500,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/6fc0c98d-3ce0-4831-8d5f-f6feb73b5612.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6fc0c98d-3ce0-4831-8d5f-f6feb73b5612.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -509,7 +509,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/f61a0ce1-eb8d-4ef4-969c-a588d10dda21.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/f61a0ce1-eb8d-4ef4-969c-a588d10dda21.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -518,7 +518,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/ace35320-2637-47ff-908a-ab89354403b2.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/ace35320-2637-47ff-908a-ab89354403b2.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -527,7 +527,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/531e7057-73f5-4f02-8431-925c0041bbaf.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/531e7057-73f5-4f02-8431-925c0041bbaf.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -536,7 +536,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/c250c870-0ab6-4c87-a8a6-5bc8e68357d9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c250c870-0ab6-4c87-a8a6-5bc8e68357d9.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -545,7 +545,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/d90c214a-bb41-4ce9-bb59-852020b4c161.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d90c214a-bb41-4ce9-bb59-852020b4c161.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -554,7 +554,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/2fbd5e98-79ba-4702-a3fe-72d7125f61a0.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/2fbd5e98-79ba-4702-a3fe-72d7125f61a0.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -563,7 +563,7 @@
   font-style: italic;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/9a9a0e25-5e2c-4aa4-8df3-5dd5f8488111.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/9a9a0e25-5e2c-4aa4-8df3-5dd5f8488111.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -572,7 +572,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/aced02ac-c67e-4eed-a4e3-6196fecf3adb.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/aced02ac-c67e-4eed-a4e3-6196fecf3adb.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -581,7 +581,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/682bc0eb-6535-4170-90b9-1e8b63fb78db.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/682bc0eb-6535-4170-90b9-1e8b63fb78db.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -590,7 +590,7 @@
   font-style: italic;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/09c13a63-1ed0-4e49-b555-be91226d8fe6.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/09c13a63-1ed0-4e49-b555-be91226d8fe6.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -599,7 +599,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/97e8609f-32f3-4069-b3e0-8197846da499.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/97e8609f-32f3-4069-b3e0-8197846da499.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -608,7 +608,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/70c86060-f6e6-43e6-b448-8ea0274bc67b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/70c86060-f6e6-43e6-b448-8ea0274bc67b.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -617,7 +617,7 @@
   font-style: italic;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/02346ce7-1ced-4c94-b967-45f9377d84e3.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/02346ce7-1ced-4c94-b967-45f9377d84e3.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -626,7 +626,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/6bd0da6b-3b39-4b6a-9e7c-c4945eb0c0b6.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6bd0da6b-3b39-4b6a-9e7c-c4945eb0c0b6.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -635,7 +635,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/82499e65-31fa-47c0-a00b-2e01c768826e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/82499e65-31fa-47c0-a00b-2e01c768826e.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -644,7 +644,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/15e7d449-f20b-40d6-87f5-432816b94415.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/15e7d449-f20b-40d6-87f5-432816b94415.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -653,7 +653,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/7e82f840-4966-4f38-b347-c8cb6637f02f.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/7e82f840-4966-4f38-b347-c8cb6637f02f.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -662,7 +662,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/cb35cab6-c003-4b58-b523-8aec45d7d83f.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/cb35cab6-c003-4b58-b523-8aec45d7d83f.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -671,7 +671,7 @@
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/37c009ee-0626-493d-b910-95586b96650a.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/37c009ee-0626-493d-b910-95586b96650a.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -680,7 +680,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/201a5370-ce2c-4bff-b1b5-44ba5021397d.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/201a5370-ce2c-4bff-b1b5-44ba5021397d.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -689,7 +689,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/478f2c63-1c33-44b2-8fb2-f5d9c10b6cc3.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/478f2c63-1c33-44b2-8fb2-f5d9c10b6cc3.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -698,7 +698,7 @@
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/2f563150-bfed-4473-85a3-bfc311312ff2.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/2f563150-bfed-4473-85a3-bfc311312ff2.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -707,7 +707,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/7ddcc6b8-ff98-44f6-9530-b1511607b1ea.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/7ddcc6b8-ff98-44f6-9530-b1511607b1ea.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -716,7 +716,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/603152e7-484e-4e0e-8640-80d84d806807.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/603152e7-484e-4e0e-8640-80d84d806807.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -725,7 +725,7 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/0b3e04e1-b231-4ea5-a2f8-3b80618019dc.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/0b3e04e1-b231-4ea5-a2f8-3b80618019dc.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -734,7 +734,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/e288bc7f-b0c3-452d-9730-2ab7a311c425.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/e288bc7f-b0c3-452d-9730-2ab7a311c425.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -743,7 +743,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/3ff152ec-9613-40a8-adff-b862c11f304d.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/3ff152ec-9613-40a8-adff-b862c11f304d.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -752,7 +752,7 @@
   font-style: italic;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/c1ffc372-e39a-4fd3-99d1-dea88e7d1d8a.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c1ffc372-e39a-4fd3-99d1-dea88e7d1d8a.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -761,7 +761,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/a5578590-8b16-4fb2-8891-5983010df0aa.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a5578590-8b16-4fb2-8891-5983010df0aa.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -770,7 +770,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/87c3079a-118e-4486-8699-05f94c828ec1.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/87c3079a-118e-4486-8699-05f94c828ec1.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -779,7 +779,7 @@
   font-style: italic;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/062d381b-04d5-4ef8-838b-ecbdec510f54.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/062d381b-04d5-4ef8-838b-ecbdec510f54.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -788,7 +788,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/c07fcc95-1a00-465d-9f2d-6546a9d08461.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c07fcc95-1a00-465d-9f2d-6546a9d08461.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -797,7 +797,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/04c62937-b0d0-492a-9994-f52e3a9be8a8.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/04c62937-b0d0-492a-9994-f52e3a9be8a8.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -806,7 +806,7 @@
   font-style: normal;
   font-weight: 100;
   font-display: swap;
-  src: url("assets/fonts/a86a09cb-a9fb-4647-9cf5-b602bd95ef8f.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a86a09cb-a9fb-4647-9cf5-b602bd95ef8f.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -815,7 +815,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/261aae9e-cf39-4d57-afda-3d201a6a9e24.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/261aae9e-cf39-4d57-afda-3d201a6a9e24.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -824,7 +824,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/1909d263-5aac-4b76-9dfd-075cbedb63ff.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/1909d263-5aac-4b76-9dfd-075cbedb63ff.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -833,7 +833,7 @@
   font-style: normal;
   font-weight: 200;
   font-display: swap;
-  src: url("assets/fonts/41d544bf-664c-44dd-b415-a3568be98833.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/41d544bf-664c-44dd-b415-a3568be98833.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -842,7 +842,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/63aca25d-49cf-4e8e-bd03-af74588d6dc6.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/63aca25d-49cf-4e8e-bd03-af74588d6dc6.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -851,7 +851,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/4b35e244-7b1f-4ef6-a35a-b7563a6cd371.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/4b35e244-7b1f-4ef6-a35a-b7563a6cd371.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -860,7 +860,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/d2690764-a9f1-443e-837c-1a4aae8e6f64.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d2690764-a9f1-443e-837c-1a4aae8e6f64.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -869,7 +869,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/2fcb4826-eac2-4ede-a471-13313b1e7005.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/2fcb4826-eac2-4ede-a471-13313b1e7005.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -878,7 +878,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/438b1b4d-106d-4a6d-88f9-b03427431192.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/438b1b4d-106d-4a6d-88f9-b03427431192.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -887,7 +887,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/6aa079a9-2d55-47e4-9052-5d62517af58b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6aa079a9-2d55-47e4-9052-5d62517af58b.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -896,7 +896,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/45dce4c9-ae9b-4ad4-84fb-327bed947e15.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/45dce4c9-ae9b-4ad4-84fb-327bed947e15.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -905,7 +905,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/8e48e02a-d7d5-42bd-bd93-13f9f4f0a232.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8e48e02a-d7d5-42bd-bd93-13f9f4f0a232.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -914,7 +914,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/f059bd22-b2f6-4507-bb86-f696859a04e7.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/f059bd22-b2f6-4507-bb86-f696859a04e7.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -923,7 +923,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/c690e08d-475f-43be-95cd-9a2732353599.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/c690e08d-475f-43be-95cd-9a2732353599.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -932,7 +932,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/31f62d06-b99a-41dd-b8b1-037b1863c90c.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/31f62d06-b99a-41dd-b8b1-037b1863c90c.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -941,7 +941,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/1c4b91b2-7d21-4bb7-a70a-23e635dfe403.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/1c4b91b2-7d21-4bb7-a70a-23e635dfe403.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -950,7 +950,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/b0949ba2-cc32-4523-af5a-0d243057fe0e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b0949ba2-cc32-4523-af5a-0d243057fe0e.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -959,7 +959,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/a0abf6f9-950d-4b53-89ea-fd2ac5d8312c.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a0abf6f9-950d-4b53-89ea-fd2ac5d8312c.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -968,7 +968,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/2a332ec6-5065-4989-a013-a48b0f2a25d7.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/2a332ec6-5065-4989-a013-a48b0f2a25d7.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -977,7 +977,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/106dafee-8f69-49c4-9d9f-44a75642ef2f.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/106dafee-8f69-49c4-9d9f-44a75642ef2f.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -986,7 +986,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/8b0c190b-06eb-46b5-84e8-ce0a1222e40e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8b0c190b-06eb-46b5-84e8-ce0a1222e40e.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -995,7 +995,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/814f9b27-1961-4ce6-9e1e-640466919fee.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/814f9b27-1961-4ce6-9e1e-640466919fee.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1004,7 +1004,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/12b1173b-5f94-43b5-906c-eb65c4b2afdd.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/12b1173b-5f94-43b5-906c-eb65c4b2afdd.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1013,7 +1013,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/2a616a1a-fdc1-4f48-8307-17bb72fd52ab.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/2a616a1a-fdc1-4f48-8307-17bb72fd52ab.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1022,7 +1022,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("assets/fonts/d4db7ac8-13ca-4032-b0a0-09908a77f65e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d4db7ac8-13ca-4032-b0a0-09908a77f65e.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1031,7 +1031,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/db92ee56-cbeb-4dfe-a283-9f172421999c.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/db92ee56-cbeb-4dfe-a283-9f172421999c.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1040,7 +1040,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/bf70d158-00f0-4102-8a26-790424d289ca.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/bf70d158-00f0-4102-8a26-790424d289ca.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1049,7 +1049,7 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("assets/fonts/7bfd4f72-3562-4ba9-8204-d8fae1392cba.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/7bfd4f72-3562-4ba9-8204-d8fae1392cba.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1058,7 +1058,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/dba59202-10b2-413d-a87c-e39009745d12.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/dba59202-10b2-413d-a87c-e39009745d12.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1067,7 +1067,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/b118b4d4-d804-464e-9489-14b5b4162a2b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b118b4d4-d804-464e-9489-14b5b4162a2b.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1076,7 +1076,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/a9ed2a4b-36d8-45d0-a723-0b4edad65c71.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a9ed2a4b-36d8-45d0-a723-0b4edad65c71.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1085,7 +1085,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/5935a1b4-9cc5-4017-b4d2-228c7e27c748.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/5935a1b4-9cc5-4017-b4d2-228c7e27c748.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1094,7 +1094,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/b8efbc91-61f9-4063-b9f5-6e0602a1e3a5.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b8efbc91-61f9-4063-b9f5-6e0602a1e3a5.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1103,7 +1103,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/048378f1-01af-4ec6-83dd-ec31564d89fc.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/048378f1-01af-4ec6-83dd-ec31564d89fc.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1112,7 +1112,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/a8a963f7-d539-4cf2-8669-fd5ae6ec5ba4.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/a8a963f7-d539-4cf2-8669-fd5ae6ec5ba4.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1121,7 +1121,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/e9f81119-1fe2-4990-9051-18bd94806c14.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/e9f81119-1fe2-4990-9051-18bd94806c14.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1130,7 +1130,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("assets/fonts/eee18bc4-0f5c-4c89-8d57-cb18330a98d1.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/eee18bc4-0f5c-4c89-8d57-cb18330a98d1.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1139,7 +1139,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/ded45fb3-ee11-4adb-8e74-016a084aa7bc.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/ded45fb3-ee11-4adb-8e74-016a084aa7bc.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1148,7 +1148,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/70ec0cd8-5463-41e8-b64d-92d30f30a621.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/70ec0cd8-5463-41e8-b64d-92d30f30a621.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1157,7 +1157,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("assets/fonts/8992d3fa-b562-4273-aacd-30e806b8b81b.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/8992d3fa-b562-4273-aacd-30e806b8b81b.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* vietnamese */
@@ -1166,7 +1166,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/b58751c1-845f-45b8-90da-bff205c72a4c.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b58751c1-845f-45b8-90da-bff205c72a4c.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1175,7 +1175,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/9b67443a-1ee7-4a94-bc42-49b47ba29329.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/9b67443a-1ee7-4a94-bc42-49b47ba29329.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1184,7 +1184,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("assets/fonts/27baa7cc-9d96-414a-93bc-23bc856f546e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/27baa7cc-9d96-414a-93bc-23bc856f546e.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* cyrillic-ext */
@@ -1193,7 +1193,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/9f110430-7529-45f3-8bb3-4c6f6710ffa9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/9f110430-7529-45f3-8bb3-4c6f6710ffa9.woff2") format('woff2');
   unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 /* cyrillic */
@@ -1202,7 +1202,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/72fe57aa-3e7b-4a8e-a964-ede09b62a289.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/72fe57aa-3e7b-4a8e-a964-ede09b62a289.woff2") format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 /* greek */
@@ -1211,7 +1211,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/b6a1e4ed-12f5-43c1-98b2-494ea7b58c67.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b6a1e4ed-12f5-43c1-98b2-494ea7b58c67.woff2") format('woff2');
   unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
 }
 /* vietnamese */
@@ -1220,7 +1220,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/6665b5a1-7a5f-4c20-95d0-cad84923018e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6665b5a1-7a5f-4c20-95d0-cad84923018e.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1229,7 +1229,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/be860d4b-e1e6-4d82-accb-45be6cb7ac96.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/be860d4b-e1e6-4d82-accb-45be6cb7ac96.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1238,7 +1238,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("assets/fonts/d8eca1be-1703-46bf-bce0-e8cf9ee10837.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d8eca1be-1703-46bf-bce0-e8cf9ee10837.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* cyrillic-ext */
@@ -1247,7 +1247,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/9f110430-7529-45f3-8bb3-4c6f6710ffa9.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/9f110430-7529-45f3-8bb3-4c6f6710ffa9.woff2") format('woff2');
   unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 /* cyrillic */
@@ -1256,7 +1256,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/72fe57aa-3e7b-4a8e-a964-ede09b62a289.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/72fe57aa-3e7b-4a8e-a964-ede09b62a289.woff2") format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 /* greek */
@@ -1265,7 +1265,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/b6a1e4ed-12f5-43c1-98b2-494ea7b58c67.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/b6a1e4ed-12f5-43c1-98b2-494ea7b58c67.woff2") format('woff2');
   unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
 }
 /* vietnamese */
@@ -1274,7 +1274,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/6665b5a1-7a5f-4c20-95d0-cad84923018e.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/6665b5a1-7a5f-4c20-95d0-cad84923018e.woff2") format('woff2');
   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
@@ -1283,7 +1283,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/be860d4b-e1e6-4d82-accb-45be6cb7ac96.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/be860d4b-e1e6-4d82-accb-45be6cb7ac96.woff2") format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
@@ -1292,7 +1292,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("assets/fonts/d8eca1be-1703-46bf-bce0-e8cf9ee10837.woff2") format('woff2');
+  src: url("/presentations/ngl-barcelona/assets/fonts/d8eca1be-1703-46bf-bce0-e8cf9ee10837.woff2") format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -1596,7 +1596,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
 ::selection { background: rgba(199, 125, 255, 0.25); color: var(--color-text); }
 </style>
-<script>/**
+<script is:inline>/**
  * <deck-stage> — reusable web component for HTML decks.
  *
  * Handles:
@@ -2214,7 +2214,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
   }
 })();
 </script>
-<style>
+<style is:global>
   /* ------------------------------------------------------------
      NGL Barcelona — Centella Institute
      Violet (principal) + coral (networking) accent treatment.
@@ -3087,7 +3087,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     display: flex; align-items: center; justify-content: space-between;
   }
 </style>
-<script>
+<script is:inline>
   // Suppress benign ResizeObserver loop notifications from the deck scaler.
   window.addEventListener('error', (e) => {
     if (e && e.message && e.message.indexOf('ResizeObserver loop') !== -1) {
@@ -3096,7 +3096,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     }
   });
 </script>
-<script>
+<script is:inline>
   // Ensure closing slide uses the same shared top header chrome.
   document.addEventListener('DOMContentLoaded', () => {
     const headlineGradients = [
@@ -3146,8 +3146,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
   });
 </script>
 
-</head>
-<body>
 
 <!-- Inline Spark SVG symbol — hard-edged star (matches brand logo) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -3174,7 +3172,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     <div class="cover__inner">
       <div class="cover__eye">
         <div class="spark-lock">
-          <img src="assets/centella-institute-logo.svg" alt="Centella Institute" class="brand-logo brand-logo--cover" style="height: var(--logo-cover-h); width: auto; display: block;">
+          <img src="/presentations/ngl-barcelona/assets/centella-institute-logo.svg" alt="Centella Institute" class="brand-logo brand-logo--cover" style="height: var(--logo-cover-h); width: auto; display: block;">
           
         </div>
       </div>
@@ -3794,7 +3792,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 </deck-stage>
 
 <!-- ======================= Tweaks panel ======================= -->
-<style>
+<style is:global>
   #tweaks-panel {
     position: fixed;
     right: 20px;
@@ -3841,7 +3839,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     accent-color: #c77dff;
   }
 </style>
-<script>
+<script is:inline>
 (function() {
   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
     "logoCoverH": 160,
@@ -3914,4 +3912,4 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 })();
 </script>
 
-</body></html>
+</Presentation>

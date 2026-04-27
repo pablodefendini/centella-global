@@ -68,9 +68,9 @@ const gradients = [
 ];
 
 const subbrands = [
-  { name: 'Centella Global Advisory', accent: 'advisory', desc: 'Rigorous, strategic; credible in high-stakes environments. Calm, serious, precise.' },
-  { name: 'Centella Institute', accent: 'violet', desc: 'Energetic, convening-oriented, pedagogical and participatory. Most flexible of the sub-brands.' },
-  { name: 'Centella Impact', accent: 'investment', desc: 'Serious, disciplined, systems-oriented. Trustworthy to partners and investors.' },
+  { name: 'Centella Global Advisory', accent: 'advisory', logo: '/centella-logo.svg', desc: 'Rigorous, strategic; credible in high-stakes environments. Calm, serious, precise.' },
+  { name: 'Centella Institute', accent: 'violet', logo: '/centella-logo.svg', desc: 'Energetic, convening-oriented, pedagogical and participatory. Most flexible of the sub-brands.' },
+  { name: 'Centella Impact', accent: 'investment', logo: '/centella-logo.svg', desc: 'Serious, disciplined, systems-oriented. Trustworthy to partners and investors.' },
 ];
 ---
 
@@ -667,6 +667,9 @@ import Icon from '../components/Icon.astro';
         {subbrands.map((s) => (
           <article class="sg-subbrand" style={`--sb: var(--${s.accent});`}>
             <div class="sg-subbrand-bar"></div>
+            <div class="sg-subbrand-logo-wrap" aria-hidden="true">
+              <div class="sg-subbrand-logo" style={`--logo-url: url('${s.logo}');`}></div>
+            </div>
             <h3>{s.name}</h3>
             <p class="sg-muted">{s.desc}</p>
           </article>
@@ -1557,6 +1560,25 @@ import Icon from '../components/Icon.astro';
     top: 0; left: 0; right: 0;
     height: 3px;
     background: var(--sb);
+  }
+  .sg-subbrand-logo-wrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: var(--space-2);
+  }
+  .sg-subbrand-logo {
+    width: clamp(10rem, 18vw, 12.75rem);
+    aspect-ratio: 323 / 175;
+    background: var(--sb);
+    mask-image: var(--logo-url);
+    mask-repeat: no-repeat;
+    mask-position: left center;
+    mask-size: contain;
+    -webkit-mask-image: var(--logo-url);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: left center;
+    -webkit-mask-size: contain;
   }
   .sg-subbrand h3 {
     color: var(--sb);

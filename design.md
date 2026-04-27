@@ -13,59 +13,69 @@ Colors are organized into **functional families**, not arbitrary swatches. Each 
 
 ### Principal brand
 
-| Token            | Hex       | Role                                                 |
-| ---------------- | --------- | ---------------------------------------------------- |
-| `--violet`       | `#C77DFF` | Primary brand color. Synthesis, depth, seriousness.  |
-| `--violet-dark`  | `#1E1A28` | Authority, gravity, anchoring.                       |
-| `--violet-light` | `#F7EDFF` | Openness, space, inverse surfaces.                   |
+
+| Token            | Hex       | Role                                                |
+| ---------------- | --------- | --------------------------------------------------- |
+| `--violet`       | `#C77DFF` | Primary brand color. Synthesis, depth, seriousness. |
+| `--violet-dark`  | `#1E1A28` | Authority, gravity, anchoring.                      |
+| `--violet-light` | `#F7EDFF` | Openness, space, inverse surfaces.                  |
+
 
 ### Work colors
 
-| Token                | Hex       | Role                                                           |
-| -------------------- | --------- | -------------------------------------------------------------- |
-| `--advisory`         | `#00E5FF` | Strategy & guidance. Trust, stability, precision.              |
-| `--advisory-dark`    | `#0E2228` | Formal advisory materials, reports, presentations.             |
-| `--advisory-light`   | `#E1FCFF` | Approachability and transparency.                              |
-| `--networking`       | `#FF6B6B` | Mobilization & power. Urgency, connection, activation.         |
-| `--networking-dark`  | `#22181C` | Ground urgency in seriousness.                                 |
-| `--networking-light` | `#FFE8E8` | Highlights, data points, CTAs without overwhelming.            |
-| `--investment`       | `#CCFF00` | Capital & impact. Growth, long-term sustainability.            |
-| `--investment-dark`  | `#1E2413` | Discipline and credibility, investment-facing contexts.        |
-| `--investment-light` | `#FAFFE6` | Regeneration, possibility, future orientation.                 |
+
+| Token                | Hex       | Role                                                    |
+| -------------------- | --------- | ------------------------------------------------------- |
+| `--advisory`         | `#00E5FF` | Strategy & guidance. Trust, stability, precision.       |
+| `--advisory-dark`    | `#0E2228` | Formal advisory materials, reports, presentations.      |
+| `--advisory-light`   | `#E1FCFF` | Approachability and transparency.                       |
+| `--networking`       | `#FF6B6B` | Mobilization & power. Urgency, connection, activation.  |
+| `--networking-dark`  | `#22181C` | Ground urgency in seriousness.                          |
+| `--networking-light` | `#FFE8E8` | Highlights, data points, CTAs without overwhelming.     |
+| `--investment`       | `#CCFF00` | Capital & impact. Growth, long-term sustainability.     |
+| `--investment-dark`  | `#1E2413` | Discipline and credibility, investment-facing contexts. |
+| `--investment-light` | `#FAFFE6` | Regeneration, possibility, future orientation.          |
+
 
 ### Theme colors
 
-| Token           | Hex       | Role                                                    |
-| --------------- | --------- | ------------------------------------------------------- |
-| `--global`      | `#FF9500` | Scale & reach. Cross-border connection. Accent only.    |
-| `--global-dark` | `#301C00` | Anchor moments of emphasis.                             |
-| `--global-light`| `#FFF3E1` | Warmth and openness.                                    |
-| `--tech`        | `#FF66C4` | Innovation & experimentation. Primary accent.           |
-| `--tech-dark`   | `#2A1522` | Dark grounding for tech-driven moments.                 |
-| `--tech-light`  | `#FFE6F5` | Soft supporting surface for tech accents.               |
+
+| Token            | Hex       | Role                                                 |
+| ---------------- | --------- | ---------------------------------------------------- |
+| `--global`       | `#FF9500` | Scale & reach. Cross-border connection. Accent only. |
+| `--global-dark`  | `#301C00` | Anchor moments of emphasis.                          |
+| `--global-light` | `#FFF3E1` | Warmth and openness.                                 |
+| `--tech`         | `#FF66C4` | Innovation & experimentation. Primary accent.        |
+| `--tech-dark`    | `#2A1522` | Dark grounding for tech-driven moments.              |
+| `--tech-light`   | `#FFE6F5` | Soft supporting surface for tech accents.            |
+
 
 ### Surface & text (semantic)
 
-| Token                 | Hex / Value                  | Role                             |
-| --------------------- | ---------------------------- | -------------------------------- |
-| `--bg-deep`           | `#060607`                    | Page background (default).       |
-| `--bg-primary`        | `#080809`                    | Section background.              |
-| `--bg-surface`        | `#0D0D0F`                    | Card background.                 |
-| `--bg-elevated`       | `#151517`                    | Input fields, elevated elements. |
-| `--bg-lavender`       | `#F7EDFF`                    | Light inverse surface.           |
-| `--color-text`        | `#F7EDFF`                    | Primary text.                    |
-| `--color-text-muted`  | `rgba(247, 237, 255, 0.6)`   | Secondary text, descriptions.    |
-| `--color-text-dim`    | `rgba(247, 237, 255, 0.35)`  | Tertiary / meta labels.          |
-| `--color-border`      | `rgba(247, 237, 255, 0.08)`  | Hairline borders.                |
+
+| Token                | Hex / Value                 | Role                             |
+| -------------------- | --------------------------- | -------------------------------- |
+| `--bg-deep`          | `#060607`                   | Page background (default).       |
+| `--bg-primary`       | `#080809`                   | Section background.              |
+| `--bg-surface`       | `#0D0D0F`                   | Card background.                 |
+| `--bg-elevated`      | `#151517`                   | Input fields, elevated elements. |
+| `--bg-lavender`      | `#F7EDFF`                   | Light inverse surface.           |
+| `--color-text`       | `#F7EDFF`                   | Primary text.                    |
+| `--color-text-muted` | `rgba(247, 237, 255, 0.6)`  | Secondary text, descriptions.    |
+| `--color-text-dim`   | `rgba(247, 237, 255, 0.35)` | Tertiary / meta labels.          |
+| `--color-border`     | `rgba(247, 237, 255, 0.08)` | Hairline borders.                |
+
 
 ### Semantic state colors
 
-| State   | Token           | Hex       |
-| ------- | --------------- | --------- |
-| Success | `--investment`  | `#CCFF00` |
-| Error   | `--networking`  | `#FF6B6B` |
-| Warning | `--global`      | `#FF9500` |
-| Info    | `--advisory`    | `#00E5FF` |
+
+| State   | Token          | Hex       |
+| ------- | -------------- | --------- |
+| Success | `--investment` | `#CCFF00` |
+| Error   | `--networking` | `#FF6B6B` |
+| Warning | `--global`     | `#FF9500` |
+| Info    | `--advisory`   | `#00E5FF` |
+
 
 Status feedback text should use these same tokens (e.g. `.form-status--success { color: var(--investment); }`).
 
@@ -123,43 +133,49 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 ### Font families
 
-| Token            | Family                   | Role                                                               |
-| ---------------- | ------------------------ | ------------------------------------------------------------------ |
-| `--font-display` | `Barlow Condensed`       | **Default display voice.** Headlines, posters, section headers, program names. Focused, urgent, efficient. |
-| `--font-heading` | `Barlow`                 | Card titles, sub-headlines, contexts where comfort matters.        |
-| `--font-semi`    | `Barlow Semi Condensed`  | Labels, nav, buttons, eyebrows, metadata. Always tracked out.      |
-| `--font-body`    | `Barlow`                 | Paragraphs, form fields, interface copy, long-form reading. Regular width for comfort and endurance. |
-| `--font-mono`    | `Barlow Condensed`       | Code, technical values, hex codes. One family, many voices — monospaced contexts use Barlow Condensed rather than a separate mono face. |
+
+| Token            | Family                  | Role                                                                                                                                    |
+| ---------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `--font-display` | `Barlow Condensed`      | **Default display voice.** Headlines, posters, section headers, program names. Focused, urgent, efficient.                              |
+| `--font-heading` | `Barlow`                | Card titles, sub-headlines, contexts where comfort matters.                                                                             |
+| `--font-semi`    | `Barlow Semi Condensed` | Labels, nav, buttons, eyebrows, metadata. Always tracked out.                                                                           |
+| `--font-body`    | `Barlow`                | Paragraphs, form fields, interface copy, long-form reading. Regular width for comfort and endurance.                                    |
+| `--font-mono`    | `Barlow Condensed`      | Code, technical values, hex codes. One family, many voices — monospaced contexts use Barlow Condensed rather than a separate mono face. |
+
 
 **One family, many voices.** The Barlow superfamily — Condensed, Regular, and Semi Condensed — does all the work. Discipline inside one family reinforces authority more than reaching for a second typeface ever could. Hierarchy comes from width, weight, and scale, not from introducing a serif.
 
 ### Type scale
 
-| Token         | Size       | Typical use                                                     |
-| ------------- | ---------- | --------------------------------------------------------------- |
-| `--text-6xl`  | `4.507rem` | Hero display / campaign moments (use sparingly).               |
-| `--text-5xl`  | `3.634rem` | Large hero headline / section feature callouts.                |
-| `--text-4xl`  | `2.931rem` | H1 default. Page titles.                                        |
-| `--text-3xl`  | `2.364rem` | H2. Section titles.                                             |
-| `--text-2xl`  | `1.907rem` | H3. Card titles, sub-section headers.                           |
-| `--text-xl`   | `1.538rem` | H4. Lead paragraphs, emphasized body.                           |
-| `--text-lg`   | `1.24rem`  | H5 / large body.                                                |
-| `--text-base` | `1rem`     | Body default.                                                   |
-| `--text-sm`   | `0.806rem` | Small body, secondary copy, form labels.                        |
-| `--text-xs`   | `0.65rem`  | Eyebrows, meta, uppercase labels, ticker, captions.             |
 
-**Hero headlines** use the `.display` utility: `--font-display` (Barlow Condensed) at weight `300` (light), fluid `clamp(3rem, 9vw, 6rem)`, letter-spacing `-0.03em`, line-height `0.92`. Accent phrases inline with `.display__accent` (weight `800` + an approved brand gradient **clipped to text** via `background-clip: text`). Default gradient fill is `--grad-violet-coral`; other fills use modifier classes `display__accent--cyan-lime`, `display__accent--coral-orange`, `display__accent--pink-violet`, `display__accent--cyan-violet`, `display__accent--lime-teal`, or `display__accent--violet-coral` (explicit). Add **`data-random-accent-gradient`** on a span for a per-load random choice among those six. The 300 ↔ 800 contrast is the signature — don't approximate it with 500/700.
+| Token         | Size       | Typical use                                         |
+| ------------- | ---------- | --------------------------------------------------- |
+| `--text-6xl`  | `4.507rem` | Hero display / campaign moments (use sparingly).    |
+| `--text-5xl`  | `3.634rem` | Large hero headline / section feature callouts.     |
+| `--text-4xl`  | `2.931rem` | H1 default. Page titles.                            |
+| `--text-3xl`  | `2.364rem` | H2. Section titles.                                 |
+| `--text-2xl`  | `1.907rem` | H3. Card titles, sub-section headers.               |
+| `--text-xl`   | `1.538rem` | H4. Lead paragraphs, emphasized body.               |
+| `--text-lg`   | `1.24rem`  | H5 / large body.                                    |
+| `--text-base` | `1rem`     | Body default.                                       |
+| `--text-sm`   | `0.806rem` | Small body, secondary copy, form labels.            |
+| `--text-xs`   | `0.65rem`  | Eyebrows, meta, uppercase labels, ticker, captions. |
+
+
+**Hero headlines** use the `.display` utility: `--font-display` (Barlow Condensed) at weight `300` (light), fluid `clamp(3rem, 9vw, 6rem)`, letter-spacing `-0.03em`, line-height `0.92`. Accent phrases inline with `.display__accent` (weight `800` + an approved brand gradient **clipped to text** via `background-clip: text`). Default gradient fill is `--grad-violet-coral`; other fills use modifier classes `display__accent--cyan-lime`, `display__accent--coral-orange`, `display__accent--pink-violet`, `display__accent--cyan-violet`, `display__accent--lime-teal`, or `display__accent--violet-coral` (explicit). Add `**data-random-accent-gradient`** on a span for a per-load random choice among those six. The 300 ↔ 800 contrast is the signature — don't approximate it with 500/700.
 
 ### Heading assignments
 
-| Element | Family           | Weight | Letter-spacing | Line-height          |
-| ------- | ---------------- | ------ | -------------- | -------------------- |
+
+| Element | Family           | Weight | Letter-spacing | Line-height              |
+| ------- | ---------------- | ------ | -------------- | ------------------------ |
 | H1      | `--font-display` | 500    | `-0.02em`      | `--leading-tight` (1.15) |
-| H2      | `--font-display` | 500    | `-0.02em`      | `--leading-tight`    |
-| H3      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
-| H4      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
-| H5      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
-| H6      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`    |
+| H2      | `--font-display` | 500    | `-0.02em`      | `--leading-tight`        |
+| H3      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`        |
+| H4      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`        |
+| H5      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`        |
+| H6      | `--font-heading` | 500    | `-0.01em`      | `--leading-tight`        |
+
 
 ### Body, labels, serif
 
@@ -175,17 +191,19 @@ Typography is one of Centella's most important expressive tools. Hierarchy comes
 
 ### Line-height tokens
 
-| Token               | Value  | Use                       |
-| ------------------- | ------ | ------------------------- |
-| `--leading-tight`   | `1.15` | Headings.                 |
-| `--leading-normal`  | `1.6`  | Body default.             |
-| `--leading-relaxed` | `1.75` | Long-form reading.        |
+
+| Token               | Value  | Use                |
+| ------------------- | ------ | ------------------ |
+| `--leading-tight`   | `1.15` | Headings.          |
+| `--leading-normal`  | `1.6`  | Body default.      |
+| `--leading-relaxed` | `1.75` | Long-form reading. |
+
 
 ### Gradient display type (novel — web only)
 
-The signature display treatment pairs a light (`300`) Barlow Condensed base with an inline extrabold (`800`) accent phrase, with the gradient clipped to the glyph shapes (`background-clip: text`). Reserve for hero headlines; never on logo, nav, or body copy. Any of the six approved `--grad-*` tokens may back accent text via the `display__accent--*` modifiers (see `src/styles/global.css`); surfaces and borders still use the same tokens where appropriate — the split is *context*, not a different palette.
+The signature display treatment pairs a light (`300`) Barlow Condensed base with an inline extrabold (`800`) accent phrase, with the gradient clipped to the glyph shapes (`background-clip: text`). Reserve for hero headlines; never on logo, nav, or body copy. Any of the six approved `--grad-`* tokens may back accent text via the `display__accent--*` modifiers (see `src/styles/global.css`); surfaces and borders still use the same tokens where appropriate — the split is *context*, not a different palette.
 
-**Implementation rule:** set gradient fills with **`background-image`**, not the `background` shorthand, on accent or whole-headline treatments. The shorthand resets `background-clip` and produces a rectangular gradient behind the text.
+**Implementation rule:** set gradient fills with `**background-image`**, not the `background` shorthand, on accent or whole-headline treatments. The shorthand resets `background-clip` and produces a rectangular gradient behind the text.
 
 ```html
 <h1 class="display">
@@ -222,20 +240,23 @@ Use `.display--gradient` on the whole element only in the rare case where the en
 
 **Base unit: 4px** (0.25rem). All spacing values derive from it.
 
-| Token         | rem       | px    | Named  |
-| ------------- | --------- | ----- | ------ |
-| `--space-1`   | `0.25rem` | `4`   | `xs`   |
-| `--space-2`   | `0.5rem`  | `8`   | `sm`   |
-| `--space-3`   | `0.75rem` | `12`  | —      |
-| `--space-4`   | `1rem`    | `16`  | `md`   |
-| `--space-6`   | `1.5rem`  | `24`  | `lg`   |
-| `--space-8`   | `2rem`    | `32`  | `xl`   |
-| `--space-12`  | `3rem`    | `48`  | `2xl`  |
-| `--space-16`  | `4rem`    | `64`  | `3xl`  |
-| `--space-24`  | `6rem`    | `96`  | `4xl`  |
-| `--space-32`  | `8rem`    | `128` | `5xl`  |
+
+| Token        | rem       | px    | Named |
+| ------------ | --------- | ----- | ----- |
+| `--space-1`  | `0.25rem` | `4`   | `xs`  |
+| `--space-2`  | `0.5rem`  | `8`   | `sm`  |
+| `--space-3`  | `0.75rem` | `12`  | —     |
+| `--space-4`  | `1rem`    | `16`  | `md`  |
+| `--space-6`  | `1.5rem`  | `24`  | `lg`  |
+| `--space-8`  | `2rem`    | `32`  | `xl`  |
+| `--space-12` | `3rem`    | `48`  | `2xl` |
+| `--space-16` | `4rem`    | `64`  | `3xl` |
+| `--space-24` | `6rem`    | `96`  | `4xl` |
+| `--space-32` | `8rem`    | `128` | `5xl` |
+
 
 **Usage:**
+
 - Component internals: `--space-2` to `--space-6`.
 - Stacking related blocks: `--space-4` to `--space-8`.
 - Section padding (top/bottom): `--space-16` to `--space-24`.
@@ -248,11 +269,13 @@ Use `.display--gradient` on the whole element only in the rare case where the en
 
 ### Container widths
 
-| Token                  | Value   | Use                                           |
-| ---------------------- | ------- | --------------------------------------------- |
-| `--max-width`          | `72rem` (1152px) | Default container for most content.   |
-| `--max-width-narrow`   | `48rem` (768px)  | Long-form prose, reading columns.     |
-| `--gutter`             | `var(--space-6)` (24px) | Inline container padding.      |
+
+| Token                | Value                   | Use                                 |
+| -------------------- | ----------------------- | ----------------------------------- |
+| `--max-width`        | `72rem` (1152px)        | Default container for most content. |
+| `--max-width-narrow` | `48rem` (768px)         | Long-form prose, reading columns.   |
+| `--gutter`           | `var(--space-6)` (24px) | Inline container padding.           |
+
 
 Signature marketing pages may widen to `1200px` (`src/pages/index.astro`).
 
@@ -265,14 +288,16 @@ Signature marketing pages may widen to `1200px` (`src/pages/index.astro`).
 
 ### Responsive breakpoints
 
-| Name    | Min width | Notes                                         |
-| ------- | --------- | --------------------------------------------- |
-| Mobile  | 0         | Default styles.                               |
-| `sm`    | `560px`   | Small-phone threshold used by homepage.       |
-| `md`    | `640px`   | Tablet / two-column activation.               |
-| `lg`    | `720px`   | Styleguide sub-grids activate here.           |
-| `xl`    | `900px`   | Homepage tablet breakpoint.                   |
-| `2xl`   | `960px`   | Three-column grids activate here.             |
+
+| Name   | Min width | Notes                                   |
+| ------ | --------- | --------------------------------------- |
+| Mobile | 0         | Default styles.                         |
+| `sm`   | `560px`   | Small-phone threshold used by homepage. |
+| `md`   | `640px`   | Tablet / two-column activation.         |
+| `lg`   | `720px`   | Styleguide sub-grids activate here.     |
+| `xl`   | `900px`   | Homepage tablet breakpoint.             |
+| `2xl`  | `960px`   | Three-column grids activate here.       |
+
 
 ### Composition principles
 
@@ -300,12 +325,12 @@ Prefer these shared utilities before creating page-local CSS:
 - `.page-simple` — narrow single-column content wrapper
 - `.page-copy` — standard long-form body copy style for simple pages
 - `.display` — hero display type (`--font-display` 300 light, fluid `clamp(3rem, 9vw, 6rem)`, tight tracking, line-height `0.92`)
-- `.display__accent` — inline span inside `.display`: weight 800 + default `--grad-violet-coral` via `background-image`, clipped to text; pair with `display__accent--*` for other approved gradients or `data-random-accent-gradient` for a per-load random variant (see `RandomDisplayAccents.astro`)
-- `.display--gradient` — element-level fallback that clips the whole headline to the default gradient (rare; hero only; never on logo/nav/body); variant classes use the same `display__accent--*` naming when needed
+- `.display__accent` — inline span inside `.display`: weight 800 + default `--grad-violet-coral` via `background-image`, clipped to text; pair with `display__accent--`* for other approved gradients or `data-random-accent-gradient` for a per-load random variant (see `RandomDisplayAccents.astro`)
+- `.display--gradient` — element-level fallback that clips the whole headline to the default gradient (rare; hero only; never on logo/nav/body); variant classes use the same `display__accent--`* naming when needed
 - `.eyebrow`, `.label` — Barlow Semi Condensed 600, uppercase, tracked `0.15em`, muted color
 - `.lede`, `.pull-quote` — Barlow 300, `--text-xl`, line-height 1.5
 
-**Element-level typography is intentionally unstyled.** `h1`–`h6` and `p` use browser defaults; reach for the utilities above (or compose directly with `--font-*` / `--text-*` tokens) to apply hierarchy. Do not add element-level selectors (`h1 { … }`) to `global.css`.
+**Element-level typography is intentionally unstyled.** `h1`–`h6` and `p` use browser defaults; reach for the utilities above (or compose directly with `--font-`* / `--text-`* tokens) to apply hierarchy. Do not add element-level selectors (`h1 { … }`) to `global.css`.
 
 Rule: if a local selector only repeats tokenized spacing/typography already represented by these utilities, use the utility class instead of adding new local CSS.
 
@@ -333,21 +358,25 @@ All buttons share this base:
 
 **Variants**
 
-| Variant         | Class              | Background      | Text            | Border          |
-| --------------- | ------------------ | --------------- | --------------- | --------------- |
-| Primary         | `.btn--primary`    | `--networking`  | `--bg-deep`     | `--networking`  |
-| Secondary       | `.btn--secondary`  | `transparent`   | `--violet`      | `--violet`      |
-| Ghost           | (inline `.btn-ghost` on homepage) | `transparent` | `--color-text-muted` | none |
-| Destructive     | *(not defined)* — if needed, base on `.btn--primary` with border `#b02a37` and hover coral. |
+
+| Variant     | Class                                                                                       | Background     | Text                 | Border         |
+| ----------- | ------------------------------------------------------------------------------------------- | -------------- | -------------------- | -------------- |
+| Primary     | `.btn--primary`                                                                             | `--networking` | `--bg-deep`          | `--networking` |
+| Secondary   | `.btn--secondary`                                                                           | `transparent`  | `--violet`           | `--violet`     |
+| Ghost       | (inline `.btn-ghost` on homepage)                                                           | `transparent`  | `--color-text-muted` | none           |
+| Destructive | *(not defined)* — if needed, base on `.btn--primary` with border `#b02a37` and hover coral. |                |                      |                |
+
 
 **States**
 
-| State    | Treatment                                                                                              |
-| -------- | ------------------------------------------------------------------------------------------------------ |
+
+| State    | Treatment                                                                                                    |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
 | Hover    | `transform: translateY(-1px to -2px);` + glow box-shadow (`0 0 24–30px rgba(255,107,107,0.35)` for primary). |
-| Active   | Remove translate; deepen shadow.                                                                       |
-| Focus    | `outline: none; box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);` (violet focus ring).                 |
-| Disabled | `opacity: 0.6; cursor: wait;` — never change hue.                                                     |
+| Active   | Remove translate; deepen shadow.                                                                             |
+| Focus    | `outline: none; box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);` (violet focus ring).                       |
+| Disabled | `opacity: 0.6; cursor: wait;` — never change hue.                                                            |
+
 
 Primary button hover never changes hue — only elevation and glow.
 
@@ -367,14 +396,16 @@ Primary button hover never changes hue — only elevation and glow.
 
 **States**
 
-| State       | Treatment                                                                                     |
-| ----------- | --------------------------------------------------------------------------------------------- |
-| Placeholder | `color: var(--color-text-dim);`                                                               |
-| Hover       | `border-color: rgba(247, 237, 255, 0.18);`                                                    |
-| Focus       | `outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(199,125,255,0.15);`   |
-| Error       | `border-color: var(--networking);` + helper text in `var(--networking)`.                      |
-| Success     | Status text in `var(--investment)`.                                                           |
-| Disabled    | `opacity: 0.6;`                                                                               |
+
+| State       | Treatment                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| Placeholder | `color: var(--color-text-dim);`                                                             |
+| Hover       | `border-color: rgba(247, 237, 255, 0.18);`                                                  |
+| Focus       | `outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(199,125,255,0.15);` |
+| Error       | `border-color: var(--networking);` + helper text in `var(--networking)`.                    |
+| Success     | Status text in `var(--investment)`.                                                         |
+| Disabled    | `opacity: 0.6;`                                                                             |
+
 
 **Form labels:** `--font-semi` 600, uppercase, `--text-xs`, `letter-spacing: 0.15em`, `color: --color-text-muted`.
 
@@ -452,14 +483,17 @@ import Icon from '../components/Icon.astro';
 
 **Props**
 
-| Prop    | Type              | Default | Notes                                                    |
-| ------- | ----------------- | ------- | -------------------------------------------------------- |
-| `name`  | `string`          | —       | Filename without `.svg`. All icon files are lowercase-with-dashes (e.g. `power-fist`, `money-bag`). |
-| `size`  | `number \| string`| `24`    | Pixel number or any CSS length.                          |
-| `label` | `string`          | —       | Accessible label; omit for presentational icons.         |
-| `class` | `string`          | —       | Passthrough for layout / color.                          |
+
+| Prop    | Type     | Default | Notes                                                                                               |
+| ------- | -------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `name`  | `string` | —       | Filename without `.svg`. All icon files are lowercase-with-dashes (e.g. `power-fist`, `money-bag`). |
+| `size`  | `number  | string` | `24`                                                                                                |
+| `label` | `string` | —       | Accessible label; omit for presentational icons.                                                    |
+| `class` | `string` | —       | Passthrough for layout / color.                                                                     |
+
 
 **Sizes**
+
 
 | Context          | Size  |
 | ---------------- | ----- |
@@ -469,6 +503,7 @@ import Icon from '../components/Icon.astro';
 | Accent           | `32`  |
 | Feature          | `48`  |
 | Hero             | `72+` |
+
 
 **Color.** Icons inherit `currentColor`. Set color via the wrapping element or `class`:
 
@@ -512,16 +547,18 @@ import Icon from '../components/Icon.astro';
 
 **Core rule:** panels and framed surfaces must use only `4px`, `8px`, or `16px`.
 
-| Token        | Value | Component                                          |
-| ------------ | ----- | -------------------------------------------------- |
-| `radius-xs`  | `3px` | Inline code, small chips.                          |
-| `radius-sm`  | `4px` | Small panels, callouts, small cards, status tags.  |
-| `radius-md`  | `6px` | Cards, event cards, code blocks.                   |
-| `radius-lg`  | `8px` | Buttons, inputs, medium panels, surface cards.     |
-| `radius-xl`  | `12px`| Large surfaces (e.g. color scale generator shell). |
-| `radius-2xl` | `16px`| Large panels only.                                 |
-| `radius-pill`| `999px` | Chips, tags, language pills.                     |
-| `radius-full`| `50%` | Avatars, icon bubbles, decorative circles.        |
+
+| Token         | Value   | Component                                          |
+| ------------- | ------- | -------------------------------------------------- |
+| `radius-xs`   | `3px`   | Inline code, small chips.                          |
+| `radius-sm`   | `4px`   | Small panels, callouts, small cards, status tags.  |
+| `radius-md`   | `6px`   | Cards, event cards, code blocks.                   |
+| `radius-lg`   | `8px`   | Buttons, inputs, medium panels, surface cards.     |
+| `radius-xl`   | `12px`  | Large surfaces (e.g. color scale generator shell). |
+| `radius-2xl`  | `16px`  | Large panels only.                                 |
+| `radius-pill` | `999px` | Chips, tags, language pills.                       |
+| `radius-full` | `50%`   | Avatars, icon bubbles, decorative circles.         |
+
 
 *Spark Logo exception:* the two long rays are intentionally sharp-cornered; all other logo corners are rounded. Don't round them.
 
@@ -531,15 +568,18 @@ import Icon from '../components/Icon.astro';
 
 The system is **low-shadow**. Prefer elevation via transform and color rather than blurred shadows. When shadow is used, it is soft and directional.
 
-| Token            | Value                                                                 | Use                                                              |
-| ---------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `shadow-focus`   | `0 0 0 3px rgba(199, 125, 255, 0.15)`                                 | Focus rings on inputs and interactive elements.                  |
-| `shadow-glow`    | `0 0 24px rgba(255, 107, 107, 0.4)`                                   | Primary button hover (coral glow).                               |
-| `shadow-hover`   | `0 0 30px rgba(255, 107, 107, 0.35), 0 8px 24px rgba(0, 0, 0, 0.3)`   | Primary button deeper hover.                                     |
-| `shadow-card`    | `0 12px 32px rgba(0, 0, 0, 0.4)`                                      | Card hover lift.                                                 |
-| `shadow-panel`   | none                                                                  | Panels rely on frame + color, never blur.                        |
+
+| Token          | Value                                                               | Use                                             |
+| -------------- | ------------------------------------------------------------------- | ----------------------------------------------- |
+| `shadow-focus` | `0 0 0 3px rgba(199, 125, 255, 0.15)`                               | Focus rings on inputs and interactive elements. |
+| `shadow-glow`  | `0 0 24px rgba(255, 107, 107, 0.4)`                                 | Primary button hover (coral glow).              |
+| `shadow-hover` | `0 0 30px rgba(255, 107, 107, 0.35), 0 8px 24px rgba(0, 0, 0, 0.3)` | Primary button deeper hover.                    |
+| `shadow-card`  | `0 12px 32px rgba(0, 0, 0, 0.4)`                                    | Card hover lift.                                |
+| `shadow-panel` | none                                                                | Panels rely on frame + color, never blur.       |
+
 
 **Rules**
+
 - Never stack more than two shadows on one element.
 - No drop shadow on the logo lockup.
 - No shadow on photography — use duotone / overlay instead.
@@ -548,15 +588,18 @@ The system is **low-shadow**. Prefer elevation via transform and color rather th
 
 ## Motion
 
-| Token                | Value                                   | Use                                                        |
-| -------------------- | --------------------------------------- | ---------------------------------------------------------- |
-| `--transition-fast`  | `150ms ease`                            | Color, border changes, hover.                              |
-| `--transition-base`  | `250ms ease`                            | Default transitions.                                       |
-| `--ease`             | `cubic-bezier(0.16, 1, 0.3, 1)`         | "Out-expo" — default for hover lifts, underline reveals.   |
-| `--ease-dramatic`    | `cubic-bezier(0.77, 0, 0.175, 1)`       | Long, committed moves only.                                |
-| `--duration`         | `200ms`                                 | Micro-interactions.                                        |
+
+| Token               | Value                             | Use                                                      |
+| ------------------- | --------------------------------- | -------------------------------------------------------- |
+| `--transition-fast` | `150ms ease`                      | Color, border changes, hover.                            |
+| `--transition-base` | `250ms ease`                      | Default transitions.                                     |
+| `--ease`            | `cubic-bezier(0.16, 1, 0.3, 1)`   | "Out-expo" — default for hover lifts, underline reveals. |
+| `--ease-dramatic`   | `cubic-bezier(0.77, 0, 0.175, 1)` | Long, committed moves only.                              |
+| `--duration`        | `200ms`                           | Micro-interactions.                                      |
+
 
 **Principles**
+
 - Transitions should feel deliberate, not showy.
 - Hover lifts: `translateY(-1px)` to `translateY(-4px)` max.
 - Image hover scale: `1.04`, never more.
@@ -582,11 +625,13 @@ Copy is part of the UI. Match the system's voice in any generated text.
 
 All three share the Spark lockup, typography, and color system. Each has a single assigned accent.
 
-| Sub-brand                  | Accent                     | Feel                                                        |
-| -------------------------- | -------------------------- | ----------------------------------------------------------- |
-| Centella Global Advisory   | `--advisory` (`#00E5FF`)   | Rigorous, strategic, calm, precise.                         |
-| Centella Institute         | `--violet` (`#C77DFF`)     | Energetic, convening-oriented, pedagogical, flexible.       |
-| Centella Impact            | `--investment` (`#CCFF00`) | Serious, disciplined, systems-oriented.                     |
+
+| Sub-brand                | Accent                     | Feel                                                  |
+| ------------------------ | -------------------------- | ----------------------------------------------------- |
+| Centella Global Advisory | `--advisory` (`#00E5FF`)   | Rigorous, strategic, calm, precise.                   |
+| Centella Institute       | `--violet` (`#C77DFF`)     | Energetic, convening-oriented, pedagogical, flexible. |
+| Centella Impact          | `--investment` (`#CCFF00`) | Serious, disciplined, systems-oriented.               |
+
 
 Programs and events (e.g. Spark Summit, Leadership Labs) are nested under sub-brands — never parallel to them.
 
@@ -598,10 +643,10 @@ Tracked here so it doesn't get lost across sessions.
 
 ### Token vocabulary (canonical vs legacy)
 
-The canonical token names are the brand-family names: `--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech` (+ `-dark` / `-light` variants). An older `--accent-*` vocabulary (`--accent-purple`, `--accent-coral`, `--accent-lime`, `--accent-cyan`, `--accent-orange`, `--accent-pink`) still exists in `global.css` as **deprecated aliases** pointing at the canonical tokens. Two legacy names — `--accent-teal` (`#00A3B6`) and `--accent-green` (`#6EA92B`) — have **no canonical equivalent** in the brand palette and should be treated as stale.
+The canonical token names are the brand-family names: `--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech` (+ `-dark` / `-light` variants). An older `--accent-`* vocabulary (`--accent-purple`, `--accent-coral`, `--accent-lime`, `--accent-cyan`, `--accent-orange`, `--accent-pink`) still exists in `global.css` as **deprecated aliases** pointing at the canonical tokens. Two legacy names — `--accent-teal` (`#00A3B6`) and `--accent-green` (`#6EA92B`) — have **no canonical equivalent** in the brand palette and should be treated as stale.
 
 - **New code:** always use canonical names.
-- **Deferred work (separate PR):** mechanical rename pass across `src/` to replace every `--accent-*` reference with its canonical equivalent, then delete the alias block from `global.css`. Kept out of the design-system consolidation to limit blast radius.
+- **Deferred work (separate PR):** mechanical rename pass across `src/` to replace every `--accent-`* reference with its canonical equivalent, then delete the alias block from `global.css`. Kept out of the design-system consolidation to limit blast radius.
 
 ### Self-host Barlow & Barlow Condensed
 
@@ -618,3 +663,4 @@ All font families are loaded from Google Fonts today via `Base.astro`. The Cente
 - Tokens source: `src/styles/global.css`
 - Homepage reference implementation: `src/pages/index.astro`
 - Source brand document: *Centella Brand Guidelines v1.0 — February 2026*
+

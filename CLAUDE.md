@@ -34,7 +34,8 @@ Always refer to this file when generating or modifying any UI component.
 
 ```
 src/
-├── layouts/          # Base.astro (HTML shell), Event.astro (event page layout)
+├── layouts/          # Base.astro (HTML shell), Event.astro (event page layout),
+│                     # Presentation.astro (full-bleed shell for decks)
 ├── components/       # SiteHeader, SiteFooter, RandomDisplayAccents (gradient class helper),
 │                     # MailchimpForm, EventCard, SpeakerCard, AttendeeCard, ScheduleBlock,
 │                     # SponsorGrid, BlogPostCard
@@ -47,9 +48,11 @@ src/
 │   ├── events/
 │   │   ├── index.astro       # Events listing
 │   │   └── [slug].astro      # Dynamic event pages
-│   └── blog/
-│       ├── index.astro       # Blog listing
-│       └── [slug].astro      # Dynamic blog posts
+│   ├── blog/
+│   │   ├── index.astro       # Blog listing
+│   │   └── [slug].astro      # Dynamic blog posts
+│   └── presentations/
+│       └── [slug].astro      # Standalone HTML decks (e.g. ngl-barcelona)
 ├── lib/
 │   ├── notion.ts             # Notion client + all query functions
 │   ├── mailchimp.ts          # Mailchimp API helper
@@ -61,7 +64,8 @@ api/
 └── subscribe.ts              # Vercel serverless function for Mailchimp
 
 public/
-└── media/hero/               # Homepage hero: WebP poster + 540p/720p MP4s (regenerate via npm run media:hero)
+├── media/hero/               # Homepage hero: WebP poster + 540p/720p MP4s (regenerate via npm run media:hero)
+└── presentations/[slug]/     # Per-deck assets (fonts, images) referenced via absolute /presentations/... URLs
 
 scripts/
 └── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
@@ -91,7 +95,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Don't put the Mailchimp API key in client-side code.** The form POSTs to `/api/subscribe`, which handles the Mailchimp call server-side.
 - **Don't use heavy JS frameworks for components.** Astro components are zero-JS by default. Only use `client:load` or `client:visible` directives when a component genuinely needs interactivity (the Mailchimp form is the main case).
 - **Don't assume Notion page body structure.** The block renderer should handle any block type gracefully — headings, paragraphs, lists, images, toggles, callouts. If it encounters an unknown block type, render nothing rather than crashing.
-- **Don't treat `presentations/` as part of the site.** It's an untracked local scratch folder for standalone HTML decks (e.g. NGL Barcelona). It is not in git, not referenced from `src/`, and not shipped by the build. Leave it alone unless I ask you to touch a deck explicitly.
+- **Don't add chrome to presentation decks.** Decks live at `src/pages/presentations/[slug].astro` and use `src/layouts/Presentation.astro` — a minimal full-bleed shell with no `SiteHeader`/`SiteFooter`. Deck assets (fonts, images) go in `public/presentations/[slug]/assets/` and are referenced with absolute paths. Inline `<style>` and `<script>` blocks inside a deck must use `is:global` / `is:inline` so Astro doesn't scope or hoist them.
 
 ## Patterns
 
