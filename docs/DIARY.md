@@ -6,6 +6,42 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 10 — April 27, 2026: NGL Barcelona deck — content pass and a fix that turned out to be infrastructure
+
+Today I sat with the NGL Barcelona deck and worked through it. Most of what I changed was small — the kind of polish you only see when you read the deck out loud. But two of the changes were structural enough that they're going to outlive this deck.
+
+### The eyebrows had to go
+
+Every content slide had a small uppercase coral label above its headline — "CONTEXTO · 2026", "EL PROGRAMA", "CRONOGRAMA OPERATIVO." They were doing the work of a section index, but they were also competing with the headlines for attention and adding a visual layer the deck didn't need. I had the agent strip them across all 15 slides — twelve `.eyebrow-tag` spans, two `.num` section labels, one `.q-attr` quote attribution. The card-level mini-eyebrows inside the column patterns stayed because those *are* labels for their cards, not for the slide. The deck reads cleaner now: one chrome row, one headline, one body. Less choreography.
+
+### Tres condiciones, on one line
+
+Slide 3 — "Barcelona: La única plaza europea con las **tres condiciones** alineadas." — was the one that triggered the real fix. We added "Barcelona:" to the front, dropped the manual `<br>` tags so the headline could flow, widened the title column from `1fr 1fr` to `1.55fr 1fr`, and wrapped "tres condiciones" in `white-space: nowrap` so the two-word gradient phrase never split. Standard typesetting moves.
+
+But then I noticed content getting clipped at the bottom of the viewport. That wasn't a slide-3 problem. That was a *deck* problem.
+
+### The scaler wasn't actually scaling
+
+The deck-stage web component was supposed to render the canvas at its authored size (1920×1080) and scale-to-fit. Instead the `_fit()` method had been quietly stretching the canvas to whatever viewport CSS pixels it found. So content sized in absolute px against the 1920×1080 grid would clip on any viewport shorter than 1080, which is most of them. I replaced `_fit()` with proper letterbox scaling: keep the canvas at design size, apply `transform: scale(min(vw/dw, vh/dh))`, let bars appear on the short axis. Now the entire slide always fits — height adapts as readily as width — and I never have to think about it again. The `noscale` attribute still works for the PPTX exporter that wants unscaled DOM geometry.
+
+This is the kind of bug that only surfaces when you push the layout. If I hadn't widened the slide-3 column and made the headline a touch taller, I might never have noticed. A small content change exposed a quiet infrastructure failure that would have bitten every future deck.
+
+### Sendable in one file
+
+The other thing the deck needs is to be sendable. Hosting it at `/presentations/ngl-barcelona/` is great, but sometimes a recipient wants to download the deck and forward it, or open it on a plane. So I added `scripts/inline-deck.mjs` and `npm run deck:standalone -- <slug>`. It runs `astro build`, then walks the built HTML and inlines every external dependency: all 138 woff2 fonts as base64, the institute logo SVG, the cover poster WebP, the entire stylesheet folded into a `<style>` tag. The MP4 `<source>` tags get stripped — the poster carries the cover, and I don't want to base64 a megabyte of video. Output for NGL Barcelona is 2.3MB and opens by double-clicking in any browser. No network, no external assets, no dependencies. That's the format I'll send.
+
+### Copy nits
+
+Slide 2: "La legitimidad cede cuando eficacia e integridad se separan." → "La legitimidad cede cuando *la* eficacia e integridad se separan." Tiny, but the article makes it scan.
+
+Slide 3: "La única plaza europea..." → "Barcelona: La única plaza europea..." The original assumed the audience already knew the deck was about Barcelona. The new version states it.
+
+### What I'm taking forward
+
+The eyebrow strip and the column widening are deck-specific. The letterbox scaler and the standalone export are platform features now — anything I drop into `src/pages/presentations/` gets both for free. That's the leverage I was hoping for when I made decks first-class Astro pages yesterday. One day later, the second deck will already be cheaper to build than the first.
+
+---
+
 ## Entry 9 — April 26, 2026: Decks become first-class pages
 
 Four days ago I told future-me — in this diary, in `CLAUDE.md`, in the rule against touching `presentations/` — that the NGL Barcelona deck was a local scratch artifact and the build had no business knowing about it. Today I reversed that. The reasoning was simple once I said it out loud: if I ever want to send someone a link to the deck, it has to live at a URL. A folder on my laptop is not a URL.

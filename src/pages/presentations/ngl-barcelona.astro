@@ -2126,13 +2126,20 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
     _fit() {
       if (!this._canvas) return;
-      // Keep the canvas dimensions locked to the visible viewport so slide
-      // coordinates map 1:1 with screen coordinates (top-left is always 0,0).
+      if (this.hasAttribute('noscale')) {
+        this._canvas.style.width = this.designWidth + 'px';
+        this._canvas.style.height = this.designHeight + 'px';
+        this._canvas.style.transform = 'none';
+        return;
+      }
+      const dw = this.designWidth;
+      const dh = this.designHeight;
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      this._canvas.style.width = vw + 'px';
-      this._canvas.style.height = vh + 'px';
-      this._canvas.style.transform = 'none';
+      const scale = Math.min(vw / dw, vh / dh);
+      this._canvas.style.width = dw + 'px';
+      this._canvas.style.height = dh + 'px';
+      this._canvas.style.transform = 'scale(' + scale + ')';
     }
 
     _onResize() { this._fit(); }
@@ -2314,19 +2321,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
   }
   .chrome .mark svg { width: 26px; height: 26px; }
   .chrome .pg { font-variant-numeric: tabular-nums; white-space: nowrap; }
-
-  /* Eyebrow / section tag */
-  .eyebrow-tag {
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: var(--pt-eyebrow);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--networking);
-    display: inline-flex; align-items: center; gap: 0;
-    white-space: nowrap;
-  }
-  .eyebrow-tag .bar { display: none; }
 
   /* Titles */
   .title {
@@ -3199,7 +3193,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 0;">
-      <span class="eyebrow-tag coral"><span class="bar"></span>CONTEXTO · 2026</span>
     </div>
 
     <div style="margin-top: 32px; width: 1000px; max-width: 100%;">
@@ -3215,7 +3208,7 @@ a:focus-visible { color: var(--inline-link-hover-color); }
         <div class="stat__icon"><img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTUwIDE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTSA4MC42ODQgMTAyLjMyOSBMIDY1Ljc4OSAxMDIuMzI5IEwgNjUuNzg5IDk2LjAwMSBDIDY4LjgxOCA5Ni42NDUgNzEuOTA2IDk2Ljk3MyA3NSA5Ni45NzMgQyA3OC4wOTMgOTYuOTc5IDgxLjE3NSA5Ni42NTEgODQuMTkzIDk2LjAwMSBMIDg0LjE5MyAxMDIuMjg4IEwgODAuNjgzIDEwMi4yODggWiBNIDM0LjE4NCA1My4yNjMgTCAzNC4xODQgNTMuMjY4IEMgMzQuMTkgNDMuMDYxIDM4LjAyMiAzMy4yMzYgNDQuOTI0IDI1LjcxOCBDIDUxLjgyNiAxOC4yMDcgNjEuMjk1IDEzLjU1NCA3MS40NiAxMi42ODcgQyA4MS42MjYgMTEuODE0IDkxLjc1IDE0Ljc4NSA5OS44MjUgMjEuMDE5IEMgMTA3LjkwNSAyNy4yNDggMTEzLjM1NCAzNi4yODMgMTE1LjA5NSA0Ni4zMzggQyAxMTYuODM2IDU2LjM4NyAxMTQuNzQ0IDY2LjcyOSAxMDkuMjMgNzUuMzEyIEMgMTAzLjcxNiA4My44OTYgOTUuMTg1IDkwLjEgODUuMzE5IDkyLjcwMyBMIDg1LjA2MSA5Mi43MDMgTCA4NS4wNjcgOTIuNzAzIEMgNzguNDUyIDk0LjM4NCA3MS41MTkgOTQuMzg0IDY0LjkwNiA5Mi43MDMgTCA2NC43MjQgOTIuNzAzIEMgNTYuMDA1IDkwLjQxOCA0OC4yODMgODUuMzA4IDQyLjc2OSA3OC4xNzggQyAzNy4yNTUgNzEuMDQxIDM0LjI1NSA2Mi4yOCAzNC4yNDQgNTMuMjcgWiBNIDU5LjY4NCA2Mi42MzcgTCA1OS42ODQgNjIuNjQzIEMgNTkuNDk2IDYyLjI5MiA1OS4xNzQgNjIuMDI4IDU4Ljc4NyA2MS45MTcgQyA1OC40MDYgNjEuODA1IDU3Ljk5NiA2MS44NDYgNTcuNjQ1IDYyLjA0IEwgNTQuNDM0IDYzLjc5OCBDIDUzLjgzIDY0LjEyIDUzLjUyNSA2NC44MTcgNTMuNjk1IDY1LjQ4NSBDIDUzLjg2NSA2Ni4xNTMgNTQuNDY5IDY2LjYyMiA1NS4xNTQgNjYuNjE2IEMgNTUuNDA2IDY2LjYxNiA1NS42NTIgNjYuNTU3IDU1Ljg3NSA2Ni40MzQgTCA1OS4wODYgNjQuNjc3IEwgNTkuMDg2IDY0LjY4MiBDIDU5LjQ0NCA2NC40OTUgNTkuNzA3IDY0LjE3OSA1OS44MjQgNjMuNzkyIEMgNTkuOTQ3IDYzLjQxMSA1OS45MDYgNjIuOTk1IDU5LjcxMyA2Mi42NDMgWiBNIDU1LjYwNiA1NS44MjkgQyA1Ni40MzIgNTUuODI5IDU3LjEwNiA1NS4xNjEgNTcuMTA2IDU0LjMyOSBDIDU3LjEwNiA1My41MDMgNTYuNDMyIDUyLjgyOSA1NS42MDYgNTIuODI5IEwgNTIuNSA1Mi44MjkgQyA1MS42NzQgNTIuODI5IDUxIDUzLjUwMyA1MSA1NC4zMjkgQyA1MSA1NS4xNjEgNTEuNjc0IDU1LjgyOSA1Mi41IDU1LjgyOSBaIE0gNjUuNTc4IDM2LjIyNCBMIDY0LjUgMzQuMzIgQyA2NC4zMzYgMzMuOTIxIDY0LjAwMiAzMy42MTEgNjMuNTkyIDMzLjQ3IEMgNjMuMTgyIDMzLjMzNSA2Mi43MzEgMzMuMzc2IDYyLjM1NiAzMy41OTkgQyA2MS45ODEgMzMuODE2IDYxLjcyMyAzNC4xODUgNjEuNjQxIDM0LjYxMyBDIDYxLjU1OSAzNS4wNCA2MS42NjQgMzUuNDggNjEuOTM0IDM1LjgyIEwgNjMgMzcuNzg4IEMgNjMuMjc2IDM4LjIzNCA2My43NjIgMzguNTA5IDY0LjI4OSAzOC41MDkgQyA2NC41NjUgMzguNTAzIDY0LjgzNCAzOC40MjcgNjUuMDY4IDM4LjI4MSBDIDY1LjQxNCAzOC4wODEgNjUuNjY2IDM3Ljc1MyA2NS43NjYgMzcuMzY2IEMgNjUuODY1IDM2Ljk4IDY1LjgxMyAzNi41NyA2NS42MDcgMzYuMjI0IFogTSA4Mi4yMTMgODAuMDQgQyA4Mi4yMTMgNzkuNjQyIDgyLjA1NSA3OS4yNjEgODEuNzc0IDc4Ljk4IEMgODEuNDkzIDc4LjY5OCA4MS4xMTIgNzguNTQgODAuNzEzIDc4LjU0IEwgNjkuMjg3IDc4LjU0IEMgNjguNDU1IDc4LjU0IDY3Ljc4NyA3OS4yMTQgNjcuNzg3IDgwLjA0IEMgNjcuNzg3IDgwLjg3MiA2OC40NTUgODEuNTQgNjkuMjg3IDgxLjU0IEwgODAuNzE5IDgxLjU0IEwgODAuNzEzIDgxLjU0IEMgODEuMTEyIDgxLjU0IDgxLjQ5MyA4MS4zODIgODEuNzc0IDgxLjEwMSBDIDgyLjA1NSA4MC44MTkgODIuMjEzIDgwLjQzOSA4Mi4yMTMgODAuMDQgWiBNIDkyLjAyMiA0MC43NDEgTCA5Mi4wMjggNDAuNzQxIEMgOTIuNjU1IDQwLjIwMiA5Mi43MzEgMzkuMjUzIDkyLjE5MiAzOC42MjYgQyA5MS42NTMgMzcuOTk5IDkwLjcwNCAzNy45MjMgOTAuMDc3IDM4LjQ2MiBMIDc4LjQ2OSA0OC4zNDcgTCA3OC40NjMgNDguMzQ3IEMgNzYuMjA3IDQ2Ljc0NyA3My4xNDkgNDYuOSA3MS4wNjMgNDguNzE2IEMgNjguOTc3IDUwLjUzMiA2OC40MDMgNTMuNTMyIDY5LjY2OCA1NS45OTMgQyA3MC45MzQgNTguNDQ4IDczLjcxNyA1OS43MjYgNzYuNDA3IDU5LjA3NSBDIDc5LjA5IDU4LjQzMSA4MC45ODkgNTYuMDI4IDgxIDUzLjI2OSBDIDgwLjk5NSA1Mi4zNTUgODAuNzc4IDUxLjQ1OCA4MC4zNjggNTAuNjQ0IFogTSA3NC45OTkgMzUuMjk4IEMgNzUuMzk4IDM1LjI5OCA3NS43NzkgMzUuMTQgNzYuMDYgMzQuODU5IEMgNzYuMzQxIDM0LjU3NyA3Ni40OTkgMzQuMTk2IDc2LjQ5OSAzMy43OTggTCA3Ni40OTkgMzEuNzQxIEMgNzYuNDk5IDMwLjkxNSA3NS44MjYgMzAuMjQxIDc0Ljk5OSAzMC4yNDEgQyA3NC4xNzMgMzAuMjQxIDczLjQ5OSAzMC45MTUgNzMuNDk5IDMxLjc0MSBMIDczLjQ5OSAzMy43OTggQyA3My40OTkgMzQuMTk2IDczLjY1OCAzNC41NzcgNzMuOTM5IDM0Ljg1OSBDIDc0LjIyIDM1LjE0IDc0LjYwMSAzNS4yOTggNzQuOTk5IDM1LjI5OCBaIE0gODQuOTAyIDM4LjI5OCBDIDg1LjEzIDM4LjQzOSA4NS4zOTQgMzguNTE1IDg1LjY2MyAzOC41MjEgQyA4Ni4xOTEgMzguNTI3IDg2LjY4MyAzOC4yNTEgODYuOTUyIDM3LjggTCA4OC4xMDcgMzUuODk2IEMgODguMzE4IDM1LjU1NiA4OC4zODggMzUuMTQ2IDg4LjI5NCAzNC43NTkgQyA4OC4yMDEgMzQuMzcyIDg3Ljk1NCAzNC4wMzIgODcuNjE1IDMzLjgyNyBDIDg3LjI3NSAzMy42MTYgODYuODY1IDMzLjU1MiA4Ni40NzIgMzMuNjUyIEMgODYuMDg1IDMzLjc0NSA4NS43NTEgMzMuOTkxIDg1LjU0NiAzNC4zMzcgTCA4NC4zOTIgMzYuMjQxIEMgODMuOTc2IDM2Ljk1IDg0LjIxIDM3Ljg1OSA4NC45MTMgMzguMjggWiBNIDkxLjc2OSA0My41MDEgQyA5MS4xNjUgNDMuODI5IDkwLjg2MSA0NC41MjcgOTEuMDMxIDQ1LjE5NCBDIDkxLjIwMSA0NS44NTcgOTEuNzk4IDQ2LjMyNSA5Mi40OSA0Ni4zMTkgQyA5Mi43MzYgNDYuMzE5IDkyLjk3NiA0Ni4yNjEgOTMuMTkzIDQ2LjE0NCBMIDk1LjU0OCA0NC44NjYgQyA5Ni4yODEgNDQuNDUgOTYuNTMzIDQzLjUyNSA5Ni4xMTcgNDIuNzk4IEMgOTUuNzA3IDQyLjA2NiA5NC43ODEgNDEuODE0IDk0LjA0OCA0Mi4yMjQgWiBNIDk1LjU0OCA2My43OTcgTCA5Mi4zMzcgNjIuMDQgQyA5MS45OTIgNjEuODQgOTEuNTc2IDYxLjc4OCA5MS4xODkgNjEuODk5IEMgOTAuNzk2IDYyLjAwNCA5MC40NjggNjIuMjYyIDkwLjI2OSA2Mi42MDggQyA4OS44NTMgNjMuMzQgOTAuMTExIDY0LjI2NiA5MC44MzcgNjQuNjgyIEwgOTQuMDQ4IDY2LjQ0IEwgOTQuMDQ4IDY2LjQzNCBDIDk0LjI3MSA2Ni41NTEgOTQuNTE3IDY2LjYxIDk0Ljc2OSA2Ni42MTYgQyA5NS40NiA2Ni42MjIgOTYuMDU4IDY2LjE1MyA5Ni4yMjggNjUuNDg1IEMgOTYuMzk4IDY0LjgxNyA5Ni4wOTMgNjQuMTIgOTUuNDkgNjMuNzk3IFogTSA5Ny40OTkgNTUuODI5IEMgOTguMzI2IDU1LjgyOSA5OC45OTkgNTUuMTYxIDk4Ljk5OSA1NC4zMjkgQyA5OC45OTkgNTMuNTAyIDk4LjMyNiA1Mi44MjkgOTcuNDk5IDUyLjgyOSBMIDk0LjM4MiA1Mi44MjkgQyA5My41NSA1Mi44MjkgOTIuODgyIDUzLjUwMiA5Mi44ODIgNTQuMzI5IEMgOTIuODgyIDU1LjE2MSA5My41NSA1NS44MjkgOTQuMzgyIDU1LjgyOSBaIE0gNTUuMjQyIDI0IEwgNTguMzU5IDI5LjAzOSBMIDU4LjM2NSAyOS4wMzkgQyA1Ny40OTggMjkuNjE5IDU2LjY2NiAzMC4yNTIgNTUuODc1IDMwLjkzMiBDIDU1LjI0OCAzMS40NzEgNTUuMTcyIDMyLjQxNCA1NS43MTEgMzMuMDQ3IEMgNTYuMjUgMzMuNjc0IDU3LjE5MyAzMy43NSA1Ny44MjYgMzMuMjExIEMgNTguODM0IDMyLjM1NSA1OS45IDMxLjU3IDYxLjAxOSAzMC44NjcgTCA2MS4yMDEgMzAuNzkxIEMgNjEuMjAxIDMwLjc5MSA2MS4yMDEgMzAuNzE1IDYxLjMwNiAzMC42ODUgTCA2MS4zMDYgMzAuNjkxIEMgNjUuNDM3IDI4LjE5NSA3MC4xNzIgMjYuODc3IDc1IDI2Ljg4MyBDIDc5Ljg0NiAyNi44ODMgODQuNTkyIDI4LjIxOSA4OC43MjMgMzAuNzUgTCA4OC44MjggMzAuNzUgQyA5Mi43MTMgMzMuMTcgOTUuOTEyIDM2LjUzOSA5OC4xMzMgNDAuNTQ3IEMgMTAwLjIwNyA0NC40MiAxMDEuMjkxIDQ4Ljc1IDEwMS4yOTcgNTMuMTQ0IEMgMTAxLjMwMyA1Ny41MzMgMTAwLjIwNyA2MS44NTEgOTguMDk4IDY1LjcwMSBDIDk3LjkxIDY2LjA1MiA5Ny44NjMgNjYuNDYyIDk3Ljk3NSA2Ni44NDMgQyA5OC4wODYgNjcuMjMgOTguMzUgNjcuNTQ2IDk4LjcwMSA2Ny43NCBMIDEwNS4xOTMgNzEuMjc5IEMgMTA1LjQxIDcxLjQwNyAxMDUuNjUgNzEuNDc4IDEwNS45MDIgNzEuNDcyIEMgMTA2LjU5NCA3MS40ODQgMTA3LjE5NyA3MS4wMjEgMTA3LjM3MyA3MC4zNTMgQyAxMDcuNTQ5IDY5LjY4NSAxMDcuMjQ0IDY4Ljk4MiAxMDYuNjM1IDY4LjY1NCBMIDEwMS41MDggNjUuOTk5IEMgMTAzLjE5NSA2Mi41MDEgMTA0LjE2MiA1OC43MDQgMTA0LjM1NSA1NC44MjUgTCAxMTAuMjUgNTQuODI1IEMgMTExLjA3NiA1NC44MjUgMTExLjc1IDU0LjE1MiAxMTEuNzUgNTMuMzI1IEMgMTExLjc1IDUyLjQ5MyAxMTEuMDc2IDUxLjgyNSAxMTAuMjUgNTEuODI1IEwgMTA0LjM1NSA1MS44MjUgQyAxMDQuMTU2IDQ3Ljk0MSAxMDMuMjAxIDQ0LjEzMiAxMDEuNTM3IDQwLjYxNiBMIDEwNi43MTEgMzcuNzk4IEMgMTA3LjQzMiAzNy40MDUgMTA3LjcwMSAzNi40OTcgMTA3LjMwOSAzNS43NzcgQyAxMDYuOTIyIDM1LjA0NCAxMDYuMDE0IDM0Ljc3NSAxMDUuMjg3IDM1LjE2MSBMIDEwMC4wOTYgMzcuOTggQyA5Ny45MjIgMzQuNDc2IDk1LjA1NyAzMS40NTggOTEuNjY0IDI5LjExNCBMIDk0Ljc3IDIzLjk5OSBDIDk0Ljk4MSAyMy42NTkgOTUuMDQ1IDIzLjI0OSA5NC45NTEgMjIuODYyIEMgOTQuODU4IDIyLjQ3IDk0LjYxNyAyMi4xMzYgOTQuMjc3IDIxLjkzMSBDIDkzLjU2OCAyMS41MDMgOTIuNjU0IDIxLjcyIDkyLjIyMSAyMi40MjMgTCA4OS4wOTggMjcuNDkxIEMgODUuMjE5IDI1LjM4OCA4MC45MTIgMjQuMTkzIDc2LjUgMjMuOTk5IEwgNzYuNSAxNy45OTkgQyA3Ni41IDE3LjE3MyA3NS44MjYgMTYuNDk5IDc1IDE2LjQ5OSBDIDc0LjE3NCAxNi40OTkgNzMuNSAxNy4xNzMgNzMuNSAxNy45OTkgTCA3My41IDIzLjk5OSBDIDY5LjA4OCAyNC4yMTYgNjQuNzc2IDI1LjQyOSA2MC45MDMgMjcuNTU2IEwgNTcuODA5IDIyLjQ5OSBDIDU3LjM0NiAyMS45MTMgNTYuNTIgMjEuNzU1IDU1Ljg3NSAyMi4xMyBDIDU1LjIzMSAyMi41MTEgNTQuOTYxIDIzLjMwOCA1NS4yNDMgMjMuOTk5IFogTSA1My44NTkgNDIuODA5IEwgNTMuODY1IDQyLjgwOSBDIDUzLjQ3MiA0My41MzUgNTMuNzQyIDQ0LjQzNyA1NC40NjMgNDQuODM2IEwgNTYuODE4IDQ2LjExMyBMIDU2LjgxOCA0Ni4xMDggQyA1Ny4wNDEgNDYuMjMxIDU3LjI4NyA0Ni4yODkgNTcuNTM5IDQ2LjI4OSBDIDU4LjIwNyA0Ni4yNjYgNTguNzc1IDQ1LjgwMyA1OC45MzMgNDUuMTU4IEMgNTkuMDk3IDQ0LjUxNCA1OC44MTYgNDMuODQgNTguMjQyIDQzLjUgTCA1NS44ODYgNDIuMjIzIEwgNTUuODkyIDQyLjIyMyBDIDU1LjE2NiA0MS44MzYgNTQuMjYzIDQyLjEwNSA1My44NjUgNDIuODI2IFogTSAzOS43MTQgNTQuODA5IEwgNDYuMTU0IDU0LjgwOSBDIDQ2LjQyMyA1NS4wNDMgNDYuNzc1IDU1LjE3MiA0Ny4xMzIgNTUuMTcyIEwgNDcuMzE0IDU1LjE3MiBMIDQ3LjMwOCA1NS4xNzIgQyA0OC4xMjggNTUuMDY2IDQ4LjcxNCA1NC4zMjIgNDguNjE1IDUzLjUwOCBMIDQ4LjYxNSA1My4zMzggQyA0OC42MTUgNDguOTU1IDQ5LjcwNCA0NC42MzcgNTEuNzc5IDQwLjc2OSBDIDUyLjQyOSAzOS41OCA1My4xNzMgMzguNDQzIDUzLjk5OSAzNy4zNjUgQyA1NC4yNzUgMzcuMDU0IDU0LjQwNCAzNi42NDQgNTQuMzYzIDM2LjIzNCBDIDU0LjMyMiAzNS44MTggNTQuMTE2IDM1LjQ0MyA1My43ODggMzUuMTkxIEMgNTMuNDYgMzQuOTM5IDUzLjA0NCAzNC44MjggNTIuNjM0IDM0Ljg5OCBDIDUyLjIyNCAzNC45NjMgNTEuODYxIDM1LjE5MSA1MS42MzIgMzUuNTM3IEMgNTEuMDY0IDM2LjI4NyA1MC41MjUgMzcuMDM3IDQ5Ljk5NyAzNy45MzkgTCA0NC44MDYgMzUuMTIxIEwgNDQuODA2IDM1LjExNSBDIDQ0LjA3NCAzNC43MjggNDMuMTcxIDM1LjAwNCA0Mi43NzkgMzUuNzMgQyA0Mi4zOTIgMzYuNDU3IDQyLjY1NiAzNy4zNTkgNDMuMzgyIDM3Ljc1OCBMIDQ4LjU1NiA0MC41NzYgQyA0Ni44OTIgNDQuMDkyIDQ1LjkzNyA0Ny44OTQgNDUuNzMyIDUxLjc3OSBMIDM5LjczMiA1MS43NzkgQyAzOC45MDYgNTEuNzc5IDM4LjIzMiA1Mi40NTMgMzguMjMyIDUzLjI3OSBDIDM4LjIzMiA1NC4xMTEgMzguOTA2IDU0Ljc3OSAzOS43MzIgNTQuNzc5IFogTSA0NC43MjQgNzEuNDcyIEwgNTEuMTc1IDY3Ljk4IEwgNTEuMTgxIDY3Ljk4IEMgNTEuNTMyIDY3Ljc4NyA1MS43OSA2Ny40NjQgNTEuOTAyIDY3LjA4NCBDIDUyLjAxMyA2Ni43MDMgNTEuOTcyIDY2LjI4NyA1MS43NzkgNjUuOTQxIEMgNTAuODY0IDY0LjI3MSA1MC4xMzIgNjIuNTAyIDQ5LjYwNSA2MC42NzMgQyA0OS4zMzUgNTkuOTM1IDQ4LjU0NCA1OS41MzEgNDcuNzg4IDU5Ljc0MiBDIDQ3LjAzMiA1OS45NTMgNDYuNTcgNjAuNzE0IDQ2LjcyMiA2MS40ODIgQyA0Ny4xNzMgNjMuMDI5IDQ3Ljc0NyA2NC41MzUgNDguNDUgNjUuOTgyIEwgNDMuMjQ3IDY4LjggTCA0My4yNDEgNjguODA2IEMgNDIuNTE1IDY5LjE5OSA0Mi4yNDUgNzAuMTA3IDQyLjYzOCA3MC44NCBDIDQzLjAzIDcxLjU2NiA0My45MzkgNzEuODM2IDQ0LjY3MSA3MS40NDMgWiBNIDc5LjIyNCAxMjYuNTM5IEwgNzkuMjMgMTA1LjMyNyBMIDcwLjc4NiAxMDUuMzI3IEwgNzAuNzg2IDEyNi41MDkgWiBNIDc0Ljk5OSA1MC4yMzIgQyA3My43ODYgNTAuMjMyIDcyLjY5MSA1MC45NjUgNzIuMjI4IDUyLjA5IEMgNzEuNzY1IDUzLjIwOSA3Mi4wMjMgNTQuNDk4IDcyLjg3OCA1NS4zNTMgQyA3My43MzQgNTYuMjE1IDc1LjAyOSA1Ni40NzMgNzYuMTQ4IDU2LjAwNCBDIDc3LjI2NyA1NS41NDEgNzcuOTk5IDU0LjQ1MSA3Ny45OTkgNTMuMjMyIEMgNzcuOTk5IDUyLjQ0MSA3Ny42ODMgNTEuNjc0IDc3LjEyIDUxLjExMSBDIDc2LjU1OCA1MC41NDkgNzUuNzk2IDUwLjIzMiA3NC45OTkgNTAuMjMyIFogTSAxMTUuMDM1IDEzNC41MDkgTCAxMDMuMDM1IDEzNC41MDkgTCAxMDMuMDM1IDEyOS41MTEgTCA0Ni45MzMgMTI5LjUxMSBMIDQ2LjkzMyAxMzQuNTAzIEwgMzQuOTMzIDEzNC41MDMgTCAzNC45MzMgMTM0LjUwOSBDIDM0LjEwNyAxMzQuNTA5IDMzLjQzMyAxMzUuMTc3IDMzLjQzMyAxMzYuMDA5IEMgMzMuNDMzIDEzNi44MzUgMzQuMTA3IDEzNy41MDkgMzQuOTMzIDEzNy41MDkgTCAxMTUuMDM1IDEzNy41MDkgQyAxMTUuODYyIDEzNy41MDkgMTE2LjUzNSAxMzYuODM1IDExNi41MzUgMTM2LjAwOSBDIDExNi41MzUgMTM1LjE3NyAxMTUuODYyIDEzNC41MDkgMTE1LjAzNSAxMzQuNTA5IFoiIGZpbGw9ImN1cnJlbnRDb2xvciI+PC9wYXRoPjwvc3ZnPg==" alt=""></div>
         <div class="stat__label">Crisis ética</div>
         <div class="stat__title">El liderazgo progresista se erosiona.</div>
-        <div class="stat__body">La legitimidad cede cuando eficacia e integridad se separan.</div>
+        <div class="stat__body">La legitimidad cede cuando la eficacia e integridad se separan.</div>
       </div>
       <div class="stat stat--coral">
         <div class="stat__frame"></div>
@@ -3249,15 +3242,12 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 40px;">
-      <span class="eyebrow-tag"><span class="bar"></span>POR QUÉ BARCELONA · POR QUÉ AHORA</span>
     </div>
 
-    <div class="two-col">
+    <div class="two-col" style="grid-template-columns: 1.55fr 1fr;">
       <div>
         <div class="title">
-          La única plaza europea<br>
-          con las <b>tres condiciones</b><br>
-          alineadas.
+          Barcelona: La única plaza europea con las <b style="white-space: nowrap;">tres condiciones</b> alineadas.
         </div>
         <div class="body widest light" style="margin-top: 44px; color: var(--ink-muted); font-size: 25.8px;">
           A diferencia de Madrid, donde el liderazgo local no ofrece alineación política con estos objetivos, Barcelona combina coherencia institucional, trayectoria progresista sostenida y legitimidad simbólica para albergar una iniciativa de esta naturaleza.
@@ -3299,7 +3289,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div>
-      <div class="num">LA PROPUESTA</div>
       <div class="h">
         Barcelona<br>
         <b>Progressive</b><br>
@@ -3325,7 +3314,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
       </div>
     </div>
 
-    <div class="q-attr">Pregunta guía del encuentro</div>
 
     <div class="qmark">“</div>
 
@@ -3349,7 +3337,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 40px;">
-      <span class="eyebrow-tag"><span class="bar"></span>EL PROGRAMA</span>
     </div>
 
     <div style="margin-top: 48px; display: grid; grid-template-columns: 1.55fr 0.9fr; gap: 72px; align-items: start; flex: 1;">
@@ -3405,7 +3392,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 40px;">
-      <span class="eyebrow-tag coral"><span class="bar"></span>PROPUESTA DE VALOR</span>
     </div>
 
     <div style="margin-top: 40px;">
@@ -3449,7 +3435,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div>
-      <div class="num">EL EVENTO</div>
       <div class="h" style="font-size: 125px;">
         Un <b>brunch estratégico</b><br>
         para activar el piloto.
@@ -3476,7 +3461,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
     <div style="margin-top: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;">
       <div style="flex: 1; min-width: 0;">
-        <span class="eyebrow-tag"><span class="bar"></span>ESTRUCTURA DEL ENCUENTRO</span>
         <div class="title" style="margin-top: 20px; font-size: 62.6px;">Cinco momentos. Un propósito.</div>
       </div>
       <div style="font-family: var(--font-mono); font-size: 22px; color: var(--ink-dim); letter-spacing: 0.08em; white-space: nowrap; flex-shrink: 0;">DURACIÓN ≈ 3H</div>
@@ -3527,7 +3511,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
     <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;">
       <div style="flex: 1; min-width: 0;">
-        <span class="eyebrow-tag coral"><span class="bar"></span>CONVOCATORIA</span>
         <div class="title" style="margin-top: 20px; font-size: 62.6px;">
           Alcaldes, estrategas,<br>
           <b>constructores de ciudad.</b>
@@ -3567,7 +3550,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 40px;">
-      <span class="eyebrow-tag"><span class="bar"></span>SOCIOS Y STAKEHOLDERS</span>
     </div>
 
     <div style="margin-top: 40px;">
@@ -3625,7 +3607,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
     <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
-        <span class="eyebrow-tag"><span class="bar"></span>CRONOGRAMA OPERATIVO</span>
         <div class="title" style="margin-top: 24px;">De abril a julio.<br><b>Ejecución lineal, sin márgenes.</b></div>
       </div>
       <div style="font-family: var(--font-mono); font-size: 22px; color: var(--ink-dim); letter-spacing: 0.08em;">ABRIL → JULIO 2026</div>
@@ -3675,7 +3656,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
     </div>
 
     <div style="margin-top: 40px;">
-      <span class="eyebrow-tag coral"><span class="bar"></span>POSICIONAMIENTO</span>
     </div>
 
     <div style="margin-top: 40px;">
@@ -3723,7 +3703,6 @@ a:focus-visible { color: var(--inline-link-hover-color); }
 
     <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
-        <span class="eyebrow-tag"><span class="bar"></span>RESULTADOS ESPERADOS</span>
         <div class="title" style="margin-top: 24px;">Lo que sale del brunch,<br><b>entra en el ciclo 2027.</b></div>
       </div>
     </div>

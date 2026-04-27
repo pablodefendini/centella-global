@@ -645,6 +645,8 @@ Standalone HTML decks (e.g. NGL Barcelona) ship as first-class Astro pages under
 - **Page:** `src/pages/presentations/[slug].astro` — the deck markup itself. All inline `<style>` blocks must use `is:global` and all inline `<script>` blocks must use `is:inline` so Astro doesn't scope-rewrite the CSS or hoist/bundle the JS. Decks brought in from external tools usually have their own scaler, web components, and font loading; the toolchain should leave them alone.
 - **Assets:** `public/presentations/[slug]/assets/` for fonts, images, logos. Reference with absolute paths (`/presentations/[slug]/assets/...`) so URLs resolve regardless of trailing-slash or prefetch behavior.
 - **Branding:** decks may diverge from the global token system when the venue or audience demands it (custom palettes, custom type pairings), but should keep the Centella Spark lockup and one of the brand-anchor accent colors as the through-line.
+- **Scaling:** the `<deck-stage>` web component renders the canvas at its authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` to fit any viewport with letterboxing. Authors size slide content in absolute px against the design canvas — never in `vh`/`vw` — and trust the scaler to adapt to small windows, projectors, and tablets without clipping content.
+- **Standalone export:** `npm run deck:standalone -- <slug>` produces a single self-contained `<slug>-standalone.html` at the repo root with fonts, images, and CSS inlined, suitable for email or hand-off. Background MP4 sources are stripped from the export — the cover poster carries the visual.
 
 ---
 

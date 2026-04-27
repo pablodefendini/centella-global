@@ -68,7 +68,8 @@ public/
 └── presentations/[slug]/     # Per-deck assets (fonts, images) referenced via absolute /presentations/... URLs
 
 scripts/
-└── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
+├── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
+└── inline-deck.mjs           # Bundles a built deck into a single self-contained HTML file
 
 docs/
 ├── PRD.md                    # Product requirements
@@ -110,6 +111,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Mailchimp tags match the event's `Mailchimp Tag` property.** The homepage form uses a generic tag (e.g., `homepage-signup`). Event pages pass the event-specific tag.
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 - **Presentation decks ship at `/presentations/[slug]/`.** One `.astro` file per deck under `src/pages/presentations/`, using the `Presentation.astro` layout (full-bleed, no site chrome). Inline `<style>` blocks need `is:global`; inline `<script>` blocks need `is:inline`, so Astro doesn't scope-rewrite or bundle deck-internal CSS/JS. Per-deck assets go in `public/presentations/[slug]/assets/` and are referenced with absolute paths.
+- **Deck scaling is letterboxed.** The `<deck-stage>` web component renders slides at their authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` so the canvas always fits the viewport with bars on the short axis — never clips. Don't size slide content in `vh`/`vw` or assume the viewport equals the design canvas.
+- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` produces `<slug>-standalone.html` at the repo root with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network.
 
 ## Commands
 
@@ -120,6 +123,7 @@ npm run dev          # Astro dev server (fetches from Notion on each page load)
 npm run build        # Production build (fetches all Notion data, generates static site)
 npm run preview      # Preview production build locally
 npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p/720p MP4s (needs ffmpeg + cwebp)
+npm run deck:standalone -- <slug>           # Build site, then emit <slug>-standalone.html (self-contained, all fonts/images inlined)
 ```
 
 ## Development diary

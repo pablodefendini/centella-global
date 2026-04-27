@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "media:hero": "bash scripts/optimize-hero-media.sh"
+    "media:hero": "bash scripts/optimize-hero-media.sh",
+    "deck:standalone": "astro build && node scripts/inline-deck.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",

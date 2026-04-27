@@ -31,3 +31,6 @@ yarn-error.log*
 
 # Playwright MCP scratch
 .playwright-mcp/
+
+# Standalone deck exports (build artifact from `npm run deck:standalone`)
+*-standalone.html

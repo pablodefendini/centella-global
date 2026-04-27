@@ -6,6 +6,33 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-27 — Letterbox scaling + standalone deck export
+
+### Letterbox scaling in `<deck-stage>`
+
+The original `_fit()` in the deck-stage web component locked the canvas to viewport CSS pixels — meaning slide content (sized in absolute px against the 1920×1080 design canvas) clipped on small or short viewports. Replaced with proper letterbox scaling: keep the canvas at design size and apply `transform: scale(min(vw/dw, vh/dh))`. Now the deck always fits any viewport with bars on the short axis, and content adapts to height as well as width.
+
+`noscale` attribute still bypasses the transform for the PPTX exporter and other tools that want unscaled DOM geometry.
+
+### Standalone single-file deck export
+
+Decks need to be sendable as email attachments or USB hand-offs. Added `scripts/inline-deck.mjs` and `npm run deck:standalone -- <slug>`, which:
+
+1. Runs `astro build`
+2. Reads the built `dist/presentations/<slug>/index.html`
+3. Reads the linked `_astro/*.css` file, base64-inlines every woff2 referenced via `url(...)`
+4. Inlines image references (svg/webp/png/jpg) as data URIs
+5. Strips `<source>` MP4 tags (the cover poster carries the visual; we don't want to base64 a 1MB video)
+6. Folds the CSS into a `<style>` tag and writes `<slug>-standalone.html` at the repo root
+
+Output for NGL Barcelona is ~2.3MB. Opens directly via `file://` in any modern browser.
+
+### Eyebrow tags removed from NGL Barcelona
+
+The small uppercase coral labels above each headline ("CONTEXTO · 2026", "EL PROGRAMA", etc.) were stripped — 12 `.eyebrow-tag` spans, 2 `.num` section labels, 1 `.q-attr` quote attribution. Card-level mini-eyebrows ("CRISIS ÉTICA", "PILAR 01") were kept. The CSS rule for `.eyebrow-tag` was deleted along with the markup. If a future deck wants slide eyebrows, redefine the rule per-deck rather than reaching into a shared base.
+
+---
+
 ## 2026-04-26 — Presentation decks as first-class Astro pages
 
 ### Decision
