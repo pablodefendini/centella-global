@@ -6,6 +6,20 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-28 — Bilingual presentation decks: duplicate file, no i18n abstraction
+
+Built an English version of the NGL Barcelona deck (`src/pages/presentations/ngl-barcelona-en.astro`) alongside the Spanish original. The convention going forward: when a deck needs another language, **duplicate the `.astro` file, suffix the slug with the language code (e.g. `-en`), and translate the strings inline.** Don't introduce an i18n abstraction (no `src/i18n/`, no string tables, no shared partials).
+
+**Why:** decks are leaf documents — large, hand-tuned, single-file by design (per the decks-as-pages convention in `CLAUDE.md`). Sharing strings across language variants would force the markup into a shape it wasn't designed for, and the cost of duplicating a file is low. The duplicated file inherits all infrastructure for free: `<deck-stage>` letterbox scaling, the `Presentation` layout, the `npm run deck:standalone -- <slug>` pipeline, font loading, etc.
+
+**What changes between Spanish and English:** body copy, slide `data-label` strings, footer text (chrome `mark` and `pg`), the cover slide label ("Portada" → "Cover"), date stamp ("JULIO 2026" → "JULY 2026"), and the `lang` attribute on `<Presentation>` (`"es"` → `"en"`). Everything else is identical.
+
+**When to revisit:** if more than two languages or more than two decks need translation simultaneously, the duplication cost starts to matter. At that point, consider a content-collection approach (Astro content collections + per-locale data + a single deck template). Until then, two files is the right answer.
+
+The Spanish file remains canonical (no language suffix); language variants get suffixes. Routes: `/presentations/ngl-barcelona/` (Spanish, default), `/presentations/ngl-barcelona-en/` (English).
+
+---
+
 ## 2026-04-27 — Letterbox scaling + standalone deck export
 
 ### Letterbox scaling in `<deck-stage>`

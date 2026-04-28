@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 14 — April 28, 2026: NGL Barcelona — small Spanish polish, dedicated Programa Piloto slide, English translation
+
+Two passes on the NGL Barcelona deck, picking up from Entry 10.
+
+The first was a small Spanish copy and structure pass. On the cover, "Barcelona / Progressive / Leadership Factory" became "Barcelona: / A Progressive / Leadership Factory" — the colon and the article are tiny moves that pull the reading rhythm into the right shape, and the first version was reading as three nouns rather than as a phrase. Then I split the Programa Piloto sidebar that had been crammed into slide 6 ("Por qué Barcelona") into its own slide (6b). The sidebar was always going to lose a fight for attention with the rest of slide 6, and the program-design specifics deserve their own air. The new slide leads with the cohort claim ("una cohorte internacional de 25 a 50 candidaturas municipales") on the left and three stat cards on the right — Cohorte (25–50), Formación (the three training pillars), Horizonte (documented to scale into 2027). The two-column layout lets the slide be read either as headline-plus-detail or as three independently scannable cards.
+
+Then I built an English translation of the deck — `src/pages/presentations/ngl-barcelona-en.astro`, alongside the Spanish original. I duplicated the file and translated all body copy, slide labels, footers, and the date stamp ("JULIO 2026" → "JULY 2026"). The cover slide label changes from "Portada" to "Cover"; the deck `lang` attribute on the Presentation layout flips from `"es"` to `"en"`. Everything else — typography, layout, deck-stage scaling, standalone export — comes for free from the page-as-deck convention.
+
+The thing I want to remember: when a deck needs a translation, the path of least resistance is "duplicate the file, suffix with `-en`, and translate strings inline" — not introducing an i18n abstraction. Decks are leaf documents, the cost of two files is low, and any attempt to share strings across files would force the deck markup into a shape it isn't designed for. If translations later proliferate (more languages, multiple decks), revisit. For now, two files is the right answer, and the standalone export pipeline (`npm run deck:standalone -- ngl-barcelona-en`) just works.
+
+---
+
 ## Entry 10 — April 27, 2026: NGL Barcelona deck — content pass and a fix that turned out to be infrastructure
 
 Today I sat with the NGL Barcelona deck and worked through it. Most of what I changed was small — the kind of polish you only see when you read the deck out loud. But two of the changes were structural enough that they're going to outlive this deck.
