@@ -18,6 +18,98 @@ The thing I want to remember: when a deck needs a translation, the path of least
 
 ---
 
+## Entry 13 — April 28, 2026 (later): Bright Centella palettes on the Prime Movers mockups
+
+Pablo asked for the three Prime Movers 20th mockups to be revised so the colors are bright and cheery, drawn from Centella's own token system but applied to the existing light grounds. The original three directions were calibrated to Hunt Alternatives — restrained, editorial, warm-but-quiet. The revision keeps the typographic structure of each direction and only swaps the palette, in three pairs of Centella families, one pair per option:
+
+**Option A — Contemporary** → `--violet` + `--global` (lavender + bright orange). Paper shifts from cream to `--violet-light` #F7EDFF; ink to `--violet-dark` #1E1A28. The welcome-left, which was a dark ink panel, is now a bright orange panel with dark-on-bright text. The pocket page goes bright violet. Headline accent words sit inside violet swatches — a bright "moment" inside an otherwise quiet headline.
+
+**Option B — Warm** → `--networking` + `--global` (coral + bright orange). The earlier draft mixed three families (networking + global + a stray violet labeled "teal"); the revision drops the violet to comply with Centella's "no more than two color families per composition" rule. Cover photo plate becomes a coral-to-orange-to-deep-wine sunset gradient. Italic emphasis words sit in coral swatches; the venue pill flips from light-on-coral to dark-on-coral for AA contrast.
+
+**Option C — Classical** → `--tech` + `--global` (bright pink + bright orange). Paper shifts from cream to `--tech-light` #FFE6F5 — the most overtly cheery move of the three. Body ink becomes `--tech-dark` #2A1522 (deep plum). The big change here is that the original `--A-oxblood` (bright pink #FF66C4) used as italic-accent text fails AA contrast on light grounds (2.4:1). I redefined `--A-oxblood-deep` and `--A-gold-deep` to deeper accessible variants (#A52B7D and #8A4F00, both 5.5:1+) and routed all `color: var(--A-oxblood)` references through the deep variant. The bright pink is preserved for fills only — boxes, cover frame, drop caps, dark-divider-page accents.
+
+The architecture I'm holding to throughout: brights are *fills*; family-darks are *text*; reverse type inside bright fills is the same family-dark (always 6.2–7.8:1, AAA in most cases). Body copy clears AAA on all three options (14–16:1). The "two-family rule" from `design.md` is enforced per option — there's no third family creeping in.
+
+A note on the "Hunt Alternatives, not Centella" framing from earlier entries: the brochure is still a Hunt Alternatives piece — typography, format, voice, photography all stay calibrated to Swanee's audience. What changed is just the color palette source. Pablo's brief was specifically that the colors should be Centella's, applied to the existing light grounds; the typographic identity of each direction is intact. Worth flagging back to him if Swanee reads any of the three as "too Centella" — if she does, the fix is reducing fill saturation, not unwinding the palette.
+
+I also pruned the legend dl on each option file to describe the new palette honestly (token names, contrast ratios, fill-vs-text discipline) and updated the index comparison page so the swatches, accent variables, and "Palette" cell match the new tokens. The s-teal swatch class on Option B is now mis-named — it shows global/orange — but I left the class name to avoid a ripple of edits.
+
+What I want to remember: when bright Centella colors are placed on light grounds, ~all of them (violet, coral, lime, cyan, pink, orange) fail body-text contrast. They earn their keep as fills with dark text, or as decorative non-text glyphs, or as the *background* of a colored highlight behind dark text. The cleanest way to keep brand "pop" in headline accents on light grounds is the highlight-fill move — wrap the accent word in a span with `background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`. That's what Option A and B both do now.
+
+---
+
+## Entry 11 — April 27, 2026: Three design directions for the Prime Movers 20th brochure
+
+Switched gears from the deck work to a new client deliverable — the printed program brochure Centella is producing for Hunt Alternatives' Prime Movers 20th Anniversary Reunion. Different problem, different audience, different identity. Worth its own working folder: `work/prime-movers-20th/`.
+
+The brief had a lot moving in it — fluid agenda until the last minute, Swanee can't read a layout from color swatches alone, three options needed (not two), need to see real headings and titles, identity has to feel right for an established progressive philanthropy reunion rather than for Centella itself. The format question resolved early: 6×9 saddle-stitched booklet with a printed pocket on the inside back cover holding the late-binding agenda insert. That structure lets the body of the book go to print early while the agenda stays loose until morning-of.
+
+I built three directions and put them in `mockups/`. Each is a self-contained HTML file showing six spreads at print proportion — cover, welcome from Swanee, About Prime Movers (program + next-generation approach), a participant bio spread, the code of conduct, and the agenda pocket page. Real headings, real titles, placeholder Latin where copy isn't yet in. The point isn't the words — it's that Swanee can read the layout instead of guessing from a swatch.
+
+**A — Classical / editorial.** Cormorant Garamond, oxblood and gold, drop caps, Roman numerals. Reads as institutional weight, milestone occasion. The closest reference is a New York Review of Books or a university press monograph. The 20-year mark earned, not announced.
+
+**B — Contemporary / progressive.** Inter Tight at heavy weights, ultramarine accent, modular blocks, mono labels for structure. Reads as current movement, not commemoration. Closest references are Aperture and MIT Press. The 20-year mark as momentum, not monument.
+
+**C — Warm / human.** Lora italic-forward, terracotta and teal and ochre, ornament glyphs, photo-led cover. Reads as the people in the room, not the institution that convened them. A yearbook for grown-ups. This is the one that needs photography to reach its full version, and that's the question I have to ask Pablo: do we have archival imagery from past convenings?
+
+A thing I had to be careful about: Centella has a strong, well-documented design system in `design.md` — architectural, dark default, single Barlow superfamily, no serifs. It would have been easy to drift toward that. But this brochure is not a Centella piece. Centella is producing it for a client, and the client's program (Prime Movers, twenty years of progressive CEOs, Swanee Hunt's voice) needs an identity that fits that audience. So all three directions lead with Hunt Alternatives / Prime Movers; Centella ends up in the colophon. If Swanee asks for the producer's identity to come through more visibly, that's a separate brief and I'll know to flag it.
+
+The other thing I'm holding open: the agenda. Jason will take Pablo's agenda and convert it to a 3-page grid format — Swanee has a graphic mind and can't process a 6-page linear agenda. The brochure design includes a placeholder pointer page facing the pocket on the inside back cover, but the agenda itself prints separately. Once Jason gets back from the printer with lead times, we can lock the file deadline for the main book and a later, separate one for the insert.
+
+The three options live at `mockups/index.html` (the comparison page) plus one HTML file per direction. I also wrote a short `README.md` in the project folder so the context survives the conversation: format decisions, section order, open questions, critical path. The README is also a mental reset for me — when I come back to this in a week, I won't have to reconstruct what was settled and what wasn't.
+
+Now I wait for Pablo's call on direction, dates, photography, and bio template.
+
+**Update later that day.** Pablo cut both the welcome letter and the About Prime Movers description from the printed piece. Swanee will set context live in the room — the printed brochure is now a directory + reference + code-of-conduct + agenda holder, not a program book in the traditional sense. I stripped both spreads from all three options and re-numbered. The mockups are now four spreads each (cover, bios, conduct, pocket). One implication I'm flagging back to Pablo: with no welcome letter to set tone on the inside, the cover is doing more of the work. Worth a second pass on the cover treatment once a direction is picked.
+
+**And then the title locked.** Pablo confirmed the event title: **Prime Movers & the Next Generation**, with **Meeting the Moment** as the theme. That's a real shift from the placeholder "Prime Movers Reunion" — and the longer title forced a typographic rework on each cover. Option A reorganized to put "Meeting the Moment" as the italic display line under the "20" numeral, with the long descriptive title set as the small-caps sub-line below the rule. Option B turned the saturated bottom band into a two-column grid: the theme as the bold display on the left, the descriptive title and tag stacked on the right. Option C swapped its previous warm-and-specific cover line ("Twenty years in. Still in the room.") for the official theme — a small loss of voice in exchange for the right name. Across all three, the doc-header strings and the index page got the new copy too. Worth noting for future me: the cover layouts are now sized for these specific copy lengths. If the title or theme changes again, the covers will need another typographic pass, not just a string swap.
+
+**v3 — and then the brochure grew up.** Pablo came back with the final section list, and it's substantially more than v2. Two welcomes (Ambassador Hunt for the warm welcome, Giovanna Alvarez Negretti for the practical one), Swanee's thought piece (the personal/intellectual offering), the same bios, maps, code of conduct, emergency contacts, contact info, pharmacy/hospital, agenda insert. Plus two new design directives: client likes "boxes" as a visual motif, and quotes should be sprinkled throughout.
+
+The boxes ask is interesting because Centella's own design system is built around exactly that pattern — bold panels with hard edges, an outer rule, an inner frame at lower opacity, 4–8–16px radius. So I lifted that pattern and adapted it to each of the three directions: Option A gets a cream-and-gold double-frame; Option B gets harder-edged 8px panels with ultramarine fills; Option C gets warmer 8px panels with terracotta inner rules. The quote box is a member of the same family — same outer-frame pattern, with an italic serif (A and C) or bold display (B) inside.
+
+The new spreads I built per option: the two welcomes (Hunt + Giovanna), Swanee's thought piece (essay layout with drop cap + a sidebar quote), and a maps + practical info spread that consolidates the venue map, emergency contacts, hospital, pharmacy, and on-site phone numbers into one box-driven spread on the right side. In production the practical info will spread across multiple pages, but for the mockup, having it all in one place lets Swanee see how the boxes hold together as a system.
+
+Quotes landed in three places per option: the thought piece (right page, between body paragraphs — feels editorial), the bios spread (one of the corners — feels like a participant testimonial), and the code of conduct (bottom of the left page — sets the room's tone). Sources are placeholders that read like real attributions ("A Prime Mover · 2024 cohort survey", "From an earlier convening · attributed", "A facilitator's note · 2019") so Pablo can swap in real quotes when he has them.
+
+Page count is back up to ~28–36pp depending on bio length. Each option is now eight spreads in the mockup. The README, MEMORY, and DIARY all updated to keep future-me oriented.
+
+One thing I'm watching: the Centella panel pattern is a strong visual move and Swanee said she likes boxes — but if she chooses Option A (the most editorial direction), the boxes might feel a little assertive against the otherwise restrained classical typography. Worth testing live whether to soften the box treatment for A or push it harder. Won't know until she sees it.
+
+---
+
+## Entry 12 — April 28, 2026: Three more directions from a Claude Design hand-off bundle
+
+Pablo dropped in a URL pointing at a Claude Design hand-off bundle — `https://api.anthropic.com/v1/design/h/...?open_file=Brochure+Concepts+v2.html` — and asked me to reproduce its design language as Options D, E, and F alongside the A/B/C set I'd already built in this session. So this turned into an interesting day of forensic web fetching followed by careful reproduction.
+
+The fetch was sneakier than I expected. The URL returns content that looks like JSON to my web-fetch tool, but it's really a gzipped tar archive. The tool's content-type sniffing got confused. I had to fall back to `curl --compressed` in the workspace bash and then `tar -xz` to unpack the bundle. Once unpacked, the structure made sense: a `prime-movers/` folder with a README ("CODING AGENTS: READ THIS FIRST" — Anthropic prepared this format thoughtfully), a chat transcript showing the full design conversation, and the React/JSX source for six option files (a, b, c, plus a2, b2, c2), a `brochure-v2.css` with all the styling for the v2 set, a `data.js` with bios + quotes + agenda + emergency contacts, and the full Centella font kit bundled in.
+
+The chat transcript was the highest-signal document. It walked through Pablo's iteration with the design assistant: he started with two options (Document of Record vs Convening), then asked for three with the same Hunt-Alternatives-not-Centella reframe I'd ended up arriving at independently in this session, then asked for the title to lock to "Prime Movers & the Next Generation / Meeting the Moment" (same), then asked for the same final TOC restructure with two welcomes + thoughtpiece + boxes + quotes (same, again). It's a remarkable parallel — two separate AI design conversations converged on the same direction labels and the same final structure with no cross-talk. Tells me the design problem actually has those answers in it, not just one of us.
+
+What the bundle's v2 options have that mine don't, distilled:
+
+**Structural pages.** Bundle includes a separate Title page after the cover, a Contents page with paginated TOC, dark Section divider pages before each major section, and Emergency Contacts + Pharmacy/Hospital as their own spreads rather than consolidated. That's the difference between an 8-spread mockup and a 14-page mockup. If Swanee leans toward Set 2, the production booklet ends up at the same page count either way — the question is what gets shown to her now.
+
+**The "outset label" box motif.** Bundle's boxes put the eyebrow label cut into the top border of the box, like a fieldset legend in old HTML — the label sits on the rule itself, in a small slot of paper-colored background. It's a more refined treatment than the bordered-eyebrow I used; it reads as more typographically sophisticated. I should remember this pattern for future work.
+
+**Sharper accent moves.** D's italic ampersand in gold — a single character set as a typographic signature — appears on the cover, the title page, the contents, the headlines. It's small but it ties the system together. E's neon-green pop accent (#E8FF3A) is a more aggressive accent than my burnt orange and earns its keep — the "20" cover number in pop on dark navy is a real cover. F's terracotta-to-teal duotone gradient extends from the cover hero photograph through the bio monograms; it's a unified visual system, not a placeholder.
+
+**Soft section nomenclature in F.** Bundle's C2 names the conduct section "How we'll be", the emergency section "In case you need us", the next-gen section "A new generation". That's an editorial decision, not just a styling decision — and it fits the warm direction. Worth flagging to Swanee as its own choice. She might love it; she might find it too informal.
+
+I built D/E/F as faithful HTML reproductions of option-a2.jsx, option-b2.jsx, and option-c2.jsx — same data, same component patterns, same CSS variables, same page-by-page sequence. The bundle uses single-page mockup format (one 6×9 page rendered at a time, in the React design canvas); I kept that format for D/E/F so they read authentically. Set 1 stays as facing-spreads.
+
+Updated the index page to show all six options in two sets of three (Cowork v3 + Claude Design v2), wrote a 6-column comparison grid, and added a "What the two sets share" / "Where Set 2 is further along" section so Pablo can frame the choice for Swanee. The README, MEMORY, and DIARY all updated to reflect the larger set.
+
+The thing I want to remember: when Pablo hands off another bundle URL, the format is gzipped tar, the chat transcript is the goldmine, and the JSX is reproducible as flat HTML if you read the CSS first.
+
+**Same day — down-select.** Pablo cut three of the six. The kept set is **B, C, D**: B for contemporary (his pick over the Set 2 E with the neon-green pop), C for warm (over F, in part because the facing-spread format reads better for the warmer direction), and D for classical (over A — the Set 2 D is materially more refined). The dropped files (A, E, F) are gone from `mockups/`. Bundle source still sits in the session outputs in case we want to pull anything from E or F later.
+
+He also asked for a tighter index. Removed "for Swanee" from the headline (he framed it as a stand-in audience earlier, but the page is for review more broadly, not just for her). Replaced the small all-caps eyebrow at the top of the page with the full-bleed Centella logo divider (`public/logo-divider.svg`) inlined and filled at 10% paper opacity — a subdued mark across the full viewport width that says "this is from us" without shouting it. Called out in the lede that even the participant names are placeholders, and that nothing here is typeset. Cut the open-questions section. Trimmed the "What's the same" block to trim/format and a clean ordered-list of the section order — no more "Cut from print" or "Identity" or "What's new" sub-sections. Per-option pages got smaller edits: doc-header now reads "Mockup for review"; the "What Swanee will feel" line is now "What participants will feel"; on D I removed the "Origin" and "Differences from my Option A" lines because they were process commentary rather than something a reader needs.
+
+The thing I want to remember from this round: when collapsing a set of options, the index page wants to feel like a single composed thing, not a layered comparison apparatus. Cutting commentary in legends and at the top is the move.
+
+---
+
 ## Entry 10 — April 27, 2026: NGL Barcelona deck — content pass and a fix that turned out to be infrastructure
 
 Today I sat with the NGL Barcelona deck and worked through it. Most of what I changed was small — the kind of polish you only see when you read the deck out loud. But two of the changes were structural enough that they're going to outlive this deck.

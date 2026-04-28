@@ -20,6 +20,64 @@ The Spanish file remains canonical (no language suffix); language variants get s
 
 ---
 
+## 2026-04-28 — Prime Movers brochure: bright Centella palettes on light grounds (revision)
+
+Pablo asked for the three Prime Movers 20th mockups to be revised so the palette pulls from Centella's own token system but stays applied to the existing light grounds — bright, cheery, on-brand. Each option is now restricted to two Centella color families (per the `design.md` "no more than two color families per composition" rule):
+
+- **Option A (`option-a-contemporary.html`)** — `--violet` + `--global`. Paper: `--violet-light` #F7EDFF. Ink: `--violet-dark` #1E1A28. Welcome-left flipped from dark ink to bright orange (`--global` #FF9500) with dark-ink text. Pocket page is bright violet (`--violet` #C77DFF) with dark-ink text. Headline accent words sit inside violet swatches via `box-decoration-break: clone`.
+- **Option B (`option-b-warm.html`)** — `--networking` + `--global`. Paper: `--global-light` #FFF3E1. Ink: `--networking-dark` #22181C. Cover photo plate is now a coral→orange→wine sunset gradient. Italic emphasis words sit in coral swatches. Earlier draft mixed three families (had a stray violet labeled `--teal`); the revision drops that to comply with the two-family rule. The `--teal` token remains in `:root` mapped to `--ink` so legacy markup still parses.
+- **Option C (`option-c-classical.html`)** — `--tech` + `--global`. Paper: `--tech-light` #FFE6F5 (pale pink). Ink: `--tech-dark` #2A1522 (deep plum). The `--A-oxblood-deep` and `--A-gold-deep` tokens were redefined to deeper accessible variants (#A52B7D and #8A4F00) so all Roman numeral / italic accent text passes WCAG AA; the brights (`--A-oxblood` #FF66C4 / `--A-gold` #FF9500) are reserved for fills, drop caps, and the dark-divider-page accent numerals only.
+
+**Architecture rule that survived this round:** brights are *fills*; family-darks are *text*; reverse type inside bright fills is the same family-dark (always 6.2–7.8:1, AAA in most cases). Body copy clears AAA on all three (14–16:1).
+
+**Why this matters going forward:** when the Centella token system is applied to *light* grounds, every saturated Centella bright (violet, advisory cyan, networking coral, investment lime, global orange, tech pink) fails AA contrast for body-size text on the corresponding light variant. They earn their keep as fills with dark text, as decorative non-text glyphs, or as the *background* of a colored highlight wrapping dark-text accent words (`background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`). For accent text at 18pt+ that needs more pop than family-dark, a deepened-but-still-on-brand variant (e.g. tech #A52B7D, global #8A4F00) reaches 5.5:1+. Worth promoting these `-deep` accent-text tokens into `global.css` if the same pattern recurs.
+
+**Hunt Alternatives identity preserved.** Typography, format, photography direction, and voice are unchanged per direction. Only the palette source changed. If Swanee reads any of the three as "too Centella," the fix is reducing fill saturation (or de-saturating the paper), not unwinding the palette.
+
+**Files touched:** `work/prime-movers-20th/mockups/option-a-contemporary.html`, `option-b-warm.html`, `option-c-classical.html`, `index.html`. Legend dl on each option file rewritten to describe the new palette honestly (token names, contrast ratios, fill-vs-text discipline). Per-option swatch CSS in `index.html` updated.
+
+---
+
+## 2026-04-27 — Prime Movers & the Next Generation brochure: three design directions, client-led identity
+
+Event title locked: **Prime Movers & the Next Generation**, theme **Meeting the Moment**, occasion **The Twentieth Anniversary**. (Initial drafts said "Prime Movers Reunion" — superseded.) Started a new client deliverable for Hunt Alternatives — the printed program brochure. Working folder is `work/prime-movers-20th/` (folder name kept as-is for stability even though the title evolved). Centella is the producer, but the printed brochure leads with Hunt Alternatives / Prime Movers identity, not Centella's. Centella appears in the colophon only unless Swanee directs otherwise.
+
+**Format locked:** 6×9 portrait, saddle-stitched, ~24–32pp, with a printed pocket on the inside back cover for a separately-printed agenda insert. The pocket-and-insert pattern lets the bulk of the book go to the printer early while the agenda stays fluid until the morning of (Swanee's working style).
+
+**Cut from print:** Hunt Alternatives org description and Swanee's bio. (Welcome and About Prime Movers were cut briefly in v2 then restored differently in v3 — see below.)
+
+**Final section list (v3):** Cover · Welcome from Ambassador Hunt · Welcome from Giovanna Alvarez Negretti (logistical) · Thought piece by Swanee · Bios of Prime Movers · Bios of Next Generation Leaders · Maps to locations · Code of Conduct · Emergency contacts · Contact info · Pharmacy / Hospital / Emergency · Agenda (separate insert in pocket).
+
+**Visual motifs requested by client:** boxes (using Centella's panel pattern — outer rule + inner frame + hard edges + 4–8px radius) and quote callouts sprinkled throughout. Each option adapts the box pattern to its identity (Option A: cream + gold inner rule; Option B: hard-edged 8px panels with ultramarine; Option C: warm 8px panels with terracotta inner frame).
+
+**2026-04-28 follow-up — three additional options (D/E/F) reproduced from a Claude Design hand-off bundle.** Pablo dropped in an `api.anthropic.com/v1/design/...` URL pointing at his parallel brochure mockups built in Claude Design (claude.ai/design). The bundle is a gzipped tar with React/JSX option files, a `brochure-v2.css` stylesheet, sample data (`data.js`), the bundled Centella font kit, the design tool's chat transcript, and a "CODING AGENTS: READ THIS FIRST" README. The bundle's design conversation followed essentially the same arc this session did (same final TOC, same direction labels, same Hunt-not-Centella identity reframe), so the three v2 options become a parallel set rather than replacements.
+
+**Where to find the source bundle:** `outputs/brochure-bundle/prime-movers/` in this session. Source JSX is `option-{a,b,c}2.jsx`; styles in `brochure-v2.css`; data in `data.js`. To unpack a Claude Design bundle next time: the URL returns gzipped tar binary even when treated as text — `curl --compressed` or piping through `gunzip -c | tar -x` works. The bundle's chat transcript in `chats/chat1.md` is high-signal; read it before reproducing.
+
+**Set 1 vs. Set 2 differences worth remembering:**
+- Set 2 uses single-page format (one 6×9 page rendered at a time); Set 1 uses facing 12×9 spreads. Both are mockup-format choices, not production constraints.
+- Set 2's box motif puts the eyebrow label cut into the top border (fieldset-legend style). Set 1's bordered eyebrow sits inside the box. Set 2's is more refined.
+- Set 2 includes a separate Title page, Contents page, dark Section divider pages, and Emergency / Pharmacy as their own spreads. Set 1 consolidates more.
+- Set 2's Option F has soft section nomenclature ("How we'll be" / "In case you need us" / "A new generation"). Open question whether Swanee wants the warmth or the formality.
+- Set 2's E has neon-green pop accent (#E8FF3A); much sharper than Set 1 B's burnt orange.
+- Set 2's F has duotone gradient bio monograms that match the cover treatment — a unified visual system rather than a swatch.
+
+**2026-04-28 down-select to three:** Pablo kept **B (Set 1 contemporary), C (Set 1 warm), and D (Set 2 classical)**. Cut A (the Set 1 classical was redundant once D was preferred for that direction), E (Set 2 contemporary — B's burnt-orange + Inter Tight read better for him than E's neon-green), and F (Set 2 warm — C kept because of facing-spread format, and the soft section nomenclature in F was undecided).
+
+**Index-page changes Pablo asked for at down-select:** removed "for Swanee" framing throughout (use "review" or "participants" instead). Replaced the eyebrow text at the top with the full-width Centella logo divider (`public/logo-divider.svg`, inlined, filled at 10% paper opacity to blend muted on the dark page). Called out in the lede that **all copy is placeholder including names** and that **nothing is typeset**. Removed the "What I need from you (Pablo) before lock" section. Trimmed "What's the same" down to trim/format + section order; section order is now an `<ol>`. Per-option pages: doc-header now reads "Mockup for review"; "What Swanee will feel" → "What participants will feel"; D's "Origin" and "Differences from my Option A" lines removed.
+
+**Three design directions delivered (`work/prime-movers-20th/mockups/`):**
+
+- **A — Classical / editorial.** Cormorant Garamond + Source Serif 4 + Inter labels. Cream paper, ink, oxblood, gold rules. Drop caps, Roman numerals. Reads as institutional weight, milestone occasion. Reference: NYRB, university press.
+- **B — Contemporary / progressive.** Inter Tight + Inter + JetBrains Mono. Cream paper, near-black ink, ultramarine accent, sparing burnt orange. Modular blocks, mono labels, stat rows. Reads as forward-looking, current movement. Reference: Aperture, MIT Press.
+- **C — Warm / human.** Lora italic-forward + Source Serif 4 + Inter labels. Warm ivory, charcoal, terracotta + teal + ochre, ornament glyphs. Photo-led cover, italic numerals. Reads as relationship-forward, the people in the room. Reference: Aperture, Magnum photo books.
+
+Each delivered as a self-contained HTML file showing four spreads at 6×9 print proportion (cover, bio spread, code of conduct, agenda pocket page) after the welcome and About cuts. Real headings and titles populated, placeholder Latin where copy isn't in yet — per direction that Swanee can't read a layout from color swatches alone.
+
+Open questions for Pablo before lock are listed in `work/prime-movers-20th/README.md`.
+
+---
+
 ## 2026-04-27 — Letterbox scaling + standalone deck export
 
 ### Letterbox scaling in `<deck-stage>`

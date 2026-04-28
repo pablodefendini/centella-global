@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option A — Contemporary / Progressive · Prime Movers 20th</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Centella palette — Violet + Global ("modern bloom")
+       Two families only. Brights are fills; body+accent text use family-dark. */
+    --paper: #F7EDFF;        /* --violet-light */
+    --paper-2: #ECE0F5;      /* deeper lavender */
+    --ink: #1E1A28;          /* --violet-dark */
+    --ink-soft: #524D5C;     /* violet-dark @ ~70% — 7.2:1 on paper */
+    --ink-faint: #8C8794;    /* violet-dark @ ~45% */
+    --accent: #C77DFF;       /* --violet — used as FILL only */
+    --accent-warm: #FF9500;  /* --global — used as FILL only */
+    --accent-deep: #1E1A28;  /* family-dark, accessible accent text */
+    --rule: rgba(30, 26, 40, 0.18);
+    --sans: "Inter", system-ui, sans-serif;
+    --display: "Inter Tight", "Inter", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #1a1a1c; color: var(--ink); font-family: var(--sans); }
+  body { padding: 48px 24px 96px; }
+
+  .doc-header {
+    max-width: 1200px; margin: 0 auto 32px;
+    color: #d6d4ce; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .doc-header .opt { color: #fff; font-weight: 600; }
+  .doc-header .meta { opacity: 0.7; }
+
+  .spread {
+    width: 1200px; max-width: 100%;
+    margin: 0 auto 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--paper);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.55);
+    aspect-ratio: 12 / 9;
+    position: relative; overflow: hidden;
+  }
+  .spread.single { grid-template-columns: 1fr; aspect-ratio: 6 / 9; width: 600px; }
+  .spread.single::after { display: none; }
+  .spread::after {
+    content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 24px; transform: translateX(-50%);
+    background: linear-gradient(to right, rgba(0,0,0,0.10), rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10));
+    pointer-events: none;
+  }
+
+  .spread-label {
+    max-width: 1200px; margin: 0 auto 12px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #d6d4ce;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .spread-label .num { color: var(--accent-warm); font-weight: 600; }
+  .spread-label .desc { color: #9a978f; }
+
+  .page { padding: 56px 56px 48px; position: relative; display: flex; flex-direction: column; }
+  .page.left { padding-right: 40px; }
+  .page.right { padding-left: 40px; }
+
+  /* ============ COVER ============ */
+  .cover {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 0;
+    display: grid; grid-template-rows: 1fr auto auto auto;
+    position: relative;
+  }
+  .cover-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(30,26,40,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(30,26,40,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .cover-mark {
+    position: absolute; top: 48px; left: 48px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); display: flex; gap: 14px; align-items: center;
+  }
+  .cover-mark .dot { width: 8px; height: 8px; background: var(--accent-warm); border-radius: 50%; }
+  .cover-tag {
+    position: absolute; top: 48px; right: 48px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .cover-display {
+    position: absolute; left: 48px; right: 48px; bottom: 180px;
+    font-family: var(--display); font-weight: 800;
+    font-size: 168px; line-height: 0.85; letter-spacing: -0.045em;
+    color: var(--ink);
+  }
+  /* "th" superscript: small, can use bright violet fill on the lavender paper for the
+     inverse-pop, dark text. */
+  .cover-display .super {
+    font-size: 56px; vertical-align: super; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--ink); background: var(--accent); padding: 0 14px; border-radius: 8px;
+  }
+  /* Cover band: bright violet with dark ink — 6.3:1. */
+  .cover-band {
+    position: absolute; left: 0; right: 0; bottom: 110px;
+    background: var(--accent); color: var(--ink);
+    padding: 18px 48px;
+    display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: end;
+  }
+  .cover-band .band-title {
+    font-family: var(--display); font-weight: 800; font-size: 36px; letter-spacing: -0.025em; line-height: 0.95;
+  }
+  .cover-band .band-meta { text-align: right; }
+  .cover-band .b-name {
+    font-family: var(--display); font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.2;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .cover-band .b-tag { font-family: var(--mono); font-weight: 500; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(30,26,40,0.7); }
+  .cover-meta {
+    position: absolute; left: 48px; right: 48px; bottom: 48px;
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============ EYEBROWS / HEADINGS ============ */
+  /* Eyebrow text uses --ink for AA contrast (15:1); the leading rule carries
+     the violet brand cue. */
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600;
+    margin-bottom: 16px;
+    display: inline-flex; gap: 10px; align-items: center;
+  }
+  .eyebrow::before {
+    content: ""; width: 24px; height: 2px; background: var(--accent);
+  }
+  .h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: 56px; line-height: 0.95; letter-spacing: -0.035em;
+    margin: 0 0 24px; color: var(--ink);
+  }
+  /* Accent phrase = bright violet swatch behind dark ink — 6.3:1 contrast,
+     the "cheery moment" inside an otherwise quiet headline. */
+  .h1 .accent {
+    color: var(--ink);
+    background: var(--accent);
+    padding: 0 0.18em;
+    border-radius: 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .h2 {
+    font-family: var(--display); font-weight: 500;
+    font-size: 18px; line-height: 1.25; letter-spacing: -0.005em;
+    margin: 0 0 20px; color: var(--ink-soft); max-width: 32ch;
+  }
+  .body {
+    font-family: var(--sans); font-weight: 400;
+    font-size: 11px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .body p { margin: 0 0 10px; }
+
+  .folio {
+    position: absolute; bottom: 24px; left: 56px; right: 56px;
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ============ WELCOME ============ */
+  /* Bright orange fill with dark ink — 7.7:1 contrast. */
+  .welcome-left {
+    background: var(--accent-warm); color: var(--ink);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 56px 48px;
+  }
+  .welcome-left .top-mark {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(30,26,40,0.6);
+  }
+  .welcome-left .quote {
+    font-family: var(--display); font-weight: 600;
+    font-size: 36px; line-height: 1.1; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .welcome-left .quote .accent { color: var(--paper); -webkit-text-stroke: 0; background: var(--ink); padding: 0 8px; border-radius: 4px; }
+  .welcome-left .attribution {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(30,26,40,0.65); margin-top: 24px;
+  }
+  .welcome-left .attribution strong { color: var(--ink); font-weight: 600; }
+  .welcome-left .folio { color: rgba(30,26,40,0.5); }
+  .signature-block {
+    margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16px;
+  }
+  .signature {
+    font-family: var(--display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .sig-meta {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--ink-faint); text-align: right;
+  }
+
+  /* ============ ABOUT ============ */
+  .modular {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-top: 8px;
+  }
+  .module {
+    border: 1px solid var(--rule);
+    padding: 16px;
+  }
+  .module .m-num {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink); font-weight: 600;
+  }
+  .module .m-title {
+    font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.1; letter-spacing: -0.015em;
+    margin: 6px 0 8px; color: var(--ink);
+  }
+  .module .m-body {
+    font-family: var(--sans); font-size: 10px; line-height: 1.5; color: var(--ink-soft);
+  }
+  /* Bright violet fill with dark ink — 6.3:1. */
+  .module--accent { background: var(--accent); color: var(--ink); border-color: var(--accent); }
+  .module--accent .m-num, .module--accent .m-title { color: var(--ink); }
+  .module--accent .m-num { color: rgba(30,26,40,0.7); }
+  .module--accent .m-body { color: rgba(30,26,40,0.88); }
+
+  .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    margin: 16px 0;
+    border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+    padding: 12px 0;
+  }
+  .stat .num {
+    font-family: var(--display); font-weight: 800; font-size: 36px; letter-spacing: -0.04em; line-height: 1; color: var(--ink);
+  }
+  .stat .label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px;
+  }
+
+  /* ============ BIOS ============ */
+  .bio {
+    display: grid; grid-template-columns: 64px 1fr; gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .bio:first-of-type { border-top: 2px solid var(--ink); }
+  .bio-photo {
+    width: 64px; height: 64px;
+    background: var(--paper-2);
+    background-image: linear-gradient(135deg, var(--accent) 0%, var(--accent-warm) 50%, transparent 80%), repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(30,26,40,0.06) 4px, rgba(30,26,40,0.06) 5px);
+  }
+  .bio-name {
+    font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; line-height: 1.1;
+    color: var(--ink); margin: 0 0 2px;
+  }
+  .bio-role {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600; margin-bottom: 6px;
+  }
+  .bio-text {
+    font-family: var(--sans); font-size: 10px; line-height: 1.5; color: var(--ink-soft);
+  }
+
+  /* ============ CODE OF CONDUCT ============ */
+  .conduct-grid {
+    display: grid; grid-template-columns: 48px 1fr; gap: 0;
+  }
+  .conduct-row {
+    display: contents;
+  }
+  /* Conduct numerals — large display (28px), filled with violet swatch + dark ink. */
+  .conduct-row .c-num {
+    font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1; color: var(--ink);
+    padding: 18px 16px 18px 0; border-bottom: 1px solid var(--rule);
+    letter-spacing: -0.03em;
+  }
+  .conduct-row .c-text {
+    padding: 18px 0; border-bottom: 1px solid var(--rule);
+  }
+  .conduct-row:last-child .c-num, .conduct-row:last-child .c-text { border-bottom: none; }
+  .c-title {
+    font-family: var(--display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: var(--ink); margin: 0 0 4px;
+  }
+  .c-body {
+    font-family: var(--sans); font-size: 10px; line-height: 1.5; color: var(--ink-soft);
+  }
+
+  /* ============ POCKET ============ */
+  /* Bright violet fill with dark ink — 6.3:1. */
+  .pocket-page {
+    background: var(--accent); color: var(--ink);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 56px 48px;
+  }
+  .pocket-page .top-mark {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(30,26,40,0.7);
+  }
+  .pocket-page .marker {
+    font-family: var(--display); font-weight: 800;
+    font-size: 96px; line-height: 0.9; letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .pocket-page .marker .arrow {
+    /* Sun-yellow arrow — global accent. Inset on violet for legibility. */
+    color: var(--paper); background: var(--accent-warm); padding: 0 12px; border-radius: 6px; font-weight: 800;
+  }
+  .pocket-page .instruction {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); border-top: 1px solid rgba(30,26,40,0.3); padding-top: 16px;
+  }
+  .pocket-visual {
+    background: var(--paper-2);
+    position: relative;
+  }
+  .pocket-visual::before {
+    content: ""; position: absolute; left: 32px; right: 32px; bottom: 32px; height: 38%;
+    background: var(--paper);
+    border: 1px solid var(--rule); border-top: none;
+  }
+  .pocket-visual::after {
+    content: "AGENDA · INSERT"; position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: 56%; padding: 6px 12px;
+    background: var(--accent-warm); color: var(--ink);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; font-weight: 600;
+  }
+
+  /* ============ Footer mini-legend ============ */
+  .legend {
+    max-width: 1200px; margin: 64px auto 0; padding: 24px 32px;
+    background: rgba(255,255,255,0.04); color: #c8c5bb;
+    font-family: var(--sans); font-size: 12px; line-height: 1.6;
+    border-left: 2px solid var(--accent-warm);
+  }
+  .legend h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 700; color: #fff; font-size: 18px; letter-spacing: -0.01em; }
+  .legend dl { display: grid; grid-template-columns: 140px 1fr; gap: 4px 16px; margin: 12px 0 0; }
+  .legend dt { color: #fff; font-weight: 600; }
+  .legend dd { margin: 0; opacity: 0.85; }
+
+  /* ============ BOX MOTIF (Centella panel pattern, contemporary tilt) ============ */
+  /* Boxes are hard-edged, 8px radius, with double-frame for the high-density practical info. */
+  .panel { padding: 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+  .panel-frame { padding: 18px 20px; }
+  .panel-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600; margin-bottom: 12px;
+  }
+  .panel--accent { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+  .panel--accent .panel-label { color: rgba(30,26,40,0.7); }
+
+  /* ============ QUOTE BOX (saturated, contemporary) ============ */
+  /* Default: deep ink ground with light paper text — 15:1. */
+  .quote-box {
+    background: var(--ink); color: var(--paper);
+    padding: 22px 24px; border-radius: 8px;
+    margin: 18px 0;
+    position: relative;
+  }
+  .quote-box::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--accent-warm); border-radius: 8px 0 0 8px;
+  }
+  .quote-box .q-text {
+    font-family: var(--display); font-weight: 600; font-size: 18px; line-height: 1.25; letter-spacing: -0.01em;
+    color: var(--paper);
+  }
+  .quote-box .q-attribution {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(247,237,255,0.7); margin-top: 12px;
+  }
+  /* Invert: bright violet fill with dark ink text — 6.3:1. */
+  .quote-box.invert {
+    background: var(--accent); color: var(--ink);
+  }
+  .quote-box.invert .q-text { color: var(--ink); }
+  .quote-box.invert .q-attribution { color: rgba(30,26,40,0.7); }
+  .quote-box.invert::before { background: var(--accent-warm); }
+
+  /* ============ AT-A-GLANCE LIST (Giovanna) ============ */
+  .glance-list { list-style: none; padding: 0; margin: 0; }
+  .glance-list li {
+    display: grid; grid-template-columns: 88px 1fr; gap: 14px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .glance-list li:first-child { border-top: none; }
+  .glance-list .key {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600;
+  }
+  .glance-list .val {
+    font-family: var(--sans); font-size: 11px; line-height: 1.5; color: var(--ink);
+  }
+  .glance-list .val strong { font-weight: 600; }
+
+  /* ============ THOUGHT PIECE ============ */
+  .thought-byline {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 2px solid var(--ink);
+    padding-top: 10px; margin-bottom: 18px;
+  }
+  .thought-body { font-family: var(--sans); font-size: 11px; line-height: 1.6; color: var(--ink-soft); }
+  .thought-body p { margin: 0 0 10px; }
+  .thought-body p.lead {
+    font-family: var(--display); font-weight: 500; font-size: 18px; line-height: 1.35; letter-spacing: -0.015em;
+    color: var(--ink); margin-bottom: 14px;
+  }
+  .thought-cont { font-family: var(--sans); font-size: 11px; line-height: 1.6; color: var(--ink-soft); }
+  .thought-cont p { margin: 0 0 10px; }
+  .thought-sig {
+    font-family: var(--display); font-weight: 700; font-size: 24px; letter-spacing: -0.02em;
+    color: var(--ink); margin-top: 16px;
+  }
+
+  /* ============ MAP PLATE (schematic) ============ */
+  .map-plate {
+    background:
+      repeating-linear-gradient(0deg, transparent 0 28px, var(--rule) 28px 29px),
+      repeating-linear-gradient(90deg, transparent 0 28px, var(--rule) 28px 29px),
+      var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    position: relative; height: 360px; margin-top: 12px;
+  }
+  .map-plate::before {
+    content: ""; position: absolute; left: 28%; top: 22%; width: 44%; height: 56%;
+    background: var(--accent); border-radius: 4px;
+  }
+  .map-plate::after {
+    content: "VENUE"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--ink); font-weight: 700;
+    background: var(--accent-warm); padding: 4px 10px; border-radius: 2px;
+  }
+  .map-caption {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 10px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ============ PRACTICAL GRID ============ */
+  .practical-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .practical-row {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: var(--paper);
+  }
+  /* Coral-bright urgent row — uses --accent-warm for warmth. Dark ink text — 7.7:1. */
+  .practical-row.urgent { background: var(--accent-warm); border-color: var(--accent-warm); color: var(--ink); }
+  .practical-row.urgent .p-label { color: rgba(30,26,40,0.7); }
+  .practical-row.urgent .p-value { color: var(--ink); }
+  .practical-row.full { grid-column: 1 / -1; }
+  .practical-row .p-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600; margin-bottom: 6px;
+  }
+  .practical-row .p-value {
+    font-family: var(--sans); font-size: 11px; line-height: 1.45; color: var(--ink);
+  }
+  .practical-row .p-value strong { font-weight: 700; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc-header, .spread-label, .legend { display: none; }
+    .spread { box-shadow: none; margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="opt">Option A — Contemporary / Progressive</div>
+  <div class="meta">Prime Movers & the Next Generation · Meeting the Moment · 20th · Mockup for review</div>
+</header>
+
+<!-- =================== COVER =================== -->
+<div class="spread-label"><span class="num">01</span> <span>Front cover</span> <span class="desc">— single page, 6 × 9</span></div>
+<div class="spread single">
+  <div class="page cover">
+    <div class="cover-grid"></div>
+    <div class="cover-mark"><span class="dot"></span> Hunt Alternatives</div>
+    <div class="cover-tag">Vol. XX · 2026</div>
+    <div class="cover-display">20<span class="super">th</span></div>
+    <div class="cover-band">
+      <div class="band-title">Meeting<br>the Moment</div>
+      <div class="band-meta">
+        <div class="b-name">Prime Movers &amp; the Next Generation</div>
+        <div class="b-tag">The Twentieth · Spring 2026</div>
+      </div>
+    </div>
+    <div class="cover-meta">
+      <div>Spring 2026</div>
+      <div>Convened by Hunt Alternatives</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== WELCOME — AMBASSADOR HUNT =================== -->
+<div class="spread-label"><span class="num">02</span> <span>Welcome — Ambassador Hunt</span> <span class="desc">— left: dark pull-quote panel · right: letter</span></div>
+<div class="spread">
+  <div class="page left welcome-left">
+    <div class="top-mark">From the Founder</div>
+    <div>
+      <div class="quote">You are the room I keep building. Twenty years on, I still don't take it for <span class="accent">granted.</span></div>
+      <div class="attribution"><strong>Ambassador Swanee Hunt</strong></div>
+    </div>
+    <div class="folio">Welcome · 02</div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">Welcome</div>
+    <h1 class="h1">Welcome to the <span class="accent">twentieth.</span></h1>
+    <div class="body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+    <div class="signature-block">
+      <div class="signature">Swanee</div>
+      <div class="sig-meta">Ambassador<br>Swanee Hunt<br>Founder · Hunt Alternatives</div>
+    </div>
+    <div class="folio"><span>Welcome</span><span>03</span></div>
+  </div>
+</div>
+
+<!-- =================== WELCOME — GIOVANNA =================== -->
+<div class="spread-label"><span class="num">03</span> <span>Welcome — Giovanna Alvarez Negretti</span> <span class="desc">— left: practical letter · right: at-a-glance panel</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">From the Convening Team</div>
+    <h1 class="h1">Practical things, <span class="accent">upfront.</span></h1>
+    <div class="body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+      <p>Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+      <p>If something doesn't work or you can't find what you need — find me, or anyone with a Hunt Alternatives badge.</p>
+    </div>
+    <div class="signature-block">
+      <div class="signature">Giovanna</div>
+      <div class="sig-meta">Giovanna<br>Alvarez Negretti<br>Hunt Alternatives</div>
+    </div>
+    <div class="folio"><span>Welcome</span><span>04</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">At a Glance</div>
+    <div class="panel">
+      <div class="panel-frame">
+        <div class="panel-label">The convening · key things</div>
+        <ul class="glance-list">
+          <li><div class="key">Schedule</div><div class="val">See agenda insert in pocket. Updated through morning of.</div></li>
+          <li><div class="key">Wi-Fi</div><div class="val">Network: <strong>HuntAlt-Guest</strong> · Password: <strong>twenty2026</strong></div></li>
+          <li><div class="key">Meals</div><div class="val">Breakfast 7:30. Lunch 12:30 in the Garden Room.</div></li>
+          <li><div class="key">Help desk</div><div class="val">Hunt Alternatives staff in the lobby from 7:00 each morning.</div></li>
+          <li><div class="key">Quiet space</div><div class="val">Library, second floor — phone calls, decompression, both fine.</div></li>
+          <li><div class="key">Photography</div><div class="val">Group portrait Friday morning. Otherwise off the record.</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="folio"><span>At a Glance</span><span>05</span></div>
+  </div>
+</div>
+
+<!-- =================== THOUGHT PIECE — SWANEE =================== -->
+<div class="spread-label"><span class="num">04</span> <span>Thought piece — Swanee</span> <span class="desc">— essay across the spread, with quote box</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">A Reflection</div>
+    <h1 class="h1" style="font-size: 56px; line-height: 0.95;">On <span class="accent">meeting</span><br>the moment.</h1>
+    <div class="thought-byline">By Ambassador Swanee Hunt</div>
+    <div class="thought-body">
+      <p class="lead">Twenty years on, the question is the same — and so are you, the people who keep insisting on a better answer.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in libero ut massa volutpat convallis. Vivamus pharetra posuere sapien, nec sagittis nulla efficitur eget. Donec id elit non mi porta gravida at eget metus.</p>
+      <p>Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+    </div>
+    <div class="folio"><span>Thought Piece</span><span>06</span></div>
+  </div>
+  <div class="page right">
+    <div class="thought-cont">
+      <p>Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+    </div>
+    <div class="quote-box">
+      <div class="q-text">The room only changes the world to the extent that the people in it leave changed.</div>
+      <div class="q-attribution">From an earlier convening · attributed</div>
+    </div>
+    <div class="thought-cont">
+      <p>Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper.</p>
+      <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Sed posuere consectetur est at lobortis.</p>
+    </div>
+    <div class="thought-sig">Swanee</div>
+    <div class="folio"><span>Thought Piece</span><span>07</span></div>
+  </div>
+</div>
+
+<!-- =================== BIOS =================== -->
+<div class="spread-label"><span class="num">05</span> <span>Participant bios</span> <span class="desc">— sample spread, 4 entries each side, with quote box</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Prime Movers · A — H</div>
+    <h1 class="h1" style="font-size:32px; margin-bottom: 8px;">Participants</h1>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Adelaide Brennan</div>
+        <div class="bio-role">CEO · Brennan Capital · NY</div>
+        <div class="bio-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in libero ut massa volutpat convallis. Vivamus pharetra posuere sapien, nec sagittis nulla.</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Davíd Cortés</div>
+        <div class="bio-role">Founder · Common Grounds Coalition</div>
+        <div class="bio-text">Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem lacinia.</div>
+      </div>
+    </div>
+    <div class="quote-box invert">
+      <div class="q-text">I came to my first Prime Movers convening because I admired Swanee. I keep coming back because of the people I sit next to.</div>
+      <div class="q-attribution">A Prime Mover · 2024 cohort survey</div>
+    </div>
+    <div class="folio"><span>Participants</span><span>12</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">Prime Movers · I — N</div>
+    <h1 class="h1" style="font-size:32px; margin-bottom: 8px;">&nbsp;</h1>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Idris Lawal</div>
+        <div class="bio-role">ED · Lagos Civic Trust</div>
+        <div class="bio-text">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula.</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Margaret Lindqvist</div>
+        <div class="bio-role">Chair · Northstar Foundation</div>
+        <div class="bio-text">Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Nadia Okafor</div>
+        <div class="bio-role">President · Okafor Energy Holdings</div>
+        <div class="bio-text">Donec ullamcorper nulla non metus auctor fringilla. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper.</div>
+      </div>
+    </div>
+    <div class="folio"><span>Participants</span><span>13</span></div>
+  </div>
+</div>
+
+<!-- =================== CODE OF CONDUCT =================== -->
+<!-- =================== MAPS + PRACTICAL =================== -->
+<div class="spread-label"><span class="num">06</span> <span>Maps + Practical info</span> <span class="desc">— left: schematic map · right: practical info as box grid</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Where you are</div>
+    <h1 class="h1" style="font-size: 32px; margin-bottom: 8px;">The Venue</h1>
+    <div class="map-plate"></div>
+    <div class="map-caption">
+      <span>Garden entrance · East wing</span>
+      <span>1 : 1500</span>
+    </div>
+    <div class="folio"><span>Maps</span><span>22</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">If you need anything</div>
+    <h1 class="h1" style="font-size: 32px; margin-bottom: 8px;">Practical</h1>
+    <div class="practical-grid">
+      <div class="practical-row urgent full">
+        <div class="p-label">Emergency</div>
+        <div class="p-value"><strong>911</strong> · Hunt Alternatives staff in the lobby for non-emergency help.</div>
+      </div>
+      <div class="practical-row">
+        <div class="p-label">Hospital</div>
+        <div class="p-value">Massachusetts General · 55 Fruit St · 0.6 mi.</div>
+      </div>
+      <div class="practical-row">
+        <div class="p-label">Pharmacy</div>
+        <div class="p-value">CVS · 24-hr · 587 Boylston St · 5 min walk.</div>
+      </div>
+      <div class="practical-row full">
+        <div class="p-label">On-site contact</div>
+        <div class="p-value">Arturo · <strong>+1 (617) 555-0142</strong> &nbsp;·&nbsp; Yo · <strong>+1 (617) 555-0188</strong></div>
+      </div>
+      <div class="practical-row full">
+        <div class="p-label">Contact desk</div>
+        <div class="p-value">Lobby, 7:00–22:00 daily, throughout the convening.</div>
+      </div>
+    </div>
+    <div class="folio"><span>Practical</span><span>23</span></div>
+  </div>
+</div>
+
+<div class="spread-label"><span class="num">07</span> <span>Code of Conduct</span> <span class="desc">— numbered grid + quote box at bottom</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Convening Practice</div>
+    <h1 class="h1">A code for <span class="accent">the room.</span></h1>
+    <div class="body" style="margin-top:8px;">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div class="quote-box">
+      <div class="q-text">The discipline of the room is what makes the room possible.</div>
+      <div class="q-attribution">A facilitator's note · 2019</div>
+    </div>
+    <div class="folio"><span>Conduct</span><span>28</span></div>
+  </div>
+  <div class="page right">
+    <div class="conduct-grid">
+      <div class="conduct-row">
+        <div class="c-num">01</div>
+        <div class="c-text">
+          <div class="c-title">Confidentiality</div>
+          <div class="c-body">What is shared in the room stays in the room. Names, attributions, and specifics do not leave with you.</div>
+        </div>
+      </div>
+      <div class="conduct-row">
+        <div class="c-num">02</div>
+        <div class="c-text">
+          <div class="c-title">Generous attention</div>
+          <div class="c-body">Listen before responding. Assume the speaker has spent more time on the question than you have.</div>
+        </div>
+      </div>
+      <div class="conduct-row">
+        <div class="c-num">03</div>
+        <div class="c-text">
+          <div class="c-title">Disagreement, not disrespect</div>
+          <div class="c-body">Push hard on the idea, never on the person. Your strongest critique should land as a gift.</div>
+        </div>
+      </div>
+      <div class="conduct-row">
+        <div class="c-num">04</div>
+        <div class="c-text">
+          <div class="c-title">One mic at a time</div>
+          <div class="c-body">No side conversations during plenaries. The room only works if everyone is in it.</div>
+        </div>
+      </div>
+      <div class="conduct-row">
+        <div class="c-num">05</div>
+        <div class="c-text">
+          <div class="c-title">Care for the convening</div>
+          <div class="c-body">Phones away, devices down, presence on. Twenty years has bought us the right to be undistracted.</div>
+        </div>
+      </div>
+    </div>
+    <div class="folio"><span>Conduct</span><span>19</span></div>
+  </div>
+</div>
+
+<!-- =================== POCKET =================== -->
+<div class="spread-label"><span class="num">08</span> <span>Agenda pocket page</span> <span class="desc">— left: bold pointer · right: inside back cover with pocket</span></div>
+<div class="spread">
+  <div class="page left pocket-page">
+    <div class="top-mark">The Schedule</div>
+    <div class="marker">Agenda <span class="arrow">→</span></div>
+    <div class="instruction">Insert in pocket opposite. Updated through morning of.</div>
+  </div>
+  <div class="page right pocket-visual">
+    <div style="position:absolute;top:32px;left:32px;font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">Inside back cover · pocket</div>
+  </div>
+</div>
+
+<aside class="legend">
+  <h3>Option A — at a glance</h3>
+  <dl>
+    <dt>Direction</dt><dd>Contemporary / progressive, brightened. Reads as forward-looking, current-movement, modern philanthropic publishing. Closest reference: Aperture, MIT Press, contemporary foundation reports — but in spring colors.</dd>
+    <dt>Type pairing</dt><dd>Inter Tight (display, heavy weights for impact) + Inter (body) + JetBrains Mono (eyebrows, folios, technical labels).</dd>
+    <dt>Palette</dt><dd><strong>Centella violet + global.</strong> Pale lavender paper (<code>--violet-light</code> #F7EDFF), violet-dark ink (<code>--violet-dark</code> #1E1A28) — body text passes WCAG AAA at 15:1. Bright violet (<code>--violet</code> #C77DFF) and bright orange (<code>--global</code> #FF9500) used as <em>fill colors</em> only — never as small text on the paper. Reverse type inside bright fills uses violet-dark for AAA contrast (6.3–7.7:1).</dd>
+    <dt>Two-family rule</dt><dd>The composition holds to Centella's "no more than two color families" guidance: violet and global, full stop.</dd>
+    <dt>Signatures</dt><dd>Tight grid + hairline rules on bios. Mono numerals as structural device throughout. Bright orange welcome panel (was dark) and bright violet pocket page give the brochure two saturated "feature" moments. Headline accent words sit inside violet swatches — the cheery moment in an otherwise quiet headline. Bio thumbnails use a violet→orange duotone wash.</dd>
+    <dt>Boxes</dt><dd>Centella panel pattern adapted to a contemporary aesthetic: 8px radius, hard edges, no inner frame. Urgent items shift to bright orange fill (was ultramarine). Practical info uses a 2-column grid of boxes; full-width boxes flag the things that should not be missed.</dd>
+    <dt>Quotes</dt><dd>Sprinkled in three places — thought piece (right, deep-ink box with orange edge), bios (right, bright violet fill with dark text), conduct (left, deep-ink box). Quotes are an active design element here, not decoration.</dd>
+    <dt>What participants will feel</dt><dd>Now, not nostalgia — and not solemn. The 20-year mark as momentum and warmth, not monument. Closer to a current-issue magazine in spring colors than a commemorative book.</dd>
+  </dl>
+</aside>
+
+</body>
+</html>

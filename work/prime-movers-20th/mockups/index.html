@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Prime Movers 20th — Three Design Directions</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&family=Lora:ital,wght@0,500;1,500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14130f;
+    --bg-2: #1f1d18;
+    --ink: #f4ecd8;
+    --ink-soft: #b8b1a0;
+    --ink-faint: #7a7568;
+    --rule: #2d2a23;
+    /* Each option's signature accent — tied to its Centella family pair. */
+    --contemporary: #C77DFF; /* A — Centella violet */
+    --warm: #FF6B6B;          /* B — Centella networking (coral) */
+    --classical: #FF66C4;     /* C — Centella tech (bright pink) */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Inter", system-ui, sans-serif; overflow-x: hidden; }
+  body { line-height: 1.55; padding-bottom: 96px; }
+
+  /* Full-bleed Centella logo divider — spans 100vw, no padding, lets the SVG aspect ratio determine height */
+  .brand-divider {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .brand-divider svg {
+    display: block;
+    width: 100vw;
+    height: auto;
+    fill: rgba(244, 236, 216, 0.10);
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+  .header { margin-top: 48px; margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+  .header h1 {
+    font-family: "Cormorant Garamond", serif; font-weight: 400;
+    font-size: 56px; line-height: 1.05; letter-spacing: -0.015em;
+    margin: 0 0 16px; color: var(--ink);
+  }
+  .header h1 em { font-style: italic; color: var(--warm); }
+  .header .lede {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
+    font-size: 22px; line-height: 1.4; max-width: 70ch; color: var(--ink-soft);
+  }
+  .header .caveats {
+    margin-top: 20px;
+    font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.6;
+    color: var(--ink-soft); max-width: 70ch;
+    border-left: 2px solid var(--rule); padding-left: 16px;
+  }
+  .header .caveats strong { color: var(--ink); font-weight: 600; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 56px; }
+  .option {
+    background: var(--bg-2); padding: 28px;
+    border-top: 3px solid currentColor;
+    color: var(--contemporary);
+    text-decoration: none;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .option:hover { background: #25221c; transform: translateY(-2px); }
+  .option.opt-a { color: var(--contemporary); }
+  .option.opt-b { color: var(--warm); }
+  .option.opt-c { color: var(--classical); }
+
+  .option .badge {
+    font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: currentColor; font-weight: 600;
+  }
+  .option .name {
+    font-family: "Cormorant Garamond", serif; font-weight: 500;
+    font-size: 24px; line-height: 1.1; letter-spacing: -0.01em;
+    color: var(--ink); margin: 0;
+  }
+  .option .name em { font-style: italic; color: currentColor; }
+  .option .feel {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
+    font-size: 14px; line-height: 1.4; color: var(--ink-soft);
+  }
+  .option .swatches { display: flex; gap: 4px; margin-top: 4px; }
+  .option .swatch { width: 24px; height: 24px; border-radius: 2px; }
+  .option .meta {
+    font-size: 11px; color: var(--ink-faint); margin-top: auto; padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+  .option .open {
+    margin-top: 10px; padding: 8px 12px;
+    background: currentColor; border: 1px solid currentColor;
+    font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    text-align: center; color: var(--bg); font-weight: 600;
+  }
+  .option .open span { color: var(--bg); }
+
+  /* Per-option swatch palettes — Centella tokens. */
+  .opt-a .s-paper { background: #F7EDFF; } .opt-a .s-ink { background: #1E1A28; } .opt-a .s-accent { background: #C77DFF; } .opt-a .s-warm { background: #FF9500; }
+  .opt-b .s-paper { background: #FFF3E1; } .opt-b .s-ink { background: #22181C; } .opt-b .s-terracotta { background: #FF6B6B; } .opt-b .s-teal { background: #FF9500; }
+  .opt-c .s-paper { background: #FFE6F5; } .opt-c .s-ink { background: #2A1522; } .opt-c .s-accent { background: #FF66C4; } .opt-c .s-gold { background: #FF9500; }
+
+  .section { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+  .section:last-child { border-bottom: none; }
+  .section h2 {
+    font-family: "Cormorant Garamond", serif; font-weight: 400;
+    font-size: 32px; letter-spacing: -0.01em; margin: 48px 0 16px; color: var(--ink);
+  }
+  .section h2:first-child { margin-top: 0; }
+  .section p {
+    font-size: 14px; line-height: 1.65; color: var(--ink-soft);
+    max-width: 80ch; margin: 0 0 12px;
+  }
+  .section p strong { color: var(--ink); font-weight: 600; }
+  .section ol {
+    font-size: 14px; line-height: 1.7; color: var(--ink-soft);
+    max-width: 80ch; padding-left: 22px; margin: 12px 0 0;
+  }
+  .section ol li { margin-bottom: 4px; }
+  .section ol li strong { color: var(--ink); font-weight: 600; }
+  .section code {
+    font-family: "JetBrains Mono", monospace; font-size: 12px;
+    background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; color: #d4cab2;
+  }
+
+  /* Side-by-side comparison grid (3 options) */
+  .grid3 {
+    display: grid; grid-template-columns: 160px repeat(3, 1fr); gap: 16px;
+    border-top: 1px solid var(--rule); margin-top: 16px;
+  }
+  .grid3 .cell { padding: 12px 0; font-size: 13px; line-height: 1.5; border-bottom: 1px solid var(--rule); }
+  .grid3 .cell.label {
+    font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500; padding-right: 16px;
+  }
+  .grid3 .cell.body { color: var(--ink); }
+  .grid3 .col-head {
+    padding: 8px 0 12px; font-family: "Inter", sans-serif; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    border-bottom: 1px solid var(--rule);
+  }
+  .grid3 .col-head.a { color: var(--contemporary); }
+  .grid3 .col-head.b { color: var(--warm); }
+  .grid3 .col-head.c { color: var(--classical); }
+
+  .footnote {
+    font-size: 12px; color: var(--ink-faint); margin-top: 56px; padding-top: 24px;
+    border-top: 1px solid var(--rule); max-width: 80ch;
+  }
+  .footnote em { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<!-- Centella logo divider, full 100vw, muted -->
+<div class="brand-divider" aria-label="Centella">
+  <svg viewBox="0 0 8694 1079" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+    <g transform="matrix(1,0,0,1,-608.18731,-582.454773)">
+      <g transform="matrix(4.698039,0,0,5.829091,0,0)">
+        <g transform="matrix(0.212855,0,0,0.171553,80.033389,40.315034)">
+          <g transform="matrix(1.223992,0,0,1.223992,231,544)">
+            <g id="Logotype">
+              <path d="M991.147,148.5C991.039,148.506 990.93,148.509 990.82,148.509C987.565,148.509 984.922,145.866 984.922,142.611C984.922,139.356 987.565,136.713 990.82,136.713C990.934,136.713 991.047,136.716 991.159,136.723C991.232,136.721 991.305,136.72 991.38,136.72L1009.96,136.72C1011.17,136.72 1011.77,136.116 1011.77,134.907L1011.77,74.129C1011.77,74.077 1011.771,74.026 1011.771,73.975C1011.766,73.859 1011.763,73.742 1011.763,73.624C1011.763,69.746 1014.912,66.597 1018.79,66.597C1022.669,66.597 1025.817,69.746 1025.817,73.624C1025.817,73.69 1025.816,73.756 1025.815,73.821C1025.818,73.922 1025.82,74.024 1025.82,74.129L1025.82,134.907C1025.82,136.116 1026.43,136.72 1027.63,136.72L1066.16,136.72C1066.259,136.715 1066.359,136.713 1066.46,136.713C1069.715,136.713 1072.358,139.356 1072.358,142.611C1072.358,145.866 1069.715,148.509 1066.46,148.509C1066.371,148.509 1066.282,148.507 1066.194,148.503C1066.183,148.503 1066.171,148.503 1066.16,148.503L1027.63,148.503C1026.43,148.503 1025.82,149.107 1025.82,150.316L1025.82,306.667C1025.82,323.284 1028.54,334.915 1033.98,341.562C1039.72,347.907 1048.63,351.079 1060.72,351.079L1065.54,351.079C1065.669,351.071 1065.799,351.067 1065.93,351.067C1069.435,351.067 1072.281,353.913 1072.281,357.418C1072.281,360.923 1069.435,363.769 1065.93,363.769C1065.886,363.769 1065.842,363.768 1065.797,363.767C1065.765,363.768 1065.733,363.768 1065.7,363.768L1058.9,363.768C1043.5,363.768 1031.71,359.841 1023.56,351.986C1015.7,343.828 1011.77,329.024 1011.77,307.573L1011.77,150.316C1011.77,149.107 1011.17,148.503 1009.96,148.503L991.38,148.503C991.301,148.503 991.224,148.502 991.147,148.5ZM835.003,143.852C834.997,143.731 834.994,143.609 834.994,143.487C834.994,139.749 838.029,136.714 841.767,136.714C845.457,136.714 848.461,139.67 848.539,143.341C848.573,143.627 848.59,143.931 848.59,144.252L848.59,163.005C848.59,163.912 848.892,164.365 849.496,164.365C850.1,164.365 850.553,163.912 850.855,163.005C855.69,153.639 862.336,146.388 870.796,141.252C879.558,136.116 889.377,133.548 900.253,133.548C918.079,133.548 931.976,139.59 941.947,151.675C951.917,163.761 956.902,180.529 956.902,201.98L956.902,356.995C956.902,356.999 956.902,357.237 956.902,357.237C956.902,357.463 956.882,357.681 956.843,357.891C956.405,361.206 953.564,363.768 950.129,363.768C946.833,363.768 944.084,361.41 943.479,358.29C943.367,357.962 943.306,357.611 943.306,357.237L943.306,203.792C943.306,185.665 939.228,171.616 931.07,161.646C923.215,151.373 911.885,146.237 897.081,146.237C882.277,146.237 870.494,151.675 861.732,162.552C852.97,173.429 848.59,188.384 848.59,207.418L848.59,357.237C848.59,357.591 848.535,357.909 848.434,358.195C847.867,361.362 845.096,363.768 841.767,363.768C838.313,363.768 835.459,361.177 835.045,357.833C835.012,357.647 834.994,357.448 834.994,357.237C834.994,357.237 834.994,356.999 834.994,356.995L834.994,144.252C834.994,144.116 834.997,143.982 835.003,143.852ZM1483.746,356.543C1483.742,356.443 1483.74,356.341 1483.74,356.237L1483.74,338.843C1483.74,337.937 1483.43,337.483 1482.83,337.483C1482.23,337.181 1481.77,337.483 1481.47,338.39C1475.73,348.058 1468.03,355.309 1458.36,360.143C1448.69,364.977 1437.96,367.394 1426.18,367.394C1410.47,367.394 1397.18,362.862 1386.3,353.798C1375.42,344.432 1369.99,326.786 1369.99,304.126C1369.99,279.956 1375.663,264.43 1388.653,252.648C1401.643,240.865 1419.84,234.156 1441.59,234.156L1481.92,234.156C1483.13,234.156 1483.74,233.552 1483.74,232.343L1483.74,207.418C1483.74,188.686 1479.66,173.731 1471.5,162.552C1463.34,151.373 1451.56,145.784 1436.15,145.784C1424.07,145.784 1413.49,149.561 1404.43,157.114C1395.36,164.365 1390.23,173.882 1389.02,185.665C1389.014,185.676 1389.008,185.688 1389.003,185.699C1388.806,189.3 1385.82,192.163 1382.17,192.163C1378.394,192.163 1375.327,189.097 1375.327,185.32C1375.327,184.859 1375.373,184.408 1375.46,183.973C1377.336,168.719 1383.963,156.443 1395.36,147.144C1407.15,137.778 1420.89,133.095 1436.6,133.095C1455.94,133.095 1470.9,139.893 1481.47,153.488C1492.04,167.084 1497.33,185.363 1497.33,208.324L1497.33,234.158L7097.757,234.158C7097.758,234.158 7098.057,234.158 7098.057,234.158L7098.057,234.165C7101.288,234.322 7103.864,236.995 7103.864,240.265C7103.864,243.535 7101.288,246.208 7098.057,246.365L7098.057,246.372C7098.057,246.372 7097.758,246.372 7097.757,246.372L1497.33,246.372L1497.33,356.237C1497.33,356.377 1497.327,356.513 1497.32,356.647C1497.325,356.754 1497.328,356.862 1497.328,356.97C1497.328,360.722 1494.282,363.768 1490.53,363.768C1486.778,363.768 1483.732,360.722 1483.732,356.97C1483.732,356.827 1483.737,356.684 1483.746,356.543ZM1427.99,354.705C1443.1,354.705 1456.09,349.871 1466.97,340.203C1478.15,330.535 1483.74,316.637 1483.74,298.509L1483.74,248.205C1483.74,246.997 1483.13,246.392 1481.92,246.392L1442.04,246.392C1424.22,246.392 1409.203,252.194 1398.623,262.165C1388.053,272.135 1383.58,284.337 1383.58,303.673C1383.58,320.29 1387.66,334.311 1395.82,342.469C1403.97,350.626 1414.7,354.705 1427.99,354.705ZM510.826,301.681L510.826,198.807C510.826,179.773 516.567,164.063 528.047,151.675C539.83,139.288 554.937,133.095 573.366,133.095C585.451,133.095 596.177,135.814 605.543,141.252C615.211,146.388 622.613,153.337 627.749,162.099C633.188,170.861 635.907,180.226 635.907,190.197L635.907,191.556C635.907,191.637 635.906,191.716 635.904,191.795C635.906,191.859 635.906,191.923 635.906,191.987C635.906,195.725 632.871,198.76 629.133,198.76C625.653,198.76 622.782,196.13 622.402,192.751C622.341,192.383 622.311,191.985 622.311,191.556L622.311,190.197C622.311,178.414 617.628,168.141 608.262,159.38C599.198,150.316 587.566,145.784 573.366,145.784C558.864,145.784 547.081,150.769 538.018,160.739C528.954,170.407 524.422,183.097 524.422,198.807L524.422,301.681C524.422,317.392 528.954,330.232 538.018,340.203C547.081,349.871 558.864,354.705 573.366,354.705C587.566,354.705 599.198,350.324 608.262,341.562C617.628,332.498 622.311,322.075 622.311,310.292L622.311,308.932C622.311,308.445 622.35,307.997 622.429,307.589C622.9,304.31 625.724,301.787 629.133,301.787C632.871,301.787 635.906,304.822 635.906,308.56C635.906,308.614 635.906,308.669 635.905,308.723C635.906,308.792 635.907,308.861 635.907,308.932L635.907,310.292C635.907,320.262 633.188,329.628 627.749,338.39C622.613,347.152 615.211,354.251 605.543,359.69C596.177,364.826 585.451,367.394 573.366,367.394C554.937,367.394 539.83,361.351 528.047,349.266C516.567,336.879 510.826,321.018 510.826,301.681ZM1319.683,356.846C1319.681,356.756 1319.68,356.665 1319.68,356.572L1319.68,7.197C1319.68,7.104 1319.681,7.012 1319.683,6.922C1319.683,6.881 1319.682,6.839 1319.682,6.798C1319.682,3.046 1322.728,0 1326.48,0C1330.232,0 1333.278,3.046 1333.278,6.798C1333.278,6.839 1333.278,6.881 1333.277,6.922C1333.279,7.012 1333.28,7.104 1333.28,7.197L1333.28,356.572C1333.28,356.665 1333.279,356.756 1333.277,356.847C1333.278,356.888 1333.278,356.929 1333.278,356.97C1333.278,360.722 1330.232,363.768 1326.48,363.768C1322.728,363.768 1319.682,360.722 1319.682,356.97C1319.682,356.929 1319.683,356.887 1319.683,356.846ZM1261.233,356.847C1261.231,356.756 1261.23,356.665 1261.23,356.572L1261.23,7.197C1261.23,7.104 1261.231,7.012 1261.233,6.922C1261.233,6.881 1261.232,6.839 1261.232,6.798C1261.232,3.046 1264.278,0 1268.03,0C1271.782,0 1274.828,3.046 1274.828,6.798C1274.828,6.839 1274.828,6.881 1274.827,6.922C1274.829,7.012 1274.83,7.104 1274.83,7.197L1274.83,356.572C1274.83,356.665 1274.829,356.756 1274.827,356.847C1274.828,356.888 1274.828,356.929 1274.828,356.97C1274.828,360.722 1271.782,363.768 1268.03,363.768C1264.278,363.768 1261.232,360.722 1261.232,356.97C1261.232,356.929 1261.233,356.888 1261.233,356.847ZM1220.368,319.271C1220.375,319.305 1220.376,319.339 1220.37,319.371C1217.48,333.541 1210.62,345.017 1199.79,353.798C1188.91,362.862 1175.62,367.394 1159.91,367.394C1141.48,367.394 1126.37,361.351 1114.59,349.266C1103.11,336.879 1097.37,321.018 1097.37,301.681L1097.37,198.807C1097.37,179.773 1103.11,164.063 1114.59,151.675C1126.37,139.288 1141.48,133.095 1159.91,133.095C1178.34,133.095 1193.29,139.288 1204.77,151.675C1216.56,164.063 1222.45,179.773 1222.45,198.807L1222.45,248.658C1222.45,251.679 1220.94,253.19 1217.92,253.19L1112.78,253.19C1111.57,253.19 1110.96,253.794 1110.96,255.003L1110.96,301.681C1110.96,317.392 1115.5,330.232 1124.56,340.203C1133.62,349.871 1145.41,354.705 1159.91,354.705C1171.69,354.705 1181.81,351.23 1190.27,344.281C1198.73,337.332 1204.32,328.118 1207.04,316.637C1207.073,316.539 1207.107,316.443 1207.141,316.349C1207.867,313.39 1210.539,311.193 1213.72,311.193C1217.458,311.193 1220.494,314.228 1220.494,317.966C1220.494,318.412 1220.45,318.849 1220.368,319.271ZM1159.91,145.784C1145.41,145.784 1133.62,150.769 1124.56,160.739C1115.5,170.407 1110.96,183.097 1110.96,198.807L1110.96,239.594C1110.96,240.803 1111.57,241.407 1112.78,241.407L1207.04,241.407C1208.25,241.407 1208.85,240.803 1208.85,239.594L1208.85,198.807C1208.85,183.097 1204.32,170.407 1195.26,160.739C1186.19,150.769 1174.41,145.784 1159.91,145.784ZM791.339,319.754C788.405,333.748 781.572,345.096 770.839,353.798C759.962,362.862 746.669,367.394 730.958,367.394C712.528,367.394 697.422,361.351 685.639,349.266C674.158,336.879 668.418,321.018 668.418,301.681L668.418,198.807C668.418,179.773 674.158,164.063 685.639,151.675C697.422,139.288 712.528,133.095 730.958,133.095C749.388,133.095 764.343,139.288 775.824,151.675C787.607,164.063 793.498,179.773 793.498,198.807L793.498,248.658C793.498,251.679 791.988,253.19 788.966,253.19L683.826,253.19C682.618,253.19 682.014,253.794 682.014,255.003L682.014,301.681C682.014,317.392 686.545,330.232 695.609,340.203C704.673,349.871 716.456,354.705 730.958,354.705C742.741,354.705 752.862,351.23 761.322,344.281C769.781,337.332 775.371,328.118 778.09,316.637C778.159,316.431 778.232,316.232 778.309,316.041C779.14,313.239 781.735,311.193 784.805,311.193C788.543,311.193 791.578,314.228 791.578,317.966C791.578,318.585 791.495,319.185 791.339,319.754ZM730.958,145.784C716.456,145.784 704.673,150.769 695.609,160.739C686.545,170.407 682.014,183.097 682.014,198.807L682.014,239.594C682.014,240.803 682.618,241.407 683.826,241.407L778.09,241.407C779.298,241.407 779.903,240.803 779.903,239.594L779.903,198.807C779.903,183.097 775.371,170.407 766.307,160.739C757.243,150.769 745.46,145.784 730.958,145.784Z"></path>
+            </g>
+          </g>
+          <g transform="matrix(6.204304,0,0,6.204304,183.559332,336.999532)">
+            <path d="M58.858,79.024L47.099,58.702L47.076,58.661L47.065,58.643C46.912,58.376 46.87,58.058 46.949,57.76C47.028,57.462 47.221,57.207 47.485,57.053C48.036,56.732 48.741,56.924 49.059,57.481L49.07,57.499C49.078,57.512 49.086,57.526 49.093,57.539L60.668,77.541L60.668,34.431C60.668,33.688 61.264,33.085 61.998,33.085C62.733,33.085 63.328,33.688 63.329,34.431L63.329,77.562C63.329,77.562 106.218,1.698 106.226,1.685C106.226,1.701 108.955,1.735 108.911,1.728C108.904,1.742 108.919,1.715 108.911,1.728L65.412,78.572L106.333,54.694C106.346,54.686 106.36,54.678 106.373,54.671L106.391,54.66C106.943,54.339 107.649,54.529 107.966,55.084C108.284,55.64 108.094,56.352 107.543,56.673L107.524,56.684L107.484,56.708L65.981,80.925L109.066,81C109.082,81 109.051,81 109.066,81C109.703,81 110.066,81.858 110.066,82.5C110.066,83.142 109.703,83.5 109.066,83.5C109.05,83.5 109.082,83.5 109.066,83.5L66.088,83.25L100.551,103.352C100.564,103.36 100.578,103.368 100.591,103.376L100.609,103.387C101.161,103.708 101.35,104.42 101.033,104.976C100.715,105.531 100.009,105.721 99.458,105.4L99.44,105.389C99.426,105.382 99.412,105.374 99.399,105.366L65.239,85.441L85.224,120.16C85.232,120.174 85.239,120.187 85.247,120.201L85.257,120.219C85.41,120.486 85.452,120.804 85.373,121.102C85.294,121.401 85.102,121.655 84.837,121.809C84.286,122.13 83.582,121.938 83.263,121.381L83.253,121.363C83.245,121.35 83.237,121.336 83.229,121.322L63.329,86.75L63.329,144.436C63.328,145.179 62.733,145.781 61.998,145.782C61.264,145.781 60.668,145.179 60.668,144.436L60.668,86.835L7.838,175.592C7.83,175.605 7.928,171.305 7.928,171.305L59.104,84.922L24.111,105.251C24.098,105.259 24.084,105.267 24.071,105.274L24.053,105.285C23.501,105.606 22.795,105.416 22.477,104.861C22.16,104.305 22.349,103.593 22.901,103.271L22.919,103.261C22.932,103.253 22.946,103.245 22.959,103.237L57.363,83.25L32.109,83.25C32.093,83.25 32.078,83.25 32.063,83.249L32.042,83.25C31.405,83.25 30.888,82.729 30.888,82.087C30.888,81.446 31.405,80.925 32.042,80.925L57.513,80.925L15.944,56.626L15.904,56.602L15.885,56.592C15.334,56.27 15.144,55.558 15.462,55.003C15.779,54.447 16.485,54.257 17.037,54.578L17.055,54.589C17.068,54.597 17.082,54.604 17.095,54.612L58.858,79.024Z" style="fill-rule:nonzero;"></path>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<div class="container">
+
+<header class="header">
+  <h1>Three design <em>directions</em>.</h1>
+  <p class="lede">Three directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers &amp; the Next Generation, Meeting the Moment, the Twentieth. Each option carries the same section list and the same content slots; what varies is typography, palette, and structural register.</p>
+  <div class="caveats">
+    <strong>What you're looking at, and what you're not.</strong> All copy in these mockups is placeholder — including participant names. Bios, welcomes, the thought piece, even the names in the bio grids are stand-ins until real content lands. <strong>Nothing here is typeset for production.</strong> These are layout and typography studies meant to be reacted to, not proofed.
+  </div>
+  <div class="caveats" style="margin-top: 12px;">
+    <strong>Palette revision — bright Centella, light grounds.</strong> Each option now sources its color from the Centella token system (paired families on light variants), kept to two color families per composition. Paper grounds are pale tints (lavender, warm cream, pink); brights (violet, coral, pink, orange) are deployed as <em>fills</em> only — accent text is dark-on-bright or family-deepened to keep WCAG 2.1 AA on every block. Body copy clears AAA (≥14:1) on all three.
+  </div>
+</header>
+
+<section class="options">
+  <a class="option opt-a" href="option-a-contemporary.html">
+    <div class="badge">Option A · Violet + Global</div>
+    <h2 class="name">Contemporary, <em>progressive.</em></h2>
+    <div class="feel">Now, not nostalgia, and not solemn. The 20-year mark as momentum and warmth — pale lavender pages with bright violet and orange feature panels.</div>
+    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-warm"></div></div>
+    <div class="meta">Inter Tight · Inter · JetBrains Mono (labels)</div>
+    <div class="open"><span>View all eight spreads →</span></div>
+  </a>
+  <a class="option opt-b" href="option-b-warm.html">
+    <div class="badge">Option B · Networking + Global</div>
+    <h2 class="name">Warm, <em>human.</em></h2>
+    <div class="feel">Affection, with sunshine. The 20-year mark as the people in the room — warm cream pages, coral and orange fills, sunset cover.</div>
+    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-terracotta"></div><div class="swatch s-teal"></div></div>
+    <div class="meta">Lora · Source Serif 4 · Inter (labels)</div>
+    <div class="open"><span>View all eight spreads →</span></div>
+  </a>
+  <a class="option opt-c" href="option-c-classical.html">
+    <div class="badge">Option C · Tech + Global</div>
+    <h2 class="name">Classical, <em>editorial.</em></h2>
+    <div class="feel">Privately published monograph — in spring blossom colors. Ornamental frame, Roman numerals, sun-wash cover, deepened pink for accent text.</div>
+    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-gold"></div></div>
+    <div class="meta">Cormorant Garamond · Inter (labels)</div>
+    <div class="open"><span>View all fourteen pages →</span></div>
+  </a>
+</section>
+
+<section class="section">
+  <h2>How they differ</h2>
+  <div class="grid3">
+    <div class="cell label">&nbsp;</div>
+    <div class="col-head a">A · Contemporary</div>
+    <div class="col-head b">B · Warm</div>
+    <div class="col-head c">C · Classical</div>
+
+    <div class="cell label">Reads as</div>
+    <div class="cell body">Forward-looking, current movement</div>
+    <div class="cell body">Relationship-forward, the room itself</div>
+    <div class="cell body">Institutional weight, milestone occasion</div>
+
+    <div class="cell label">Reference</div>
+    <div class="cell body">Aperture, MIT Press, contemporary foundation reports</div>
+    <div class="cell body">Aperture, Magnum photo books, warmer foundation pubs</div>
+    <div class="cell body">NYRB, university press monograph, privately published</div>
+
+    <div class="cell label">Format</div>
+    <div class="cell body">Facing spread, 12×9</div>
+    <div class="cell body">Facing spread, 12×9</div>
+    <div class="cell body">Single page, 6×9</div>
+
+    <div class="cell label">Pages shown</div>
+    <div class="cell body">8 spreads</div>
+    <div class="cell body">8 spreads</div>
+    <div class="cell body">14 pages</div>
+
+    <div class="cell label">Display type</div>
+    <div class="cell body">Inter Tight, heavy weight</div>
+    <div class="cell body">Lora italic-forward</div>
+    <div class="cell body">Cormorant Garamond, italic emphasis</div>
+
+    <div class="cell label">Body</div>
+    <div class="cell body">Inter, ragged-right, modular blocks</div>
+    <div class="cell body">Source Serif 4, generous leading</div>
+    <div class="cell body">Cormorant Garamond, justified with hyphenation</div>
+
+    <div class="cell label">Palette</div>
+    <div class="cell body">Centella violet + global — pale lavender paper, violet-dark ink, bright violet & orange fills</div>
+    <div class="cell body">Centella networking + global — warm cream paper, deep wine ink, coral & orange fills</div>
+    <div class="cell body">Centella tech + global — pale pink paper, deep plum ink, bright pink & orange fills</div>
+
+    <div class="cell label">Body contrast</div>
+    <div class="cell body">15:1 (AAA)</div>
+    <div class="cell body">15.8:1 (AAA)</div>
+    <div class="cell body">14.6:1 (AAA)</div>
+
+    <div class="cell label">Cover device</div>
+    <div class="cell body">Asymmetric grid, oversized "20<sup>th</sup>" with bright violet swatch, saturated band</div>
+    <div class="cell body">Photo-led with sunset gradient (coral → orange → wine) and serif headline plate beneath</div>
+    <div class="cell body">Ornamental double-frame, "MMVI · MMXXVI" Roman dates, soft orange sun-wash</div>
+
+    <div class="cell label">Box motif</div>
+    <div class="cell body">Modular blocks, mono labels, stat rows; bright orange welcome panel + bright violet pocket page</div>
+    <div class="cell body">Italic numerals, ornament glyphs, photo-forward bios; coral fills on emphasis & venue pill</div>
+    <div class="cell body">Outset label cut into top border, deep plum inner rule; gold roman numeral on dark divider</div>
+
+    <div class="cell label">Quote treatment</div>
+    <div class="cell body">Inverted dark box with bright orange edge; bright violet alt-fill with dark text</div>
+    <div class="cell body">Italic, coral inner frame, Lora display; coral open-quote glyph</div>
+    <div class="cell body">Centered italic, double-rule top + single below; deepened-pink open-quote</div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>What's the same in all three</h2>
+  <p><strong>Trim &amp; format.</strong> 6×9 portrait, saddle-stitched, ~28–36pp depending on bio length. Pocket on the inside back cover holds a separately-printed agenda insert — lets the body of the book go to the printer early while the agenda stays fluid until morning of.</p>
+  <h2>Section order</h2>
+  <ol>
+    <li>Cover</li>
+    <li>Welcome — Ambassador Hunt</li>
+    <li>Welcome — Giovanna Alvarez Negretti <em style="color: var(--ink-faint);">(more logistical)</em></li>
+    <li>Thought piece — Swanee</li>
+    <li>Bios of Prime Movers</li>
+    <li>Bios of Next Generation Leaders</li>
+    <li>Maps to locations</li>
+    <li>Code of Conduct</li>
+    <li>Emergency contacts</li>
+    <li>Pharmacy / Hospital / Emergency</li>
+    <li>Agenda <em style="color: var(--ink-faint);">(separate insert in pocket on inside back cover)</em></li>
+  </ol>
+</section>
+
+<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code>. Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser's print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
+
+</div>
+</body>
+</html>

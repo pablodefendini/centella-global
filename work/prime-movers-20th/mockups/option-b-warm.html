@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option B — Warm / Human · Prime Movers 20th</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Centella palette — Networking + Global ("sun and coral").
+       Two families only — drops the legacy "teal/violet" third family.
+       Brights are fills; body+accent text use family-dark for AA. */
+    --paper: #FFF3E1;        /* --global-light, warm pale cream */
+    --paper-2: #FFE5CC;      /* deeper warm cream */
+    --ink: #22181C;          /* --networking-dark, deep wine */
+    --ink-soft: #564248;     /* networking-dark @ ~70% — 8.5:1 on paper */
+    --ink-faint: #8E7E83;    /* networking-dark @ ~45% */
+    --terracotta: #FF6B6B;   /* --networking, coral — fill only */
+    --ochre: #FF9500;        /* --global, bright orange — fill only */
+    /* Compatibility alias: pre-revision markup referenced --teal in a few
+       decorative places; mapped to networking-dark so the file still parses. */
+    --teal: #22181C;
+    --rule: rgba(34, 24, 28, 0.18);
+    --serif-display: "Lora", "Source Serif 4", Georgia, serif;
+    --serif-body: "Source Serif 4", Georgia, serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #1f1812; color: var(--ink); font-family: var(--serif-body); }
+  body { padding: 48px 24px 96px; }
+
+  .doc-header {
+    max-width: 1200px; margin: 0 auto 32px;
+    color: #d6c9b3; font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .doc-header .opt { color: #f4e6cc; font-weight: 600; }
+  .doc-header .meta { opacity: 0.7; }
+
+  .spread {
+    width: 1200px; max-width: 100%;
+    margin: 0 auto 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--paper);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    aspect-ratio: 12 / 9;
+    position: relative; overflow: hidden;
+  }
+  .spread.single { grid-template-columns: 1fr; aspect-ratio: 6 / 9; width: 600px; }
+  .spread.single::after { display: none; }
+  .spread::after {
+    content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 28px; transform: translateX(-50%);
+    background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.15));
+    pointer-events: none;
+  }
+
+  .spread-label {
+    max-width: 1200px; margin: 0 auto 12px;
+    font-family: var(--sans); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #d6c9b3;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .spread-label .num { color: var(--ochre); font-weight: 600; }
+  .spread-label .desc { color: #a89980; }
+
+  .page { padding: 56px 56px 48px; position: relative; display: flex; flex-direction: column; }
+  .page.left { padding-right: 40px; }
+  .page.right { padding-left: 40px; }
+
+  /* ============ COVER ============ */
+  .cover {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 0;
+    display: grid; grid-template-rows: 60% 40%;
+    position: relative;
+  }
+  .cover-photo {
+    position: relative;
+    background:
+      linear-gradient(135deg, rgba(255,107,107,0.85) 0%, rgba(255,149,0,0.65) 60%, rgba(34,24,28,0.85) 100%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.04) 0 2px, transparent 2px 6px),
+      var(--paper-2);
+    overflow: hidden;
+  }
+  .cover-photo::before {
+    /* texture / film grain */
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 40%, rgba(255,255,255,0.18), transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(0,0,0,0.25), transparent 50%);
+    mix-blend-mode: overlay;
+  }
+  .cover-photo::after {
+    content: "PHOTOGRAPHY";
+    position: absolute; bottom: 16px; right: 16px;
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.24em;
+    color: rgba(255,243,225,0.6);
+  }
+  .cover-mark {
+    position: absolute; top: 32px; left: 32px;
+    font-family: var(--sans); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,243,225,0.95);
+  }
+  .cover-text {
+    padding: 40px 48px 48px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .cover-display {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500;
+    font-size: 64px; line-height: 0.95; letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .cover-display .num {
+    font-style: normal; font-weight: 600;
+    color: var(--ink);
+  }
+  .cover-sub {
+    font-family: var(--sans); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ink-soft); margin-top: 12px;
+  }
+  .cover-meta {
+    display: flex; justify-content: space-between;
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--rule); padding-top: 16px;
+  }
+
+  /* ============ EYEBROWS / HEADINGS ============ */
+  .eyebrow {
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600;
+    margin-bottom: 20px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .eyebrow::before { content: ""; display: block; width: 28px; height: 1px; background: var(--ochre); }
+  .h1 {
+    font-family: var(--serif-display); font-weight: 500;
+    font-size: 40px; line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 20px; color: var(--ink);
+  }
+  /* Italic emphasis word — coral swatch behind dark ink. 6.2:1 contrast. */
+  .h1 em {
+    font-style: italic; font-weight: 500; color: var(--ink);
+    background: var(--terracotta); padding: 0 0.15em; border-radius: 4px;
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .h2 {
+    font-family: var(--serif-display); font-style: italic; font-weight: 400;
+    font-size: 20px; line-height: 1.3; color: var(--ink-soft);
+    margin: 0 0 20px; max-width: 32ch;
+  }
+  .body {
+    font-family: var(--serif-body); font-weight: 400;
+    font-size: 11px; line-height: 1.6; color: var(--ink-soft);
+  }
+  .body p { margin: 0 0 10px; }
+
+  .folio {
+    position: absolute; bottom: 24px; left: 56px; right: 56px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .folio .ornament { color: var(--ochre); }
+
+  /* ============ WELCOME ============ */
+  .welcome-left {
+    background:
+      linear-gradient(180deg, rgba(255,107,107,0.06), rgba(255,243,225,0) 50%),
+      var(--paper);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 56px 48px;
+  }
+  .welcome-left .top-mark {
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .welcome-left .quote {
+    font-family: var(--serif-display); font-style: italic; font-weight: 400;
+    font-size: 32px; line-height: 1.25; color: var(--ink);
+  }
+  /* Decorative 96px open-quote glyph — purely typographic ornament,
+     so coral is visually correct even though contrast on cream is below AA.
+     The actual quote text below is in --ink at full contrast. */
+  .welcome-left .quote::before {
+    content: "\201C"; font-family: var(--serif-display); font-style: normal;
+    font-size: 96px; color: var(--terracotta); display: block; line-height: 0.5; margin-bottom: 12px;
+  }
+  .welcome-left .attribution {
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 24px;
+  }
+  .welcome-left .attribution strong { color: var(--ink); font-weight: 600; }
+  .signature-row {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-top: 24px; padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .signature {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500; font-size: 28px;
+    color: var(--ink);
+  }
+  .sig-meta {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-faint); text-align: right; line-height: 1.6;
+  }
+  .sig-meta strong { color: var(--ink-soft); font-weight: 600; }
+
+  /* ============ ABOUT ============ */
+  .ornament-rule {
+    display: flex; align-items: center; gap: 12px; margin: 16px 0;
+    color: var(--ochre); font-family: var(--serif-display); font-style: italic;
+  }
+  .ornament-rule::before, .ornament-rule::after {
+    content: ""; flex: 1; height: 1px; background: var(--rule);
+  }
+
+  .approach-list { list-style: none; padding: 0; margin: 0; }
+  .approach-list li {
+    display: grid; grid-template-columns: 56px 1fr; gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .approach-list li:last-child { border-bottom: none; }
+  .approach-list .marker {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500; font-size: 28px;
+    color: var(--ink); line-height: 1;
+  }
+  .approach-list .title {
+    font-family: var(--serif-display); font-weight: 600; font-size: 14px;
+    color: var(--ink); margin: 0 0 4px;
+  }
+  .approach-list .text {
+    font-family: var(--serif-body); font-size: 10px; line-height: 1.55; color: var(--ink-soft);
+  }
+
+  /* ============ BIOS ============ */
+  .bio {
+    display: grid; grid-template-columns: 90px 1fr; gap: 18px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .bio:first-of-type { border-top: 1px solid var(--ink); }
+  .bio-photo {
+    width: 90px; height: 110px;
+    border-radius: 4px;
+    overflow: hidden;
+    background:
+      linear-gradient(160deg, rgba(255,107,107,0.55), rgba(255,149,0,0.45)),
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.08) 0 1px, transparent 1px 4px),
+      var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--rule);
+  }
+  .bio-name {
+    font-family: var(--serif-display); font-weight: 600; font-size: 17px; line-height: 1.15;
+    color: var(--ink); margin: 0 0 2px;
+  }
+  .bio-role {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .bio-text {
+    font-family: var(--serif-body); font-size: 10px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .bio-detail {
+    font-family: var(--serif-display); font-style: italic; font-size: 11px;
+    color: var(--teal); margin-top: 6px;
+  }
+
+  /* ============ CODE OF CONDUCT ============ */
+  .conduct-list { list-style: none; padding: 0; margin: 0; }
+  .conduct-list li {
+    display: grid; grid-template-columns: 40px 1fr; gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .conduct-list li:last-child { border-bottom: none; }
+  /* Conduct numerals — content, not decoration. Use ink for AA contrast (15.8:1).
+     Italic display + 28px size carries the typographic distinction without the
+     low-contrast orange. */
+  .c-num {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500; font-size: 28px;
+    color: var(--ink); line-height: 1;
+  }
+  .c-title {
+    font-family: var(--serif-display); font-weight: 600; font-size: 15px;
+    color: var(--ink); margin: 0 0 4px;
+  }
+  .c-body {
+    font-family: var(--serif-body); font-size: 10px; line-height: 1.55; color: var(--ink-soft);
+  }
+
+  /* ============ POCKET ============ */
+  .pocket-page {
+    background:
+      radial-gradient(circle at 50% 30%, rgba(255,107,107,0.10), transparent 60%),
+      var(--paper);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 56px 48px;
+    gap: 20px;
+  }
+  .pocket-page .marker {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500;
+    font-size: 64px; line-height: 1;
+    color: var(--ink);
+  }
+  .pocket-page .ornament {
+    color: var(--ochre); font-family: var(--serif-display); font-style: italic; font-size: 24px;
+  }
+  .pocket-page .instruction {
+    font-family: var(--sans); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .pocket-page .note {
+    font-family: var(--serif-display); font-style: italic; font-size: 14px; color: var(--ink-faint);
+    max-width: 280px; line-height: 1.45;
+  }
+  .pocket-visual {
+    background: var(--paper-2);
+    position: relative;
+  }
+  .pocket-visual::before {
+    content: ""; position: absolute; left: 36px; right: 36px; bottom: 36px; height: 38%;
+    background: var(--paper);
+    border: 1px solid var(--rule); border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+  .pocket-visual::after {
+    content: "AGENDA"; position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: 56%; padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--terracotta);
+    border-radius: 999px;
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.24em; color: var(--ink);
+  }
+
+  /* ============ Footer mini-legend ============ */
+  .legend {
+    max-width: 1200px; margin: 64px auto 0; padding: 24px 32px;
+    background: rgba(255,255,255,0.04); color: #c8bca5;
+    font-family: var(--sans); font-size: 12px; line-height: 1.6;
+    border-left: 2px solid var(--terracotta);
+  }
+  .legend h3 { margin: 0 0 8px; font-family: var(--serif-display); font-style: italic; font-weight: 500; color: #f4e6cc; font-size: 20px; }
+  .legend dl { display: grid; grid-template-columns: 140px 1fr; gap: 4px 16px; margin: 12px 0 0; }
+  .legend dt { color: #f4e6cc; font-weight: 500; }
+  .legend dd { margin: 0; opacity: 0.85; }
+
+  /* ============ BOX MOTIF (Centella panel, warm tilt) ============ */
+  /* Boxes are warmer: 8px radius, double-frame with terracotta inner rule. */
+  .panel { padding: 5px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+  .panel-frame {
+    border: 1px solid rgba(255,107,107,0.4);
+    border-radius: 5px;
+    padding: 18px 20px;
+  }
+  .panel-label {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600; margin-bottom: 12px;
+  }
+
+  /* ============ QUOTE BOX (warm, soft) ============ */
+  .quote-box {
+    margin: 18px 0; padding: 5px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(255,107,107,0.06), transparent);
+  }
+  .quote-box-frame {
+    border: 1px solid rgba(255,107,107,0.4); border-radius: 5px;
+    padding: 18px 22px;
+  }
+  .quote-box .q-text {
+    font-family: var(--serif-display); font-style: italic; font-weight: 400;
+    font-size: 18px; line-height: 1.3; color: var(--ink);
+  }
+  /* Decorative 56px open-quote glyph — coral. Quote text below is --ink. */
+  .quote-box .q-text::before {
+    content: "\201C"; font-family: var(--serif-display); font-style: normal;
+    font-size: 56px; color: var(--terracotta); line-height: 0; vertical-align: -8px; margin-right: 4px;
+  }
+  .quote-box .q-attribution {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 12px;
+  }
+  .quote-box .q-attribution strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ AT-A-GLANCE LIST ============ */
+  .glance-list { list-style: none; padding: 0; margin: 0; }
+  .glance-list li {
+    display: grid; grid-template-columns: 96px 1fr; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .glance-list li:last-child { border-bottom: none; }
+  .glance-list .key {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600;
+  }
+  .glance-list .val {
+    font-family: var(--serif-body); font-size: 11px; line-height: 1.5; color: var(--ink-soft);
+  }
+  .glance-list .val strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ THOUGHT PIECE ============ */
+  .thought-byline {
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--ochre);
+    padding-top: 10px; margin-bottom: 18px;
+  }
+  .thought-body { font-family: var(--serif-body); font-size: 11px; line-height: 1.6; color: var(--ink-soft); }
+  .thought-body p { margin: 0 0 10px; }
+  .thought-body p.lead {
+    font-family: var(--serif-display); font-style: italic; font-weight: 400;
+    font-size: 18px; line-height: 1.4; color: var(--ink); margin-bottom: 14px;
+  }
+  .thought-cont { font-family: var(--serif-body); font-size: 11px; line-height: 1.6; color: var(--ink-soft); }
+  .thought-cont p { margin: 0 0 10px; }
+  .thought-sig {
+    font-family: var(--serif-display); font-style: italic; font-weight: 500;
+    font-size: 28px; color: var(--ink); margin-top: 16px;
+  }
+
+  /* ============ MAP PLATE (warm) ============ */
+  .map-plate {
+    background:
+      linear-gradient(135deg, rgba(255,107,107,0.08), rgba(255,149,0,0.06)),
+      repeating-linear-gradient(0deg, transparent 0 28px, var(--rule) 28px 29px),
+      repeating-linear-gradient(90deg, transparent 0 28px, var(--rule) 28px 29px),
+      var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    position: relative; height: 360px; margin-top: 12px;
+    overflow: hidden;
+  }
+  .map-plate::before {
+    content: ""; position: absolute; left: 28%; top: 22%; width: 44%; height: 56%;
+    background: rgba(255,107,107,0.18); border: 1px solid var(--terracotta); border-radius: 6px;
+  }
+  /* Venue pill — coral fill with dark ink. 6.2:1 contrast. */
+  .map-plate::after {
+    content: "VENUE"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font-family: var(--sans); font-size: 10px; letter-spacing: 0.20em; color: var(--ink); font-weight: 700;
+    background: var(--terracotta); padding: 5px 11px; border-radius: 999px;
+  }
+  .map-caption {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 10px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ============ PRACTICAL STACK ============ */
+  .practical-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .practical-row {
+    padding: 5px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--paper);
+  }
+  .practical-row-frame {
+    border: 1px solid rgba(255,107,107,0.35); border-radius: 5px;
+    padding: 13px 16px;
+    display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: baseline;
+  }
+  .practical-row.urgent { background: linear-gradient(180deg, rgba(255,107,107,0.08), var(--paper)); }
+  .practical-row .p-label {
+    font-family: var(--sans); font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600;
+  }
+  .practical-row .p-value {
+    font-family: var(--serif-body); font-size: 11px; line-height: 1.45; color: var(--ink);
+  }
+  .practical-row .p-value strong { font-weight: 600; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc-header, .spread-label, .legend { display: none; }
+    .spread { box-shadow: none; margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="opt">Option B — Warm / Human</div>
+  <div class="meta">Prime Movers & the Next Generation · Meeting the Moment · 20th · Mockup for review</div>
+</header>
+
+<!-- =================== COVER =================== -->
+<div class="spread-label"><span class="num">01</span> <span>Front cover</span> <span class="desc">— single page, photo + serif headline</span></div>
+<div class="spread single">
+  <div class="page cover">
+    <div class="cover-photo">
+      <div class="cover-mark">Hunt Alternatives</div>
+    </div>
+    <div class="cover-text">
+      <div>
+        <div class="cover-display"><em>Meeting<br>the Moment.</em></div>
+        <div class="cover-sub">Prime Movers &amp; the Next Generation</div>
+      </div>
+      <div class="cover-meta">
+        <div>The Twentieth · Spring 2026</div>
+        <div>Hunt Alternatives</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== WELCOME — AMBASSADOR HUNT =================== -->
+<div class="spread-label"><span class="num">02</span> <span>Welcome — Ambassador Hunt</span> <span class="desc">— left: epigraph · right: letter</span></div>
+<div class="spread">
+  <div class="page left welcome-left">
+    <div class="top-mark">A Welcome from the Founder</div>
+    <div>
+      <div class="quote">You are the room I keep building. Twenty years on, I still don't take it for granted.</div>
+      <div class="attribution"><strong>Ambassador Swanee Hunt</strong></div>
+    </div>
+    <div class="folio"><span>Welcome</span><span class="ornament">❦</span><span>02</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">Welcome</div>
+    <h1 class="h1">Welcome to the <em>twentieth.</em></h1>
+    <div class="body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+    <div class="signature-row">
+      <div class="signature">Swanee</div>
+      <div class="sig-meta"><strong>Ambassador Swanee Hunt</strong><br>Founder · Hunt Alternatives</div>
+    </div>
+    <div class="folio"><span>Welcome</span><span class="ornament">❦</span><span>03</span></div>
+  </div>
+</div>
+
+<!-- =================== WELCOME — GIOVANNA =================== -->
+<div class="spread-label"><span class="num">03</span> <span>Welcome — Giovanna Alvarez Negretti</span> <span class="desc">— left: practical letter · right: at-a-glance panel</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">From the Convening Team</div>
+    <h1 class="h1">A few practical <em>things.</em></h1>
+    <div class="body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+      <p>Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+      <p>If something doesn't work or you can't find what you need — find me, or anyone with a Hunt Alternatives badge.</p>
+    </div>
+    <div class="signature-row">
+      <div class="signature">Giovanna</div>
+      <div class="sig-meta"><strong>Giovanna Alvarez Negretti</strong><br>Hunt Alternatives</div>
+    </div>
+    <div class="folio"><span>Welcome</span><span class="ornament">❦</span><span>04</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">At a Glance</div>
+    <div class="panel">
+      <div class="panel-frame">
+        <div class="panel-label">The convening · key things</div>
+        <ul class="glance-list">
+          <li><div class="key">Schedule</div><div class="val">See agenda insert in pocket. Updated through morning of.</div></li>
+          <li><div class="key">Wi-Fi</div><div class="val">Network: <strong>HuntAlt-Guest</strong> · Password: <strong>twenty2026</strong></div></li>
+          <li><div class="key">Meals</div><div class="val">Continental breakfast 7:30. Lunch 12:30 in the Garden Room.</div></li>
+          <li><div class="key">Help desk</div><div class="val">Hunt Alternatives staff in the lobby from 7:00 each morning.</div></li>
+          <li><div class="key">Quiet space</div><div class="val">Library, second floor — phone calls, decompression, both fine.</div></li>
+          <li><div class="key">Photography</div><div class="val">Group portrait Friday morning. Otherwise off the record.</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="folio"><span>At a Glance</span><span class="ornament">❦</span><span>05</span></div>
+  </div>
+</div>
+
+<!-- =================== THOUGHT PIECE — SWANEE =================== -->
+<div class="spread-label"><span class="num">04</span> <span>Thought piece — Swanee</span> <span class="desc">— essay across the spread, with quote box</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">A Reflection</div>
+    <h1 class="h1" style="font-size: 48px; line-height: 1.05;">On <em>meeting</em><br>the moment.</h1>
+    <div class="thought-byline">By Ambassador Swanee Hunt</div>
+    <div class="thought-body">
+      <p class="lead">Twenty years on, the question is the same — and so are you, the people who keep insisting on a better answer.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in libero ut massa volutpat convallis. Vivamus pharetra posuere sapien, nec sagittis nulla efficitur eget. Donec id elit non mi porta gravida at eget metus.</p>
+      <p>Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+    </div>
+    <div class="folio"><span>Thought Piece</span><span class="ornament">❦</span><span>06</span></div>
+  </div>
+  <div class="page right">
+    <div class="thought-cont">
+      <p>Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+    </div>
+    <div class="quote-box">
+      <div class="quote-box-frame">
+        <div class="q-text">The room only changes the world to the extent that the people in it leave changed.</div>
+        <div class="q-attribution">From an earlier convening · <strong>attributed</strong></div>
+      </div>
+    </div>
+    <div class="thought-cont">
+      <p>Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper.</p>
+      <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Sed posuere consectetur est at lobortis.</p>
+    </div>
+    <div class="thought-sig">Swanee</div>
+    <div class="folio"><span>Thought Piece</span><span class="ornament">❦</span><span>07</span></div>
+  </div>
+</div>
+
+<!-- =================== BIOS =================== -->
+<div class="spread-label"><span class="num">05</span> <span>Participant bios</span> <span class="desc">— sample spread, photo-forward, room for one detail line per bio</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Prime Movers · A — H</div>
+    <h1 class="h1" style="font-size:28px; margin-bottom: 12px;">Participants</h1>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Adelaide Brennan</div>
+        <div class="bio-role">CEO · Brennan Capital · NY</div>
+        <div class="bio-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in libero ut massa volutpat convallis. Vivamus pharetra posuere sapien.</div>
+        <div class="bio-detail">Joined Prime Movers · 2009</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Davíd Cortés</div>
+        <div class="bio-role">Founder · Common Grounds Coalition</div>
+        <div class="bio-text">Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem.</div>
+        <div class="bio-detail">Joined Prime Movers · 2014</div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-box-frame">
+        <div class="q-text">I came to my first Prime Movers convening because I admired Swanee. I keep coming back because of the people I sit next to.</div>
+        <div class="q-attribution">A Prime Mover · <strong>2024 cohort survey</strong></div>
+      </div>
+    </div>
+    <div class="folio"><span>Participants</span><span class="ornament">❦</span><span>12</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">Prime Movers · I — N</div>
+    <h1 class="h1" style="font-size:28px; margin-bottom: 12px;">&nbsp;</h1>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Idris Lawal</div>
+        <div class="bio-role">ED · Lagos Civic Trust</div>
+        <div class="bio-text">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor.</div>
+        <div class="bio-detail">Joined Prime Movers · 2011</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Margaret Lindqvist</div>
+        <div class="bio-role">Chair · Northstar Foundation</div>
+        <div class="bio-text">Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis.</div>
+        <div class="bio-detail">Joined Prime Movers · 2007</div>
+      </div>
+    </div>
+    <div class="bio">
+      <div class="bio-photo"></div>
+      <div>
+        <div class="bio-name">Nadia Okafor</div>
+        <div class="bio-role">President · Okafor Energy Holdings</div>
+        <div class="bio-text">Donec ullamcorper nulla non metus auctor fringilla. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula.</div>
+        <div class="bio-detail">Joined Prime Movers · 2020</div>
+      </div>
+    </div>
+    <div class="folio"><span>Participants</span><span class="ornament">❦</span><span>13</span></div>
+  </div>
+</div>
+
+<!-- =================== CODE OF CONDUCT =================== -->
+<!-- =================== MAPS + PRACTICAL =================== -->
+<div class="spread-label"><span class="num">06</span> <span>Maps + Practical info</span> <span class="desc">— left: warm map plate · right: practical info as warm-framed boxes</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Where you are</div>
+    <h2 class="h2" style="margin-bottom: 8px;">The Venue</h2>
+    <div class="map-plate"></div>
+    <div class="map-caption">
+      <span>Garden entrance · East wing</span>
+      <span>1 : 1500</span>
+    </div>
+    <div class="folio"><span>Maps</span><span class="ornament">❦</span><span>22</span></div>
+  </div>
+  <div class="page right">
+    <div class="eyebrow">If you need anything</div>
+    <h2 class="h2" style="margin-bottom: 8px;">Practical</h2>
+    <div class="practical-stack">
+      <div class="practical-row urgent">
+        <div class="practical-row-frame">
+          <div class="p-label">Emergency</div>
+          <div class="p-value"><strong>911</strong> · Hunt Alternatives staff badge in lobby for non-emergency help.</div>
+        </div>
+      </div>
+      <div class="practical-row">
+        <div class="practical-row-frame">
+          <div class="p-label">Hospital</div>
+          <div class="p-value">Massachusetts General · 55 Fruit St · 0.6 mi.</div>
+        </div>
+      </div>
+      <div class="practical-row">
+        <div class="practical-row-frame">
+          <div class="p-label">Pharmacy</div>
+          <div class="p-value">CVS Pharmacy · 24-hr · 587 Boylston St · 5 min walk.</div>
+        </div>
+      </div>
+      <div class="practical-row">
+        <div class="practical-row-frame">
+          <div class="p-label">On-site</div>
+          <div class="p-value">Arturo · <strong>+1 (617) 555-0142</strong> &nbsp;·&nbsp; Yo · <strong>+1 (617) 555-0188</strong></div>
+        </div>
+      </div>
+      <div class="practical-row">
+        <div class="practical-row-frame">
+          <div class="p-label">Contact desk</div>
+          <div class="p-value">Lobby, 7:00–22:00 daily, throughout the convening.</div>
+        </div>
+      </div>
+    </div>
+    <div class="folio"><span>Practical</span><span class="ornament">❦</span><span>23</span></div>
+  </div>
+</div>
+
+<div class="spread-label"><span class="num">07</span> <span>Code of Conduct</span> <span class="desc">— italic numerals, room for context, quote box at bottom</span></div>
+<div class="spread">
+  <div class="page left">
+    <div class="eyebrow">Convening Practice</div>
+    <h1 class="h1">A code <em>for the room.</em></h1>
+    <h2 class="h2">Twenty years has earned us a few principles. We hold to them.</h2>
+    <div class="body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
+    </div>
+    <div class="quote-box">
+      <div class="quote-box-frame">
+        <div class="q-text">The discipline of the room is what makes the room possible.</div>
+        <div class="q-attribution">A facilitator's note · <strong>2019</strong></div>
+      </div>
+    </div>
+    <div class="folio"><span>Conduct</span><span class="ornament">❦</span><span>28</span></div>
+  </div>
+  <div class="page right">
+    <ol class="conduct-list">
+      <li>
+        <div class="c-num">i.</div>
+        <div>
+          <div class="c-title">Confidentiality</div>
+          <div class="c-body">What is shared in the room stays in the room. Names, attributions, and specifics do not leave with you.</div>
+        </div>
+      </li>
+      <li>
+        <div class="c-num">ii.</div>
+        <div>
+          <div class="c-title">Generous attention</div>
+          <div class="c-body">Listen before responding. Assume the speaker has spent more time on the question than you have.</div>
+        </div>
+      </li>
+      <li>
+        <div class="c-num">iii.</div>
+        <div>
+          <div class="c-title">Disagreement, not disrespect</div>
+          <div class="c-body">Push hard on the idea, never on the person. Your strongest critique should land as a gift.</div>
+        </div>
+      </li>
+      <li>
+        <div class="c-num">iv.</div>
+        <div>
+          <div class="c-title">One mic at a time</div>
+          <div class="c-body">No side conversations during plenaries. The room only works if everyone is in it.</div>
+        </div>
+      </li>
+      <li>
+        <div class="c-num">v.</div>
+        <div>
+          <div class="c-title">Care for the convening</div>
+          <div class="c-body">Phones away, devices down, presence on. Twenty years has earned us the right to be undistracted.</div>
+        </div>
+      </li>
+    </ol>
+    <div class="folio"><span>Conduct</span><span class="ornament">❦</span><span>19</span></div>
+  </div>
+</div>
+
+<!-- =================== POCKET =================== -->
+<div class="spread-label"><span class="num">08</span> <span>Agenda pocket page</span> <span class="desc">— left: warm pointer page · right: inside back cover with pocket</span></div>
+<div class="spread">
+  <div class="page left pocket-page">
+    <div class="eyebrow" style="margin-bottom:0;">The Schedule</div>
+    <div class="marker">Agenda.</div>
+    <div class="ornament">❦</div>
+    <div class="instruction">See insert in pocket opposite</div>
+    <div class="note">Printed separately so it can stay current through the morning of the convening.</div>
+  </div>
+  <div class="page right pocket-visual">
+    <div style="position:absolute;top:32px;left:32px;font-family:var(--sans);font-size:10px;letter-spacing:0.20em;text-transform:uppercase;color:var(--ink-faint);">Inside back cover</div>
+  </div>
+</div>
+
+<aside class="legend">
+  <h3>Option B — at a glance</h3>
+  <dl>
+    <dt>Direction</dt><dd>Warm / human, brightened. Relationship-forward, twenty-years-of-people, the convening of friends rather than a convening of a board. Closest reference: Aperture, Magnum photo books, the warmer end of foundation publications — but in spring colors.</dd>
+    <dt>Type pairing</dt><dd>Lora (display, italic-forward) + Source Serif 4 (body) + Inter (eyebrows, labels). Italic does much of the expressive work.</dd>
+    <dt>Palette</dt><dd><strong>Centella networking + global.</strong> Warm cream paper (<code>--global-light</code> #FFF3E1), deep wine ink (<code>--networking-dark</code> #22181C) — body text passes WCAG AAA at 15.8:1. Coral (<code>--networking</code> #FF6B6B) and bright orange (<code>--global</code> #FF9500) used as <em>fills</em>: cover sunset wash, bio-photo duotone, urgent-row gradient, venue pill, headline emphasis swatches. Decorative open-quote glyphs at 56–96px sit in coral as typographic ornament. Ornamental ❦ marks at structural breaks.</dd>
+    <dt>Two-family rule</dt><dd>The earlier draft mixed three families (networking + global + a stray violet "teal"); this revision drops the violet to comply with Centella's "no more than two color families" guidance. Networking and global only.</dd>
+    <dt>Signatures</dt><dd>Photo-led cover with sunset gradient + text plate beneath. Italic display set throughout. Italic emphasis words sit in coral swatches with dark ink. Bio "Joined · year" detail. Lowercase italic numerals on the conduct list.</dd>
+    <dt>Boxes</dt><dd>Centella panel pattern adapted to the warm aesthetic: 8px outer radius, coral inner frame at 40% opacity, soft warm gradients on quote and urgent boxes. Practical info uses a vertical stack, each row a small framed panel — feels hand-set rather than tabular.</dd>
+    <dt>Quotes</dt><dd>Sprinkled in three places — thought piece (right), bios (left), conduct (left). Each opens with a large coral quotation mark over dark ink body; warmth of the type carries the affect.</dd>
+    <dt>What participants will feel</dt><dd>Affection, with sunshine. The 20-year mark as the people in the room — not the institution that convened them. Closer to a spring yearbook for grown-ups than a program book.</dd>
+  </dl>
+</aside>
+
+</body>
+</html>
