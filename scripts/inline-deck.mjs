@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, statSync, mkdirSync } from 'node:fs';
 import { resolve, dirname, basename } from 'node:path';
 
 const slug = process.argv[2] || 'ngl-barcelona';
 const distDir = resolve('dist');
 const htmlPath = resolve(distDir, 'presentations', slug, 'index.html');
-const outPath = resolve(`${slug}-standalone.html`);
+const shareDir = resolve('share');
+mkdirSync(shareDir, { recursive: true });
+const outPath = resolve(shareDir, `${slug}-standalone.html`);
 
 let html = readFileSync(htmlPath, 'utf8');
 

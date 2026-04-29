@@ -6,6 +6,26 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Vercel deploy goes live; `share/` mirrored to `/share/*`
+
+Wired the project up for actual deployment instead of treating it as a build-and-ignore exercise. Three things landed together:
+
+**1. `share/` now ships with the build.** Added `scripts/copy-share.mjs` as a postbuild step (`build` is now `astro build && node scripts/copy-share.mjs`). It walks `share/`, skips `.gitkeep`/`.DS_Store`, and copies everything into `dist/share/`. Vercel serves `dist/` as the static root, so anything in `share/` is reachable at `/share/<filename>` once deployed. This honors the "future-site-ready" intent of the share/ convention without a separate build pipeline.
+
+**2. `inline-deck.mjs` now writes to `share/` directly,** instead of the repo root. The previous version wrote `<slug>-standalone.html` at the project root and counted on `*-standalone.html` in `.gitignore` to keep it out of git. Now it writes `share/<slug>-standalone.html` and the file is a tracked deliverable.
+
+**3. `.gitignore` rule tightened.** `*-standalone.html` (matched at any depth) became `/*-standalone.html` (only the repo root). This keeps any stray root-level export out of the repo while letting `share/*-standalone.html` be tracked. The Barcelona deck (`share/ngl-barcelona-en-standalone.html`, ~2.3 MB) is now committed.
+
+**Why commit the bundle instead of building it on Vercel:** the standalone export is a "what shipped on this date" artifact — it's how decks get shared by email or USB to people who won't open a browser tab. Re-bundling on every CI run would mean a deck shared yesterday and a deck shared today could differ even if the source didn't, and it'd break offline reproducibility. Treating the bundle as a tracked output (built locally, committed when ready, deployed alongside the site) keeps it canonical.
+
+**API route:** `api/subscribe.ts` doesn't need anything special — Vercel's filesystem convention auto-detects `api/*.ts` at the repo root and deploys it as a serverless function regardless of what the Astro adapter writes into `.vercel/output/`. So Mailchimp signups work on the deployed site without extra wiring.
+
+**Preview URL strategy:** public, no password gate, no robots blocking yet. The site is destined to be public anyway, and gating preview URLs is a Vercel Pro feature we don't need to spend on for an early-stage site. If indexing becomes a concern before launch we can add a `robots.txt` later.
+
+**What this supersedes:** the prior MEMORY entry about the inline-deck not yet migrating to `share/` is now resolved. Removed that paragraph.
+
+---
+
 ## 2026-04-29 — `share/` directory for standalone HTML outputs
 
 Established a convention: any self-contained HTML artifact produced for sharing — visual explainers, one-pagers, ad-hoc decks built outside the `npm run deck:standalone` pipeline, exported reports — goes in `share/` at the repo root, not in the repo root itself or in ad-hoc paths.
@@ -14,9 +34,7 @@ Established a convention: any self-contained HTML artifact produced for sharing 
 
 **Why not `public/`:** `public/` is Astro's static-asset root for the site build (favicons, hero media, per-deck asset folders). It's part of the site bundle and follows Astro's conventions. `share/` is a publish tray for self-contained documents that aren't structurally part of the site shell — they're documents that happen to be HTML. Keeping them separate now means we can decide per-file whether something promotes into a real Astro page later.
 
-**What's not migrating yet:** the `scripts/inline-deck.mjs` standalone deck export still writes `<slug>-standalone.html` at the repo root. Updating it to write to `share/` is the right move next time we touch that pipeline; not worth a one-line change in isolation. CLAUDE.md flags this so it doesn't get lost.
-
-**Materialized:** `share/.gitkeep` so the directory exists in the repo (Git ignores empty directories).
+**Materialized:** `share/.gitkeep` so the directory exists in the repo (Git ignores empty directories). _Update 2026-04-29:_ `scripts/inline-deck.mjs` now writes here directly, and the build mirrors `share/` → `dist/share/` so files are served at `/share/<filename>` once deployed. See the deploy entry above.
 
 ---
 

@@ -6,6 +6,26 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 16 — April 29, 2026: shipping a real deploy, even if the site isn't ready
+
+The site has been a build-and-ignore exercise for a while — `npm run build` produces a `dist/`, `dist/` sits on my laptop, and nothing on the internet knows it exists. That's been fine while I'm iterating on the homepage and the styleguide and the Barcelona deck, but it's started to bite. Every time I want to share a piece of the work — a deck, a one-pager, the Prime Movers brochure mockups — I'm back to zipping HTML files for Slack or AirDropping them around. The site exists, just not anywhere I can point people to.
+
+So today the goal was the lowest-effort version of "the repo is on the internet now," even if half the pages are still placeholders and we don't have the real domain wired up.
+
+The host choice was easy: Vercel. The project's already configured for it — `@astrojs/vercel` adapter, `api/subscribe.ts` written as a Vercel function, the CLAUDE.md hard constraint says "Hosted on Vercel," there's even a `VERCEL_DEPLOY_HOOK_URL` in `.env.example` from when I first scaffolded the repo. Switching to Cloudflare or Netlify or whatever would mean swapping the adapter, porting the Mailchimp function to a different request/response shape, and ~30 minutes of yak-shaving before the first deploy. None of that gets me a URL faster.
+
+The interesting move was wiring `share/` into the build. Last week I set up `share/` as the publish tray for self-contained HTML — the standalone Barcelona deck, future visual explainers, that kind of thing — and wrote a memory entry that said "once the site is live, files in `share/` will already be at predictable URLs." Today is the day that promise gets cashed. I added `scripts/copy-share.mjs`, a small postbuild that walks `share/` and mirrors it into `dist/share/`. The build script is now `astro build && node scripts/copy-share.mjs`. So: drop a file in `share/`, push, and it lands at `/share/<filename>` on the deployed site. No extra pipeline, no per-file routing decision.
+
+Two cleanups went with that. The `inline-deck.mjs` script used to write `<slug>-standalone.html` at the repo root, with `*-standalone.html` in `.gitignore` keeping it untracked. I'd flagged in last week's diary that the right move was to point the script at `share/`, but didn't want to ship a one-line code change in a docs commit. Today was the right time. So `inline-deck.mjs` now writes to `share/<slug>-standalone.html` directly, and the gitignore rule narrowed from `*-standalone.html` (any depth) to `/*-standalone.html` (only the repo root). Files under `share/` are now tracked deliverables — the Barcelona deck is committed at ~2.3 MB, which feels heavy for a git repo, but it's how the deck gets shared by email and USB and offline, so canonicality matters more than repo cleanliness. If `share/` ever gets unwieldy, Git LFS is the answer, not removing it from version control.
+
+The thing I deliberately *didn't* do: gate the preview URL. Vercel can password-protect non-production deployments on Pro, and there's a school of thought that says a pre-launch site should be invisible to Google so half-finished pages don't get indexed. I think that's overthinking it for our stage. The site is destined to be public. Anyone who finds the `*.vercel.app` URL is either someone I sent it to or someone who was very determined to find it. If indexing becomes a real concern before launch — which mostly means: when we attach the real domain — I can drop in a `robots.txt` and call it done.
+
+What's actually live now: the homepage, the three pillar pages (Advisory, Institute, Impact), the styleguide, the events listing, the Barcelona deck (Spanish and English), and `/share/ngl-barcelona-en-standalone.html` for the offline copy. The Mailchimp form on the homepage will work once I set the env vars in the Vercel project settings — that's the next step, and it's a Vercel-dashboard task, not a code task.
+
+Two things are now true that weren't this morning. First, when someone asks to see what I'm working on, I have a URL. Second, every deck I export from now on lands at a URL with no extra steps. That second one, in particular, is going to change how I share things — the friction of "where does this HTML file live" goes from "find a host, upload, share link" to "commit, push, share link." That's not a small difference for how often I'll bother to share work in progress.
+
+---
+
 ## Entry 15 — April 29, 2026: a `share/` directory for standalone HTML outputs
 
 Small convention move, but worth recording so it doesn't drift. The friction was that whenever I share a self-contained HTML file (one of the standalone decks, a visual explainer, a one-pager) in Slack, Slack unfurls it as a code preview instead of treating it as something a person can open. The first instinct was to bolt on a tiny hosting layer — drag-drop into tiiny.host, run surge, push to a Gist with raw.githack — but every one of those is a workaround for a thing this repo will eventually solve on its own. Once the site is live on Vercel, anything that lives in this repo at a predictable path is already a URL. So the answer isn't "set up hosting"; it's "put the files where the future site can pick them up."

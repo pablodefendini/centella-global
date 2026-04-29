@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/copy-share.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "media:hero": "bash scripts/optimize-hero-media.sh",

@@ -75,7 +75,8 @@ share/                        # Standalone HTML outputs meant to be opened in a 
 
 scripts/
 ├── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
-└── inline-deck.mjs           # Bundles a built deck into a single self-contained HTML file
+├── inline-deck.mjs           # Bundles a built deck into a single self-contained HTML file
+└── copy-share.mjs            # Postbuild: mirrors share/ → dist/share/ so deliverables ship at /share/*
 
 docs/
 ├── PRD.md                    # Product requirements
@@ -122,8 +123,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 - **Presentation decks ship at `/presentations/[slug]/`.** One `.astro` file per deck under `src/pages/presentations/`, using the `Presentation.astro` layout (full-bleed, no site chrome). Inline `<style>` blocks need `is:global`; inline `<script>` blocks need `is:inline`, so Astro doesn't scope-rewrite or bundle deck-internal CSS/JS. Per-deck assets go in `public/presentations/[slug]/assets/` and are referenced with absolute paths.
 - **Deck scaling is letterboxed.** The `<deck-stage>` web component renders slides at their authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` so the canvas always fits the viewport with bars on the short axis — never clips. Don't size slide content in `vh`/`vw` or assume the viewport equals the design canvas.
-- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` produces `<slug>-standalone.html` at the repo root with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network. (The script still writes to the repo root for now — eventual move target is `share/`, see the share/ convention below.)
-- **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — visual explainers, one-pagers, exported reports, ad-hoc decks generated outside the deck pipeline — is written to `share/` at the repo root. Once this repo becomes the live site, those files are already at sensible static URLs and need no migration. Use `share/` rather than the repo root or ad-hoc paths so the convention stays clean.
+- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` writes `share/<slug>-standalone.html` with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network. The output lands in `share/` so it's also served at `/share/<slug>-standalone.html` on the live site (see the share/ deploy mirror, below).
+- **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — visual explainers, one-pagers, exported reports, ad-hoc decks generated outside the deck pipeline — goes in `share/` at the repo root. The build copies `share/*` into `dist/share/` (via `scripts/copy-share.mjs` chained to `astro build`), so every file is reachable at `/share/<filename>` once deployed. `.gitignore` only ignores root-level `*-standalone.html`; files under `share/` are tracked deliverables and ship with the site.
 - **Bright Centella palettes on light grounds (client deliverables).** When applying Centella's color system to *light* paper grounds, every saturated bright (`--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech`) fails AA body-text contrast on the corresponding light variant. Brights earn their keep as fills with dark text inside (6.2–7.8:1, family-dark on family-bright is always AAA), as decorative non-text glyphs, or as the *background* of a colored highlight wrapping a dark-text accent word (`background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`). For accent text at 18pt+ that needs more pop than family-dark, derive a deepened-but-on-brand variant in the same hue (e.g. tech `#A52B7D`, global `#8A4F00`) — both reach 5.5:1+ on light grounds. Worked example: `work/prime-movers-20th/mockups/`. Holding this rule lets a brochure look bright and cheery while clearing AAA on body copy.
 
 ## Commands
@@ -132,11 +133,19 @@ Use **Node 20** (see `.nvmrc`). With nvm: `nvm use` in the repo root, then:
 
 ```bash
 npm run dev          # Astro dev server (fetches from Notion on each page load)
-npm run build        # Production build (fetches all Notion data, generates static site)
+npm run build        # Production build: astro build, then mirror share/ → dist/share/
 npm run preview      # Preview production build locally
 npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p/720p MP4s (needs ffmpeg + cwebp)
-npm run deck:standalone -- <slug>           # Build site, then emit <slug>-standalone.html (self-contained, all fonts/images inlined)
+npm run deck:standalone -- <slug>           # Build site, then emit share/<slug>-standalone.html (self-contained, all fonts/images inlined)
 ```
+
+## Deploy
+
+- **Hosted on Vercel.** GitHub repo `pablodefendini/centella-global` is connected to a Vercel project. Pushes to `main` deploy to production; PRs get preview URLs.
+- **Build command:** `npm run build` — runs `astro build` (which fetches Notion data and emits `dist/`), then `scripts/copy-share.mjs` mirrors `share/` into `dist/share/`. Vercel serves `dist/` as the static root.
+- **API function:** `api/subscribe.ts` is auto-detected by Vercel's filesystem convention (any `api/*.ts` at the repo root becomes a serverless function), so the Mailchimp endpoint deploys without explicit Astro adapter wiring.
+- **Env vars** live in Vercel project settings (Notion + Mailchimp keys from `.env.example`). They are not committed.
+- **Preview URL** while we're pre-domain: `centella-global-<hash>.vercel.app` (or whatever the project name resolves to). Public, intentionally — anyone with the link can view. We can attach a custom domain later without changing anything in this repo.
 
 ## Development diary
 
