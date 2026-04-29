@@ -137,6 +137,7 @@ npm run build        # Production build: astro build, then mirror share/ → dis
 npm run preview      # Preview production build locally
 npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p/720p MP4s (needs ffmpeg + cwebp)
 npm run deck:standalone -- <slug>           # Build site, then emit share/<slug>-standalone.html (self-contained, all fonts/images inlined)
+npm run prime-movers:build                  # Copy work/prime-movers-20th/mockups/ → share/prime-movers-20th/ (deploys at /share/prime-movers-20th/index.html)
 ```
 
 ## Deploy

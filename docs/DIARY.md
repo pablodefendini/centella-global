@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 17 — April 29, 2026: Prime Movers brochure on a URL
+
+Now that `share/` is wired into the deploy, the obvious next move was to put the Prime Movers brochure mockups behind a URL too. Same pain point as Entry 16: every time I want to walk Swanee or Val through the four directions, I'm either zipping `work/prime-movers-20th/mockups/` or AirDropping it. The mockups are already fully self-contained — Hunt logo inlined as a data URI, fonts pulled from Google Fonts CDN, no relative asset paths — so "build" is a misnomer. It's a copy.
+
+Added `scripts/build-prime-movers.mjs` and an `npm run prime-movers:build` script. It wipes `share/prime-movers-20th/` and copies the four option files plus `index.html` over from `work/prime-movers-20th/mockups/`. Source of truth stays in `work/` where the editing happens; `share/` is the derived publish copy. `scripts/copy-share.mjs` already mirrors `share/` into `dist/share/` during the main build, so the next push lands the brochure at `/share/prime-movers-20th/index.html` with no further plumbing.
+
+I considered wiring `prime-movers:build` into `npm run build` directly — same as `copy-share.mjs` is — but held off. The deck pipeline doesn't auto-rebuild standalone exports either; you run `deck:standalone` explicitly when you want a fresh export. The brochure is the same kind of artifact: edits happen in bursts, and re-running the copy on every site build would just churn `share/` for no reason. If the brochure stabilizes and we stop touching it, we can promote the copy step into the main build later — but the current cost of typing `npm run prime-movers:build` after edits is zero.
+
+The wider pattern emerging: `share/` is becoming the answer to "how do I send someone a thing?" for any artifact in this repo. Decks, brochures, future visual explainers and one-pagers — all the same shape. Build to `share/<slug>/`, push, share the URL.
+
+---
+
 ## Entry 16 — April 29, 2026: shipping a real deploy, even if the site isn't ready
 
 The site has been a build-and-ignore exercise for a while — `npm run build` produces a `dist/`, `dist/` sits on my laptop, and nothing on the internet knows it exists. That's been fine while I'm iterating on the homepage and the styleguide and the Barcelona deck, but it's started to bite. Every time I want to share a piece of the work — a deck, a one-pager, the Prime Movers brochure mockups — I'm back to zipping HTML files for Slack or AirDropping them around. The site exists, just not anywhere I can point people to.
