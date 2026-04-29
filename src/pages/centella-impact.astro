@@ -1,20 +1,314 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+
+const problems = [
+  {
+    icon: 'tools',
+    title: 'Infrastructure Gaps',
+  },
+  {
+    icon: 'globe',
+    title: 'Lack of Localization',
+  },
+  {
+    icon: 'agenda',
+    title: 'US-Centric Tools',
+  },
+  {
+    icon: 'idea-search',
+    title: 'Disinformation Gap',
+  },
+] as const;
+
+const solutions = [
+  {
+    icon: 'rocket',
+    title: 'Accelerator Support',
+  },
+  {
+    icon: 'growth',
+    title: 'Mentorship',
+  },
+  {
+    icon: 'navigate',
+    title: 'Technical Advisory',
+  },
+] as const;
 ---
 
 <Base
   title="Centella Impact"
-  description="We fuel and advise next-generation civic tech created in the Global South, where scarce resources can go further."
+  description="Investing in and helping scale startups tackling democracy's biggest challenges."
   pageAccent="var(--investment)"
   pageLogo="/centella-impact-logo.svg"
   pageLogoWidth={3943}
 >
-  <section class="section">
-    <div class="container page-simple">
-      <h1 class="page-heading">Investing in tech</h1>
-      <p class="page-copy">
-        We fuel and advise next-generation civic tech created in the Global South, where scarce resources can go further.
+  <!-- ── Hero / page title ──────────────────────────── -->
+  <section class="section impact-hero" aria-labelledby="impact-hero-heading">
+    <div class="container">
+      <h1 id="impact-hero-heading" class="display impact-hero__title">
+        Investing in and helping scale startups tackling{' '}
+        <span class="display__accent display__accent--lime-teal">democracy's biggest challenges</span>.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ── Problems (problem framing + 4 panels) ──────── -->
+  <section class="section impact-problems" aria-labelledby="impact-problems-heading">
+    <div class="container impact-section-intro">
+      <h2 id="impact-problems-heading" class="impact-section-title">
+        Political technology is not global enough.
+      </h2>
+      <p class="lede impact-section-lede">
+        Based on our collective experience, we've identified some core issues in advocacy
+        technology that need addressing:
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="impact-panels impact-panels--four" role="list">
+        {problems.map((p) => (
+          <article class="impact-panel tone-surface" role="listitem">
+            <div class="impact-panel__frame">
+              <span class="impact-panel__icon-wrap" aria-hidden="true">
+                <Icon name={p.icon} size={32} class="impact-panel__icon" />
+              </span>
+              <p class="impact-panel__title">{p.title}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Aspirational beat ──────────────────────────── -->
+  <section class="impact-beat" aria-label="A note from Centella Impact">
+    <div class="container">
+      <p class="display impact-beat__line">
+        We can do better.{' '}
+        <span class="display__accent display__accent--lime-teal">We can build better.</span>
       </p>
     </div>
   </section>
+
+  <!-- ── Solutions (Centella Impact Investment Fund) ── -->
+  <section class="section impact-solutions" aria-labelledby="impact-solutions-heading">
+    <div class="container impact-section-intro">
+      <h2 id="impact-solutions-heading" class="impact-section-title">
+        The Centella Impact Investment Fund.
+      </h2>
+      <p class="lede impact-section-lede">
+        At Centella Impact, we identify promising startups, manage investment, and
+        monitor progress on progressive political tools and services.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="impact-panels impact-panels--three" role="list">
+        {solutions.map((s) => (
+          <article class="impact-panel tone-surface" role="listitem">
+            <div class="impact-panel__frame">
+              <span class="impact-panel__icon-wrap" aria-hidden="true">
+                <Icon name={s.icon} size={32} class="impact-panel__icon" />
+              </span>
+              <p class="impact-panel__title">{s.title}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA / signup ───────────────────────────────── -->
+  <section class="section impact-cta" aria-labelledby="impact-cta-heading">
+    <div class="container">
+      <div class="impact-cta__panel tone-surface">
+        <div class="impact-cta__frame">
+          <h2 id="impact-cta-heading" class="impact-cta__title">
+            Two ways to plug into Centella Impact.
+          </h2>
+          <p class="lede impact-cta__lede">
+            If you're a founder building civic tech for the Global South — or an investor
+            looking to back the founders who are — we'd like to hear from you. Get on our
+            list and we'll be in touch about open calls, partnership pathways, and how the
+            Fund deploys capital.
+          </p>
+          <MailchimpForm tag="impact-inquiry" />
+          <p class="impact-cta__fineprint">
+            Founders &amp; investors welcome. We read every note.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  /* ─────────────────────────────────────────────────────
+     Page-local styles for /centella-impact.
+     Tokens only — no new color, spacing, or radius values.
+     Key color: var(--investment). Tone-coded surfaces stay
+     in the investment family; the principal brand joins via
+     the lime-teal gradient on the hero accent and aspirational
+     beat (investment + advisory, an approved pairing).
+     ───────────────────────────────────────────────────── */
+
+  /* Hero */
+  .impact-hero {
+    padding-top: var(--space-16);
+  }
+
+  .impact-hero__title {
+    color: var(--color-text);
+    max-width: min(100%, 22ch);
+    margin: 0;
+  }
+
+  /* Section heading & intro — shared across problems / solutions */
+  .impact-section-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: min(100%, var(--prose-max-ch));
+    margin-bottom: var(--space-12);
+  }
+
+  .impact-section-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .impact-section-lede {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* Panel grid — investment family tone-surfaces */
+  .impact-panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .impact-panels { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .impact-panels--three { grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .impact-panels--three { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .impact-panels--three { grid-template-columns: repeat(3, 1fr); } }
+
+  .impact-panels--four { grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .impact-panels--four { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .impact-panels--four { grid-template-columns: repeat(4, 1fr); } }
+
+  .impact-panel {
+    border-radius: 8px;             /* medium panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--investment-dark);
+    color: var(--investment);
+  }
+
+  .impact-panel__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    height: 100%;
+  }
+
+  .impact-panel__icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    padding: var(--space-2);
+  }
+
+  .impact-panel__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+  }
+
+  /* Aspirational beat — typographic-only transition between
+     problems and solutions. Hairlines top/bottom mark it as a
+     deliberate breath; no panel, no surface fill. */
+  .impact-beat {
+    padding-block: var(--space-24);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .impact-beat__line {
+    margin: 0;
+    color: var(--color-text);
+    max-width: min(100%, 24ch);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  /* CTA — one large investment panel hosting the form */
+  .impact-cta__panel {
+    border-radius: 16px;            /* large panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--investment-dark);
+    color: var(--investment);
+  }
+
+  .impact-cta__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-12) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 720px) {
+    .impact-cta__frame {
+      padding: var(--space-16) var(--space-12);
+    }
+  }
+
+  .impact-cta__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    max-width: 22ch;
+  }
+
+  .impact-cta__lede {
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: min(100%, var(--prose-max-ch));
+  }
+
+  .impact-cta__fineprint {
+    margin: 0;
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: color-mix(in srgb, var(--investment) 70%, transparent);
+  }
+</style>

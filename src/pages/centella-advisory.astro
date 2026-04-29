@@ -1,20 +1,331 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+
+const challenges = [
+  {
+    icon: 'passive',
+    statement: 'Strategies that are reactive, not transformative.',
+  },
+  {
+    icon: 'pressure',
+    statement: 'Teams overwhelmed by speed, polarization, and tech gaps.',
+  },
+  {
+    icon: 'scalability',
+    statement: 'Great campaigns that fail to scale or sustain impact.',
+  },
+] as const;
+
+const services = [
+  {
+    icon: 'strategy',
+    title: 'Campaign & Movement Strategy Advisory',
+  },
+  {
+    icon: 'power-fist',
+    title: 'Digital Mobilization & Communication Strategy',
+  },
+  {
+    icon: 'solidarity',
+    title: 'Global Solidarity & Coalition Building',
+  },
+  {
+    icon: 'learning',
+    title: 'Impact & Learning Systems Design',
+  },
+  {
+    icon: 'laboratory',
+    title: 'Civic Tech Acceleration & Innovation Lab',
+  },
+  {
+    icon: 'pillar',
+    title: 'Organizational Resilience & Leadership Coaching',
+  },
+  {
+    icon: 'analytics',
+    title: 'Data Strategy & Digital Analytics',
+  },
+] as const;
 ---
 
 <Base
   title="Centella Advisory"
-  description="We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change."
+  description="A flexible advisory model that adapts to where movements actually are."
   pageAccent="var(--advisory)"
   pageLogo="/centella-advisory-logo.svg"
   pageLogoWidth={3943}
 >
-  <section class="section">
-    <div class="container page-simple">
-      <h1 class="page-heading">Advising leaders</h1>
-      <p class="page-copy">
-        We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change.
+  <!-- ── Hero / page title ──────────────────────────── -->
+  <section class="section advisory-hero" aria-labelledby="advisory-hero-heading">
+    <div class="container">
+      <h1 id="advisory-hero-heading" class="display advisory-hero__title">
+        A flexible advisory model that adapts to{' '}
+        <span class="display__accent display__accent--cyan-violet">where movements actually are</span>.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ── Strategies (problem framing + 3 panels) ─────── -->
+  <section class="section advisory-strategies" aria-labelledby="advisory-strategies-heading">
+    <div class="container advisory-section-intro">
+      <h2 id="advisory-strategies-heading" class="advisory-section-title">
+        Strategy meets the streets.
+      </h2>
+      <p class="lede advisory-section-lede">
+        Even with the right values, many organizations can't turn momentum into power.
       </p>
+    </div>
+
+    <div class="container">
+      <div class="advisory-panels" role="list">
+        {challenges.map((c) => (
+          <article class="advisory-panel tone-surface" role="listitem">
+            <div class="advisory-panel__frame">
+              <span class="advisory-panel__icon-wrap" aria-hidden="true">
+                <Icon name={c.icon} size={32} class="advisory-panel__icon" />
+              </span>
+              <p class="advisory-panel__statement">{c.statement}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Core services ──────────────────────────────── -->
+  <section class="section advisory-services" aria-labelledby="advisory-services-heading">
+    <div class="container advisory-section-intro">
+      <h2 id="advisory-services-heading" class="advisory-section-title">Core services</h2>
+      <p class="lede advisory-section-lede">
+        Centella Global Advisory helps support strategies, mobilization, and systems, with a
+        flexible advisory model that adapts to where movements actually are.
+      </p>
+    </div>
+
+    <div class="container">
+      <ul class="advisory-services-list" role="list">
+        {services.map((s) => (
+          <li class="advisory-service">
+            <span class="advisory-service__icon-wrap" aria-hidden="true">
+              <Icon name={s.icon} size={24} class="advisory-service__icon" />
+            </span>
+            <span class="advisory-service__title">{s.title}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── CTA / signup ───────────────────────────────── -->
+  <section class="section advisory-cta" aria-labelledby="advisory-cta-heading">
+    <div class="container">
+      <div class="advisory-cta__panel tone-surface">
+        <div class="advisory-cta__frame">
+          <h2 id="advisory-cta-heading" class="advisory-cta__title">
+            Build with Centella Global Advisory.
+          </h2>
+          <p class="lede advisory-cta__lede">
+            If you're running a campaign, building a coalition, or training the next set
+            of leaders — and you want strategic muscle behind the work — get on our list.
+            We'll be in touch about how we can help you scale it.
+          </p>
+          <MailchimpForm tag="advisory-inquiry" />
+          <p class="advisory-cta__fineprint">
+            One email per inquiry. We read every one.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </Base>
+
+<style>
+  /* ─────────────────────────────────────────────────────
+     Page-local styles for /centella-advisory.
+     Tokens only — no new color, spacing, or radius values.
+     Key color: var(--advisory). All tone-coded surfaces
+     stay inside the advisory family; the principal brand
+     joins via the cyan-violet gradient on the hero accent.
+     ───────────────────────────────────────────────────── */
+
+  /* Hero */
+  .advisory-hero {
+    padding-top: var(--space-16);
+  }
+
+  .advisory-hero__title {
+    color: var(--color-text);
+    max-width: min(100%, 22ch);
+    margin: 0;
+  }
+
+  /* Section heading & intro — shared across strategies / services */
+  .advisory-section-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: min(100%, var(--prose-max-ch));
+    margin-bottom: var(--space-12);
+  }
+
+  .advisory-section-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .advisory-section-lede {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* Strategies — three tone-coded panels (advisory family) */
+  .advisory-panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .advisory-panels { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .advisory-panels { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .advisory-panel {
+    border-radius: 8px;             /* medium panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--advisory-dark);
+    color: var(--advisory);
+  }
+
+  .advisory-panel__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    height: 100%;
+  }
+
+  .advisory-panel__icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    padding: var(--space-2);
+  }
+
+  .advisory-panel__statement {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    max-width: 28ch;
+  }
+
+  /* Services — single-column list with icon-left rows */
+  .advisory-services-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .advisory-service {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .advisory-service__icon-wrap {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 4px;
+    color: var(--advisory);
+    background: color-mix(in srgb, var(--advisory) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--advisory) 30%, transparent);
+  }
+
+  .advisory-service__title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  /* CTA — one large advisory panel hosting the form */
+  .advisory-cta__panel {
+    border-radius: 16px;            /* large panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--advisory-dark);
+    color: var(--advisory);
+  }
+
+  .advisory-cta__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-12) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 720px) {
+    .advisory-cta__frame {
+      padding: var(--space-16) var(--space-12);
+    }
+  }
+
+  .advisory-cta__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    max-width: 22ch;
+  }
+
+  .advisory-cta__lede {
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: min(100%, var(--prose-max-ch));
+  }
+
+  .advisory-cta__fineprint {
+    margin: 0;
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: color-mix(in srgb, var(--advisory) 70%, transparent);
+  }
+</style>
