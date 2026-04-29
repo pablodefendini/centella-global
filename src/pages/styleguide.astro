@@ -399,36 +399,36 @@ const subbrands = [
       </p>
 
       <div class="sg-page-accents">
-        <div class="sg-page-accent" style="--demo-accent: var(--violet-light);">
+        <div class="sg-page-accent" style="--demo-accent: var(--violet-light); --demo-logo: url(/logo-divider.svg);">
           <div class="sg-page-accent-chip"></div>
           <div class="sg-page-accent-meta">
             <span class="sg-page-accent-name">Default · neutral pages</span>
             <code class="sg-code">var(--violet-light)</code>
-            <span class="sg-muted">Home, blog, styleguide</span>
+            <span class="sg-muted">Home, blog, styleguide · /logo-divider.svg</span>
           </div>
         </div>
-        <div class="sg-page-accent" style="--demo-accent: var(--advisory);">
+        <div class="sg-page-accent" style="--demo-accent: var(--advisory); --demo-logo: url(/centella-advisory-logo.svg);">
           <div class="sg-page-accent-chip"></div>
           <div class="sg-page-accent-meta">
             <span class="sg-page-accent-name">Centella Advisory</span>
             <code class="sg-code">var(--advisory)</code>
-            <span class="sg-muted">/centella-advisory/</span>
+            <span class="sg-muted">/centella-advisory/ · /centella-advisory-logo.svg</span>
           </div>
         </div>
-        <div class="sg-page-accent" style="--demo-accent: var(--networking);">
+        <div class="sg-page-accent" style="--demo-accent: var(--networking); --demo-logo: url(/centella-institute-logo.svg);">
           <div class="sg-page-accent-chip"></div>
           <div class="sg-page-accent-meta">
             <span class="sg-page-accent-name">Centella Institute</span>
             <code class="sg-code">var(--networking)</code>
-            <span class="sg-muted">/centella-institute/</span>
+            <span class="sg-muted">/centella-institute/ · /centella-institute-logo.svg</span>
           </div>
         </div>
-        <div class="sg-page-accent" style="--demo-accent: var(--investment);">
+        <div class="sg-page-accent" style="--demo-accent: var(--investment); --demo-logo: url(/centella-impact-logo.svg);">
           <div class="sg-page-accent-chip"></div>
           <div class="sg-page-accent-meta">
             <span class="sg-page-accent-name">Centella Impact</span>
             <code class="sg-code">var(--investment)</code>
-            <span class="sg-muted">/centella-impact/</span>
+            <span class="sg-muted">/centella-impact/ · /centella-impact-logo.svg</span>
           </div>
         </div>
       </div>
@@ -1382,11 +1382,12 @@ import Icon from '../components/Icon.astro';
     background: var(--bg-surface);
   }
   .sg-page-accent-chip {
-    /* Mini logo silhouette in the demo accent — same mask as SiteHeader/SiteFooter
-       so the preview reads as "this is what the chrome will look like". */
+    /* Mini logo silhouette in the demo accent — uses the same lockup
+       the page itself would render via pageLogo, so the preview
+       reads as "this is what the chrome will look like". */
     background-color: var(--demo-accent);
-    -webkit-mask: url(/logo-divider.svg) center / 80% auto no-repeat;
-    mask: url(/logo-divider.svg) center / 80% auto no-repeat;
+    -webkit-mask: var(--demo-logo, url(/logo-divider.svg)) center / 80% auto no-repeat;
+    mask: var(--demo-logo, url(/logo-divider.svg)) center / 80% auto no-repeat;
     border-right: 1px solid var(--color-border);
   }
   .sg-page-accent-meta {

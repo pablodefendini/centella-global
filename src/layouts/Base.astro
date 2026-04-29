@@ -16,6 +16,20 @@ interface Props {
    * `"var(--advisory)"`. Defaults to the principal brand violet.
    */
   pageAccent?: string;
+  /**
+   * Per-page logo override for header & footer. Path to an SVG in
+   * `/public/` (e.g. `/centella-advisory-logo.svg`). All approved
+   * lockups share the canonical 1079-unit height of the main divider,
+   * so the chrome height stays constant — only the visible logo width
+   * changes, derived from `pageLogoWidth`. Defaults to the divider.
+   */
+  pageLogo?: string;
+  /**
+   * viewBox width (in user units) of the SVG passed via `pageLogo`.
+   * Required when `pageLogo` is set. The main divider is `8694`;
+   * sub-brand lockups are `3943`. Height is fixed at 1079 system-wide.
+   */
+  pageLogoWidth?: number;
 }
 
 const {
@@ -24,9 +38,15 @@ const {
   ogImage = '/og-default.png',
   hideChrome = false,
   pageAccent,
+  pageLogo,
+  pageLogoWidth,
 } = Astro.props;
 
-const bodyStyle = pageAccent ? `--page-accent: ${pageAccent};` : undefined;
+const bodyStyleFragments: string[] = [];
+if (pageAccent) bodyStyleFragments.push(`--page-accent: ${pageAccent};`);
+if (pageLogo) bodyStyleFragments.push(`--page-logo: url(${pageLogo});`);
+if (pageLogoWidth) bodyStyleFragments.push(`--page-logo-width: ${pageLogoWidth};`);
+const bodyStyle = bodyStyleFragments.length ? bodyStyleFragments.join(' ') : undefined;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centellaglobal.com');
 ---

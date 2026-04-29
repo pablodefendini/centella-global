@@ -37,15 +37,18 @@ const navLinks = [
   }
 
   .site-footer__logo-divider {
+    /* Mirrors the header lockup behavior — same height regardless of
+       which logo is in use, width derived from --page-logo-width.
+       See SiteHeader for the math. */
     display: block;
-    width: 100vw;
     max-width: none;
     margin-inline: calc(50% - 50vw);
-    aspect-ratio: 8694 / 1079;
+    height: calc(100vw * 1079 / 8694);
+    width: calc(100vw * var(--page-logo-width, 8694) / 8694);
     opacity: 0.9;
     background-color: var(--page-accent);
-    -webkit-mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
-    mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    -webkit-mask: var(--page-logo, url(/logo-divider.svg)) left center / 100% 100% no-repeat;
+    mask: var(--page-logo, url(/logo-divider.svg)) left center / 100% 100% no-repeat;
     transition: background-color var(--transition-base);
   }
 

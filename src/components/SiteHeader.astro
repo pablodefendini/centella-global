@@ -100,14 +100,23 @@ const navLinks = [
   }
 
   .site-header__logo-img {
+    /* Per-page lockup. All approved logos share the canonical 1079-unit
+       height of the main divider, so the chrome height stays constant —
+       100vw × 1079 / 8694, locked to the main logo's height regardless
+       of which lockup is rendered. The visible logo width is derived
+       from --page-logo-width (the SVG's viewBox width):
+         main divider:    8694 → fills viewport (100vw)
+         sub-brand lockups: 3943 → ~45.4vw, sat at viewport's left edge
+       Sub-brand pages set --page-logo + --page-logo-width via Base.astro's
+       pageLogo / pageLogoWidth props. */
     display: block;
-    width: 100vw;
     max-width: none;
     margin-inline: calc(50% - 50vw);
-    aspect-ratio: 8694 / 1079;
+    height: calc(100vw * 1079 / 8694);
+    width: calc(100vw * var(--page-logo-width, 8694) / 8694);
     background-color: var(--page-accent);
-    -webkit-mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
-    mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    -webkit-mask: var(--page-logo, url(/logo-divider.svg)) left center / 100% 100% no-repeat;
+    mask: var(--page-logo, url(/logo-divider.svg)) left center / 100% 100% no-repeat;
     transition: background-color var(--transition-base);
   }
 

@@ -163,8 +163,38 @@ One token per page; no parallel variables to drift. This applies anywhere in the
 **Hard rules:**
 
 - `--page-accent` must always resolve to a brand-palette token (or a derivation of one). Never set it to an arbitrary hex outside the palette.
-- The header and footer logo render via CSS mask of `/logo-divider.svg` with `background-color: var(--page-accent)` — *do not* recolor by re-introducing the legacy `filter: brightness(0) invert(…)` filter; mask is the canonical recolor path.
+- The header and footer logo render via CSS mask of an SVG lockup with `background-color: var(--page-accent)` — *do not* recolor by re-introducing the legacy `filter: brightness(0) invert(…)` filter; mask is the canonical recolor path.
 - Body buttons and inline links continue to use their declared accents (`--networking` for primary CTAs, `--violet` for secondary). Re-keying *those* to `--page-accent` is a per-page decision, not a system default.
+
+### Per-page logo
+
+Sub-brand pages also swap the header/footer lockup via `pageLogo` + `pageLogoWidth` on `Base.astro`. All approved lockups share the canonical **1079-unit height** of the main divider, so the chrome height stays constant across the site — only the visible logo width changes.
+
+| Page                                      | Lockup                          | viewBox W |
+| ----------------------------------------- | ------------------------------- | --------- |
+| Default (home, blog, styleguide, others)  | `/logo-divider.svg`             | `8694`    |
+| Centella Advisory                         | `/centella-advisory-logo.svg`   | `3943`    |
+| Centella Institute                        | `/centella-institute-logo.svg`  | `3943`    |
+| Centella Impact                           | `/centella-impact-logo.svg`     | `3943`    |
+
+```astro
+<Base
+  title="Centella Advisory"
+  pageAccent="var(--advisory)"
+  pageLogo="/centella-advisory-logo.svg"
+  pageLogoWidth={3943}
+>
+  …
+</Base>
+```
+
+`pageLogo` writes `--page-logo: url(<path>)` and `pageLogoWidth` writes `--page-logo-width: <number>` on `<body>`. The chrome consumes both: `height: calc(100vw * 1079 / 8694)` (fixed to the main logo's height); `width: calc(100vw * var(--page-logo-width, 8694) / 8694)`. The full divider fills the viewport at 100vw; the sub-brand lockups land at ~45.4vw, anchored to the viewport's left edge by `margin-inline: calc(50% - 50vw)` and `mask-position: left center`.
+
+**Hard rules:**
+
+- All lockups added to the system must share the 1079-unit height. Otherwise the chrome will jump between pages.
+- Lockups live at `/public/<slug>-logo.svg` and are referenced by absolute path (`/<slug>-logo.svg`).
+- Don't switch the lockup without also switching `pageAccent`. Sub-brand pages key their lockup *and* their tone together.
 
 ---
 
@@ -477,7 +507,7 @@ Primary button hover never changes hue — only elevation and glow.
 - Site-wide header/footer chrome is shared through `SiteHeader` and `SiteFooter` components via `Base.astro`.
 - Header uses a full-bleed logo plus a fixed-position hamburger trigger; menu opens as a right-side overlay.
 - Background uses dark surface treatment with blur (`backdrop-filter: blur(12px)`) on the overlay.
-- Logo is `/logo-divider.svg` rendered as a CSS mask on a `<span>` with `background-color: var(--page-accent)`, so the lockup picks up the per-page key color (default `--violet-light`). Minimum digital size `120px` width. Don't reintroduce the legacy `filter: brightness(0) invert(1)` recolor — mask is the canonical recolor path.
+- Logo is rendered as a CSS mask on a `<span>` with `background-color: var(--page-accent)`, so the lockup picks up the per-page key color (default `--violet-light`). The default mask is `/logo-divider.svg` (the full-bleed wordmark + horizon, viewBox `8694×1079`); sub-brand pages swap to a narrower lockup (`/centella-{advisory|institute|impact}-logo.svg`, viewBox `3943×1079`) via Base's `pageLogo` + `pageLogoWidth` props. All lockups share the canonical 1079-unit height so chrome height stays constant. Minimum digital size `120px` width. Don't reintroduce the legacy `filter: brightness(0) invert(1)` recolor — mask is the canonical recolor path.
 - Hamburger toggle: icon strokes inherit `var(--page-accent)`. Hover/focus fills the button with `--page-accent` and inverts strokes to `--bg-deep`; focus ring is a 2px deep-bg gap + 2px `--page-accent` ring against the page background.
 - Menu links: `--font-semi` 500, `--text-sm`, uppercase, letter-spacing `0.06em`–`0.08em`. Default text uses `var(--page-accent)`; hover/focus uses the inline tint `color-mix(in srgb, var(--page-accent) 80%, white)`.
 - Menu items must wrap (`flex-wrap: wrap`) on all viewports — never collapse to a burger.
