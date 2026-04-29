@@ -19,8 +19,8 @@
       "kind": "Pitch deck",
       "description": "Proposal for a Centella Institute pilot program based in Barcelona — the moment, the convening, the partners, the timeline. Sixteen slides, available in Spanish and English.",
       "artifacts": [
-        { "label": "Deck — Spanish", "href": "ngl-barcelona-standalone.html" },
-        { "label": "Deck — English", "href": "ngl-barcelona-en-standalone.html" }
+        { "label": "Deck — Spanish", "href": "presentations/ngl-barcelona-standalone.html" },
+        { "label": "Deck — English", "href": "presentations/ngl-barcelona-en-standalone.html" }
       ]
     },
     {
@@ -31,7 +31,7 @@
       "kind": "Print brochure mockups",
       "description": "Printed program brochure for the twentieth-anniversary Prime Movers convening, produced by Centella for Hunt Alternatives. Four complete design directions — Contemporary, Spring Bloom, Heritage (WWP 2001), and Hunt Compass — each calibrated to a different register.",
       "artifacts": [
-        { "label": "Compare all four directions", "href": "prime-movers-20th/index.html" }
+        { "label": "Compare all four directions", "href": "work/prime-movers-20th/index.html" }
       ]
     }
   ]

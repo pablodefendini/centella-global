@@ -2,7 +2,7 @@
 
 Static marketing site for [Centella](https://centellaglobal.com), an organization that works with political leaders and movement builders across the Global South. Built with **Astro** (static output, minimal client JavaScript), content managed in **Notion**, email capture via **Mailchimp**, hosted on **Vercel**.
 
-The site covers the homepage, the three foundational pillars (Advisory, Institute, Impact), an events section (upcoming, past, and dynamic event pages), a blog, presentation decks shipped at shareable URLs under `/presentations/`, and a living styleguide. All content — events, blog posts, speakers, attendees, sponsors — is fetched from Notion at build time; nothing is fetched client-side.
+The site covers the homepage, the three foundational pillars (Advisory, Institute, Impact), an events section (upcoming, past, and dynamic event pages), a blog, presentation decks shipped at shareable URLs under `/share/presentations/`, and a living styleguide. All content — events, blog posts, speakers, attendees, sponsors — is fetched from Notion at build time; nothing is fetched client-side.
 
 ## Requirements
 
@@ -71,7 +71,7 @@ Never commit `.env`. It is listed in `.gitignore`.
 
 ## Repo layout (short)
 
-- `src/pages/` — Routes: `/` (homepage), `/centella-advisory`, `/centella-institute`, `/centella-impact`, `/events/` (+ `[slug]`), `/blog/` (+ `[slug]`), `/presentations/` (per-deck pages), `/styleguide`
+- `src/pages/` — Routes: `/` (homepage), `/centella-advisory`, `/centella-institute`, `/centella-impact`, `/events/` (+ `[slug]`), `/blog/` (+ `[slug]`), `/share/presentations/` (per-deck pages), `/styleguide`
 - `src/layouts/` — `Base.astro` (site chrome), `Event.astro` (event page layout), `Presentation.astro` (full-bleed shell for decks)
 - `src/components/` — `SiteHeader`, `SiteFooter`, `MailchimpForm`, `EventCard`, `SpeakerCard`, `AttendeeCard`, `ScheduleBlock`, `SponsorGrid`, `BlogPostCard`, `RandomDisplayAccents`
 - `src/lib/notion.ts` — Notion client and build-time queries (events, blog, speakers, attendees, sponsors)
@@ -79,7 +79,7 @@ Never commit `.env`. It is listed in `.gitignore`.
 - `src/styles/global.css` — Reset, typography, custom properties, utility classes
 - `api/subscribe.ts` — Vercel serverless handler for Mailchimp signups
 - `public/media/hero/` — Optimized homepage hero assets (WebP poster + 540p/720p MP4s)
-- `public/presentations/[slug]/` — Per-deck assets (fonts, images) referenced via absolute URLs
+- `public/share/presentations/[slug]/` — Per-deck assets (fonts, images) referenced via absolute URLs
 - `scripts/optimize-hero-media.sh` — ffmpeg + cwebp pipeline for regenerating hero media
 
 ## License

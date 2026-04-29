@@ -39,4 +39,4 @@ yarn-error.log*
 # Standalone HTML exports — tracked only under share/ (deployed to /share/*).
 # Stray copies elsewhere (repo root, work/ client deliverables, etc.) stay ignored.
 *-standalone.html
-!share/*-standalone.html
+!share/**/*-standalone.html

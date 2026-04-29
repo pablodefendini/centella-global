@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Bundles built Astro presentations into self-contained share/<slug>-standalone.html.
+ * Bundles built Astro presentations into self-contained
+ * share/presentations/<slug>-standalone.html.
  *
  * Folds external CSS, woff2 fonts, and raster/SVG images into the HTML as
  * data URIs so the file opens with no network — email attachment, USB,
  * offline laptop. <source>...mp4 tags are stripped (poster carries the cover).
  *
  * Usage:
- *   node scripts/inline-deck.mjs              # bundles every presentation in dist/presentations/
+ *   node scripts/inline-deck.mjs              # bundles every presentation in dist/share/presentations/
  *   node scripts/inline-deck.mjs <slug>       # bundles just that presentation
  *
  * Expects `astro build` to have run first (the `decks:standalone` npm
@@ -17,12 +18,12 @@ import { readFileSync, writeFileSync, statSync, mkdirSync, readdirSync, existsSy
 import { resolve, join } from 'node:path';
 
 const distDir = resolve('dist');
-const presentationsDir = resolve(distDir, 'presentations');
-const shareDir = resolve('share');
-mkdirSync(shareDir, { recursive: true });
+const presentationsDir = resolve(distDir, 'share', 'presentations');
+const shareOutDir = resolve('share', 'presentations');
+mkdirSync(shareOutDir, { recursive: true });
 
 if (!existsSync(presentationsDir)) {
-  console.error(`[inline-deck] no presentations directory in dist/ — did astro build run?`);
+  console.error(`[inline-deck] no dist/share/presentations/ directory — did astro build run?`);
   process.exit(1);
 }
 
@@ -52,7 +53,7 @@ console.log(`[inline-deck] Done. Bundled ${bundled}/${slugs.length} presentation
 
 function bundle(slug) {
   const htmlPath = resolve(presentationsDir, slug, 'index.html');
-  const outPath = resolve(shareDir, `${slug}-standalone.html`);
+  const outPath = resolve(shareOutDir, `${slug}-standalone.html`);
 
   let html = readFileSync(htmlPath, 'utf8');
 
@@ -62,7 +63,7 @@ function bundle(slug) {
   const cssPath = resolve(distDir, cssHref.replace(/^\//, ''));
   let css = readFileSync(cssPath, 'utf8');
 
-  const fontUrlRe = /url\(\/presentations\/[^)"']+\.woff2\)/g;
+  const fontUrlRe = /url\(\/share\/presentations\/[^)"']+\.woff2\)/g;
   const fontUrls = [...new Set(css.match(fontUrlRe) || [])];
   let inlinedBytes = 0;
   for (const u of fontUrls) {
@@ -96,7 +97,7 @@ function bundle(slug) {
   writeFileSync(outPath, html);
   const outBytes = statSync(outPath).size;
   const fmt = (n) => (n / 1024 / 1024).toFixed(2) + ' MB';
-  console.log(`[inline-deck] ${slug}: wrote share/${slug}-standalone.html`);
+  console.log(`[inline-deck] ${slug}: wrote share/presentations/${slug}-standalone.html`);
   console.log(`[inline-deck]   Inlined ${fontUrls.length} fonts (${fmt(inlinedBytes)} raw)`);
   console.log(`[inline-deck]   Output size: ${fmt(outBytes)}`);
 }

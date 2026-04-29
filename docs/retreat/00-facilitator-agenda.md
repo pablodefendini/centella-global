@@ -140,12 +140,12 @@ This is what makes Centella's repo unusual. Most websites are just websites. Our
 | `work/` | Per-project working folders — briefs, drafts, notes, mockups. Not deployed. Currently has `prime-movers-20th/` for Hunt Alternatives. |
 | `work/<project>/mockups/` | The shareable subset — what gets published. Self-contained HTML files. |
 | `share/` | The publish tray. Anything here ships at `centella-global.vercel.app/share/<filename>`. |
-| `src/pages/presentations/[slug].astro` | First-class Astro decks (NGL Barcelona). These ship at `/presentations/<slug>/`. |
+| `src/pages/share/presentations/[slug].astro` | First-class Astro decks (NGL Barcelona). These ship at `/share/presentations/<slug>/`. |
 
 Show this concretely:
 
-- Open `share/ngl-barcelona-en-standalone.html` on the live site (`/share/ngl-barcelona-en-standalone.html`) — a single-file deck with everything inlined, perfect for emailing.
-- Open `share/prime-movers-20th/index.html` on the live site — the four-direction comparison page for the brochure.
+- Open `share/presentations/ngl-barcelona-en-standalone.html` on the live site (`/share/presentations/ngl-barcelona-en-standalone.html`) — a single-file deck with everything inlined, perfect for emailing.
+- Open `share/work/prime-movers-20th/index.html` on the live site — the four-direction comparison page for the brochure.
 
 Name the rule out loud: **"if it lands in `share/`, anyone with the URL can see it."** Treat that folder accordingly. The flip side: dropping a file into `share/` is the fastest way to get a sharable URL for a client.
 
@@ -195,7 +195,7 @@ Name the trade-off: every publish triggers a full rebuild. That's by design (fas
 
 - **Can't change site navigation** — that's in code (`SiteHeader.astro`). File a request.
 - **Can't add new sections to the homepage** — same.
-- **Can't change the URL structure** — slugs change page URLs, but `/events/`, `/blog/`, `/presentations/` are fixed.
+- **Can't change the URL structure** — slugs change page URLs, but `/events/`, `/blog/`, `/share/presentations/` are fixed.
 - **Can't add a new database type** — if we need a new entity (e.g. "Partners"), engineering has to wire it up.
 
 Frame these not as restrictions but as guard-rails — they're what makes the system reliable.
@@ -210,8 +210,8 @@ This is the part that's hardest to teach without a real example, so we use NGL B
 
 ### 5a. Two kinds of decks (5 min)
 
-- **First-class decks** live at `src/pages/presentations/[slug].astro`. They get a URL on the site (`/presentations/<slug>/`) AND can be exported as a single-file standalone (`/share/<slug>-standalone.html`). NGL Barcelona is the model.
-- **Client mockups** live in `work/<project>/mockups/`. They're already self-contained HTML; `npm run work:build` copies them into `share/<project>/`. The Prime Movers brochure is the model.
+- **First-class decks** live at `src/pages/share/presentations/[slug].astro`. They get a URL on the site (`/share/presentations/<slug>/`) AND can be exported as a single-file standalone (`/share/presentations/<slug>-standalone.html`). NGL Barcelona is the model.
+- **Client mockups** live in `work/<project>/mockups/`. They're already self-contained HTML; `npm run work:build` copies them into `share/work/<project>/`. The Prime Movers brochure is the model.
 
 Pick the one that fits: if it needs to live as a URL on the site long-term, it's a first-class deck. If it's a one-shot mockup or proposal, it's a `work/` project.
 
@@ -219,11 +219,11 @@ Pick the one that fits: if it needs to live as a URL on the site long-term, it's
 
 Open the Spanish NGL Barcelona deck on screen. Have Claude make a small visible edit live:
 
-> *"Open `src/pages/presentations/ngl-barcelona.astro`. Find the cover slide title and add a subtitle line below it that says 'Versión revisada — abril 2026'. Show me the diff before saving."*
+> *"Open `src/pages/share/presentations/ngl-barcelona.astro`. Find the cover slide title and add a subtitle line below it that says 'Versión revisada — abril 2026'. Show me the diff before saving."*
 
 Claude reads the file, locates the cover, proposes the edit. Approve it. Then:
 
-> *"Run `npm run dev` in the background and tell me when the deck preview is ready. I want to see it at /presentations/ngl-barcelona/."*
+> *"Run `npm run dev` in the background and tell me when the deck preview is ready. I want to see it at /share/presentations/ngl-barcelona/."*
 
 Show the preview live. Walk through how the deck-stage web component letterboxes the canvas — resize the browser window so the bars on the short axis are visible. This is a reassuring demo: *the deck never clips, no matter the screen.*
 
@@ -231,13 +231,13 @@ Show the preview live. Walk through how the deck-stage web component letterboxes
 
 > *"Bundle the English NGL Barcelona deck as a standalone HTML file. Run `npm run deck:standalone -- ngl-barcelona-en`."*
 
-Claude runs the command. Result lands at `share/ngl-barcelona-en-standalone.html`. Open it in the browser by double-clicking — proves it works without any server.
+Claude runs the command. Result lands at `share/presentations/ngl-barcelona-en-standalone.html`. Open it in the browser by double-clicking — proves it works without any server.
 
 Then:
 
 > *"Commit the regenerated standalone with the message 'rebuild ngl-barcelona-en standalone' and push to main."*
 
-Claude commits and pushes. Vercel builds. After 90 seconds, the new file is live at `centella-global.vercel.app/share/ngl-barcelona-en-standalone.html`.
+Claude commits and pushes. Vercel builds. After 90 seconds, the new file is live at `centella-global.vercel.app/share/presentations/ngl-barcelona-en-standalone.html`.
 
 That's the whole client-deck loop. End to end. No CLI typed by anyone in the room except Claude.
 

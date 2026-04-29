@@ -200,17 +200,17 @@ This is where Cowork really shines. Decks live in code, but **you don't have to 
 
 ### 4.1 Two kinds of decks
 
-- **First-class decks** — `src/pages/presentations/[slug].astro`. These get a proper URL on the site (`/presentations/<slug>/`). NGL Barcelona is the example. Use this when the deck has a real audience and a real life.
+- **First-class decks** — `src/pages/share/presentations/[slug].astro`. These get a proper URL on the site (`/share/presentations/<slug>/`). NGL Barcelona is the example. Use this when the deck has a real audience and a real life.
 - **Client mockups** — `work/<project>/mockups/<file>.html`. Self-contained HTML, no Astro. Easier to drop in, faster to iterate. The Prime Movers brochure is the example. Use this for proposals, comp options, anything you'll throw away or replace.
 
-If you're unsure which kind to make, ask Claude: *I want to build a [type of deck]. Should this be a first-class presentation in `src/pages/presentations/` or a mockup in `work/`?*
+If you're unsure which kind to make, ask Claude: *I want to build a [type of deck]. Should this be a first-class presentation in `src/pages/share/presentations/` or a mockup in `work/`?*
 
 ### 4.2 Editing a deck (live demo follow-along)
 
 We'll be editing the NGL Barcelona deck together.
 
 - [ ] In Cowork, ask:
-  > *Open `src/pages/presentations/ngl-barcelona.astro`. Find the cover slide. Show me the cover slide markup so I can see what's there.*
+  > *Open `src/pages/share/presentations/ngl-barcelona.astro`. Find the cover slide. Show me the cover slide markup so I can see what's there.*
 
 - [ ] Read what Claude shows you. Notice it's HTML — slide titles, subtitles, etc.
 - [ ] Now ask:
@@ -220,7 +220,7 @@ We'll be editing the NGL Barcelona deck together.
 - [ ] Ask:
   > *Start the dev server with `npm run dev` in the background. When it's running, tell me the URL where I can preview the deck.*
 
-- [ ] Claude will give you a URL like `http://localhost:4321/presentations/ngl-barcelona/`. Open it in your browser. The deck loads. Resize your window — notice it letterboxes (bars on the short axis) instead of clipping. ✅
+- [ ] Claude will give you a URL like `http://localhost:4321/share/presentations/ngl-barcelona/`. Open it in your browser. The deck loads. Resize your window — notice it letterboxes (bars on the short axis) instead of clipping. ✅
 
 ### 4.3 Publishing a standalone (the part clients actually receive)
 
@@ -230,7 +230,7 @@ Decks on the website are great for sharing a link. But sometimes you need to ema
   > *Bundle the English NGL Barcelona deck into a standalone HTML file. Use `npm run deck:standalone -- ngl-barcelona-en`.*
 
 - [ ] Claude runs the command. It builds the site, then bundles the deck.
-- [ ] Claude reports the output file: `share/ngl-barcelona-en-standalone.html`.
+- [ ] Claude reports the output file: `share/presentations/ngl-barcelona-en-standalone.html`.
 - [ ] In Finder/Explorer, double-click that file. It opens in your browser. No internet needed. ✅
 
 ### 4.4 Pushing the standalone live
@@ -239,7 +239,7 @@ Decks on the website are great for sharing a link. But sometimes you need to ema
   > *Commit the regenerated standalone with the message "rebuild ngl-barcelona-en standalone" and push to main.*
 
 - [ ] Claude commits and pushes. Watch Slack for the Vercel deploy notification.
-- [ ] After ~90 seconds, open `centella-global.vercel.app/share/ngl-barcelona-en-standalone.html`. There it is. Public URL, ready to share.
+- [ ] After ~90 seconds, open `centella-global.vercel.app/share/presentations/ngl-barcelona-en-standalone.html`. There it is. Public URL, ready to share.
 
 ### 4.5 Working with `work/` mockups
 
