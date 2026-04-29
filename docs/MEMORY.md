@@ -6,6 +6,72 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Print CSS pattern for client mockup deliverables
+
+The four Prime Movers mockups printed to PDF with transparent backgrounds. Two underlying causes — both inherent to how browsers handle print, both worth fixing once and standardizing.
+
+**Cause 1: dark viewing scaffold leaks through.** The mockups have `html, body { background: #1a1a1c }` so the spreads sit on a dark matte for screen review. The existing print stylesheet only zeroed `body`, not `html`, and some browsers fill from the `html` element — leaving the matte color (or transparency, depending on viewer) behind the printed pages. Fix: explicitly `html, body { background: white !important }` inside `@media print`. The `!important` is needed because the screen rule uses a compound selector (`html, body { ... }`) that has higher specificity than a single-element selector.
+
+**Cause 2: browsers strip background colors in print by default.** The "save the user's ink" assumption — backgrounds and decorative fills are removed unless explicitly opted in. For a brochure mockup whose identity *is* the paper color (cream, violet-light, soft pink), this turns the artifact into a wireframe. Fix: `print-color-adjust: exact` (and the `-webkit-` prefix for older Safari) on `*` so every element honors its declared backgrounds.
+
+**The pattern, for any future print-targeted client work:**
+
+```css
+@media print {
+  html, body { background: white !important; padding: 0; margin: 0;
+               -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .doc-header, .spread-label, .legend { display: none; }   /* hide review chrome */
+  .spread { box-shadow: none; margin: 0; page-break-after: always; }
+}
+```
+
+Substitute `.spread` with whatever the printable element is (Option C uses `.h-page`).
+
+**Why `*` is safe.** Could have been surgical — only the spreads and their colored panels — but in these mockups the colored fills are everywhere (accent words wrapped in `box-decoration-break: clone`, callout backgrounds, panel fills, practical-info boxes). The blanket `*` rule has no downside because the dark scaffold is killed explicitly by `html, body { background: white }`. Nothing's left that we'd want stripped.
+
+**The viewing scaffold convention itself.** Mockup files use a dark `html, body` background as the matte the spreads sit on for screen review. It's review chrome, not part of the artifact. Always pair it with a print stylesheet that flips it to white — never assume the user only views these on screen.
+
+---
+
+## 2026-04-29 — First-deploy gotchas: Vercel adapter + root `api/` + dual output dirs
+
+The first live deploy at `centella-global.vercel.app` surfaced two bugs that aren't visible in local builds. Recording them so they don't bite again.
+
+**Bug 1: `/api/subscribe` returns `FUNCTION_INVOCATION_FAILED` at runtime.** The function deployed (Vercel's filesystem auto-detection still picks up `api/*.ts` even when `@astrojs/vercel` is writing a Build Output API v3 bundle for everything else), but it crashed on every invocation with no useful error from `curl`. Root cause: `api/subscribe.ts` imported `from '../src/lib/mailchimp'`. When the Astro adapter owns `.vercel/output/`, Vercel's `@vercel/node` builder picks up the root `api/` folder as a *separate* deployment unit and does not always bundle imports outside that folder. The function file itself ends up on Vercel's runtime, but the imported module is missing from the bundle, and any reference to it throws at startup.
+
+**Fix:** inlined the Mailchimp helper into `api/subscribe.ts`. The function bundle is now self-contained — the only external dependency is `node:crypto` (stdlib) and `@vercel/node` types (which are stripped at compile time). `src/lib/mailchimp.ts` was deleted as dead code; if a second consumer ever appears (e.g. a blog newsletter endpoint), re-extract from the inline copy.
+
+**Lesson, written into CLAUDE.md "Things to avoid":** API functions in the root `api/` folder must not import from `src/`. Either inline the helper or put it under `api/_lib/` (which the `@vercel/node` builder does include in the function bundle). Keep the function file self-contained.
+
+**Bug 2: `/share/*` returns 404 on every URL.** All the `share/*` paths I asked Pablo to smoke-test 404'd — including the Barcelona standalone deck, the homepage of which was supposed to be the proof point of the share/ wiring. Root cause: `scripts/copy-share.mjs` wrote to `dist/share/` only, but with `@astrojs/vercel` as the active adapter, Vercel doesn't serve `dist/` — it serves `.vercel/output/static/` (the adapter's Build Output API destination). The Astro build copies most things from `dist/` into `.vercel/output/static/` automatically, but anything written to `dist/` *after* `astro build` finishes (i.e. our postbuild step) doesn't get carried across.
+
+**Fix:** `copy-share.mjs` now writes into *both* `dist/share/` and `.vercel/output/static/share/`. The dual-target keeps `astro preview` working (reads `dist/`) while the Vercel deploy bundle gets the files where it actually serves them from.
+
+**Lesson, written into CLAUDE.md "Things to avoid":** any postbuild that adds files to the deploy bundle must mirror into both `dist/` (for `astro preview`) and `.vercel/output/static/` (for Vercel deploy). The Astro adapter doesn't carry late-arriving `dist/` content over.
+
+**Why this didn't surface locally:** `npm run build` produces both directories, and the postbuild was writing to `dist/` correctly, so a local `astro preview` happily served `/share/*`. The disconnect only shows up in the Vercel runtime, where `.vercel/output/static/` is the served root.
+
+---
+
+## 2026-04-29 — All work projects and all presentations export into `share/`
+
+Generalized the share/ pipeline so every client project under `work/` and every presentation under `src/pages/presentations/` lands at a `/share/...` URL with one command.
+
+**`scripts/build-work.mjs`** (npm: `work:build`) walks `work/*/`, finds any project with a `mockups/` subdirectory, and copies the contents to `share/<project>/`. Wipes the destination first so deletions propagate. Skips projects that don't have `mockups/`.
+
+**`scripts/inline-deck.mjs`** now iterates over `dist/presentations/*/` when invoked with no `<slug>` argument, bundling every presentation into a `share/<slug>-standalone.html` in one pass. The single-slug invocation still works (`npm run deck:standalone -- <slug>`).
+
+**`npm run share:build`** chains `astro build` → all decks → all work projects. This is the canonical "regenerate everything in share/ from current sources" call, run before committing share/ updates.
+
+**The `mockups/` convention.** A `work/<project>/` directory holds the whole project (briefs, README, source PSDs, internal notes); `mockups/` is the explicit shareable subset. Files outside `mockups/` are not exposed to `share/`. New client projects need only drop their shareable HTML into `work/<project>/mockups/` for `work:build` to pick them up.
+
+**Why bundles are NOT auto-rebuilt on Vercel.** `npm run build` still only does `astro build && copy-share.mjs` — standalones are local-built, committed, and copied verbatim into `dist/share/` during deploy. Re-bundling on CI would mean a deck shared on date X by email could differ from the deployed version on the same date even if the source hadn't changed. Canonicality > one-step deploy. The trade is one extra command (`share:build`) before commit.
+
+**Files touched today:** added `scripts/build-work.mjs`; rewrote `scripts/inline-deck.mjs` to iterate; added `work:build`, `decks:standalone`, `share:build` npm scripts; kept `deck:standalone` as a single-slug alias.
+
+---
+
 ## 2026-04-29 — Vercel deploy goes live; `share/` mirrored to `/share/*`
 
 Wired the project up for actual deployment instead of treating it as a build-and-ignore exercise. Three things landed together:

@@ -12,8 +12,10 @@
     "preview": "astro preview",
     "astro": "astro",
     "media:hero": "bash scripts/optimize-hero-media.sh",
+    "decks:standalone": "astro build && node scripts/inline-deck.mjs",
     "deck:standalone": "astro build && node scripts/inline-deck.mjs",
-    "prime-movers:build": "node scripts/build-prime-movers.mjs"
+    "work:build": "node scripts/build-work.mjs",
+    "share:build": "astro build && node scripts/inline-deck.mjs && node scripts/build-work.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",

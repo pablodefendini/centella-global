@@ -55,7 +55,6 @@ src/
 │       └── [slug].astro      # Standalone HTML decks (e.g. ngl-barcelona)
 ├── lib/
 │   ├── notion.ts             # Notion client + all query functions
-│   ├── mailchimp.ts          # Mailchimp API helper
 │   └── types.ts              # Shared TypeScript types
 └── styles/
     └── global.css            # Reset, typography, custom properties
@@ -75,8 +74,9 @@ share/                        # Standalone HTML outputs meant to be opened in a 
 
 scripts/
 ├── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
-├── inline-deck.mjs           # Bundles a built deck into a single self-contained HTML file
-└── copy-share.mjs            # Postbuild: mirrors share/ → dist/share/ so deliverables ship at /share/*
+├── inline-deck.mjs           # Bundles built decks into self-contained share/<slug>-standalone.html (all decks by default; pass <slug> for one)
+├── build-work.mjs            # Walks work/<project>/mockups/ and copies each into share/<project>/
+└── copy-share.mjs            # Postbuild: mirrors share/ into dist/share/ AND .vercel/output/static/share/ so deliverables ship at /share/*
 
 docs/
 ├── PRD.md                    # Product requirements
@@ -108,6 +108,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Don't use heavy JS frameworks for components.** Astro components are zero-JS by default. Only use `client:load` or `client:visible` directives when a component genuinely needs interactivity (the Mailchimp form is the main case).
 - **Don't assume Notion page body structure.** The block renderer should handle any block type gracefully — headings, paragraphs, lists, images, toggles, callouts. If it encounters an unknown block type, render nothing rather than crashing.
 - **Don't add chrome to presentation decks.** Decks live at `src/pages/presentations/[slug].astro` and use `src/layouts/Presentation.astro` — a minimal full-bleed shell with no `SiteHeader`/`SiteFooter`. Deck assets (fonts, images) go in `public/presentations/[slug]/assets/` and are referenced with absolute paths. Inline `<style>` and `<script>` blocks inside a deck must use `is:global` / `is:inline` so Astro doesn't scope or hoist them.
+- **Don't import from `src/` inside `api/*.ts`.** When `@astrojs/vercel` writes a Build Output API v3 bundle, Vercel's `@vercel/node` builder picks up the root-level `api/` folder *separately* and does not always bundle imports outside `api/`. Cross-directory imports like `import { x } from '../src/lib/y'` deploy successfully but throw `FUNCTION_INVOCATION_FAILED` at runtime. Keep API function bundles self-contained — inline the helper code into the function file, or duplicate it under `api/_lib/`. Single source of truth lives wherever the original consumer is.
+- **Don't put deploy-target output in `dist/share/` only.** When the Vercel adapter is the active output target, Vercel serves `.vercel/output/static/`, not `dist/`. The `copy-share.mjs` postbuild writes to both so the same code path works for `astro preview` (reads `dist/`) and Vercel deploy (reads `.vercel/output/static/`). If you add a new postbuild step that emits files into the deploy bundle, mirror it into both targets.
 
 ## Patterns
 
@@ -123,8 +125,10 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 - **Presentation decks ship at `/presentations/[slug]/`.** One `.astro` file per deck under `src/pages/presentations/`, using the `Presentation.astro` layout (full-bleed, no site chrome). Inline `<style>` blocks need `is:global`; inline `<script>` blocks need `is:inline`, so Astro doesn't scope-rewrite or bundle deck-internal CSS/JS. Per-deck assets go in `public/presentations/[slug]/assets/` and are referenced with absolute paths.
 - **Deck scaling is letterboxed.** The `<deck-stage>` web component renders slides at their authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` so the canvas always fits the viewport with bars on the short axis — never clips. Don't size slide content in `vh`/`vw` or assume the viewport equals the design canvas.
-- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` writes `share/<slug>-standalone.html` with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network. The output lands in `share/` so it's also served at `/share/<slug>-standalone.html` on the live site (see the share/ deploy mirror, below).
-- **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — visual explainers, one-pagers, exported reports, ad-hoc decks generated outside the deck pipeline — goes in `share/` at the repo root. The build copies `share/*` into `dist/share/` (via `scripts/copy-share.mjs` chained to `astro build`), so every file is reachable at `/share/<filename>` once deployed. `.gitignore` only ignores root-level `*-standalone.html`; files under `share/` are tracked deliverables and ship with the site.
+- **Standalone deck export.** `scripts/inline-deck.mjs` walks `dist/presentations/*/` and emits `share/<slug>-standalone.html` for each one — all fonts (base64 woff2), images (data URIs), and CSS folded into the single file; MP4 `<source>` tags are stripped (poster carries the cover). Run `npm run decks:standalone` (no arg) to bundle every presentation, or `npm run deck:standalone -- <slug>` for one. Use the standalones for email attachments or USB hand-offs; they open in any modern browser with no network. Each one is also served at `/share/<slug>-standalone.html` on the live site.
+- **Work projects export.** `scripts/build-work.mjs` walks `work/*/mockups/` and copies each project's `mockups/` directory verbatim into `share/<project>/`. The mockups are expected to already be self-contained (data-URI images, CDN-loaded fonts) — the script doesn't bundle anything, it's a publish-tray copy. Run `npm run work:build` after editing any project's mockups; deploys at `/share/<project>/index.html`. The `mockups/` convention is the explicit "this is what we share" subset of a `work/<project>/` directory — briefs, READMEs, and source files outside that subdirectory stay private.
+- **One-shot share build.** `npm run share:build` chains `astro build` → `inline-deck.mjs` (all presentations) → `build-work.mjs` (all work projects). Use it before committing share/ updates so every standalone artifact is regenerated against current sources in one pass.
+- **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — exported decks, work-project mockups, visual explainers, one-pagers, ad-hoc reports — goes in `share/` at the repo root. The main build (`npm run build`) just copies `share/*` into `dist/share/` (via `scripts/copy-share.mjs`); standalone bundles are NOT regenerated on Vercel. Treating bundles as locally-built, committed deliverables keeps each one canonical (a deck shared on date X is bit-identical to the deployed copy). `.gitignore` only ignores root-level `*-standalone.html`; files under `share/` are tracked.
 - **Bright Centella palettes on light grounds (client deliverables).** When applying Centella's color system to *light* paper grounds, every saturated bright (`--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech`) fails AA body-text contrast on the corresponding light variant. Brights earn their keep as fills with dark text inside (6.2–7.8:1, family-dark on family-bright is always AAA), as decorative non-text glyphs, or as the *background* of a colored highlight wrapping a dark-text accent word (`background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`). For accent text at 18pt+ that needs more pop than family-dark, derive a deepened-but-on-brand variant in the same hue (e.g. tech `#A52B7D`, global `#8A4F00`) — both reach 5.5:1+ on light grounds. Worked example: `work/prime-movers-20th/mockups/`. Holding this rule lets a brochure look bright and cheery while clearing AAA on body copy.
 
 ## Commands
@@ -136,8 +140,10 @@ npm run dev          # Astro dev server (fetches from Notion on each page load)
 npm run build        # Production build: astro build, then mirror share/ → dist/share/
 npm run preview      # Preview production build locally
 npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p/720p MP4s (needs ffmpeg + cwebp)
-npm run deck:standalone -- <slug>           # Build site, then emit share/<slug>-standalone.html (self-contained, all fonts/images inlined)
-npm run prime-movers:build                  # Copy work/prime-movers-20th/mockups/ → share/prime-movers-20th/ (deploys at /share/prime-movers-20th/index.html)
+npm run decks:standalone                    # Build site, then emit share/<slug>-standalone.html for every presentation (no arg = all; pass <slug> for one)
+npm run deck:standalone -- <slug>           # Alias of the above for one specific presentation
+npm run work:build                          # Copy every work/<project>/mockups/ → share/<project>/ (deploys at /share/<project>/index.html)
+npm run share:build                         # One-shot: astro build, then bundle all decks AND all work projects into share/
 ```
 
 ## Deploy

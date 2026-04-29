@@ -498,7 +498,8 @@
   .practical-row .p-value strong { font-weight: 600; }
 
   @media print {
-    body { background: white; padding: 0; }
+    html, body { background: white !important; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .doc-header, .spread-label, .legend { display: none; }
     .spread { box-shadow: none; margin: 0; page-break-after: always; }
   }

@@ -6,15 +6,63 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
-## Entry 17 — April 29, 2026: Prime Movers brochure on a URL
+## Entry 19 — April 29, 2026: the first deploy hit two bugs that don't show up locally
 
-Now that `share/` is wired into the deploy, the obvious next move was to put the Prime Movers brochure mockups behind a URL too. Same pain point as Entry 16: every time I want to walk Swanee or Val through the four directions, I'm either zipping `work/prime-movers-20th/mockups/` or AirDropping it. The mockups are already fully self-contained — Hunt logo inlined as a data URI, fonts pulled from Google Fonts CDN, no relative asset paths — so "build" is a misnomer. It's a copy.
+The site went up at `centella-global.vercel.app` and pretty much immediately surfaced two bugs I couldn't have caught with a local build, because both of them depend on Vercel's runtime being a different shape than `astro preview`.
 
-Added `scripts/build-prime-movers.mjs` and an `npm run prime-movers:build` script. It wipes `share/prime-movers-20th/` and copies the four option files plus `index.html` over from `work/prime-movers-20th/mockups/`. Source of truth stays in `work/` where the editing happens; `share/` is the derived publish copy. `scripts/copy-share.mjs` already mirrors `share/` into `dist/share/` during the main build, so the next push lands the brochure at `/share/prime-movers-20th/index.html` with no further plumbing.
+The first one looked obvious in hindsight. Every URL under `/share/*` returned 404 — the Barcelona standalone deck, the Prime Movers brochure, all of it. Locally everything worked: `npm run build && npm run preview` happily served `/share/ngl-barcelona-en-standalone.html`. The disconnect was that `astro preview` reads from `dist/`, and `copy-share.mjs` was dutifully writing to `dist/share/`. But Vercel doesn't serve `dist/` when the `@astrojs/vercel` adapter is active — it serves `.vercel/output/static/`, the Build Output API v3 bundle directory the adapter writes into. Astro normally carries everything from `dist/` over to `.vercel/output/static/`, but as part of its build, not after — anything our postbuild adds to `dist/` *after* `astro build` finishes lands in a place Vercel never looks. The fix was making `copy-share.mjs` write into both directories, and writing it down in CLAUDE.md so I don't trip on it again next time I add a postbuild step that emits deploy artifacts.
 
-I considered wiring `prime-movers:build` into `npm run build` directly — same as `copy-share.mjs` is — but held off. The deck pipeline doesn't auto-rebuild standalone exports either; you run `deck:standalone` explicitly when you want a fresh export. The brochure is the same kind of artifact: edits happen in bursts, and re-running the copy on every site build would just churn `share/` for no reason. If the brochure stabilizes and we stop touching it, we can promote the copy step into the main build later — but the current cost of typing `npm run prime-movers:build` after edits is zero.
+The second one was more subtle and took a minute to figure out. `POST /api/subscribe` returned `FUNCTION_INVOCATION_FAILED` on every call. The function had clearly deployed — we got a Vercel function error, not a 404 — but it crashed on every invocation with no useful payload, which is the signature of a function that fails *before* its handler runs. I stared at `api/subscribe.ts` looking for module-level throws and didn't find any; the helpers in `src/lib/mailchimp.ts` were defensive about missing env vars. The actual culprit was structural: `api/subscribe.ts` was at the repo root, doing `import { subscribe } from '../src/lib/mailchimp'`. When `@astrojs/vercel` claims `.vercel/output/` for the Build Output API, Vercel's `@vercel/node` builder picks up the root-level `api/` folder as a *separate* deployment unit — and that builder doesn't reliably bundle imports that reach outside `api/`. So the function file deployed, the helper module didn't, and the function blew up trying to resolve a module that wasn't there. Fix: inlined the Mailchimp helper directly into `api/subscribe.ts`. The function is now self-contained except for `node:crypto` (stdlib). I deleted `src/lib/mailchimp.ts` because nothing else used it.
 
-The wider pattern emerging: `share/` is becoming the answer to "how do I send someone a thing?" for any artifact in this repo. Decks, brochures, future visual explainers and one-pagers — all the same shape. Build to `share/<slug>/`, push, share the URL.
+The lesson I want to keep: API endpoints in the root `api/` folder, when used alongside the Astro Vercel adapter, must not import from `src/`. Either inline the helper, or put it at `api/_lib/<name>.ts` — the `@vercel/node` builder includes underscore-prefixed paths inside `api/` in the function bundle. I put both lessons in CLAUDE.md as "Things to avoid" entries because they're invisible from local builds and they're the kind of thing you only learn by deploying and getting cryptic errors.
+
+What's most striking is how *narrow* the diagnostic surface is on Vercel for a static-first site. There are no logs surfacing in the dashboard for either bug — just a 404 or a `FUNCTION_INVOCATION_FAILED` and a request ID. I had to reason about both from request/response shape alone. Mostly fine; both bugs had clean fingerprints once I stopped expecting them to be runtime errors I could trace and started thinking about what the build output actually contained. But if the next bug isn't structural like this, I'm going to need real logging — probably Vercel Log Drains pointed somewhere I can grep.
+
+After the fixes pushed, every smoke-test path resolves: `/`, `/styleguide`, both Barcelona deck pages, `/share/ngl-barcelona-en-standalone.html`, `/share/ngl-barcelona-standalone.html`, `/share/prime-movers-20th/index.html` and the four option pages, the three pillar pages, `/events`, `/blog`. `POST /api/subscribe` returns proper status codes (400 on missing email, 500 with `error: "Mailchimp not configured"` until I set the Mailchimp env vars in Vercel). The API and the share/ pipeline are both as production-ready as they can be without Mailchimp credentials in place.
+
+---
+
+## Entry 18 — April 29, 2026: print CSS — paper colors stick, scaffold goes white
+
+Pablo printed the Prime Movers mockups to PDF and got transparent backgrounds. Two distinct problems wrapped up in one symptom.
+
+The first was that the dark "viewing scaffold" — the `html, body { background: #1a1a1c }` matte the spreads sit on for review — was leaking into the print. The existing print stylesheets (Options A, B, D) only zeroed out `body`, not `html`. Some browsers fill from `html`, so the area outside each spread came through dark or transparent depending on viewer. Option C had no print stylesheet at all. Fixed by setting both `html, body` to white in `@media print`, with `!important` to beat the higher specificity of the screen rule (which uses `html, body { ... background: #1a1a1c }` — a compound selector).
+
+The second was that browsers strip background colors when printing by default — the "save the user's ink" assumption. That's the wrong default for a brochure mockup whose entire identity is the paper color. Cream paper that prints as white isn't a printable mockup, it's a typo. The fix is `print-color-adjust: exact` (and the `-webkit-` prefix for older Safari) on `*` — so every element honors its declared backgrounds, including the bright fills inside spreads (orange welcome panels, violet pocket pages, amber accent bands). One-line per file, but it's the difference between "this looks like a brochure" and "this looks like a wireframe."
+
+I considered not putting it on `*` and being more surgical — only the spreads and their colored panels. But the colored fills are everywhere in these mockups (accent words wrapped in `box-decoration-break: clone` highlights, callout backgrounds, panel fills in different families) and the surgical version would be a maintenance liability. Since the dark scaffold is killed by the explicit `html, body { background: white }`, blanket `print-color-adjust: exact` is safe — there's no dark element left to preserve.
+
+Option C also needed the `.h-page { box-shadow: none; page-break-after: always; }` print rule that A/B/D already had — its printable element is `.h-page`, not `.spread`, so it had been missing the spread-equivalent rule entirely.
+
+Re-ran `npm run work:build` to mirror the four fixed mockups into `share/prime-movers-20th/`. The fix lives in the source `work/prime-movers-20th/mockups/` files, so any future re-export carries it forward.
+
+---
+
+## Entry 17 — April 29, 2026: every deck and every work project, all in `share/`
+
+Once Prime Movers needed a URL (Slack/AirDrop friction, same as the Barcelona deck a few days ago), the right move wasn't a one-off prime-movers script — it was generalizing the pattern. Anything in `work/` and any presentation in `src/pages/presentations/` should be a `/share/...` URL away with one command. So I rewired the build instead of bolting on another path.
+
+Two scripts now, both promoted to "iterate by default":
+
+`scripts/build-work.mjs` walks `work/*/`, looks for a `mockups/` subdirectory in each, and copies its contents to `share/<project>/`. The `mockups/` convention is load-bearing: a `work/<project>/` directory holds working files (briefs, README, source PSDs, internal notes) that shouldn't be public, and `mockups/` is the explicit "this is the shareable subset." Anything not in `mockups/` stays private. The script also wipes the destination first so deletions in source propagate. Right now this picks up Prime Movers and nothing else, but the next client project drops in for free.
+
+`scripts/inline-deck.mjs` was already the deck bundler, but it took a single `<slug>` arg. I made it iterate over `dist/presentations/*/` when called with no arg, bundling every presentation into a standalone in one pass. Same inlining behavior per deck (CSS folded in, woff2 fonts as base64, raster/SVG as data URIs, MP4 source tags stripped), just looped. `npm run decks:standalone` (no arg) is now the natural call; `deck:standalone -- <slug>` still works for one-offs.
+
+The orchestrator: `npm run share:build` runs `astro build` → all decks → all work projects in sequence. That's what you run before committing share/ updates. Output:
+
+```
+share/.gitkeep
+share/ngl-barcelona-en-standalone.html      (2.29 MB — Barcelona, English)
+share/ngl-barcelona-standalone.html         (2.29 MB — Barcelona, Spanish — new)
+share/prime-movers-20th/index.html          (Hunt brochure comparison index)
+share/prime-movers-20th/option-{a,b,c,d}-*.html
+```
+
+The Spanish Barcelona deck not having a standalone before today was just because we'd never run the bundler on that slug — the looping default fixed it without me having to remember.
+
+What I deliberately didn't change: `npm run build` still only does `astro build && copy-share.mjs`. Standalone bundles are NOT regenerated on Vercel. That's the same call I made in Entry 16 — bundles are locally-built, committed deliverables, so a deck shared by email on date X is bit-identical to what's deployed at the same slug. Auto-rebundling on every CI run would break that guarantee. The cost is one extra command (`share:build`) before commit; the win is canonicality.
+
+Pattern now stabilized: edit in `work/<project>/mockups/` or `src/pages/presentations/<slug>.astro`, run `npm run share:build`, commit, push. The `share/` URL updates automatically.
 
 ---
 
