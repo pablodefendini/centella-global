@@ -129,7 +129,7 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 
 Internal (one Notion database, only used by the auth-gated /tools section):
 
-- **Team Profiles** — staff and contractor identity records used to generate per-person branded assets at build time. Fields: Name (title), Slug (rich text — manual, like Events/Blog), Status (select: Active/Inactive — only Active renders), Title (rich text — job title, what goes on the business card and email signature), Role (rich text — contextual function, exposed as a template token but unused by the default card/signature designs), Email, Pronouns, Phone, LinkedIn (URL), Website (URL), Photo (file). Not exposed on any public page.
+- **Team Profiles** — staff and contractor identity records used to generate per-person branded assets at build time. Fields: Name (title), Slug (rich text — manual, like Events/Blog), Status (select: Active/Inactive — only Active renders), Title (rich text — job title, what goes on the business card and email signature), Role (rich text — contextual function, exposed as a template token but unused by the default card/signature designs), Email, Pronouns, Phone, LinkedIn (URL), Website (URL), Photo (file), Bio (rich text — short one-liner for next-to-name placement on team cards), Biography (rich text — long-form prose for a future team-detail surface). Both Bio and Biography are exposed as `{{bio}}` / `{{biography}}` template tokens but unused by the default card/signature designs. Not exposed on any public page yet (about-centella team grid is still on placeholders).
 
 ## Things to avoid
 

@@ -366,6 +366,8 @@ function pageToTeamProfile(page: NotionPage): TeamProfile {
     linkedin: getUrl(props['LinkedIn']),
     website: getUrl(props['Website']),
     photo: getFile(props['Photo']),
+    bio: getText(props['Bio']),
+    biography: getText(props['Biography']),
   };
 }
 

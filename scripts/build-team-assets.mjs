@@ -20,13 +20,18 @@
  *
  * SVG templates live at src/templates/{business-card,email-signature}.svg
  * and use {{token}} interpolation. Available tokens: name, title, role,
- * email, phone, pronouns, linkedin, website, plus pre-computed
- * linkedinDisplay / websiteDisplay (protocol-stripped variants).
+ * bio, biography, email, phone, pronouns, linkedin, website, plus
+ * pre-computed linkedinDisplay / websiteDisplay (protocol-stripped variants).
  *
  * Title vs Role: Title is the person's standing job title at Centella
  * (e.g. "Co-founder") and is what the default templates render. Role is
  * a contextual function that's exposed as a token but not used by the
  * default card or signature designs.
+ *
+ * Bio vs Biography: Bio is a short one-liner intended for next-to-name
+ * placement on team cards. Biography is long-form prose for a future
+ * team-detail surface. Both are exposed as tokens; neither is used by
+ * the default card or signature designs.
  *
  * Fail-safe behavior:
  *   - If NOTION_TEAM_PROFILES_DB_ID is unset: log + exit 0 (no-op).
@@ -118,6 +123,8 @@ async function fetchActiveTeamProfiles() {
       pronouns: getRichText(p['Pronouns']),
       linkedin: getUrl(p['LinkedIn']),
       website: getUrl(p['Website']),
+      bio: getRichText(p['Bio']),
+      biography: getRichText(p['Biography']),
     };
   });
 }
@@ -140,6 +147,8 @@ function buildTokenContext(profile) {
     name: profile.name,
     title: profile.title,
     role: profile.role,
+    bio: profile.bio,
+    biography: profile.biography,
     email: profile.email,
     phone: profile.phone,
     pronouns: profile.pronouns,

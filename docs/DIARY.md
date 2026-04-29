@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 32 — April 29, 2026: Bio + Biography on Team Profiles
+
+Fourth schema cleanup in this session. Two new content fields on Team Profiles: `Bio` (short one-liner) and `Biography` (long-form prose). Both rich text in Notion, both plumbed through the type, the notion.ts reader, the build-team-assets.mjs token context, and the preview-team-assets.mjs fixture. Exposed as `{{bio}}` and `{{biography}}` in SVG templates; the default card and signature designs don't use either.
+
+The split: Bio is the one-liner that goes next to a person's name on a team-grid card. Biography is the prose that fills a future team-detail page. Could've been one combined field, but splitting now means the future about-centella team-grid pipeline (still open) doesn't have to truncate or guess which field to show — the data model says "this is the short version, that's the long version."
+
+No public rendering today. The /tools pages aren't bio surfaces, and the about-centella team grid is still on placeholders waiting on the photo-download pipeline. When that lands, it consumes bio + biography directly.
+
+`tsc --noEmit` clean. Same deferral on `astro build` as the prior three entries.
+
+---
+
 ## Entry 31 — April 29, 2026: collapsed Events `Date Start` + `Date End` into a single `Date` property
 
 While walking through the schema spec for the corporate Notion, noticed a long-running quirk in the reader code. The old model had two separate Date properties on Events, `Date Start` and `Date End`. The reader read `dateEnd` from the *end* of the `Date End` property's range — which only fires when `Date End` is configured as a date range, not a single date. So under the natural single-date setup, `.end` was always null and `dateEnd` always came back null. `formatDateRange()` was rendering single-day strings even for multi-day events. Hidden in plain sight; never broke anything because we had no Events data yet.

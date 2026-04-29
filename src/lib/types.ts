@@ -99,6 +99,10 @@ export interface TeamProfile {
   linkedin: string | null;
   website: string | null;
   photo: string | null;
+  /** Short one-liner shown next to the name on team cards / listings. */
+  bio: string;
+  /** Long-form biographical prose for team-detail surfaces (future). */
+  biography: string;
 }
 
 /**

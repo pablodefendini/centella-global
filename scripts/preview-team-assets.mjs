@@ -26,6 +26,9 @@ const ctx = {
   name: 'Pablo Defendini',
   title: 'Co-founder',
   role: 'Strategy lead, Latin America',
+  bio: 'Designer and technologist working on civic infrastructure for the Global South.',
+  biography:
+    'Pablo Defendini co-founded Centella to invest in the next generation of political infrastructure across the Global South. He has spent two decades building publishing, media, and civic-tech tools, and writes regularly about democracy, design, and the work of building durable institutions.',
   email: 'pablo@centellaglobal.com',
   phone: '+1 555 0100',
   pronouns: 'he/him',

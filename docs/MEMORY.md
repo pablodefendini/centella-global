@@ -6,6 +6,16 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Bio + Biography on Team Profiles
+
+Added two new content fields on the Team Profiles DB ahead of the corporate Notion CMS migration: `Bio` (rich text — short one-liner) and `Biography` (rich text — long-form prose). Both are plumbed through `TeamProfile`, the notion.ts reader, and the build-team-assets.mjs token context. Available as `{{bio}}` and `{{biography}}` in the SVG templates; unused by the default card and signature designs.
+
+Semantic split: `Bio` is the line you'd put next to a person's name on a team card grid — a single-sentence summary. `Biography` is the long-form prose for a future team-detail surface. Splitting them now means the about-centella team-grid pipeline (open work item) doesn't have to truncate or pick which field to show.
+
+No public-page rendering today. The /tools pages don't surface bios. About Centella's team grid is still on placeholders pending the photo pipeline (open work item in CLAUDE.md). When the team-grid pipeline lands, it consumes `bio` for the grid card and `biography` for the future detail page.
+
+---
+
 ## 2026-04-29 — Collapsed Events `Date Start` + `Date End` into a single `Date` property
 
 The old model had two separate Date properties — `Date Start` and `Date End` — but the reader code read `dateEnd` from the *end* of the `Date End` property's range, which only fires when `Date End` is configured as a range. As a single-date property (the natural setup), `.end` is always null, so `dateEnd` was always null and `formatDateRange()` rendered single-day strings even for multi-day events. Quirk hidden in plain sight.
