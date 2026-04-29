@@ -6,6 +6,20 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 31 — April 29, 2026: collapsed Events `Date Start` + `Date End` into a single `Date` property
+
+While walking through the schema spec for the corporate Notion, noticed a long-running quirk in the reader code. The old model had two separate Date properties on Events, `Date Start` and `Date End`. The reader read `dateEnd` from the *end* of the `Date End` property's range — which only fires when `Date End` is configured as a date range, not a single date. So under the natural single-date setup, `.end` was always null and `dateEnd` always came back null. `formatDateRange()` was rendering single-day strings even for multi-day events. Hidden in plain sight; never broke anything because we had no Events data yet.
+
+Cleanest fix: collapse into one `Date` property that holds either a single date or a date range — Notion's native shape for this. Reader pulls `dateStart` from `.start` and `dateEnd` from `.end` of the same property; `dateEnd` is null for single-day events and populated for multi-day. Consumer signature stays the same — `dateStart: string, dateEnd: string | null` — so nothing in `Event.astro` or `EventCard.astro` had to change.
+
+Touched four query sites in `notion.ts` to update filters and sort orders from `Date Start` to `Date`. Notion's date filter operators (`on_or_after`, `before`) check against the start of a range, so the filter behavior is unchanged.
+
+`tsc --noEmit` clean. Same deferral on `astro build` as the previous two entries — corporate Notion isn't wired up yet, no point fetching against the old schema.
+
+Three schema-cleanup commits in one session now, all stacking on the same branch ahead of the corporate-Notion CMS migration: Title/Role split, Blog Posts Event relation, and now the Date collapse. New corporate workspace gets all three from day one — zero migration cost.
+
+---
+
 ## Entry 30 — April 29, 2026: Blog Posts get an `Event` relation
 
 Same session as Entry 29, same rationale: cleaning up the schema before the corporate Notion CMS migration so the new workspace is created with the right shape from day one. Added a single-event relation on Blog Posts pointing at Events. A post can now be tagged as "from" the event it covers — recap, write-up, post-mortem — without burying the connection in tags or in body copy.

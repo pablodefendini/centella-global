@@ -6,6 +6,18 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Collapsed Events `Date Start` + `Date End` into a single `Date` property
+
+The old model had two separate Date properties — `Date Start` and `Date End` — but the reader code read `dateEnd` from the *end* of the `Date End` property's range, which only fires when `Date End` is configured as a range. As a single-date property (the natural setup), `.end` is always null, so `dateEnd` was always null and `formatDateRange()` rendered single-day strings even for multi-day events. Quirk hidden in plain sight.
+
+Fixed by collapsing into one `Date` property that holds either a single date or a date range — Notion's native shape for this. Reader pulls `dateStart` from `.start` and `dateEnd` from `.end` of the same property; `dateEnd` is null for single-day events and populated for multi-day. Consumer signature stays exactly as it was (`dateStart: string, dateEnd: string | null`); only the underlying Notion property changes.
+
+All four query sites (`getPublishedEvents`, `getFeaturedEvents`, `getHomepageLatestEvent`, sort orders) updated to filter and sort on `Date` instead of `Date Start`. Notion's date filter operators (`on_or_after`, `before`) check against the start of a range, so the filter logic is unchanged.
+
+Made the change while we still had no Events data anywhere — same window as the corporate Notion CMS migration. Avoided having to migrate dates between schemas; the new corporate workspace gets the clean shape from day one.
+
+---
+
 ## 2026-04-29 — Blog Posts get an `Event` relation
 
 Added a single-event relation on the Blog Posts DB pointing at Events. Lets us tag a post as "from" or "about" a specific event (recap, summary, post-mortem) without overloading tags or burying the connection in body copy. Two-way relation in Notion, so the Events DB picks up a reciprocal "Blog Posts" property for free — no event-side rendering today, but the data path exists when we want a "Related posts" block on event pages.

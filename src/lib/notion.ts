@@ -93,7 +93,7 @@ export async function getPublishedEvents(): Promise<Event[]> {
       property: 'Status',
       select: { equals: 'Published' },
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
   });
 
   return Promise.all(response.results.map(pageToEvent));
@@ -107,10 +107,10 @@ export async function getFeaturedEvents(): Promise<Event[]> {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
         { property: 'Featured', checkbox: { equals: true } },
-        { property: 'Date Start', date: { on_or_after: now } },
+        { property: 'Date', date: { on_or_after: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
   });
 
   return Promise.all(response.results.map(pageToEvent));
@@ -125,10 +125,10 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     filter: {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
-        { property: 'Date Start', date: { on_or_after: now } },
+        { property: 'Date', date: { on_or_after: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
     page_size: 1,
   });
 
@@ -141,10 +141,10 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     filter: {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
-        { property: 'Date Start', date: { before: now } },
+        { property: 'Date', date: { before: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'descending' }],
+    sorts: [{ property: 'Date', direction: 'descending' }],
     page_size: 1,
   });
 
@@ -185,8 +185,8 @@ async function pageToEvent(page: NotionPage): Promise<Event> {
     name: getText(props['Name']),
     slug: getText(props['Slug']),
     status: getSelect(props['Status']) as Event['status'],
-    dateStart: getDate(props['Date Start']),
-    dateEnd: getDateEnd(props['Date End']),
+    dateStart: getDate(props['Date']),
+    dateEnd: getDateEnd(props['Date']),
     location: getText(props['Location']),
     tagline: getText(props['Tagline']),
     heroImage: getFile(props['Hero Image']),
