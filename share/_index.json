@@ -2,6 +2,7 @@
   "$schema": "Manifest consumed by scripts/build-share-index.mjs to render share/index.html.",
   "site": {
     "title": "Centella — Share",
+    "eyebrow": "Centella · Share",
     "headline": {
       "lead": "Decks, mockups, and other",
       "accent": "shareable artifacts.",
@@ -9,6 +10,21 @@
     },
     "lede": "A working portfolio of self-contained outputs — anything Centella has produced for an audience outside our own walls. Each entry is a live link, refreshed every time we ship.",
     "footer": "Maintained by hand in share/_index.json. The page itself regenerates with `npm run share:index` (or as part of `npm run share:build`)."
+  },
+  "subLobbies": {
+    "work": {
+      "site": {
+        "title": "Centella — Work",
+        "eyebrow": "Work",
+        "headline": {
+          "lead": "Client work,",
+          "accent": "delivered.",
+          "accentGradient": "cyan-violet"
+        },
+        "lede": "Brochures, one-pagers, and design directions Centella has produced for partners and clients. Each entry is a live link — open it in a browser, share the URL, hand off the file.",
+        "footer": "Filtered view of share/_index.json projects whose artifacts live under share/work/. Regenerates with `npm run share:index`."
+      }
+    }
   },
   "projects": [
     {
