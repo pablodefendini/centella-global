@@ -6,6 +6,68 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Three new content pages: Advisory, Impact, About Centella (and the tone-coded section-panel pattern they share)
+
+The three sub-brand pages were placeholders. Today: full Advisory and Impact landing pages with content from Pablo, plus a brand-new umbrella page at `/about-centella/`. All three follow the same load-bearing structure pattern: a display hero, one or more sections framed as eyebrowless h2 + lede, panel grids that diagnose problems and present solutions, a CTA panel hosting `MailchimpForm` with a section-specific tag.
+
+**Tone-coded section-panel pattern (now consistent across the site).** First built on the homepage pillars (`.home-min__pillar`); reused today on Advisory strategies (3 panels, advisory family), Impact problems (4 panels, investment family), Impact solutions (3 panels, investment family), and About Centella's three-pillars section (3 panels, one per sub-brand color family). Recipe:
+
+- Outer panel: `--<family>-dark` background, `--<family>` text color, 8px (or 16px for hero CTA panels) border-radius, `--space-2` outer padding.
+- Inner frame: `1px solid color-mix(in srgb, currentColor 30%, transparent)`, `border-radius: inherit`, `--space-8 var(--space-6)` padding.
+- Icon chip: `--space-2` padding, 4px radius, `color-mix(... 16%, transparent)` background, `color-mix(... 35%, transparent)` border.
+- Title in `--color-text`, body in `--color-text-muted`. CTA inherits `currentColor` and follows `.tone-surface` link rules.
+
+This pattern is ripe for extraction into a `<TonePanel>` component. Held off this session because the duplication is small (~30 lines of CSS per page, ~12 lines of markup) and each page was on its own ticket — but the next page that needs a tone panel is the trigger. Flagged in CLAUDE.md under "Pending / planned work."
+
+**Hero accent gradient as identity signal.** Sub-brand pages key `--page-accent` to their sub-brand color and use a specific approved gradient on the hero accent that pairs the page key with another family: Advisory hero uses `display__accent--cyan-violet` (advisory + violet principal); Impact uses `display__accent--lime-teal` (investment + advisory); the Impact "We can do better. We can build better." aspirational beat reuses the same lime-teal gradient. About Centella, being umbrella-neutral, uses `data-random-accent-gradient` on the hero accent for per-load random gradient variation — same treatment as the homepage hero. So the hero gradient reads as "I am about Centella the whole" vs "I am about this specific sub-brand." That distinction is load-bearing now and worth preserving on future pages.
+
+**Service / item lists with icon-left rows.** The Advisory page introduces a different shape from tone panels: a vertical list of service items, each row a 3rem icon chip on the left (advisory-tinted) + title-only on the right, separated by hairline borders. Used for the seven Core Services. Pattern lives in `centella-advisory.astro`; if a second page needs it, extract.
+
+**Stat cards keyed to `--global`.** About Centella's "Flip the script" section uses `--global` (the brand's "scale & reach. cross-border connection. Accent only." color) as the section-local accent — a featured 80% stat with the globe icon, plus three regional stat cards under 3px global-orange top borders. This is the first place we've used `--global` as a section key — it's documented in `design.md` as "Accent only," and the stat treatment respects that (small accent in the eyebrow + top border, not in the figure or body text).
+
+**Continent/region maps NOT added.** About Centella's Section 2 spec from Pablo described "continent map illustrations" for the regional stats. Held to the design.md hard rule ("Use only icons that already exist in `src/assets/icons/`. Do not add new icon files unless there is explicit approval in the task requirements") — there are no continent shapes in the icon library. Used a strong typographic eyebrow + accent-bar treatment instead. If continent maps land later, they'd go in `src/assets/icons/{latam,africa,asia}.svg` with explicit approval and replace the typographic-only treatment.
+
+**Team-photo wiring is the open question on About Centella.** `getTeamProfiles()` already exists in `src/lib/notion.ts` and is wired to the Team Profiles DB; it returns photos as Notion file URLs. Notion's signed file URLs expire, which is fine for the `/tools/*` section (auth-gated, rebuilt on every deploy, only seen by staff) but unworkable on a public About page where a stale signed URL = a broken portrait on a high-traffic page. So the team grid currently renders 8 placeholder circles with a `// swap for <img src="/team/<slug>.webp">` marker in the source. The pickup: a build-time pipeline that copies team photos from Notion → `public/team/` so the public About page references stable local paths. Same shape as the existing team-asset pipeline (`scripts/build-team-assets.mjs`). Documented in CLAUDE.md as the open question for this page.
+
+**Form copy on About Section 6 — went past the placeholder.** Pablo's spec said "(Copy here is clearly placeholder — needs a real headline + supporting line before launch.)" Wrote a real headline + lede in brand voice instead: *"Stay close to the work."* / *"Occasional dispatches from Centella — campaigns we're shaping, leaders we're backing, and the civic-tech we're building for the Global South."* Tag: `centella-newsletter`. Easy to swap if Pablo wants different copy.
+
+**Files added:** `src/pages/about-centella.astro`. **Files substantively rewritten:** `src/pages/centella-advisory.astro` (was a one-section placeholder), `src/pages/centella-impact.astro` (same).
+
+---
+
+## 2026-04-29 — Nav restructure (About + Share/Work/Tools); /share/ sub-lobby pattern; dev-mode share serving
+
+Three related changes that landed in the same window because they all touch site navigability.
+
+**Nav: four new entries across header + footer.** Both `SiteHeader.astro` and `SiteFooter.astro` use the same `navLinks` array shape; updated both. Order: Home → About Centella → three sub-brand pages → Blog → Share → Work → Tools → Styleguide. About Centella sits right after Home (high-priority discoverability for an umbrella page); Share/Work/Tools cluster between Blog and Styleguide so the sub-brand work-pages stay together at the top and the publish-tray + dev/staff entries trail below.
+
+**Share lobby grew a sub-lobby pattern (`subLobbies` in `_index.json`).** The Work nav entry pointed at `/share/work/`, which had no `index.html` and would 404 on Vercel. Refactored `scripts/build-share-index.mjs` to support an optional `subLobbies` map keyed by directory name under `share/`. For each entry, the script filters projects whose artifacts have an href starting with that prefix, strips the prefix from each href so links resolve relative to the sub-lobby, and emits `share/<kind>/index.html` with the same Centella chrome plus a breadcrumb back to `/share/`. The breadcrumb is rendered by adding an optional `breadcrumb` parameter to `renderPage(m)` and reading the eyebrow from `site.eyebrow` (defaulting to `Centella · Share` for the main lobby, preserving prior behavior).
+
+The manifest schema now supports:
+
+```jsonc
+{
+  "site": { "title": "...", "eyebrow": "...", ... },
+  "subLobbies": {
+    "work": {
+      "site": { "title": "...", "eyebrow": "Work", "headline": {...}, "lede": "...", "footer": "..." }
+    }
+    // future: "presentations": { ... } — same machinery
+  },
+  "projects": [ ... ]
+}
+```
+
+Today only `subLobbies.work` is defined; Pablo asked for Work, not Presentations. Adding Presentations later is a manifest-only edit (script handles it generically). When a manifest sub-lobby's directory doesn't exist on disk OR no projects match the prefix, the script logs a warning and skips — no broken HTML.
+
+**Dev-mode middleware for `share/*` (closes the dev-vs-prod gap).** In production, `scripts/copy-share.mjs` mirrors `share/` into `dist/share/` and `.vercel/output/static/share/` at build time, so Vercel serves `/share/*` directly. But `astro dev` only knows `src/pages/` and `public/` — `share/` at the repo root is invisible to it, so `/share/` and `/share/work/` 404 in dev. CLAUDE.md already called out a similar dev-vs-prod gap on `/tools/*` static-asset gating; this is the analog for share.
+
+Closed it with a Vite plugin in `astro.config.mjs` (`apply: 'serve'` so it only runs in dev) that intercepts `/share/*` requests, maps them to `<repo>/share/*`, redirects directory URLs to trailing-slash form so relative hrefs resolve, and guards against path traversal. Smoke-tested live: `/share/` → 200, `/share/work` → 301, `/share/work/` → 200, `/share/nope` → 404. Production behavior is unchanged because the plugin is dev-only.
+
+**Files modified:** `src/components/SiteHeader.astro`, `src/components/SiteFooter.astro` (nav), `scripts/build-share-index.mjs` (sub-lobby support), `share/_index.json` (added `eyebrow` on `site` + new `subLobbies.work` block), `astro.config.mjs` (Vite dev plugin). **Files added:** `share/work/index.html` (generated, committed alongside other share/ artifacts).
+
+---
+
 ## 2026-04-29 — `/tools` follow-ups: shared user+password, and the prerender gotcha
 
 Two follow-ups after the initial `/tools` section landed.

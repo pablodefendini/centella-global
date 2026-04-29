@@ -535,6 +535,63 @@ Primary button hover never changes hue — only elevation and glow.
 - **Hard rule:** any text link inside a panel must inherit panel tone (`currentColor`) and use tone-based hover/focus states.
 - Add `.tone-surface` to any tone-coded panel/container to enforce this behavior site-wide.
 
+### Tone-coded section panels (the canonical recipe)
+
+The same shape recurs across the homepage pillars, the Advisory strategy panels, the Impact problem and solution panels, and the About Centella three-pillars section. It's a panel from the rules above (4/8/16 radius, inner frame, hard edges) plus a fixed icon-chip + title + body composition. One source of truth for the recipe; every page that uses it should match.
+
+```css
+.tone-panel {
+  border-radius: 8px;            /* 8 for medium, 16 for large/CTA panels */
+  padding: var(--space-2);       /* outer breathing space */
+  background: var(--<family>-dark);
+  color: var(--<family>);
+}
+
+.tone-panel__frame {
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+.tone-panel__icon-wrap {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  padding: var(--space-2);
+}
+
+.tone-panel__title { color: var(--color-text); }    /* full text on the dark ground */
+.tone-panel__body  { color: var(--color-text-muted); }
+.tone-panel__cta   { color: currentColor; }         /* inherits panel tone */
+```
+
+**Composition rules:**
+
+- One color family per panel (or one family + the principal violet via an approved gradient on the hero accent).
+- Each panel composition counts as its own composition for the "max two color families" rule. A section with three differently-toned panels (Advisory / Networking / Investment) is fine because each panel is self-contained — the *aggregate* doesn't violate the rule.
+- Use `8px` radius for medium panels in a grid, `16px` for one large/CTA panel hosting a form or a long-form callout.
+
+**Live references:**
+
+- Homepage pillars — `src/pages/index.astro` (`.home-min__pillar`)
+- Advisory strategy panels — `src/pages/centella-advisory.astro`
+- Impact problem & solution panels — `src/pages/centella-impact.astro`
+- About Centella three pillars — `src/pages/about-centella.astro`
+
+A `<TonePanel>` extraction is on the pickup list (see `CLAUDE.md` → "Pending / planned work"); until then, copy the homepage block as the canonical source.
+
+### Hero accent gradient as page-identity signal
+
+Sub-brand pages key `--page-accent` to their work-color and use a specific approved gradient on the hero accent that pairs the page key with one other family — `display__accent--cyan-violet` (advisory + violet) on Advisory; `display__accent--lime-teal` (investment + advisory) on Impact. Umbrella pages (homepage, About Centella) don't override `--page-accent` and use `data-random-accent-gradient` on the hero accent for per-load random gradient variation. The choice is deliberate: a sub-brand hero locked to one gradient reads as "I am about *this specific* sub-brand," while a random-gradient hero reads as "I am about Centella the whole." Hold this distinction on future pages.
+
 ### Icons
 
 **Location.** All icons live in `src/assets/icons/` as SVG files whose fills are normalized to `currentColor`.
