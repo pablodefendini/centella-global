@@ -6,6 +6,24 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 30 — April 29, 2026: Blog Posts get an `Event` relation
+
+Same session as Entry 29, same rationale: cleaning up the schema before the corporate Notion CMS migration so the new workspace is created with the right shape from day one. Added a single-event relation on Blog Posts pointing at Events. A post can now be tagged as "from" the event it covers — recap, write-up, post-mortem — without burying the connection in tags or in body copy.
+
+Two-way relation in Notion, which means the Events DB gets a reciprocal "Blog Posts" property automatically. Not building any event-side surface today, but the data path is there if I want a "Related posts" block on event pages later.
+
+Single cardinality — `event: BlogPostEvent | null` on `BlogPost`. Property name is singular; if a post legitimately mentions multiple events, the body text handles the secondaries.
+
+Renders in two places: the blog post detail page gets a "From [Event Name]" eyebrow above the date, linking to `/events/{slug}/`. The listing card shows "From [Event Name]" as plain text — can't link from the card because the whole card is already an `<a>` to the post and nesting anchors is invalid HTML. If I want a clickable event-link on the listing later, the fix is restructuring the card with a CSS pseudo-element overlay for the post link. Deferred — small value, real CSS work.
+
+Code-side: `pageToBlogPost` is now async. One extra Notion fetch per post to resolve the relation (build-time only). Added `getBlogPostEventById` as a lightweight retriever — returns just id/slug/name, doesn't drag in speakers/attendees/sponsors the way `pageToEvent` does. Fails closed: returns null on any error so a broken or deleted relation never blocks a post from rendering.
+
+Edge case I'm leaving to content team: if the related event is Draft or Archived, the post still renders but the "From" link 404s (because `/events/[slug]` filters by Published). Flagged in CLAUDE.md.
+
+`tsc --noEmit` clean. Same deferral as Entry 29 on running `astro build` — the personal Notion still has the old schema, so a build wouldn't tell us anything useful. The first deploy against the corporate Notion is the real validation gate.
+
+---
+
 ## Entry 29 — April 29, 2026: split `Title/Role` into Title + Role across Speakers, Attendees, Team Profiles
 
 About to migrate the Notion CMS from my personal account to the Centella corporate one. While lining up the schema for the corporate workspace, realized `Title/Role` had been doing two jobs and that this was the moment to split it. Fresh corporate workspace means no legacy data to migrate, so it's a free cleanup.

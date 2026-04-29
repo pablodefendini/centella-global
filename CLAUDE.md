@@ -120,7 +120,7 @@ work/                         # Client deliverables and project work outside the
 Public-facing content (five Notion databases):
 
 - **Events** — core content type. Has Status (Draft/Published/Archived), Featured flag, date range, slug, hero image, registration URL, Mailchimp tag. Page body contains description and schedule. Relations to Speakers, Attendees, Sponsors.
-- **Blog Posts** — Title, Slug, Status, Published Date, Authors (multi-author), Tags, Summary, Hero Image. Page body is the post content.
+- **Blog Posts** — Title, Slug, Status, Published Date, Authors (multi-author), Tags, Summary, Hero Image, Event (relation → Events DB; optional, single-event). When set, the post detail page renders a "From [Event]" eyebrow link to `/events/{slug}` and the listing card shows "From [Event]" as plain text. The link 404s if the related event isn't Published — content team's responsibility not to associate Draft/Archived events. Page body is the post content.
 - **Speakers** — Name, Title, Role, Organization, Photo, Bio. **Title** is the person's standing job title at their organization (e.g. "Strategy Director"); **Role** is their contextual function in the event (e.g. "Keynote Speaker", "Panel Moderator"). `SpeakerCard` leads with Role; Title and Organization are secondary muted lines.
 - **Attendees** — Name, Title, Role, Organization, Photo, Bio. Same Title/Role split as Speakers (Role is the contextual function — "Founding Partner", "Advisor" — Title is the standing job title). No `AttendeeCard` exists yet, but the Attendee data flows through and can be rendered when needed.
 - **Sponsors** — Name, Logo, URL, Tier (Lead/Supporting/Community).

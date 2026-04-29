@@ -9,6 +9,7 @@ import { Client } from '@notionhq/client';
 import type {
   Event,
   BlogPost,
+  BlogPostEvent,
   Speaker,
   Attendee,
   Sponsor,
@@ -211,7 +212,7 @@ export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
     sorts: [{ property: 'Published Date', direction: 'descending' }],
   });
 
-  return response.results.map(pageToBlogPost);
+  return Promise.all(response.results.map(pageToBlogPost));
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -229,8 +230,11 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   return pageToBlogPost(response.results[0]);
 }
 
-function pageToBlogPost(page: NotionPage): BlogPost {
+async function pageToBlogPost(page: NotionPage): Promise<BlogPost> {
   const props = page.properties;
+  const eventIds = getRelationIds(props['Event']);
+  const event = eventIds.length ? await getBlogPostEventById(eventIds[0]) : null;
+
   return {
     id: page.id,
     title: getText(props['Title']),
@@ -241,7 +245,29 @@ function pageToBlogPost(page: NotionPage): BlogPost {
     tags: getMultiSelect(props['Tags']),
     summary: getText(props['Summary']),
     heroImage: getFile(props['Hero Image']),
+    event,
   };
+}
+
+/**
+ * Lightweight Event lookup used only by `pageToBlogPost` to resolve the
+ * `Event` relation. Returns just enough to render a "From [Event]" link
+ * (id, slug, name) — does not fetch speakers/attendees/sponsors. Returns
+ * null on any failure so a broken or deleted relation never blocks a
+ * blog post from rendering.
+ */
+async function getBlogPostEventById(id: string): Promise<BlogPostEvent | null> {
+  try {
+    const page = await notion.pages.retrieve({ page_id: id });
+    const props = (page as any).properties;
+    return {
+      id: page.id,
+      slug: getText(props['Slug']),
+      name: getText(props['Name']),
+    };
+  } catch {
+    return null;
+  }
 }
 
 // --- Speakers ---

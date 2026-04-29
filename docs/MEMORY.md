@@ -6,6 +6,20 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Blog Posts get an `Event` relation
+
+Added a single-event relation on the Blog Posts DB pointing at Events. Lets us tag a post as "from" or "about" a specific event (recap, summary, post-mortem) without overloading tags or burying the connection in body copy. Two-way relation in Notion, so the Events DB picks up a reciprocal "Blog Posts" property for free — no event-side rendering today, but the data path exists when we want a "Related posts" block on event pages.
+
+Cardinality: single. The property name is singular and the type is `event: BlogPostEvent | null` on `BlogPost`. If a post legitimately ties to multiple events, the body text handles the secondary mentions; the relation is for the canonical "this post is from that event" link.
+
+Render surfaces: post detail page gets a "From [Event Name]" eyebrow above the date, linking to `/events/{slug}/`. Listing card (`BlogPostCard`) shows "From [Event Name]" as plain text — can't make it a clickable link from the card because the whole card is already wrapped in `<a href="/blog/{slug}/">` and nesting links is invalid HTML. If we want a clickable event-link on the card later, the fix is restructuring the card with a CSS pseudo-element overlay for the post link, leaving inline content free for additional anchors. Deferred until someone asks for it.
+
+Code shape: `pageToBlogPost` is now async (one extra Notion fetch per post to resolve the relation, build-time only — no runtime impact). Added `getBlogPostEventById` as a lightweight retriever that returns just `id`, `slug`, and `name` — does not pull speakers/attendees/sponsors like `pageToEvent` does. Returns null on any failure so a deleted-relation or broken-id doesn't block the post from rendering.
+
+Edge: if the related event is Draft or Archived, the post still renders, but the "From" link 404s on the public site (because `/events/[slug]` filters by Published). Documented in CLAUDE.md as the content team's responsibility.
+
+---
+
 ## 2026-04-29 — Title vs Role split on Speakers, Attendees, Team Profiles
 
 The Notion property `Title/Role` was doing double duty across three databases: it was both a person's standing job title (what goes on a business card) and their contextual function in the moment (what reads "Keynote Speaker" on an event card). Split into two properties — `Title` and `Role` — across Speakers, Attendees, and Team Profiles, and updated every consumer to match.

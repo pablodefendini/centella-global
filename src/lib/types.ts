@@ -34,6 +34,19 @@ export interface BlogPost {
   tags: string[];
   summary: string;
   heroImage: string | null;
+  /**
+   * Optional Notion relation to a single Event. When set, blog post pages
+   * render a "From [Event]" eyebrow link to /events/{slug}, and listing
+   * cards show "From [Event]" as plain text. The link 404s if the related
+   * event isn't Published — content team's responsibility.
+   */
+  event: BlogPostEvent | null;
+}
+
+export interface BlogPostEvent {
+  id: string;
+  slug: string;
+  name: string;
 }
 
 export interface Speaker {

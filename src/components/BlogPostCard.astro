@@ -26,6 +26,9 @@ function formatDate(dateStr: string): string {
     />
   )}
   <div class="post-card__body">
+    {post.event && (
+      <p class="post-card__eyebrow">From {post.event.name}</p>
+    )}
     <time class="post-card__date text-muted">{formatDate(post.publishedDate)}</time>
     <h3 class="post-card__title">{post.title}</h3>
     {post.summary && <p class="post-card__summary text-muted">{post.summary}</p>}
@@ -50,6 +53,15 @@ function formatDate(dateStr: string): string {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+  }
+
+  .post-card__eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0;
   }
 
   .post-card__date {
