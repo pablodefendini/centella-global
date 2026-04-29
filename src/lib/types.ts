@@ -39,7 +39,10 @@ export interface BlogPost {
 export interface Speaker {
   id: string;
   name: string;
-  titleRole: string;
+  /** Their standing job title at their org (e.g. "Strategy Director"). */
+  title: string;
+  /** Their contextual function in this event (e.g. "Keynote Speaker"). */
+  role: string;
   organization: string;
   photo: string | null;
 }
@@ -47,7 +50,10 @@ export interface Speaker {
 export interface Attendee {
   id: string;
   name: string;
-  titleRole: string;
+  /** Their standing job title at their org. */
+  title: string;
+  /** Their contextual function in this event (e.g. "Founding Partner"). */
+  role: string;
   organization: string;
   photo: string | null;
 }
@@ -70,7 +76,10 @@ export interface TeamProfile {
   name: string;
   slug: string;
   status: 'Active' | 'Inactive';
-  titleRole: string;
+  /** Their job title at Centella (e.g. "Co-founder", "Senior Strategist"). Goes on cards and email signatures. */
+  title: string;
+  /** Their contextual function (e.g. "Strategy lead, Latin America"). Available as a template token but not rendered by default. */
+  role: string;
   email: string;
   phone: string;
   pronouns: string;

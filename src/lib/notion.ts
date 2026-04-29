@@ -253,7 +253,8 @@ async function getSpeakerById(id: string): Promise<Speaker | null> {
     return {
       id: page.id,
       name: getText(props['Name']),
-      titleRole: getText(props['Title/Role']),
+      title: getText(props['Title']),
+      role: getText(props['Role']),
       organization: getText(props['Organization']),
       photo: getFile(props['Photo']),
     };
@@ -271,7 +272,8 @@ async function getAttendeeById(id: string): Promise<Attendee | null> {
     return {
       id: page.id,
       name: getText(props['Name']),
-      titleRole: getText(props['Title/Role']),
+      title: getText(props['Title']),
+      role: getText(props['Role']),
       organization: getText(props['Organization']),
       photo: getFile(props['Photo']),
     };
@@ -330,7 +332,8 @@ function pageToTeamProfile(page: NotionPage): TeamProfile {
     name: getText(props['Name']),
     slug: getText(props['Slug']),
     status: (getSelect(props['Status']) || 'Active') as TeamProfile['status'],
-    titleRole: getText(props['Title/Role']),
+    title: getText(props['Title']),
+    role: getText(props['Role']),
     email: getEmail(props['Email']),
     phone: getPhone(props['Phone']),
     pronouns: getText(props['Pronouns']),

@@ -22,7 +22,8 @@ const { speaker } = Astro.props;
     </div>
   )}
   <h3 class="speaker-card__name">{speaker.name}</h3>
-  {speaker.titleRole && <p class="speaker-card__role text-muted">{speaker.titleRole}</p>}
+  {speaker.role && <p class="speaker-card__role">{speaker.role}</p>}
+  {speaker.title && <p class="speaker-card__title text-muted">{speaker.title}</p>}
   {speaker.organization && <p class="speaker-card__org text-muted">{speaker.organization}</p>}
 </div>
 
@@ -56,7 +57,15 @@ const { speaker } = Astro.props;
   }
 
   .speaker-card__role,
+  .speaker-card__title,
   .speaker-card__org {
     max-width: min(100%, var(--prose-max-ch));
+    margin: 0;
+  }
+
+  /* Role leads (e.g. "Keynote Speaker"); Title and Organization are muted via the
+     text-muted utility on the markup. */
+  .speaker-card__role {
+    font-weight: 500;
   }
 </style>

@@ -6,6 +6,59 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 29 — April 29, 2026: split `Title/Role` into Title + Role across Speakers, Attendees, Team Profiles
+
+About to migrate the Notion CMS from my personal account to the Centella corporate one. While lining up the schema for the corporate workspace, realized `Title/Role` had been doing two jobs and that this was the moment to split it. Fresh corporate workspace means no legacy data to migrate, so it's a free cleanup.
+
+Title is the person's standing job title at their org. Role is their contextual function. On a speaker card for an event, what people care about is "Keynote Speaker" — that's Role. On a business card or email signature, what matters is "Co-founder" — that's Title. One field jammed together meant every surface had to render the same string; splitting them lets each surface render the right thing.
+
+Touched: `src/lib/types.ts` (Speaker, Attendee, TeamProfile interfaces), `src/lib/notion.ts` (three read sites — `getSpeakerById`, `getAttendeeById`, `pageToTeamProfile`), `scripts/build-team-assets.mjs` and `scripts/preview-team-assets.mjs`, both SVG templates (`{{titleRole}}` → `{{title}}`), `tools/business-cards.astro` and `tools/email-signatures.astro`, and `SpeakerCard.astro` — which now stacks Name → Role at body weight → Title muted → Organization muted. Both `{{title}}` and `{{role}}` are exposed as template tokens for the SVGs; only `{{title}}` is rendered by the default card and signature designs. CLAUDE.md updated to reflect the new schema.
+
+`tsc --noEmit` clean. Skipped `astro build` because it would have fetched from the personal Notion, which still has the old `Title/Role` property, and produced empty values for Title and Role — useless signal. The real test is the next deploy after the corporate Notion is wired up: build will fail loudly on a property-name typo, which is the right behavior.
+
+---
+
+## Entry 28 — April 29, 2026: design refinement pass on the new color scale generator
+
+> **Update at end of session:** Pablo flagged that the step interior still looks broken in the actual render despite this pass — the static-review claims below describe the *intent* of the changes, not the result on screen. Deprioritized; logged in CLAUDE.md → "Pending / planned work" with diagnosis hypotheses and a suggested next move (drop the inline hex `<input>`, use a copy-on-click button). Don't treat this entry as the final state of the generator.
+
+Came back to the generator from Entry 27 with a fresh-eyes critique pass and made it noticeably tighter. Three categories of fix.
+
+**Information order.** The override hint used to live *below* the scale, which meant users hit the swatches without knowing they could click them. Promoted it above, paired in one row with the OKLab/HSL/RGB toggle and a small "Interpolation" label so the row reads as "here's what you can do, and here's how the interpolation works." That's the meta-info you want before touching the scale, not after.
+
+**Action hierarchy.** The action row was four ghost buttons in identical styling: Reset, Copy CSS, Copy JSON, Copy Tailwind. Visually, that says "all four are equally important" — but Copy CSS is what 80% of users want. Made Copy CSS the lone primary (filled violet, dark text), JSON and Tailwind ghost, and pushed Reset to the right with `margin-left: auto` and a `disabled` state when there are no overrides to reset. Now there's nothing to read; the most-likely-next-action is the obvious filled button.
+
+**Anchor primacy.** The KEY anchor (step 5) is conceptually the driver of the whole scale, but the three input groups read as identical. Two changes: the KEY input's label is colored violet (others stay muted), and all three inputs get faintly role-tinted borders via `color-mix` against `--violet-dark` / `--violet` / `--violet-light`. On the scale itself, the key step now gets a violet outer ring + brighter inner highlight so it visibly anchors. Subtle enough that nothing screams; loud enough that you can't miss which step is the input you typed.
+
+**Step affordance.** The original step picker was a transparent overlay on top of an otherwise-passive swatch — clickability was invisible. Added a 2px translateY hover lift on every step so they read as interactive, and bumped the inline hex input from `text-xs` (~10px, below the 12px floor for tabular data) to `text-sm` with `font-variant-numeric: tabular-nums`. Override indicator changed from `5*` to a small dot in the top-right of overridden steps, plus an aria-label addition so screen readers say "step 5, #C77DFF, overridden, key" instead of mumbling about asterisks.
+
+**Toast copy normalized.** Used to be a mix: "Copied", "CSS copied", "Loaded violet". Now everything follows one form — "Copied #C77DFF" for single hex, "Copied scale (CSS)" for exports, "Copied violet (CSS)" for palette CSS, "Loaded violet" for palette load, "Reset to interpolated values" for reset. Same pattern, predictable read.
+
+**Brand palette card simplification.** The per-palette card head used to show: keychip + name + three anchor mini-chips with hex codes inline. Too much chrome for what's already shown in the 9-step scale right below it. Cut the anchor row entirely — the scale itself shows step 1 (dark anchor), step 5 (key, ringed), and step 9 (light anchor). Replaced with the canonical token name (`--violet`, `--advisory`, etc.) as a code chip, which is the actually-useful identifier. Moved the Copy CSS / Load buttons up into the head, smaller (`csg-btn--small`), so the full-width 9-step scale can be the visual anchor of the card.
+
+`tsc --noEmit` clean, ARIA labels added on the live region and the dynamically-built scale steps, focus-visible outlines on every interactive element. CLAUDE.md doesn't change; MEMORY.md doesn't change. Just this entry.
+
+---
+
+## Entry 27 — April 29, 2026: the styleguide gets a 9-step color scale generator wired to the design tokens
+
+Replaced the old Color Scale Generator on `/styleguide` — the one that took a single base color and spat out a primary/alt/dark/light quartet — with a proper 9-step interpolator. Three anchors (dark = step 1, key = step 5, light = step 9) and the missing six steps fall out of an interpolation in the color space of your choice: OKLab by default (perceptually uniform), HSL, or RGB. Every step is editable inline; overrides survive across anchor and color-space changes; the asterisk on the step number tells you which steps are off the curve. Copy any single hex, or export the whole scale as CSS custom properties, JSON, or a Tailwind `colors.custom` block.
+
+The new tool came in as a self-contained HTML page with hardcoded Tailwind-blue defaults and a generic dark-purple shell. The actual work was the token translation pass — every `#1a1a2e` → `var(--bg-surface)`, every `#444` → `var(--color-border)`, every `#667eea` → `var(--violet)`, every `8px` radius → `var(--radius-lg)`, etc. The shell radius wanted `12px`, which is exactly the use case `design.md` calls out by name for `--radius-xl` ("Large surfaces, e.g. color scale generator shell"). Nice when a token's documented exemplar turns out to be the thing in front of you.
+
+The piece I'm most happy with is that the brand-palettes section below the generator doesn't duplicate the hex values. It reads them off the existing `colorFamilies` frontmatter array — the same array that drives the swatches in section 5 of the styleguide. The shape lines up perfectly: `primary`/`dark`/`light` from the array becomes `key`/`dark`/`light` for the generator. So the canonical brand colors live in one place, and adding a seventh family means typing it once. No risk of the styleguide drifting from itself.
+
+Two implementation notes for the next time this comes up:
+
+- The security hook on the repo (correctly) blocks any `innerHTML` assignment in `<script>` blocks. The old generator used template strings for the swatch grid; the new one uses a tiny `el(tag, attrs, children)` helper that wraps `createElement` + `setAttribute` + `append`. The data going through the helper is all hex strings I just computed, so XSS isn't a real risk here, but the helper is cleaner anyway and the policy is right to be uniform about it.
+- OKLab matters for cross-hue scales. The Centella Violet → Networking interpolation goes through a clean magenta-coral midpoint in OKLab; in HSL it rotates through the hue wheel and produces an unwanted purple band; in RGB it washes out around step 5. Try it on the page — the toggle is right there. This is why OKLab is the default.
+
+The brand palette block now also doubles as a load-into-the-generator UI: each palette has a "Load in generator" button that swaps the three anchors and scrolls the page back to the generator, so you can take e.g. the Investment family and immediately rederive its 9-step scale in another color space. That's the thing I'd actually want to do during a campaign — start from a brand family, see all nine steps, override one or two, copy as CSS.
+
+What's left: nothing for this iteration. This is a pure styleguide enhancement — the tokens, families, and `colorFamilies` array were already wired correctly. CLAUDE.md doesn't need an update because the pattern (single source of truth in the frontmatter array) was already implicit; `docs/MEMORY.md` doesn't need one because no decision moved from open to locked. Just this entry.
+
+---
+
 ## Entry 26 — April 29, 2026: Advisory, Impact, and About get their content; the share lobby grows a sub-lobby
 
 Long Cowork session, mostly content-shaped. The three sub-brand landing pages were placeholders — `<h1>Advising leaders</h1>` and a single sentence each — and the homepage pillars were promising leaders to "learn more about Centella Advisory" with no Centella Advisory to learn about. Filled out two of them today (Advisory and Impact) and built a brand-new umbrella page at `/about-centella/`. Pablo handed me content blocks and the design system + brand-voice guidelines to apply; I laid them out.

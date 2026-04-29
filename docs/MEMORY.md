@@ -6,6 +6,18 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Title vs Role split on Speakers, Attendees, Team Profiles
+
+The Notion property `Title/Role` was doing double duty across three databases: it was both a person's standing job title (what goes on a business card) and their contextual function in the moment (what reads "Keynote Speaker" on an event card). Split into two properties — `Title` and `Role` — across Speakers, Attendees, and Team Profiles, and updated every consumer to match.
+
+Semantic: **Title = standing job title** (the stable line — "Strategy Director at Acme", "Co-founder, Centella"); **Role = contextual function** (the situational line — "Keynote Speaker", "Panel Moderator", "Founding Partner", "Advisor"). Title is what goes wherever the person's *identity* is the point: business cards, email signatures, the future team-page render. Role earns top billing on speaker cards because the page is about the event, not their LinkedIn.
+
+`SpeakerCard` now stacks Name → Role at body weight → Title muted → Organization muted. The `/tools/*` pages and the SVG templates (`business-card.svg`, `email-signature.svg`) render Title only; Role is exposed as a `{{role}}` template token but unused by the default designs. Attendee data carries both fields but no public renderer exists yet — placeholder for when notable-attendee callouts ship.
+
+Made the change *before* migrating the CMS to the corporate Notion workspace (planned, not yet executed) so the corporate databases are created with the clean schema from day one and there's no legacy data to bring along.
+
+---
+
 ## 2026-04-29 — Three new content pages: Advisory, Impact, About Centella (and the tone-coded section-panel pattern they share)
 
 The three sub-brand pages were placeholders. Today: full Advisory and Impact landing pages with content from Pablo, plus a brand-new umbrella page at `/about-centella/`. All three follow the same load-bearing structure pattern: a display hero, one or more sections framed as eyebrowless h2 + lede, panel grids that diagnose problems and present solutions, a CTA panel hosting `MailchimpForm` with a section-specific tag.

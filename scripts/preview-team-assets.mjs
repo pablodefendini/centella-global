@@ -24,7 +24,8 @@ const SIG = readFileSync(resolve('src/templates/email-signature.svg'), 'utf8');
 // edge cases (long names, missing pronouns, no website, etc.).
 const ctx = {
   name: 'Pablo Defendini',
-  titleRole: 'Co-founder',
+  title: 'Co-founder',
+  role: 'Strategy lead, Latin America',
   email: 'pablo@centellaglobal.com',
   phone: '+1 555 0100',
   pronouns: 'he/him',
