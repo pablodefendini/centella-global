@@ -4,10 +4,10 @@
  * Compiled to a Vercel Edge Function via `vercel({ edgeMiddleware: true })`
  * in astro.config.mjs (required because output mode is 'static').
  *
- * Protects:
- *   /tools/*           — the tools archive and per-tool pages
- *   /share/tools/*     — the generated PDFs and PNGs themselves, so a direct
- *                        download URL doesn't bypass the gate
+ * Protects /tools/* — the tools archive, per-tool pages (business-cards,
+ * email-signatures), AND the per-team-member generated PDFs and PNGs at
+ * /tools/<kind>/<slug>.<ext>. Page routes and assets are co-located under
+ * the same prefix, so a single startsWith check covers everything.
  *
  * Auth model: HTTP Basic Auth, single shared user + password from env
  * (`TOOLS_USERNAME` + `TOOLS_PASSWORD`). Staff and contractors share both.
@@ -23,7 +23,7 @@
 
 import { defineMiddleware } from 'astro:middleware';
 
-const PROTECTED_PREFIXES = ['/tools', '/share/tools'];
+const PROTECTED_PREFIXES = ['/tools'];
 
 function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PREFIXES.some(

@@ -2,9 +2,12 @@
 /**
  * Generates per-team-member branded assets from Notion at build time:
  *   - Business card PDF (vector, 85×55mm + 3mm bleed) at
- *     /share/tools/business-cards/<slug>.pdf
+ *     /tools/business-cards/<slug>.pdf
  *   - Email signature PNG (transparent, 2× density) at
- *     /share/tools/email-signatures/<slug>.png
+ *     /tools/email-signatures/<slug>.png
+ *
+ * Assets are co-located under /tools/* (alongside their listing pages) so
+ * the whole staff section sits under a single auth-gated prefix.
  *
  * Runs as a postbuild step (after `astro build`, before `copy-share.mjs`)
  * so the build output directories already exist. Outputs are written
@@ -12,7 +15,8 @@
  * pattern), and are intentionally NOT committed to git — Notion is the
  * source of truth and every Vercel deploy regenerates them fresh.
  *
- * Auth on /tools/* and /share/tools/* is enforced by src/middleware.ts.
+ * Auth on /tools/* (page routes AND generated assets) is enforced by
+ * src/middleware.ts.
  *
  * SVG templates live at src/templates/{business-card,email-signature}.svg
  * and use {{token}} interpolation. Available tokens: name, titleRole,
@@ -185,7 +189,7 @@ function renderPdf(svgString) {
 
 function writeAsset(toolSlug, personSlug, ext, buffer) {
   for (const target of TARGET_DIRS) {
-    const dir = join(target, 'share', 'tools', toolSlug);
+    const dir = join(target, 'tools', toolSlug);
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, `${personSlug}.${ext}`), buffer);
   }

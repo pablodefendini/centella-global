@@ -4,8 +4,9 @@
  * Active team member.
  *
  * The actual PNGs are generated at build time by scripts/build-team-assets.mjs
- * and live at /share/tools/email-signatures/<slug>.png. Both this page and the
- * generated assets are gated by src/middleware.ts.
+ * and live at /tools/email-signatures/<slug>.png — co-located with this page so
+ * the whole staff section (page + assets) sits under a single /tools prefix.
+ * Both are gated by src/middleware.ts.
  *
  * `prerender = false` is required: see src/pages/tools/index.astro for the
  * explanation.
@@ -51,7 +52,7 @@ const profiles = await getTeamProfiles();
               </div>
               <a
                 class="btn btn--secondary"
-                href={`/share/tools/email-signatures/${person.slug}.png`}
+                href={`/tools/email-signatures/${person.slug}.png`}
                 download
               >
                 Download PNG

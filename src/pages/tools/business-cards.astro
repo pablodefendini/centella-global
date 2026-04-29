@@ -4,8 +4,9 @@
  * Active team member.
  *
  * The actual PDFs are generated at build time by scripts/build-team-assets.mjs
- * and live at /share/tools/business-cards/<slug>.pdf. Both this page and the
- * generated assets are gated by src/middleware.ts.
+ * and live at /tools/business-cards/<slug>.pdf — co-located with this page so
+ * the whole staff section (page + assets) sits under a single /tools prefix.
+ * Both are gated by src/middleware.ts.
  *
  * `prerender = false` is required: see src/pages/tools/index.astro for the
  * explanation.
@@ -52,7 +53,7 @@ const profiles = await getTeamProfiles();
               </div>
               <a
                 class="btn btn--secondary"
-                href={`/share/tools/business-cards/${person.slug}.pdf`}
+                href={`/tools/business-cards/${person.slug}.pdf`}
                 download
               >
                 Download PDF

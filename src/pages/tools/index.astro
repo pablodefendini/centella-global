@@ -2,9 +2,10 @@
 /**
  * /tools — staff & contractor archive of brand-asset generators.
  *
- * This whole subtree (and /share/tools/*) is HTTP Basic Auth gated
- * by src/middleware.ts. If you're seeing this page, you're already
- * authenticated.
+ * This whole subtree is HTTP Basic Auth gated by src/middleware.ts.
+ * Both the page routes and the per-team-member generated assets at
+ * /tools/<kind>/<slug>.<ext> live under /tools/* and are covered by
+ * the same gate. If you're seeing this page, you're already authenticated.
  *
  * `prerender = false` is required: middleware that reads request headers
  * (the auth check) cannot run on prerendered routes. Each /tools page
