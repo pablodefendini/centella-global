@@ -6,6 +6,40 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 20 — April 29, 2026: print CSS round two — Safari/Quartz needs a `body::before` cover
+
+Pablo printed Option B to PDF this morning and the dark navy viewing-scaffold leaked through anyway, despite the `html, body { background: white !important }` swap I'd shipped in Entry 18. The smoking gun was in the PDF metadata: `Producer: macOS Version 26.3.1 Quartz PDFContext`. Safari "Save as PDF" — not Chrome.
+
+Two distinct rendering failures showed up in the same PDF:
+
+1. The dark scaffold filled every margin around the spreads. The `html, body { background: white !important }` rule wasn't winning. Quartz seems to keep the screen canvas/root background even when an `@media print` rule explicitly overrides it with `!important` AND with `print-color-adjust: exact`. This is, charitably, a Quartz quirk; less charitably, a longstanding Safari print bug.
+
+2. The Welcome — Hunt left page rendered as faint pink on top of dark navy, instead of cream paper with a faint pink wash. The `.welcome-left` background is a layered fill: `linear-gradient(180deg, rgba(248,200,213,0.06), rgba(251,247,240,0) 50%), var(--paper)`. Quartz preserved the gradient layer (so the pink hint at the top was visible) but stripped the underlying `var(--paper)` cream layer, exposing the scaffold beneath. Same root cause — the html/body bg override isn't being honored — surfacing in a much weirder visual artifact.
+
+The fix that works in Quartz: don't rely on overriding the canvas. Add a fixed-position `body::before` white cover instead. It's a real DOM-level paint layer with its own `print-color-adjust: exact`, which Quartz *does* render correctly. With `z-index: -1` it sits behind all content. Anywhere a real element's background gets stripped, it now falls through to white instead of the dark scaffold:
+
+```css
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: -1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+```
+
+Kept the existing `html, body { background: white !important }` rule alongside it — it works in Chrome and is harmless as a belt-and-suspenders. The `body::before` is doing the actual work for Safari/Quartz.
+
+Applied across all four Prime Movers options (A/B/C/D), re-ran `work:build` to mirror into `share/`. The MEMORY entry on print CSS now includes this Quartz fallback, so future client deliverables that use the dark-scaffold review pattern ship with both rules from the start.
+
+The wider lesson: **print CSS fixes need to be tested in the actual PDF tool the user will use**, not just in Chrome's print preview. Chrome's print engine is the friendly case; Safari/Quartz is the real-world case for anyone on macOS doing "Print → Save as PDF" from a browser. Going forward, smoke-test print output by generating an actual PDF in Safari before considering a print stylesheet finished.
+
+Pablo flagged a third Quartz miss in the same PDF, after the scaffold fix landed: the cover's pink → orchid → buttercup gradient was rendering as a sphere instead of a corner-to-corner wash. The cover-photo's base is `linear-gradient(135deg, ...)`, but a `::before` pseudo overlays two radial gradients — a white highlight at 20%/40% and a dark shadow at 70%/70% — blended in via `mix-blend-mode: overlay`. On screen that reads as a watercolor wash. Quartz doesn't support `mix-blend-mode`, so it drops the blend and the two radial gradients sit on top as opaque circles, creating the sphere artifact. Fix: `display: none` on `.cover-photo::before` in `@media print`. The base linear gradient is enough to read; the watercolor flourish was always screen-only ornamentation. Same lesson generalized in MEMORY: anything that depends on `mix-blend-mode`, `backdrop-filter`, or similar compositing features is screen-only and needs to be hidden in print, with the design holding up on its base layer alone.
+
+---
+
 ## Entry 19 — April 29, 2026: the first deploy hit two bugs that don't show up locally
 
 The site went up at `centella-global.vercel.app` and pretty much immediately surfaced two bugs I couldn't have caught with a local build, because both of them depend on Vercel's runtime being a different shape than `astro preview`.

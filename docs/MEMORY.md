@@ -32,6 +32,26 @@ Substitute `.spread` with whatever the printable element is (Option C uses `.h-p
 
 **The viewing scaffold convention itself.** Mockup files use a dark `html, body` background as the matte the spreads sit on for screen review. It's review chrome, not part of the artifact. Always pair it with a print stylesheet that flips it to white — never assume the user only views these on screen.
 
+**Update — Safari/Quartz needs a `body::before` fallback.** The `html, body { background: white !important }` swap works in Chrome's print engine but NOT in macOS Quartz PDFContext (Safari "Save as PDF"). Quartz preserves the screen html/body background even with `!important` and even with `print-color-adjust: exact`. The dark scaffold leaks through everywhere outside the spreads, AND it leaks through *inside* elements whose own backgrounds use a transparent-falloff gradient over a solid color (like `linear-gradient(..., transparent 50%), var(--paper)`) — Quartz preserves the gradient layer but strips the solid layer beneath, exposing the scaffold.
+
+**Quartz also drops `mix-blend-mode` entirely.** Option B's cover used a base linear gradient with a `::before` overlay of two radial gradients (white highlight, dark shadow) blended via `mix-blend-mode: overlay` for a watercolor wash. In Chrome's print engine this renders correctly; in Quartz the blend mode is ignored and the radial gradients sit on top as opaque circles, turning a corner-to-corner gradient into what reads as a "sphere." Generalized rule: anything that depends on `mix-blend-mode`, `backdrop-filter`, or other late-stage compositing features is screen-only and should be `display: none` (or have its blend mode neutralized) inside `@media print`. The base layer beneath the blended overlay should already carry the artifact's intent on its own — if it doesn't, the design is fragile to any non-Chrome PDF tool.
+
+**Reliable fix for the scaffold:** add a fixed-position `body::before` white cover in `@media print`:
+
+```css
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: -1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+```
+
+It's a real DOM-level paint layer (not the canvas), which Quartz renders correctly. With `z-index: -1` it sits behind all content — anywhere a real element's background gets stripped, it falls through to white instead of the dark scaffold. Bundle this with the existing `html, body { background: white !important }` rule (still useful for Chrome and as a belt-and-suspenders) so the print stylesheet works across all browsers/PDF tools.
+
 ---
 
 ## 2026-04-29 — First-deploy gotchas: Vercel adapter + root `api/` + dual output dirs

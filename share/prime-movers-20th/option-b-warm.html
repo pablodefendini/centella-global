@@ -499,9 +499,20 @@
 
   @media print {
     html, body { background: white !important; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    /* Safari/Quartz fallback: html/body bg overrides aren't reliable in macOS PDF
+       export. A fixed-position ::before paints a white "page" layer that Quartz
+       does honor, so any element whose own bg gets stripped falls through to
+       white instead of the dark viewing scaffold. */
+    body::before { content: ""; position: fixed; inset: 0; background: white; z-index: -1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .doc-header, .spread-label, .legend { display: none; }
     .spread { box-shadow: none; margin: 0; page-break-after: always; }
+    /* Decorative blend-mode overlays don't render correctly in macOS Quartz
+       PDFContext — mix-blend-mode is dropped and the radial gradients beneath
+       it become opaque "spheres" on top of the cover. The linear-gradient base
+       carries the cover's intent on its own; hide the watercolor flourish in
+       print. */
+    .cover-photo::before { display: none !important; }
   }
 </style>
 </head>
