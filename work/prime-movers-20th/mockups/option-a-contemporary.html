@@ -2,27 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Option A — Contemporary / Progressive · Prime Movers 20th</title>
+<title>Option A — Contemporary · Hunt Teal · Prime Movers 20th</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Centella palette — Violet + Global ("modern bloom")
-       Two families only. Brights are fills; body+accent text use family-dark. */
-    --paper: #F7EDFF;        /* --violet-light */
-    --paper-2: #ECE0F5;      /* deeper lavender */
-    --ink: #1E1A28;          /* --violet-dark */
-    --ink-soft: #524D5C;     /* violet-dark @ ~70% — 7.2:1 on paper */
-    --ink-faint: #8C8794;    /* violet-dark @ ~45% */
-    --accent: #C77DFF;       /* --violet — used as FILL only */
-    --accent-warm: #FF9500;  /* --global — used as FILL only */
-    --accent-deep: #1E1A28;  /* family-dark, accessible accent text */
-    --rule: rgba(30, 26, 40, 0.18);
-    --sans: "Inter", system-ui, sans-serif;
+    /* Warm paper, navy ink, ultramarine blocks, neon-yellow pop. Two fill
+       patterns: deep ultramarine takes cream-paper text on top; bright
+       neon-yellow takes ink text on top. */
+    --B-paper:    #F2F1ED;                    /* warm off-white */
+    --B-paper-2:  #E5E3DC;                    /* deeper warm neutral for box fills */
+    --B-ink:      #0A0E2C;                    /* near-black with deep navy cast */
+    --B-ultra:    #1B2A8C;                    /* ultramarine — accent labels, em phrases, key blocks */
+    --B-ultra-2:  #2C3FB8;                    /* lighter ultramarine — secondary blue */
+    --B-pop:      #E8FF3A;                    /* neon yellow — high-voltage pop / em on dark */
+    --B-rule:     rgba(10, 14, 44, 0.20);     /* hairline rules (ink @ 20%) */
+
+    /* Semantic aliases that the rest of the stylesheet keeps using. */
+    --paper:       var(--B-paper);
+    --paper-2:     var(--B-paper-2);
+    --ink:         var(--B-ink);
+    --ink-soft:    rgba(10, 14, 44, 0.72);    /* ~10:1 on paper — body */
+    --ink-faint:   rgba(10, 14, 44, 0.60);    /* ~4.9:1 on paper — labels, folios */
+    --accent:      var(--B-ultra);            /* feature fills — NOW takes paper text */
+    --accent-2:    var(--B-ultra-2);          /* secondary blue */
+    --accent-warm: var(--B-pop);              /* small chips + welcome panel — takes ink text */
+    --accent-deep: var(--B-ultra);            /* same as accent — already AA on paper for text */
+    --rule:        var(--B-rule);
+
+    --sans:    "Inter", system-ui, sans-serif;
     --display: "Inter Tight", "Inter", sans-serif;
-    --mono: "JetBrains Mono", monospace;
+    --mono:    "JetBrains Mono", monospace;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: #1a1a1c; color: var(--ink); font-family: var(--sans); }
@@ -77,8 +89,8 @@
   .cover-grid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(to right, rgba(30,26,40,0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(30,26,40,0.06) 1px, transparent 1px);
+      linear-gradient(to right, rgba(10,14,44,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,14,44,0.06) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
   }
@@ -88,6 +100,12 @@
     color: var(--ink); display: flex; gap: 14px; align-items: center;
   }
   .cover-mark .dot { width: 8px; height: 8px; background: var(--accent-warm); border-radius: 50%; }
+  /* Hunt logo as a quiet secondary mark on the cover. */
+  .cover-mark img { height: 22px; width: auto; display: block; opacity: 0.92; }
+  .cover-colophon-logo {
+    position: absolute; bottom: 28px; right: 48px;
+    height: 28px; width: auto; opacity: 0.85;
+  }
   .cover-tag {
     position: absolute; top: 48px; right: 48px;
     font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
@@ -99,16 +117,15 @@
     font-size: 168px; line-height: 0.85; letter-spacing: -0.045em;
     color: var(--ink);
   }
-  /* "th" superscript: small, can use bright violet fill on the lavender paper for the
-     inverse-pop, dark text. */
+  /* "th" superscript: small ultramarine chip on warm paper, paper-cream text — AAA. */
   .cover-display .super {
     font-size: 56px; vertical-align: super; font-weight: 600; letter-spacing: -0.02em;
-    color: var(--ink); background: var(--accent); padding: 0 14px; border-radius: 8px;
+    color: var(--paper); background: var(--accent); padding: 0 14px; border-radius: 8px;
   }
-  /* Cover band: bright violet with dark ink — 6.3:1. */
+  /* Cover band: deep ultramarine block with paper text — ~11:1, AAA. */
   .cover-band {
     position: absolute; left: 0; right: 0; bottom: 110px;
-    background: var(--accent); color: var(--ink);
+    background: var(--accent); color: var(--paper);
     padding: 18px 48px;
     display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: end;
   }
@@ -118,9 +135,9 @@
   .cover-band .band-meta { text-align: right; }
   .cover-band .b-name {
     font-family: var(--display); font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.2;
-    color: var(--ink); margin-bottom: 4px;
+    color: var(--paper); margin-bottom: 4px;
   }
-  .cover-band .b-tag { font-family: var(--mono); font-weight: 500; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(30,26,40,0.7); }
+  .cover-band .b-tag { font-family: var(--mono); font-weight: 500; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(242,241,237,0.7); }
   .cover-meta {
     position: absolute; left: 48px; right: 48px; bottom: 48px;
     display: flex; justify-content: space-between;
@@ -145,11 +162,20 @@
     font-size: 56px; line-height: 0.95; letter-spacing: -0.035em;
     margin: 0 0 24px; color: var(--ink);
   }
-  /* Accent phrase = bright violet swatch behind dark ink — 6.3:1 contrast,
-     the "cheery moment" inside an otherwise quiet headline. */
+  /* Accent phrase = ultramarine swatch behind cream-paper text — ~11:1 AAA.
+     The "em phrase" use of B-ultra; pulls the eye without shouting. */
   .h1 .accent {
-    color: var(--ink);
+    color: var(--paper);
     background: var(--accent);
+    padding: 0 0.18em;
+    border-radius: 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  /* Optional second highlight style: neon-yellow swatch with ink text. */
+  .h1 .pop {
+    color: var(--ink);
+    background: var(--B-pop);
     padding: 0 0.18em;
     border-radius: 6px;
     box-decoration-break: clone;
@@ -182,7 +208,7 @@
   }
   .welcome-left .top-mark {
     font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(30,26,40,0.6);
+    color: rgba(10,14,44,0.6);
   }
   .welcome-left .quote {
     font-family: var(--display); font-weight: 600;
@@ -192,10 +218,10 @@
   .welcome-left .quote .accent { color: var(--paper); -webkit-text-stroke: 0; background: var(--ink); padding: 0 8px; border-radius: 4px; }
   .welcome-left .attribution {
     font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(30,26,40,0.65); margin-top: 24px;
+    color: rgba(10,14,44,0.65); margin-top: 24px;
   }
   .welcome-left .attribution strong { color: var(--ink); font-weight: 600; }
-  .welcome-left .folio { color: rgba(30,26,40,0.5); }
+  .welcome-left .folio { color: rgba(10,14,44,0.5); }
   .signature-block {
     margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--rule);
     display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16px;
@@ -228,11 +254,11 @@
   .module .m-body {
     font-family: var(--sans); font-size: 10px; line-height: 1.5; color: var(--ink-soft);
   }
-  /* Bright violet fill with dark ink — 6.3:1. */
-  .module--accent { background: var(--accent); color: var(--ink); border-color: var(--accent); }
-  .module--accent .m-num, .module--accent .m-title { color: var(--ink); }
-  .module--accent .m-num { color: rgba(30,26,40,0.7); }
-  .module--accent .m-body { color: rgba(30,26,40,0.88); }
+  /* Ultramarine feature module — paper text on deep navy, AAA. */
+  .module--accent { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+  .module--accent .m-num, .module--accent .m-title { color: var(--paper); }
+  .module--accent .m-num { color: rgba(242,241,237,0.7); }
+  .module--accent .m-body { color: rgba(242,241,237,0.88); }
 
   .stat-row {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
@@ -257,7 +283,7 @@
   .bio-photo {
     width: 64px; height: 64px;
     background: var(--paper-2);
-    background-image: linear-gradient(135deg, var(--accent) 0%, var(--accent-warm) 50%, transparent 80%), repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(30,26,40,0.06) 4px, rgba(30,26,40,0.06) 5px);
+    background-image: linear-gradient(135deg, var(--accent) 0%, var(--accent-warm) 50%, transparent 80%), repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(10,14,44,0.06) 4px, rgba(10,14,44,0.06) 5px);
   }
   .bio-name {
     font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; line-height: 1.1;
@@ -297,28 +323,28 @@
   }
 
   /* ============ POCKET ============ */
-  /* Bright violet fill with dark ink — 6.3:1. */
+  /* Deep ultramarine fill with paper text — AAA. */
   .pocket-page {
-    background: var(--accent); color: var(--ink);
+    background: var(--accent); color: var(--paper);
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 56px 48px;
   }
   .pocket-page .top-mark {
     font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(30,26,40,0.7);
+    color: rgba(242,241,237,0.7);
   }
   .pocket-page .marker {
     font-family: var(--display); font-weight: 800;
     font-size: 96px; line-height: 0.9; letter-spacing: -0.04em;
-    color: var(--ink);
+    color: var(--paper);
   }
   .pocket-page .marker .arrow {
-    /* Sun-yellow arrow — global accent. Inset on violet for legibility. */
-    color: var(--paper); background: var(--accent-warm); padding: 0 12px; border-radius: 6px; font-weight: 800;
+    /* Neon-yellow chip with ink text — high-voltage pop on the navy block. */
+    color: var(--ink); background: var(--accent-warm); padding: 0 12px; border-radius: 6px; font-weight: 800;
   }
   .pocket-page .instruction {
     font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink); border-top: 1px solid rgba(30,26,40,0.3); padding-top: 16px;
+    color: var(--paper); border-top: 1px solid rgba(242,241,237,0.3); padding-top: 16px;
   }
   .pocket-visual {
     background: var(--paper-2);
@@ -356,8 +382,8 @@
     font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--ink); font-weight: 600; margin-bottom: 12px;
   }
-  .panel--accent { background: var(--accent); border-color: var(--accent); color: var(--ink); }
-  .panel--accent .panel-label { color: rgba(30,26,40,0.7); }
+  .panel--accent { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .panel--accent .panel-label { color: rgba(242,241,237,0.7); }
 
   /* ============ QUOTE BOX (saturated, contemporary) ============ */
   /* Default: deep ink ground with light paper text — 15:1. */
@@ -377,14 +403,14 @@
   }
   .quote-box .q-attribution {
     font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(247,237,255,0.7); margin-top: 12px;
+    color: rgba(242,241,237,0.7); margin-top: 12px;
   }
-  /* Invert: bright violet fill with dark ink text — 6.3:1. */
+  /* Invert: ultramarine fill with paper text — AAA. */
   .quote-box.invert {
-    background: var(--accent); color: var(--ink);
+    background: var(--accent); color: var(--paper);
   }
-  .quote-box.invert .q-text { color: var(--ink); }
-  .quote-box.invert .q-attribution { color: rgba(30,26,40,0.7); }
+  .quote-box.invert .q-text { color: var(--paper); }
+  .quote-box.invert .q-attribution { color: rgba(242,241,237,0.7); }
   .quote-box.invert::before { background: var(--accent-warm); }
 
   /* ============ AT-A-GLANCE LIST (Giovanna) ============ */
@@ -459,7 +485,7 @@
   }
   /* Coral-bright urgent row — uses --accent-warm for warmth. Dark ink text — 7.7:1. */
   .practical-row.urgent { background: var(--accent-warm); border-color: var(--accent-warm); color: var(--ink); }
-  .practical-row.urgent .p-label { color: rgba(30,26,40,0.7); }
+  .practical-row.urgent .p-label { color: rgba(10,14,44,0.7); }
   .practical-row.urgent .p-value { color: var(--ink); }
   .practical-row.full { grid-column: 1 / -1; }
   .practical-row .p-label {
@@ -481,16 +507,16 @@
 <body>
 
 <header class="doc-header">
-  <div class="opt">Option A — Contemporary / Progressive</div>
+  <div class="opt">Option A — Contemporary · Hunt Teal</div>
   <div class="meta">Prime Movers & the Next Generation · Meeting the Moment · 20th · Mockup for review</div>
 </header>
 
 <!-- =================== COVER =================== -->
-<div class="spread-label"><span class="num">01</span> <span>Front cover</span> <span class="desc">— single page, 6 × 9</span></div>
+<div class="spread-label"><span class="num">1</span> <span>Front cover</span> <span class="desc">— single page, 6 × 9</span></div>
 <div class="spread single">
   <div class="page cover">
     <div class="cover-grid"></div>
-    <div class="cover-mark"><span class="dot"></span> Hunt Alternatives</div>
+    <div class="cover-mark"><img src="data:image/png;base64,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" alt="Hunt Alternatives"></div>
     <div class="cover-tag">Vol. XX · 2026</div>
     <div class="cover-display">20<span class="super">th</span></div>
     <div class="cover-band">
@@ -508,7 +534,7 @@
 </div>
 
 <!-- =================== WELCOME — AMBASSADOR HUNT =================== -->
-<div class="spread-label"><span class="num">02</span> <span>Welcome — Ambassador Hunt</span> <span class="desc">— left: dark pull-quote panel · right: letter</span></div>
+<div class="spread-label"><span class="num">2</span> <span>Welcome — Ambassador Hunt</span> <span class="desc">— left: dark pull-quote panel · right: letter</span></div>
 <div class="spread">
   <div class="page left welcome-left">
     <div class="top-mark">From the Founder</div>
@@ -516,10 +542,9 @@
       <div class="quote">You are the room I keep building. Twenty years on, I still don't take it for <span class="accent">granted.</span></div>
       <div class="attribution"><strong>Ambassador Swanee Hunt</strong></div>
     </div>
-    <div class="folio">Welcome · 02</div>
+    <div class="folio">Welcome · 2</div>
   </div>
   <div class="page right">
-    <div class="eyebrow">Welcome</div>
     <h1 class="h1">Welcome to the <span class="accent">twentieth.</span></h1>
     <div class="body">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -530,15 +555,14 @@
       <div class="signature">Swanee</div>
       <div class="sig-meta">Ambassador<br>Swanee Hunt<br>Founder · Hunt Alternatives</div>
     </div>
-    <div class="folio"><span>Welcome</span><span>03</span></div>
+    <div class="folio"><span>Welcome</span><span>3</span></div>
   </div>
 </div>
 
 <!-- =================== WELCOME — GIOVANNA =================== -->
-<div class="spread-label"><span class="num">03</span> <span>Welcome — Giovanna Alvarez Negretti</span> <span class="desc">— left: practical letter · right: at-a-glance panel</span></div>
+<div class="spread-label"><span class="num">3</span> <span>Welcome — Giovanna Alvarez Negretti</span> <span class="desc">— left: practical letter · right: at-a-glance panel</span></div>
 <div class="spread">
   <div class="page left">
-    <div class="eyebrow">From the Convening Team</div>
     <h1 class="h1">Practical things, <span class="accent">upfront.</span></h1>
     <div class="body">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
@@ -549,10 +573,9 @@
       <div class="signature">Giovanna</div>
       <div class="sig-meta">Giovanna<br>Alvarez Negretti<br>Hunt Alternatives</div>
     </div>
-    <div class="folio"><span>Welcome</span><span>04</span></div>
+    <div class="folio"><span>Welcome</span><span>4</span></div>
   </div>
   <div class="page right">
-    <div class="eyebrow">At a Glance</div>
     <div class="panel">
       <div class="panel-frame">
         <div class="panel-label">The convening · key things</div>
@@ -566,15 +589,14 @@
         </ul>
       </div>
     </div>
-    <div class="folio"><span>At a Glance</span><span>05</span></div>
+    <div class="folio"><span>At a Glance</span><span>5</span></div>
   </div>
 </div>
 
 <!-- =================== THOUGHT PIECE — SWANEE =================== -->
-<div class="spread-label"><span class="num">04</span> <span>Thought piece — Swanee</span> <span class="desc">— essay across the spread, with quote box</span></div>
+<div class="spread-label"><span class="num">4</span> <span>Thought piece — Swanee</span> <span class="desc">— essay across the spread, with quote box</span></div>
 <div class="spread">
   <div class="page left">
-    <div class="eyebrow">A Reflection</div>
     <h1 class="h1" style="font-size: 56px; line-height: 0.95;">On <span class="accent">meeting</span><br>the moment.</h1>
     <div class="thought-byline">By Ambassador Swanee Hunt</div>
     <div class="thought-body">
@@ -582,7 +604,7 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in libero ut massa volutpat convallis. Vivamus pharetra posuere sapien, nec sagittis nulla efficitur eget. Donec id elit non mi porta gravida at eget metus.</p>
       <p>Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
     </div>
-    <div class="folio"><span>Thought Piece</span><span>06</span></div>
+    <div class="folio"><span>Thought Piece</span><span>6</span></div>
   </div>
   <div class="page right">
     <div class="thought-cont">
@@ -597,15 +619,14 @@
       <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Sed posuere consectetur est at lobortis.</p>
     </div>
     <div class="thought-sig">Swanee</div>
-    <div class="folio"><span>Thought Piece</span><span>07</span></div>
+    <div class="folio"><span>Thought Piece</span><span>7</span></div>
   </div>
 </div>
 
 <!-- =================== BIOS =================== -->
-<div class="spread-label"><span class="num">05</span> <span>Participant bios</span> <span class="desc">— sample spread, 4 entries each side, with quote box</span></div>
+<div class="spread-label"><span class="num">5</span> <span>Participant bios</span> <span class="desc">— sample spread, 4 entries each side, with quote box</span></div>
 <div class="spread">
   <div class="page left">
-    <div class="eyebrow">Prime Movers · A — H</div>
     <h1 class="h1" style="font-size:32px; margin-bottom: 8px;">Participants</h1>
     <div class="bio">
       <div class="bio-photo"></div>
@@ -630,7 +651,6 @@
     <div class="folio"><span>Participants</span><span>12</span></div>
   </div>
   <div class="page right">
-    <div class="eyebrow">Prime Movers · I — N</div>
     <h1 class="h1" style="font-size:32px; margin-bottom: 8px;">&nbsp;</h1>
     <div class="bio">
       <div class="bio-photo"></div>
@@ -662,10 +682,9 @@
 
 <!-- =================== CODE OF CONDUCT =================== -->
 <!-- =================== MAPS + PRACTICAL =================== -->
-<div class="spread-label"><span class="num">06</span> <span>Maps + Practical info</span> <span class="desc">— left: schematic map · right: practical info as box grid</span></div>
+<div class="spread-label"><span class="num">6</span> <span>Maps + Practical info</span> <span class="desc">— left: schematic map · right: practical info as box grid</span></div>
 <div class="spread">
   <div class="page left">
-    <div class="eyebrow">Where you are</div>
     <h1 class="h1" style="font-size: 32px; margin-bottom: 8px;">The Venue</h1>
     <div class="map-plate"></div>
     <div class="map-caption">
@@ -675,7 +694,6 @@
     <div class="folio"><span>Maps</span><span>22</span></div>
   </div>
   <div class="page right">
-    <div class="eyebrow">If you need anything</div>
     <h1 class="h1" style="font-size: 32px; margin-bottom: 8px;">Practical</h1>
     <div class="practical-grid">
       <div class="practical-row urgent full">
@@ -703,10 +721,9 @@
   </div>
 </div>
 
-<div class="spread-label"><span class="num">07</span> <span>Code of Conduct</span> <span class="desc">— numbered grid + quote box at bottom</span></div>
+<div class="spread-label"><span class="num">7</span> <span>Code of Conduct</span> <span class="desc">— numbered grid + quote box at bottom</span></div>
 <div class="spread">
   <div class="page left">
-    <div class="eyebrow">Convening Practice</div>
     <h1 class="h1">A code for <span class="accent">the room.</span></h1>
     <div class="body" style="margin-top:8px;">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -720,35 +737,35 @@
   <div class="page right">
     <div class="conduct-grid">
       <div class="conduct-row">
-        <div class="c-num">01</div>
+        <div class="c-num">1</div>
         <div class="c-text">
           <div class="c-title">Confidentiality</div>
           <div class="c-body">What is shared in the room stays in the room. Names, attributions, and specifics do not leave with you.</div>
         </div>
       </div>
       <div class="conduct-row">
-        <div class="c-num">02</div>
+        <div class="c-num">2</div>
         <div class="c-text">
           <div class="c-title">Generous attention</div>
           <div class="c-body">Listen before responding. Assume the speaker has spent more time on the question than you have.</div>
         </div>
       </div>
       <div class="conduct-row">
-        <div class="c-num">03</div>
+        <div class="c-num">3</div>
         <div class="c-text">
           <div class="c-title">Disagreement, not disrespect</div>
           <div class="c-body">Push hard on the idea, never on the person. Your strongest critique should land as a gift.</div>
         </div>
       </div>
       <div class="conduct-row">
-        <div class="c-num">04</div>
+        <div class="c-num">4</div>
         <div class="c-text">
           <div class="c-title">One mic at a time</div>
           <div class="c-body">No side conversations during plenaries. The room only works if everyone is in it.</div>
         </div>
       </div>
       <div class="conduct-row">
-        <div class="c-num">05</div>
+        <div class="c-num">5</div>
         <div class="c-text">
           <div class="c-title">Care for the convening</div>
           <div class="c-body">Phones away, devices down, presence on. Twenty years has bought us the right to be undistracted.</div>
@@ -760,7 +777,7 @@
 </div>
 
 <!-- =================== POCKET =================== -->
-<div class="spread-label"><span class="num">08</span> <span>Agenda pocket page</span> <span class="desc">— left: bold pointer · right: inside back cover with pocket</span></div>
+<div class="spread-label"><span class="num">8</span> <span>Agenda pocket page</span> <span class="desc">— left: bold pointer · right: inside back cover with pocket</span></div>
 <div class="spread">
   <div class="page left pocket-page">
     <div class="top-mark">The Schedule</div>
@@ -775,14 +792,15 @@
 <aside class="legend">
   <h3>Option A — at a glance</h3>
   <dl>
-    <dt>Direction</dt><dd>Contemporary / progressive, brightened. Reads as forward-looking, current-movement, modern philanthropic publishing. Closest reference: Aperture, MIT Press, contemporary foundation reports — but in spring colors.</dd>
+    <dt>Direction</dt><dd>Contemporary / progressive. Reads as forward-looking, current-movement, modern philanthropic publishing — warm paper, navy ink, ultramarine fills, neon-yellow pop. Closest reference: Aperture, MIT Press, contemporary foundation reports — but with a punk-yearbook electric streak.</dd>
     <dt>Type pairing</dt><dd>Inter Tight (display, heavy weights for impact) + Inter (body) + JetBrains Mono (eyebrows, folios, technical labels).</dd>
-    <dt>Palette</dt><dd><strong>Centella violet + global.</strong> Pale lavender paper (<code>--violet-light</code> #F7EDFF), violet-dark ink (<code>--violet-dark</code> #1E1A28) — body text passes WCAG AAA at 15:1. Bright violet (<code>--violet</code> #C77DFF) and bright orange (<code>--global</code> #FF9500) used as <em>fill colors</em> only — never as small text on the paper. Reverse type inside bright fills uses violet-dark for AAA contrast (6.3–7.7:1).</dd>
-    <dt>Two-family rule</dt><dd>The composition holds to Centella's "no more than two color families" guidance: violet and global, full stop.</dd>
-    <dt>Signatures</dt><dd>Tight grid + hairline rules on bios. Mono numerals as structural device throughout. Bright orange welcome panel (was dark) and bright violet pocket page give the brochure two saturated "feature" moments. Headline accent words sit inside violet swatches — the cheery moment in an otherwise quiet headline. Bio thumbnails use a violet→orange duotone wash.</dd>
-    <dt>Boxes</dt><dd>Centella panel pattern adapted to a contemporary aesthetic: 8px radius, hard edges, no inner frame. Urgent items shift to bright orange fill (was ultramarine). Practical info uses a 2-column grid of boxes; full-width boxes flag the things that should not be missed.</dd>
-    <dt>Quotes</dt><dd>Sprinkled in three places — thought piece (right, deep-ink box with orange edge), bios (right, bright violet fill with dark text), conduct (left, deep-ink box). Quotes are an active design element here, not decoration.</dd>
-    <dt>What participants will feel</dt><dd>Now, not nostalgia — and not solemn. The 20-year mark as momentum and warmth, not monument. Closer to a current-issue magazine in spring colors than a commemorative book.</dd>
+    <dt>Palette</dt><dd><strong>B-* tokens.</strong> Warm off-white paper (<code>#F2F1ED</code>) and deeper warm neutral (<code>#E5E3DC</code>) for box fills. Near-black with deep navy cast (<code>#0A0E2C</code>) for ink — body text passes WCAG AAA at 16.7:1 on paper. Ultramarine (<code>#1B2A8C</code>) carries accent labels, em phrases and key blocks; lighter ultramarine (<code>#2C3FB8</code>) is the secondary blue. Neon yellow (<code>#E8FF3A</code>) is the high-voltage pop — small chips, the welcome panel, the urgent row.</dd>
+    <dt>Fill patterns</dt><dd>Two layered fill behaviors. <code>--B-ultra</code> is a deep navy and takes <em>cream-paper text</em> on top (cover-band, accent module, panel--accent, pocket page, quote--invert, headline accent chips). <code>--B-pop</code> is a bright neon-yellow and takes <em>ink text</em> on top (welcome panel, urgent row, agenda arrow chip, .h1 .pop highlight).</dd>
+    <dt>Contrast</dt><dd>ink on paper 16.7:1 · paper on ultra 10.6:1 · ink on pop 16.9:1 · paper on ultra-2 7.4:1 · ultra on paper (text) 10.6:1 · all AAA. ink-soft (rgba .72) 7.4:1 AAA · ink-faint (rgba .60) 4.9:1 AA.</dd>
+    <dt>Signatures</dt><dd>Tight grid + hairline rules on bios. Mono numerals as structural device throughout. Bright neon-yellow welcome panel and deep-navy pocket page give the brochure two saturated "feature" moments — yellow warmth on one side, navy gravity on the other. Headline accent words sit inside ultramarine swatches with cream text. A second <code>.pop</code> highlight class is available for neon-yellow chips with dark ink.</dd>
+    <dt>Boxes</dt><dd>Centella panel pattern: 8px radius, hard edges, no inner frame. Urgent items use neon-yellow fill with ink text. Practical info uses a 2-column grid of boxes; full-width boxes flag the things that should not be missed.</dd>
+    <dt>Quotes</dt><dd>Three placements — thought piece (right, deep-ink box with neon-yellow edge), bios (right, ultramarine fill with cream text), conduct (left, deep-ink box). Quotes are an active design element here, not decoration.</dd>
+    <dt>What participants will feel</dt><dd>Now, not nostalgia — and not solemn. The 20-year mark as momentum and warmth, not monument. Foundation rigor in the navy and the warm paper; high-voltage moments from the neon-yellow.</dd>
   </dl>
 </aside>
 

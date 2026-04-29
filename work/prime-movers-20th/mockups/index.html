@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Prime Movers 20th — Three Design Directions</title>
+<title>Prime Movers 20th — Four Design Directions</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +15,11 @@
     --ink-soft: #b8b1a0;
     --ink-faint: #7a7568;
     --rule: #2d2a23;
-    /* Each option's signature accent — tied to its Centella family pair. */
-    --contemporary: #C77DFF; /* A — Centella violet */
-    --warm: #FF6B6B;          /* B — Centella networking (coral) */
-    --classical: #FF66C4;     /* C — Centella tech (bright pink) */
+    /* Each option's signature accent — pulled from that option's own palette. */
+    --contemporary: #E8FF3A; /* A — Contemporary: neon-yellow pop on warm paper */
+    --warm:         #F8C8D5; /* B — Spring Bloom: cherry blossom */
+    --classical:    #FF7A1F; /* C — Heritage / WWP: punchy orange */
+    --hunt:         #0581A9; /* D — Hunt Compass: brand teal (single blue in the compass) */
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Inter", system-ui, sans-serif; overflow-x: hidden; }
@@ -60,7 +61,8 @@
   }
   .header .caveats strong { color: var(--ink); font-weight: 600; }
 
-  .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 56px; }
+  .options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 56px; }
+  @media (max-width: 1100px) { .options { grid-template-columns: 1fr 1fr; } }
   .option {
     background: var(--bg-2); padding: 28px;
     border-top: 3px solid currentColor;
@@ -73,6 +75,7 @@
   .option.opt-a { color: var(--contemporary); }
   .option.opt-b { color: var(--warm); }
   .option.opt-c { color: var(--classical); }
+  .option.opt-d { color: var(--hunt); }
 
   .option .badge {
     font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
@@ -102,10 +105,16 @@
   }
   .option .open span { color: var(--bg); }
 
-  /* Per-option swatch palettes — Centella tokens. */
-  .opt-a .s-paper { background: #F7EDFF; } .opt-a .s-ink { background: #1E1A28; } .opt-a .s-accent { background: #C77DFF; } .opt-a .s-warm { background: #FF9500; }
-  .opt-b .s-paper { background: #FFF3E1; } .opt-b .s-ink { background: #22181C; } .opt-b .s-terracotta { background: #FF6B6B; } .opt-b .s-teal { background: #FF9500; }
-  .opt-c .s-paper { background: #FFE6F5; } .opt-c .s-ink { background: #2A1522; } .opt-c .s-accent { background: #FF66C4; } .opt-c .s-gold { background: #FF9500; }
+  /* Per-option swatch palettes. */
+  /* A — Contemporary: warm paper, navy ink, ultramarine, neon-yellow pop. */
+  .opt-a .s-paper { background: #F2F1ED; } .opt-a .s-ink { background: #0A0E2C; } .opt-a .s-accent { background: #1B2A8C; } .opt-a .s-warm { background: #E8FF3A; }
+  /* B — Spring Bloom: cream paper, aubergine ink, blossom, leaf, wisteria, buttercup. */
+  .opt-b .s-paper { background: #FBF7F0; } .opt-b .s-ink { background: #2C2A4A; } .opt-b .s-terracotta { background: #F8C8D5; } .opt-b .s-teal { background: #C5DDB8; }
+  /* C — Heritage / WWP 2001 (punchier): sunny cream, navy ink, orange + amber + lime band fills. */
+  .opt-c .s-paper { background: #FFFAEC; } .opt-c .s-ink { background: #1B3A52; } .opt-c .s-accent { background: #FF7A1F; } .opt-c .s-gold { background: #FFC130; } .opt-c .s-leaf { background: #B8DD2F; }
+  /* D — Hunt Compass: six of the ten compass colors representing the full set. */
+  .opt-d .s-d1 { background: #0581A9; } .opt-d .s-d2 { background: #8ED1FC; } .opt-d .s-d3 { background: #FCB900; }
+  .opt-d .s-d4 { background: #EB5D85; } .opt-d .s-d5 { background: #9B51E0; } .opt-d .s-d6 { background: #00D084; }
 
   .section { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
   .section:last-child { border-bottom: none; }
@@ -130,12 +139,12 @@
     background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; color: #d4cab2;
   }
 
-  /* Side-by-side comparison grid (3 options) */
+  /* Side-by-side comparison grid (4 options) */
   .grid3 {
-    display: grid; grid-template-columns: 160px repeat(3, 1fr); gap: 16px;
+    display: grid; grid-template-columns: 140px repeat(4, 1fr); gap: 14px;
     border-top: 1px solid var(--rule); margin-top: 16px;
   }
-  .grid3 .cell { padding: 12px 0; font-size: 13px; line-height: 1.5; border-bottom: 1px solid var(--rule); }
+  .grid3 .cell { padding: 12px 0; font-size: 12px; line-height: 1.5; border-bottom: 1px solid var(--rule); }
   .grid3 .cell.label {
     font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--ink-faint); font-weight: 500; padding-right: 16px;
@@ -143,12 +152,13 @@
   .grid3 .cell.body { color: var(--ink); }
   .grid3 .col-head {
     padding: 8px 0 12px; font-family: "Inter", sans-serif; font-size: 11px;
-    letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
     border-bottom: 1px solid var(--rule);
   }
   .grid3 .col-head.a { color: var(--contemporary); }
   .grid3 .col-head.b { color: var(--warm); }
   .grid3 .col-head.c { color: var(--classical); }
+  .grid3 .col-head.d { color: var(--hunt); }
 
   .footnote {
     font-size: 12px; color: var(--ink-faint); margin-top: 56px; padding-top: 24px;
@@ -182,40 +192,48 @@
 <div class="container">
 
 <header class="header">
-  <h1>Three design <em>directions</em>.</h1>
-  <p class="lede">Three directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers &amp; the Next Generation, Meeting the Moment, the Twentieth. Each option carries the same section list and the same content slots; what varies is typography, palette, and structural register.</p>
+  <h1>Four design <em>directions</em>.</h1>
+  <p class="lede">Four directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers &amp; the Next Generation, Meeting the Moment, the Twentieth. Each option carries the same section list and the same content slots; what varies is typography, palette emphasis, and structural register.</p>
   <div class="caveats">
     <strong>What you're looking at, and what you're not.</strong> All copy in these mockups is placeholder — including participant names. Bios, welcomes, the thought piece, even the names in the bio grids are stand-ins until real content lands. <strong>Nothing here is typeset for production.</strong> These are layout and typography studies meant to be reacted to, not proofed.
   </div>
   <div class="caveats" style="margin-top: 12px;">
-    <strong>Palette revision — bright Centella, light grounds.</strong> Each option now sources its color from the Centella token system (paired families on light variants), kept to two color families per composition. Paper grounds are pale tints (lavender, warm cream, pink); brights (violet, coral, pink, orange) are deployed as <em>fills</em> only — accent text is dark-on-bright or family-deepened to keep WCAG 2.1 AA on every block. Body copy clears AAA (≥14:1) on all three.
+    <strong>Palettes — four distinct registers.</strong> Each option carries its own palette logic. <strong>A</strong> — warm off-white + deep navy ink + ultramarine and neon-yellow fills (foundation-rigorous with high-voltage moments). <strong>B</strong> — soft cream + deep aubergine ink + five pastel spring hues (rebirth, botanical). <strong>C</strong> — a punchier rendering of the original <em>Women Waging Peace</em> 2001 program book: sunny cream paper, navy display ink for type, three saturated band colors (orange, amber, lime green) lifted from the cover, warm amber decorative rules. <strong>D</strong> — white paper + Hunt-brown ink + a ten-color compass drawn from Swanee Hunt&rsquo;s current digital identity, with the logo as cover device. Body copy clears WCAG AAA on all four; brights are fills with dark text on top, or decorative non-text glyphs.
   </div>
 </header>
 
 <section class="options">
   <a class="option opt-a" href="option-a-contemporary.html">
-    <div class="badge">Option A · Violet + Global</div>
+    <div class="badge">Option A · Contemporary</div>
     <h2 class="name">Contemporary, <em>progressive.</em></h2>
-    <div class="feel">Now, not nostalgia, and not solemn. The 20-year mark as momentum and warmth — pale lavender pages with bright violet and orange feature panels.</div>
+    <div class="feel">Now, not nostalgia — and not solemn. The 20-year mark as momentum. Warm off-white paper, deep navy ink, ultramarine blocks, neon-yellow pop.</div>
     <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-warm"></div></div>
     <div class="meta">Inter Tight · Inter · JetBrains Mono (labels)</div>
     <div class="open"><span>View all eight spreads →</span></div>
   </a>
   <a class="option opt-b" href="option-b-warm.html">
-    <div class="badge">Option B · Networking + Global</div>
-    <h2 class="name">Warm, <em>human.</em></h2>
-    <div class="feel">Affection, with sunshine. The 20-year mark as the people in the room — warm cream pages, coral and orange fills, sunset cover.</div>
+    <div class="badge">Option B · Spring Bloom</div>
+    <h2 class="name">Warm, <em>pastel.</em></h2>
+    <div class="feel">Twenty years as rebirth. Soft cream paper, deep aubergine ink, five pastel spring hues — cherry blossom, fresh leaf, robin&rsquo;s-egg sky, wisteria, daffodil.</div>
     <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-terracotta"></div><div class="swatch s-teal"></div></div>
     <div class="meta">Lora · Source Serif 4 · Inter (labels)</div>
     <div class="open"><span>View all eight spreads →</span></div>
   </a>
   <a class="option opt-c" href="option-c-classical.html">
-    <div class="badge">Option C · Tech + Global</div>
-    <h2 class="name">Classical, <em>editorial.</em></h2>
-    <div class="feel">Privately published monograph — in spring blossom colors. Ornamental frame, Roman numerals, sun-wash cover, deepened pink for accent text.</div>
-    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-gold"></div></div>
+    <div class="badge">Option C · Heritage · WWP 2001</div>
+    <h2 class="name">Heritage, <em>warm.</em></h2>
+    <div class="feel">Punchier rendering of the original Women Waging Peace 2001 program book — sunny cream paper, navy display ink, three saturated band colors (orange, amber, lime green) lifted directly from the cover. Warm amber rules instead of cool navy ones. The 20-year mark by way of its origin, keyed up.</div>
+    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-gold"></div><div class="swatch s-leaf"></div></div>
     <div class="meta">Cormorant Garamond · Inter (labels)</div>
     <div class="open"><span>View all fourteen pages →</span></div>
+  </a>
+  <a class="option opt-d" href="option-d-hunt-branded.html">
+    <div class="badge">Option D · Hunt Compass</div>
+    <h2 class="name">Hunt-branded, <em>compass.</em></h2>
+    <div class="feel">Direct extension of Swanee Hunt&rsquo;s identity. Logo as cover device and inner-page mark, ten compass colors as section markers, Open Sans throughout.</div>
+    <div class="swatches"><div class="swatch s-d1"></div><div class="swatch s-d2"></div><div class="swatch s-d3"></div><div class="swatch s-d4"></div><div class="swatch s-d5"></div><div class="swatch s-d6"></div></div>
+    <div class="meta">Open Sans · Logo as device</div>
+    <div class="open"><span>View all eight spreads →</span></div>
   </a>
 </section>
 
@@ -226,66 +244,96 @@
     <div class="col-head a">A · Contemporary</div>
     <div class="col-head b">B · Warm</div>
     <div class="col-head c">C · Classical</div>
+    <div class="col-head d">D · Hunt-Branded</div>
 
     <div class="cell label">Reads as</div>
     <div class="cell body">Forward-looking, current movement</div>
-    <div class="cell body">Relationship-forward, the room itself</div>
+    <div class="cell body">Affectionate, hopeful, garden-soft</div>
     <div class="cell body">Institutional weight, milestone occasion</div>
+    <div class="cell body">Continuity with Hunt&rsquo;s digital identity</div>
 
-    <div class="cell label">Reference</div>
-    <div class="cell body">Aperture, MIT Press, contemporary foundation reports</div>
-    <div class="cell body">Aperture, Magnum photo books, warmer foundation pubs</div>
-    <div class="cell body">NYRB, university press monograph, privately published</div>
+    <div class="cell label">Color emphasis</div>
+    <div class="cell body">Ultramarine fills + neon-yellow pop</div>
+    <div class="cell body">Five pastels — blossom, leaf, sky, wisteria, daffodil</div>
+    <div class="cell body">Hunt green + gold</div>
+    <div class="cell body">Eleven compass colors</div>
+
+    <div class="cell label">Logo treatment</div>
+    <div class="cell body">Logo on cover-mark (top-left)</div>
+    <div class="cell body">Logo in cover-meta strip</div>
+    <div class="cell body">Logo on cover bottom + title page</div>
+    <div class="cell body"><strong>Logo as cover device</strong></div>
 
     <div class="cell label">Format</div>
     <div class="cell body">Facing spread, 12×9</div>
     <div class="cell body">Facing spread, 12×9</div>
     <div class="cell body">Single page, 6×9</div>
+    <div class="cell body">Facing spread, 12×9</div>
 
     <div class="cell label">Pages shown</div>
     <div class="cell body">8 spreads</div>
     <div class="cell body">8 spreads</div>
     <div class="cell body">14 pages</div>
+    <div class="cell body">8 spreads</div>
 
     <div class="cell label">Display type</div>
     <div class="cell body">Inter Tight, heavy weight</div>
     <div class="cell body">Lora italic-forward</div>
     <div class="cell body">Cormorant Garamond, italic emphasis</div>
+    <div class="cell body">Open Sans Light (300), display-tracked</div>
 
     <div class="cell label">Body</div>
     <div class="cell body">Inter, ragged-right, modular blocks</div>
     <div class="cell body">Source Serif 4, generous leading</div>
     <div class="cell body">Cormorant Garamond, justified with hyphenation</div>
+    <div class="cell body">Open Sans</div>
 
-    <div class="cell label">Palette</div>
-    <div class="cell body">Centella violet + global — pale lavender paper, violet-dark ink, bright violet & orange fills</div>
-    <div class="cell body">Centella networking + global — warm cream paper, deep wine ink, coral & orange fills</div>
-    <div class="cell body">Centella tech + global — pale pink paper, deep plum ink, bright pink & orange fills</div>
+    <div class="cell label">Paper / ground</div>
+    <div class="cell body">Warm off-white #F2F1ED</div>
+    <div class="cell body">Soft cream #FBF7F0</div>
+    <div class="cell body">Pale ivory #FBFCF7</div>
+    <div class="cell body">White #FFFFFF</div>
+
+    <div class="cell label">Ink</div>
+    <div class="cell body">Navy-cast near-black #0A0E2C</div>
+    <div class="cell body">Deep aubergine #2C2A4A</div>
+    <div class="cell body">Deepest brown #200C0A</div>
+    <div class="cell body">Hunt brown #3E1913</div>
 
     <div class="cell label">Body contrast</div>
-    <div class="cell body">15:1 (AAA)</div>
-    <div class="cell body">15.8:1 (AAA)</div>
-    <div class="cell body">14.6:1 (AAA)</div>
+    <div class="cell body">16.7:1 (AAA)</div>
+    <div class="cell body">12.8:1 (AAA)</div>
+    <div class="cell body">18.2:1 (AAA)</div>
+    <div class="cell body">15.5:1 (AAA)</div>
+
+    <div class="cell label">Accent text</div>
+    <div class="cell body">Ultra #1B2A8C (10.6:1)</div>
+    <div class="cell body">Blossom-deep #883A5C (7.0:1)</div>
+    <div class="cell body">Green-deep #0E6E55 (6.0:1)</div>
+    <div class="cell body">Compass-deep variants per section</div>
 
     <div class="cell label">Cover device</div>
-    <div class="cell body">Asymmetric grid, oversized "20<sup>th</sup>" with bright violet swatch, saturated band</div>
-    <div class="cell body">Photo-led with sunset gradient (coral → orange → wine) and serif headline plate beneath</div>
-    <div class="cell body">Ornamental double-frame, "MMVI · MMXXVI" Roman dates, soft orange sun-wash</div>
+    <div class="cell body">Asymmetric grid, "20<sup>th</sup>" with ultramarine chip, navy band</div>
+    <div class="cell body">Spring-sunrise gradient (blossom → wisteria → buttercup) and serif headline plate</div>
+    <div class="cell body">Ornamental double-frame, "MMVI · MMXXVI" Roman dates, orange / amber / lime band wash quoting the WWP cover</div>
+    <div class="cell body"><strong>Swanee Hunt logo</strong>, occasion bar in teal-deep on gold rules, 11-dot compass strip</div>
 
     <div class="cell label">Box motif</div>
-    <div class="cell body">Modular blocks, mono labels, stat rows; bright orange welcome panel + bright violet pocket page</div>
-    <div class="cell body">Italic numerals, ornament glyphs, photo-forward bios; coral fills on emphasis & venue pill</div>
-    <div class="cell body">Outset label cut into top border, deep plum inner rule; gold roman numeral on dark divider</div>
+    <div class="cell body">Modular blocks, mono labels, stat rows; neon-yellow welcome panel + ultramarine pocket</div>
+    <div class="cell body">Italic numerals, ornament glyphs, photo-forward bios; pastel washes on emphasis</div>
+    <div class="cell body">Outset label cut into top border, warm amber rules; lime / orange / amber roman numerals</div>
+    <div class="cell body">Quiet single-rule frames with colored 4px section-rule (one of ten)</div>
 
     <div class="cell label">Quote treatment</div>
-    <div class="cell body">Inverted dark box with bright orange edge; bright violet alt-fill with dark text</div>
-    <div class="cell body">Italic, coral inner frame, Lora display; coral open-quote glyph</div>
-    <div class="cell body">Centered italic, double-rule top + single below; deepened-pink open-quote</div>
+    <div class="cell body">Inverted dark box with neon-yellow edge; ultramarine alt-fill with cream text</div>
+    <div class="cell body">Italic, mauve inner frame, Lora display; blossom open-quote glyph</div>
+    <div class="cell body">Centered italic, double-rule top + single below; deepened-orange open-quote</div>
+    <div class="cell body">Open Sans italic on faint paper-2, with coral, purple, orange, or blue open-quote glyph</div>
   </div>
 </section>
 
 <section class="section">
-  <h2>What's the same in all three</h2>
+  <h2>What&rsquo;s the same in all four</h2>
   <p><strong>Trim &amp; format.</strong> 6×9 portrait, saddle-stitched, ~28–36pp depending on bio length. Pocket on the inside back cover holds a separately-printed agenda insert — lets the body of the book go to the printer early while the agenda stays fluid until morning of.</p>
   <h2>Section order</h2>
   <ol>
@@ -303,7 +351,7 @@
   </ol>
 </section>
 
-<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code>. Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser's print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
+<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code> · <code>option-d-hunt-branded.html</code>. Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser&rsquo;s print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
 
 </div>
 </body>
