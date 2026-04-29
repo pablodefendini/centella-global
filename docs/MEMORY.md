@@ -6,6 +6,20 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — `share/` directory for standalone HTML outputs
+
+Established a convention: any self-contained HTML artifact produced for sharing — visual explainers, one-pagers, ad-hoc decks built outside the `npm run deck:standalone` pipeline, exported reports — goes in `share/` at the repo root, not in the repo root itself or in ad-hoc paths.
+
+**Why:** the repo is going to become the Centella website. Files placed at predictable static-asset paths now will already be reachable as URLs once the site is live, with no migration or reorganization. Until then, `share/` is the local publish tray. This also reframes the "how do I share an HTML file via Slack so it doesn't show as a code preview" problem — the answer becomes "host it from the site" once the repo is deployed; in the meantime, zip-and-send works for one-offs.
+
+**Why not `public/`:** `public/` is Astro's static-asset root for the site build (favicons, hero media, per-deck asset folders). It's part of the site bundle and follows Astro's conventions. `share/` is a publish tray for self-contained documents that aren't structurally part of the site shell — they're documents that happen to be HTML. Keeping them separate now means we can decide per-file whether something promotes into a real Astro page later.
+
+**What's not migrating yet:** the `scripts/inline-deck.mjs` standalone deck export still writes `<slug>-standalone.html` at the repo root. Updating it to write to `share/` is the right move next time we touch that pipeline; not worth a one-line change in isolation. CLAUDE.md flags this so it doesn't get lost.
+
+**Materialized:** `share/.gitkeep` so the directory exists in the repo (Git ignores empty directories).
+
+---
+
 ## 2026-04-28 — Bilingual presentation decks: duplicate file, no i18n abstraction
 
 Built an English version of the NGL Barcelona deck (`src/pages/presentations/ngl-barcelona-en.astro`) alongside the Spanish original. The convention going forward: when a deck needs another language, **duplicate the `.astro` file, suffix the slug with the language code (e.g. `-en`), and translate the strings inline.** Don't introduce an i18n abstraction (no `src/i18n/`, no string tables, no shared partials).

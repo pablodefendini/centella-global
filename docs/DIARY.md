@@ -6,6 +6,18 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 15 — April 29, 2026: a `share/` directory for standalone HTML outputs
+
+Small convention move, but worth recording so it doesn't drift. The friction was that whenever I share a self-contained HTML file (one of the standalone decks, a visual explainer, a one-pager) in Slack, Slack unfurls it as a code preview instead of treating it as something a person can open. The first instinct was to bolt on a tiny hosting layer — drag-drop into tiiny.host, run surge, push to a Gist with raw.githack — but every one of those is a workaround for a thing this repo will eventually solve on its own. Once the site is live on Vercel, anything that lives in this repo at a predictable path is already a URL. So the answer isn't "set up hosting"; it's "put the files where the future site can pick them up."
+
+The convention: any standalone HTML produced for sharing goes in `share/` at the repo root. Not `public/` — `public/` is Astro's static-asset root and is structurally part of the site build (favicons, hero media, per-deck asset folders). `share/` is a publish tray, a place for documents that happen to be HTML. Keeping them separate means we can decide per-file whether something graduates into a real Astro page later. Until the site is live, the workaround for Slack is just zipping the file before sending — Slack stops trying to preview a `.zip` and treats it as a download, which is crude but works.
+
+One thing I'm flagging for later: `scripts/inline-deck.mjs` still writes `<slug>-standalone.html` at the repo root. The right move is to point it at `share/`, but I didn't want to ship a one-line code change in a docs commit. Both `CLAUDE.md` and `docs/MEMORY.md` note the misalignment so it doesn't get lost. Next time we touch the deck pipeline, that's the cleanup.
+
+Updated `CLAUDE.md` (directory tree + a Patterns bullet pointing at the convention), `docs/MEMORY.md` (decision log entry with the why, including why not `public/`), and added `share/.gitkeep` so the directory exists in git. The auto-memory layer also has a feedback note so future sessions default to this path without me having to re-explain.
+
+---
+
 ## Entry 14 — April 28, 2026: NGL Barcelona — small Spanish polish, dedicated Programa Piloto slide, English translation
 
 Two passes on the NGL Barcelona deck, picking up from Entry 10.

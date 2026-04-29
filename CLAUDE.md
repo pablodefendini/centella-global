@@ -67,6 +67,12 @@ public/
 ├── media/hero/               # Homepage hero: WebP poster + 540p/720p MP4s (regenerate via npm run media:hero)
 └── presentations/[slug]/     # Per-deck assets (fonts, images) referenced via absolute /presentations/... URLs
 
+share/                        # Standalone HTML outputs meant to be opened in a browser or shared as files —
+                              # decks (`<slug>-standalone.html`), one-pagers, visual explainers, exported reports.
+                              # Future-site-ready: when the repo becomes the live site, files here are already at
+                              # predictable static URLs. Not the same as `public/` — `public/` is Astro's static
+                              # asset root for the site build; `share/` is a publish tray for self-contained docs.
+
 scripts/
 ├── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
 └── inline-deck.mjs           # Bundles a built deck into a single self-contained HTML file
@@ -116,7 +122,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Notion block rendering** uses a custom block-to-HTML mapper in `src/lib/notion.ts` (or a dedicated `blocks.ts` if it gets big). This is simpler than pulling in a full rendering library and gives us control over the HTML output.
 - **Presentation decks ship at `/presentations/[slug]/`.** One `.astro` file per deck under `src/pages/presentations/`, using the `Presentation.astro` layout (full-bleed, no site chrome). Inline `<style>` blocks need `is:global`; inline `<script>` blocks need `is:inline`, so Astro doesn't scope-rewrite or bundle deck-internal CSS/JS. Per-deck assets go in `public/presentations/[slug]/assets/` and are referenced with absolute paths.
 - **Deck scaling is letterboxed.** The `<deck-stage>` web component renders slides at their authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` so the canvas always fits the viewport with bars on the short axis — never clips. Don't size slide content in `vh`/`vw` or assume the viewport equals the design canvas.
-- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` produces `<slug>-standalone.html` at the repo root with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network.
+- **Standalone deck export.** `npm run deck:standalone -- <slug>` rebuilds the site, then `scripts/inline-deck.mjs` produces `<slug>-standalone.html` at the repo root with all fonts (base64 woff2), images (data URIs), and CSS folded into the single file. The MP4 `<source>` tags are stripped — the poster carries the cover. Use this for sharing decks as email attachments or USB hand-offs; the file opens in any modern browser with no network. (The script still writes to the repo root for now — eventual move target is `share/`, see the share/ convention below.)
+- **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — visual explainers, one-pagers, exported reports, ad-hoc decks generated outside the deck pipeline — is written to `share/` at the repo root. Once this repo becomes the live site, those files are already at sensible static URLs and need no migration. Use `share/` rather than the repo root or ad-hoc paths so the convention stays clean.
 - **Bright Centella palettes on light grounds (client deliverables).** When applying Centella's color system to *light* paper grounds, every saturated bright (`--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech`) fails AA body-text contrast on the corresponding light variant. Brights earn their keep as fills with dark text inside (6.2–7.8:1, family-dark on family-bright is always AAA), as decorative non-text glyphs, or as the *background* of a colored highlight wrapping a dark-text accent word (`background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`). For accent text at 18pt+ that needs more pop than family-dark, derive a deepened-but-on-brand variant in the same hue (e.g. tech `#A52B7D`, global `#8A4F00`) — both reach 5.5:1+ on light grounds. Worked example: `work/prime-movers-20th/mockups/`. Holding this rule lets a brochure look bright and cheery while clearing AAA on body copy.
 
 ## Commands
