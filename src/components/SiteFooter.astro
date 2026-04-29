@@ -11,14 +11,7 @@ const navLinks = [
 
 <footer class="site-footer">
   <div class="site-footer__logo-wrap">
-    <img
-      src="/logo-divider.svg"
-      alt=""
-      width="8694"
-      height="1079"
-      class="site-footer__logo-divider"
-      decoding="async"
-    />
+    <span class="site-footer__logo-divider" role="presentation" aria-hidden="true"></span>
   </div>
   <nav class="site-footer__nav" aria-label="Footer">
     <ul class="site-footer__list">
@@ -48,9 +41,12 @@ const navLinks = [
     width: 100vw;
     max-width: none;
     margin-inline: calc(50% - 50vw);
-    height: auto;
+    aspect-ratio: 8694 / 1079;
     opacity: 0.9;
-    filter: brightness(0) invert(1) brightness(1.35) contrast(1.12);
+    background-color: var(--page-accent);
+    -webkit-mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    transition: background-color var(--transition-base);
   }
 
   .site-footer__list {

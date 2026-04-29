@@ -125,6 +125,47 @@ linear-gradient(135deg, var(--investment), var(--advisory));     /* lime → tea
 }
 ```
 
+### Per-page key color
+
+Each landing page declares a **single key color** — `--page-accent` — that drives the shared chrome (header logo, menu toggle, nav links, footer logo) and is available to page-local CSS as one consistent token. Centella Advisory keys to `--advisory`; Centella Institute will key to `--networking`; Centella Impact will key to `--investment`. Neutral pages (home, blog, styleguide) inherit the default — `--violet-light`, the soft lavender that doubles as primary text color on dark surfaces. The default is intentionally muted so the chrome reads as Centella-neutral until a page asserts its tone.
+
+**Defining and overriding:**
+
+```css
+:root {
+  --page-accent: var(--violet-light); /* default — soft, neutral */
+}
+```
+
+Pages override on `<body>` via the `pageAccent` prop on `Base.astro`:
+
+```astro
+<Base title="Centella Advisory" pageAccent="var(--advisory)">
+  …
+</Base>
+```
+
+That writes `style="--page-accent: var(--advisory);"` on `<body>`, so the variable cascades to the entire page. Pass any color expression — a token reference (`var(--networking)`), a hex (`#00E5FF`), or even a `color-mix` if you need something between two families.
+
+**Hover/active states (system-wide):** never declare a parallel `--page-accent-hover` token. Derive the state inline from the single source:
+
+```css
+.thing:hover {
+  color: color-mix(in srgb, var(--page-accent) 80%, white); /* tint  */
+}
+.thing:active {
+  color: color-mix(in srgb, var(--page-accent) 80%, black); /* shade */
+}
+```
+
+One token per page; no parallel variables to drift. This applies anywhere in the design system that responds to `--page-accent` — buttons, links, panels, tone-surfaces — not just the chrome.
+
+**Hard rules:**
+
+- `--page-accent` must always resolve to a brand-palette token (or a derivation of one). Never set it to an arbitrary hex outside the palette.
+- The header and footer logo render via CSS mask of `/logo-divider.svg` with `background-color: var(--page-accent)` — *do not* recolor by re-introducing the legacy `filter: brightness(0) invert(…)` filter; mask is the canonical recolor path.
+- Body buttons and inline links continue to use their declared accents (`--networking` for primary CTAs, `--violet` for secondary). Re-keying *those* to `--page-accent` is a per-page decision, not a system default.
+
 ---
 
 ## Typography
@@ -436,10 +477,9 @@ Primary button hover never changes hue — only elevation and glow.
 - Site-wide header/footer chrome is shared through `SiteHeader` and `SiteFooter` components via `Base.astro`.
 - Header uses a full-bleed logo plus a fixed-position hamburger trigger; menu opens as a right-side overlay.
 - Background uses dark surface treatment with blur (`backdrop-filter: blur(12px)`) on the overlay.
-- Logo is `/logo-divider.svg` (white filter `brightness(0) invert(1)` on dark). Minimum digital size `120px` width.
-- Two-row layout: logo on row 1; menu links wrap in a row below.
-- Menu links: `--font-semi` 500, `--text-sm`, uppercase, letter-spacing `0.06em`–`0.08em`.
-- Link hover / active: text fades to `--color-text`, underline grows from 0 → 100% width (`1.5px`, `--violet`).
+- Logo is `/logo-divider.svg` rendered as a CSS mask on a `<span>` with `background-color: var(--page-accent)`, so the lockup picks up the per-page key color (default `--violet-light`). Minimum digital size `120px` width. Don't reintroduce the legacy `filter: brightness(0) invert(1)` recolor — mask is the canonical recolor path.
+- Hamburger toggle: icon strokes inherit `var(--page-accent)`. Hover/focus fills the button with `--page-accent` and inverts strokes to `--bg-deep`; focus ring is a 2px deep-bg gap + 2px `--page-accent` ring against the page background.
+- Menu links: `--font-semi` 500, `--text-sm`, uppercase, letter-spacing `0.06em`–`0.08em`. Default text uses `var(--page-accent)`; hover/focus uses the inline tint `color-mix(in srgb, var(--page-accent) 80%, white)`.
 - Menu items must wrap (`flex-wrap: wrap`) on all viewports — never collapse to a burger.
 - Any overlay menu using the `hidden` attribute must include explicit CSS fallback for display rules (for example, `[hidden] { display: none; }`) when base styles set `display`.
 

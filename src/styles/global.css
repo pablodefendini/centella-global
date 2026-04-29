@@ -77,6 +77,24 @@
   --color-accent-hover: var(--accent-coral);
   --color-accent-text: var(--bg-deep);
 
+  /* ---------------------------------------------------------------
+     Per-page key color. Each landing page overrides this on <body>
+     (via Base.astro's `pageAccent` prop) to tint shared chrome —
+     header logo, menu toggle, nav links, footer logo — and to give
+     page authors a single token to reach for when keying their page.
+     Default: --violet-light, the soft lavender used elsewhere as
+     primary text on dark surfaces. Neutral pages (home, blog,
+     styleguide) inherit it; sub-brand pages override with their
+     family token (Advisory cyan, Networking coral, Investment
+     lime). The default is intentionally muted so the chrome
+     reads as Centella-neutral until a page asserts its tone.
+     For hover/active states, derive a tint or shade inline from
+     this single token — e.g. color-mix(in srgb, var(--page-accent)
+     80%, white) for a tint, or … 80%, black) for a shade. One
+     source of truth per page; no parallel hover variable to drift.
+     --------------------------------------------------------------- */
+  --page-accent: var(--violet-light);
+
   /* Typography
      NOTE: fonts are currently loaded from Google Fonts in Base.astro.
      TODO(perf): migrate Barlow + Barlow Condensed to self-hosted

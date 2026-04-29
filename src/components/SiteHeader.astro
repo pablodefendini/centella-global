@@ -11,14 +11,7 @@ const navLinks = [
 
 <header class="site-header">
   <a href="/" class="site-header__logo" aria-label="Centella — home">
-    <img
-      src="/logo-divider.svg"
-      alt=""
-      width="8694"
-      height="1079"
-      class="site-header__logo-img"
-      decoding="async"
-    />
+    <span class="site-header__logo-img" role="presentation" aria-hidden="true"></span>
   </a>
   <div class="site-header__bar">
     <button
@@ -110,10 +103,12 @@ const navLinks = [
     display: block;
     width: 100vw;
     max-width: none;
-    height: auto;
     margin-inline: calc(50% - 50vw);
-    color: var(--color-text);
-    filter: brightness(0) invert(1);
+    aspect-ratio: 8694 / 1079;
+    background-color: var(--page-accent);
+    -webkit-mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    mask: url(/logo-divider.svg) center / 100% 100% no-repeat;
+    transition: background-color var(--transition-base);
   }
 
   .site-header__bar {
@@ -145,7 +140,7 @@ const navLinks = [
     border: 1px solid var(--color-border);
     border-radius: 4px;
     background: var(--color-bg-alt);
-    color: var(--color-text);
+    color: var(--page-accent);
     cursor: pointer;
     transition:
       background var(--transition-fast),
@@ -155,14 +150,14 @@ const navLinks = [
 
   .site-header__menu-toggle:hover,
   .site-header__menu-toggle:focus-visible {
-    border-color: var(--color-text-muted);
-    color: var(--color-text);
-    background: var(--color-bg-elevated);
+    border-color: var(--page-accent);
+    color: var(--bg-deep);
+    background: var(--page-accent);
     outline: none;
   }
 
   .site-header__menu-toggle:focus-visible {
-    box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--accent-purple);
+    box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--page-accent);
   }
 
   .site-header__menu-icon {
@@ -258,7 +253,7 @@ const navLinks = [
   }
 
   .site-header__nav-link {
-    color: var(--color-text-muted);
+    color: var(--page-accent);
     text-decoration: none;
     min-height: var(--touch-target-min);
     display: inline-flex;
@@ -268,7 +263,7 @@ const navLinks = [
 
   .site-header__menu-link:hover,
   .site-header__menu-link:focus-visible {
-    color: var(--color-text);
+    color: color-mix(in srgb, var(--page-accent) 80%, white);
     outline: none;
   }
 

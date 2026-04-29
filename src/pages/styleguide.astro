@@ -389,6 +389,71 @@ const subbrands = [
         generic global UI accents.
       </p>
 
+      <h3 style="margin-top: var(--space-12);">Per-page key color</h3>
+      <p class="sg-paragraph">
+        Each landing page declares a single key color — <code class="sg-code">--page-accent</code> — that
+        drives the shared chrome (header logo, menu toggle, nav links, footer logo) and is available to
+        page-local CSS as one consistent token. Sub-brand pages override it to assert their tone; neutral
+        pages inherit the default <code class="sg-code">--violet-light</code>, the soft lavender that
+        doubles as primary text color on dark surfaces.
+      </p>
+
+      <div class="sg-page-accents">
+        <div class="sg-page-accent" style="--demo-accent: var(--violet-light);">
+          <div class="sg-page-accent-chip"></div>
+          <div class="sg-page-accent-meta">
+            <span class="sg-page-accent-name">Default · neutral pages</span>
+            <code class="sg-code">var(--violet-light)</code>
+            <span class="sg-muted">Home, blog, styleguide</span>
+          </div>
+        </div>
+        <div class="sg-page-accent" style="--demo-accent: var(--advisory);">
+          <div class="sg-page-accent-chip"></div>
+          <div class="sg-page-accent-meta">
+            <span class="sg-page-accent-name">Centella Advisory</span>
+            <code class="sg-code">var(--advisory)</code>
+            <span class="sg-muted">/centella-advisory/</span>
+          </div>
+        </div>
+        <div class="sg-page-accent" style="--demo-accent: var(--networking);">
+          <div class="sg-page-accent-chip"></div>
+          <div class="sg-page-accent-meta">
+            <span class="sg-page-accent-name">Centella Institute</span>
+            <code class="sg-code">var(--networking)</code>
+            <span class="sg-muted">/centella-institute/</span>
+          </div>
+        </div>
+        <div class="sg-page-accent" style="--demo-accent: var(--investment);">
+          <div class="sg-page-accent-chip"></div>
+          <div class="sg-page-accent-meta">
+            <span class="sg-page-accent-name">Centella Impact</span>
+            <code class="sg-code">var(--investment)</code>
+            <span class="sg-muted">/centella-impact/</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="sg-muted" style="margin-top: var(--space-6);">
+        Pages override on <code class="sg-code">&lt;body&gt;</code> via the
+        <code class="sg-code">pageAccent</code> prop on <code class="sg-code">Base.astro</code>:
+      </p>
+<pre class="sg-pre"><code>&lt;Base title=&quot;Centella Advisory&quot; pageAccent=&quot;var(--advisory)&quot;&gt;
+  …
+&lt;/Base&gt;</code></pre>
+
+      <p class="sg-muted" style="margin-top: var(--space-6);">
+        For hover and active states, never declare a parallel <code class="sg-code">--page-accent-hover</code>
+        token — derive the state inline from the single source. One token per page; no parallel variables to drift.
+      </p>
+<pre class="sg-pre"><code>.thing:hover  &#123; color: color-mix(in srgb, var(--page-accent) 80%, white); &#125;
+.thing:active &#123; color: color-mix(in srgb, var(--page-accent) 80%, black); &#125;</code></pre>
+
+      <ul class="sg-list" style="margin-top: var(--space-6);">
+        <li><code class="sg-code">--page-accent</code> must always resolve to a brand-palette token (or a derivation of one). Never an arbitrary hex outside the palette.</li>
+        <li>The header and footer logo render via CSS mask of <code class="sg-code">/logo-divider.svg</code> with <code class="sg-code">background-color: var(--page-accent)</code>. Don't reintroduce the legacy <code class="sg-code">filter: brightness(0) invert(1)</code> recolor.</li>
+        <li>Body buttons and inline links keep their declared accents (<code class="sg-code">--networking</code> for primary CTAs, <code class="sg-code">--violet</code> for secondary). Re-keying those to <code class="sg-code">--page-accent</code> is a per-page decision, not a system default.</li>
+      </ul>
+
       <h3 style="margin-top: var(--space-12);">Gradients</h3>
       <p class="sg-muted">Permitted as a web-only expression — never on the logo lockup.</p>
       <div class="sg-gradients">
@@ -1295,6 +1360,66 @@ import Icon from '../components/Icon.astro';
     gap: var(--space-2);
   }
   .sg-gradient-name {
+  }
+
+  /* Per-page key color preview */
+  .sg-page-accents {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .sg-page-accents { grid-template-columns: repeat(2, 1fr); }
+  }
+  .sg-page-accent {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    align-items: stretch;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-surface);
+  }
+  .sg-page-accent-chip {
+    /* Mini logo silhouette in the demo accent — same mask as SiteHeader/SiteFooter
+       so the preview reads as "this is what the chrome will look like". */
+    background-color: var(--demo-accent);
+    -webkit-mask: url(/logo-divider.svg) center / 80% auto no-repeat;
+    mask: url(/logo-divider.svg) center / 80% auto no-repeat;
+    border-right: 1px solid var(--color-border);
+  }
+  .sg-page-accent-meta {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    justify-content: center;
+  }
+  .sg-page-accent-name {
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+
+  .sg-pre {
+    margin: var(--space-4) 0 0;
+    padding: var(--space-4);
+    background: var(--bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text);
+  }
+  .sg-pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    color: inherit;
+    font: inherit;
   }
 
   /* ── Color Scale Generator ── */

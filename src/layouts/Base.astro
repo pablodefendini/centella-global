@@ -9,6 +9,13 @@ interface Props {
   description?: string;
   ogImage?: string;
   hideChrome?: boolean;
+  /**
+   * Per-page key color. Tints shared chrome (header logo, menu toggle,
+   * nav links, footer logo) and is also exposed to page-local CSS as
+   * `var(--page-accent)`. Pass a CSS color or a token reference like
+   * `"var(--advisory)"`. Defaults to the principal brand violet.
+   */
+  pageAccent?: string;
 }
 
 const {
@@ -16,7 +23,10 @@ const {
   description = 'Centella works with political leaders and movement builders across the Global South.',
   ogImage = '/og-default.png',
   hideChrome = false,
+  pageAccent,
 } = Astro.props;
+
+const bodyStyle = pageAccent ? `--page-accent: ${pageAccent};` : undefined;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centellaglobal.com');
 ---
@@ -53,7 +63,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://centella
   />
   <slot name="head" />
 </head>
-<body>
+<body style={bodyStyle}>
   {!hideChrome && <SiteHeader />}
   <main>
     <slot />
