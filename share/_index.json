@@ -1,0 +1,38 @@
+{
+  "$schema": "Manifest consumed by scripts/build-share-index.mjs to render share/index.html.",
+  "site": {
+    "title": "Centella — Share",
+    "headline": {
+      "lead": "Decks, mockups, and other",
+      "accent": "shareable artifacts.",
+      "accentGradient": "violet-coral"
+    },
+    "lede": "A working portfolio of self-contained outputs — anything Centella has produced for an audience outside our own walls. Each entry is a live link, refreshed every time we ship.",
+    "footer": "Maintained by hand in share/_index.json. The page itself regenerates with `npm run share:index` (or as part of `npm run share:build`)."
+  },
+  "projects": [
+    {
+      "slug": "ngl-barcelona",
+      "title": "NGL Barcelona",
+      "eyebrow": "Centella Institute · 2026",
+      "accent": "networking",
+      "kind": "Pitch deck",
+      "description": "Proposal for a Centella Institute pilot program based in Barcelona — the moment, the convening, the partners, the timeline. Sixteen slides, available in Spanish and English.",
+      "artifacts": [
+        { "label": "Deck — Spanish", "href": "ngl-barcelona-standalone.html" },
+        { "label": "Deck — English", "href": "ngl-barcelona-en-standalone.html" }
+      ]
+    },
+    {
+      "slug": "prime-movers-20th",
+      "title": "Prime Movers · 20th Anniversary",
+      "eyebrow": "Hunt Alternatives · 2026",
+      "accent": "advisory",
+      "kind": "Print brochure mockups",
+      "description": "Printed program brochure for the twentieth-anniversary Prime Movers convening, produced by Centella for Hunt Alternatives. Four complete design directions — Contemporary, Spring Bloom, Heritage (WWP 2001), and Hunt Compass — each calibrated to a different register.",
+      "artifacts": [
+        { "label": "Compare all four directions", "href": "prime-movers-20th/index.html" }
+      ]
+    }
+  ]
+}

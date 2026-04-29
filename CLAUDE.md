@@ -71,11 +71,14 @@ share/                        # Standalone HTML outputs meant to be opened in a 
                               # Future-site-ready: when the repo becomes the live site, files here are already at
                               # predictable static URLs. Not the same as `public/` — `public/` is Astro's static
                               # asset root for the site build; `share/` is a publish tray for self-contained docs.
+                              # `_index.json` is the lobby manifest (project metadata + artifact list); `index.html`
+                              # is the generated lobby served at `/share/`.
 
 scripts/
 ├── optimize-hero-media.sh    # ffmpeg + cwebp pipeline for hero assets
 ├── inline-deck.mjs           # Bundles built decks into self-contained share/<slug>-standalone.html (all decks by default; pass <slug> for one)
 ├── build-work.mjs            # Walks work/<project>/mockups/ and copies each into share/<project>/
+├── build-share-index.mjs     # Reads share/_index.json and emits share/index.html — the public lobby for /share/*
 └── copy-share.mjs            # Postbuild: mirrors share/ into dist/share/ AND .vercel/output/static/share/ so deliverables ship at /share/*
 
 docs/
@@ -127,7 +130,8 @@ Speakers, Attendees, and Sponsors are linked to Events via Notion relations. A s
 - **Deck scaling is letterboxed.** The `<deck-stage>` web component renders slides at their authored design size (1920×1080 by default) and applies `transform: scale(min(vw/dw, vh/dh))` so the canvas always fits the viewport with bars on the short axis — never clips. Don't size slide content in `vh`/`vw` or assume the viewport equals the design canvas.
 - **Standalone deck export.** `scripts/inline-deck.mjs` walks `dist/presentations/*/` and emits `share/<slug>-standalone.html` for each one — all fonts (base64 woff2), images (data URIs), and CSS folded into the single file; MP4 `<source>` tags are stripped (poster carries the cover). Run `npm run decks:standalone` (no arg) to bundle every presentation, or `npm run deck:standalone -- <slug>` for one. Use the standalones for email attachments or USB hand-offs; they open in any modern browser with no network. Each one is also served at `/share/<slug>-standalone.html` on the live site.
 - **Work projects export.** `scripts/build-work.mjs` walks `work/*/mockups/` and copies each project's `mockups/` directory verbatim into `share/<project>/`. The mockups are expected to already be self-contained (data-URI images, CDN-loaded fonts) — the script doesn't bundle anything, it's a publish-tray copy. Run `npm run work:build` after editing any project's mockups; deploys at `/share/<project>/index.html`. The `mockups/` convention is the explicit "this is what we share" subset of a `work/<project>/` directory — briefs, READMEs, and source files outside that subdirectory stay private.
-- **One-shot share build.** `npm run share:build` chains `astro build` → `inline-deck.mjs` (all presentations) → `build-work.mjs` (all work projects). Use it before committing share/ updates so every standalone artifact is regenerated against current sources in one pass.
+- **One-shot share build.** `npm run share:build` chains `astro build` → `inline-deck.mjs` (all presentations) → `build-work.mjs` (all work projects) → `build-share-index.mjs` (the lobby). Use it before committing share/ updates so every standalone artifact is regenerated against current sources in one pass.
+- **Share lobby is manifest-driven.** `share/_index.json` is the source of truth for what `/share/` shows: project title, eyebrow, description, accent token, and artifact links. `scripts/build-share-index.mjs` reads it, cross-checks every artifact href against disk, warns about orphan top-level entries not in the manifest, and emits `share/index.html` with Centella site chrome (Barlow superfamily from Google Fonts, brand tokens inlined as CSS custom properties — fully self-contained, no Astro dependency). When a new project lands under `share/`, add an entry to `_index.json` and run `npm run share:index` (or `npm run share:build` to regenerate everything).
 - **Self-contained outputs go in `share/`.** Any standalone HTML produced for sharing — exported decks, work-project mockups, visual explainers, one-pagers, ad-hoc reports — goes in `share/` at the repo root. The main build (`npm run build`) just copies `share/*` into `dist/share/` (via `scripts/copy-share.mjs`); standalone bundles are NOT regenerated on Vercel. Treating bundles as locally-built, committed deliverables keeps each one canonical (a deck shared on date X is bit-identical to the deployed copy). `.gitignore` only ignores root-level `*-standalone.html`; files under `share/` are tracked.
 - **Bright Centella palettes on light grounds (client deliverables).** When applying Centella's color system to *light* paper grounds, every saturated bright (`--violet`, `--advisory`, `--networking`, `--investment`, `--global`, `--tech`) fails AA body-text contrast on the corresponding light variant. Brights earn their keep as fills with dark text inside (6.2–7.8:1, family-dark on family-bright is always AAA), as decorative non-text glyphs, or as the *background* of a colored highlight wrapping a dark-text accent word (`background: var(--accent); padding: 0 0.18em; border-radius: 6px; box-decoration-break: clone;`). For accent text at 18pt+ that needs more pop than family-dark, derive a deepened-but-on-brand variant in the same hue (e.g. tech `#A52B7D`, global `#8A4F00`) — both reach 5.5:1+ on light grounds. Worked example: `work/prime-movers-20th/mockups/`. Holding this rule lets a brochure look bright and cheery while clearing AAA on body copy.
 
@@ -143,7 +147,8 @@ npm run media:hero -- /path/to/source.mp4   # Regenerate hero poster.webp + 540p
 npm run decks:standalone                    # Build site, then emit share/<slug>-standalone.html for every presentation (no arg = all; pass <slug> for one)
 npm run deck:standalone -- <slug>           # Alias of the above for one specific presentation
 npm run work:build                          # Copy every work/<project>/mockups/ → share/<project>/ (deploys at /share/<project>/index.html)
-npm run share:build                         # One-shot: astro build, then bundle all decks AND all work projects into share/
+npm run share:index                         # Regenerate share/index.html (the /share/ lobby) from share/_index.json
+npm run share:build                         # One-shot: astro build, then bundle all decks, all work projects, and regenerate the lobby
 ```
 
 ## Deploy

@@ -6,6 +6,44 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 22 — April 29, 2026: sub-brand mapping — spec catches up with code
+
+Pablo flagged that I'd put the NGL Barcelona card in the share lobby under `--networking` (correct) but that the underlying spec docs still listed Centella Institute under `--violet`. He's right. Looked into it and the misalignment is older than the lobby — it was sitting in `design.md` and `src/pages/styleguide.astro` while the *actual* homepage pillars at `src/pages/index.astro` already used `tone: 'networking'` for the Institute card. So the running site was correct; the design system documentation was lagging.
+
+The mapping that's right, and that everything now states explicitly:
+
+- Centella Global Advisory → `--advisory` (cyan)
+- Centella Institute → `--networking` (coral)
+- Centella Impact → `--investment` (lime)
+
+The logic is task-area, not hue. The work-color tokens are named after the *work* (`--advisory`, `--networking`, `--investment`), and each sub-brand inherits the work-color tied to its primary mode of operation. Advisory advises; Institute convenes and mobilizes; Impact deploys capital. The naming was already trying to tell us this — Institute lives in the mobilization/networking work area, so its accent is the networking color. `--violet` stays the principal umbrella color, used for shared chrome and the master brand. It is not any one sub-brand's accent.
+
+Files updated: `design.md` (sub-brand table fixed, plus a paragraph below it explaining the intent so this doesn't drift again), `src/pages/styleguide.astro` (the styleguide's subbrands data array — was hardcoding `accent: 'violet'`), `share/_index.json` (NGL Barcelona → networking, regenerated lobby). The homepage and the `.home-min__pillar--networking` CSS were already right.
+
+The lesson I want to keep is small: when implementation and spec drift, *the spec is the thing to fix unless the implementation is unambiguously wrong.* In this case the implementation was working correctly with the right color, the styleguide page was telling a different story, and `design.md` was the authoritative-looking document making the lie official. Caught at lobby-build time because manifest authoring forced me to choose an accent — that's a useful side effect of building the lobby. Forced reconciliation.
+
+---
+
+## Entry 21 — April 29, 2026: `/share/` gets a front door
+
+`share/` was starting to look like a junk drawer. Two NGL Barcelona deck variants, a Prime Movers directory with its own internal index, and no entry point at the top. Anyone landing on `/share/` after the deploy would either hit a directory listing (if the host showed one) or a 404. The deliverables were all there, all reachable by URL — but nobody knew what the URLs were unless I sent them the link directly. That stops scaling the moment we're more than two projects deep, which we already are.
+
+Added a lobby. `share/index.html` is now a Centella-chromed page that lists every project with a brief description and links to its artifacts. Two projects today (NGL Barcelona, Prime Movers 20th); however many we end up with, each gets its own card with eyebrow, title, kind, description, and an artifact list.
+
+The thing I want to write down is the design choice on how it stays in sync. I went back and forth on auto-discovery versus a hand-edited manifest. Auto-discovery is seductive — walk `share/`, pull titles from filenames, render. But filenames don't carry the structure I need: `ngl-barcelona-standalone.html` and `ngl-barcelona-en-standalone.html` are the *same* project shown in two languages, not two unrelated artifacts, and there's no way to communicate "Hunt Alternatives' twentieth-anniversary brochure, four design directions" from a filesystem listing. So I went with `share/_index.json` as the source of truth — project title, eyebrow, description, accent, list of artifacts — and a script that reads it and renders the HTML.
+
+What I added on top: the script cross-checks the manifest against disk. Every `href` in the manifest has to resolve to a real file (or a directory with `index.html`). Anything top-level under `share/` that *isn't* referenced by the manifest emits a warning. So the manifest stays the source of truth for descriptions, but the script catches the failure mode where I drop a file in `share/` and forget to add an entry. Caught me typing this — I almost shipped without that check, and the moment I imagined a future me adding a deck and forgetting to update the manifest, I knew the script needed to scream.
+
+Tokens are inlined. The lobby pulls Barlow from Google Fonts and inlines the Centella palette, type scale, and brand gradients as CSS custom properties — same pattern the rest of the share/ artifacts use. No Astro pipeline involved; this is a static file the existing `copy-share.mjs` postbuild already mirrors into the deploy bundle. So the lobby is committed, locally-built, bit-identical to deployed. Same rules as the standalone decks.
+
+Wired it into the existing build chain. `npm run share:index` regenerates just the lobby — that's the fast loop when I'm tweaking copy or accent colors. `npm run share:build` now chains `astro build → inline-deck.mjs → build-work.mjs → build-share-index.mjs`, lobby last because it has to cross-check artifacts the other steps produce. If the manifest references a deck slug the inline step didn't actually output, I want the warning, not a half-built lobby with broken links.
+
+The headline uses the same gradient-display-accent treatment as the homepage hero (light Barlow Condensed + extrabold accent phrase clipped to a violet→coral gradient), which makes the lobby read as a section of centellaglobal.com rather than a separate utility page. That matters because once we point the domain, `/share/` is going to be public — clients I send brochure links to will land on this page first if they trim the URL, and it should look like part of the site, not a directory listing in a Centella-shaped frame.
+
+Two specific things to revisit later: (1) descriptions for both current entries are first-pass and Pablo-flavored; once a real project lands I'll iterate on the voice. (2) the lobby is `noindex` for now — once the site is on the production domain we should decide whether `/share/` is publicly indexed or whether each artifact stays opt-in.
+
+---
+
 ## Entry 20 — April 29, 2026: print CSS round two — Safari/Quartz needs a `body::before` cover
 
 Pablo printed Option B to PDF this morning and the dark navy viewing-scaffold leaked through anyway, despite the `html, body { background: white !important }` swap I'd shipped in Entry 18. The smoking gun was in the PDF metadata: `Producer: macOS Version 26.3.1 Quartz PDFContext`. Safari "Save as PDF" — not Chrome.

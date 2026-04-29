@@ -15,7 +15,8 @@
     "decks:standalone": "astro build && node scripts/inline-deck.mjs",
     "deck:standalone": "astro build && node scripts/inline-deck.mjs",
     "work:build": "node scripts/build-work.mjs",
-    "share:build": "astro build && node scripts/inline-deck.mjs && node scripts/build-work.mjs"
+    "share:index": "node scripts/build-share-index.mjs",
+    "share:build": "astro build && node scripts/inline-deck.mjs && node scripts/build-work.mjs && node scripts/build-share-index.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",

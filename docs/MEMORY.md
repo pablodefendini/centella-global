@@ -6,6 +6,36 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Sub-brand → work-color mapping corrected (Institute is `--networking`)
+
+Spec docs were carrying a stale sub-brand mapping that didn't match the actual implementation. The Sub-Brands table in `design.md` and the styleguide page mapped Centella Institute to `--violet`; the homepage pillars and share-lobby manifest already used `--networking`. Aligned everything to the correct mapping:
+
+- Centella Global Advisory → `--advisory` (cyan, `#00E5FF`) — strategy & guidance
+- Centella Institute → `--networking` (coral, `#FF6B6B`) — mobilization & convening
+- Centella Impact → `--investment` (lime, `#CCFF00`) — capital & long-term sustainability
+
+The intent is that each sub-brand inherits the work-color tied to its primary mode of operation. The work-color tokens (`--advisory`, `--networking`, `--investment`) are named after the work area, not the hue, so the mapping is by intent rather than color. `--violet` remains the principal brand color for shared chrome — sub-brand accents differentiate context, they don't replace the umbrella color.
+
+**Files updated:** `design.md` (Sub-Brands table + new explanatory paragraph), `src/pages/styleguide.astro` (subbrands data array, line 72), `share/_index.json` (NGL Barcelona accent → networking), `share/index.html` (regenerated). The homepage `src/pages/index.astro` and the dark-pillar CSS in `home-min__pillar--networking` were already correct.
+
+**How to apply:** when wiring a new piece of UI to a sub-brand, use the sub-brand's mapped work-color, not `--violet`. The principal color is for the umbrella site/brand, not for any one sub-brand. If a sub-brand surface needs the principal color in a layered composition (e.g. an Institute panel on a violet ground), that's fine — but the Institute *accent* is `--networking`.
+
+---
+
+## 2026-04-29 — `/share/` gets a lobby, manifest-driven
+
+`share/` started filling up — two NGL Barcelona deck variants, the four-direction Prime Movers brochure — with no entry point. Anyone visiting `/share/` would hit a directory listing or a 404 depending on host config, and the file slugs aren't self-explanatory. Added `share/index.html` as a public-facing lobby for everything Centella has shipped to an audience outside the team.
+
+**Manifest-driven, not auto-discovered.** `share/_index.json` is the source of truth for what each project is — title, eyebrow, kind, description, accent token, and artifact list. `scripts/build-share-index.mjs` reads it and renders `share/index.html`. Auto-discovery was tempting (walk `share/`, pull titles from filenames) but the descriptions and project groupings can't be derived from the filesystem — `ngl-barcelona-standalone.html` and `ngl-barcelona-en-standalone.html` are *one* project (a deck in two languages), not two. The manifest keeps that grouping and the descriptions in one editable place.
+
+**The script still cross-checks disk.** Every artifact href in the manifest is verified to exist on disk (file or directory-with-index.html), and any top-level entry under `share/` that isn't referenced by the manifest emits a warning. So the manifest stays the source of truth, but the script catches "I added a file and forgot to add a description" errors.
+
+**Self-contained chrome.** The lobby uses Centella tokens (Barlow superfamily, dark surfaces, brand palette, gradient display accent) but inlines everything as CSS custom properties and pulls Barlow from Google Fonts. No Astro dependency — `share/index.html` is a static file in the publish tray, served as-is at `/share/index.html` by the existing `copy-share.mjs` postbuild. That keeps it consistent with how every other artifact under `share/` works (commit-tracked, locally-built, bit-identical to deployed).
+
+**Wired into npm scripts.** Added `npm run share:index` for fast iteration on just the lobby, and chained `build-share-index.mjs` into `npm run share:build` so the one-shot regenerates the lobby alongside decks and work projects. Order: `astro build` → decks → work → lobby. Lobby last because it cross-checks artifacts that the earlier steps produce.
+
+---
+
 ## 2026-04-29 — Print CSS pattern for client mockup deliverables
 
 The four Prime Movers mockups printed to PDF with transparent backgrounds. Two underlying causes — both inherent to how browsers handle print, both worth fixing once and standardizing.

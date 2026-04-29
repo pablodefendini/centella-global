@@ -628,9 +628,11 @@ All three share the Spark lockup, typography, and color system. Each has a singl
 
 | Sub-brand                | Accent                     | Feel                                                  |
 | ------------------------ | -------------------------- | ----------------------------------------------------- |
-| Centella Global Advisory | `--advisory` (`#00E5FF`)   | Rigorous, strategic, calm, precise.                   |
-| Centella Institute       | `--violet` (`#C77DFF`)     | Energetic, convening-oriented, pedagogical, flexible. |
-| Centella Impact          | `--investment` (`#CCFF00`) | Serious, disciplined, systems-oriented.               |
+| Centella Global Advisory | `--advisory` (`#00E5FF`)     | Rigorous, strategic, calm, precise.                   |
+| Centella Institute       | `--networking` (`#FF6B6B`)   | Energetic, convening-oriented, pedagogical, flexible. |
+| Centella Impact          | `--investment` (`#CCFF00`)   | Serious, disciplined, systems-oriented.               |
+
+The sub-brand → work-color mapping is intentional. Each sub-brand inherits the work-color tied to its primary mode of operation: Advisory → strategy & guidance, Institute → mobilization & convening, Impact → capital & long-term sustainability. `--violet` remains the principal brand color across the umbrella; sub-brand accents differentiate context, never replace the principal color in shared chrome.
 
 
 Programs and events (e.g. Spark Summit, Leadership Labs) are nested under sub-brands — never parallel to them.
