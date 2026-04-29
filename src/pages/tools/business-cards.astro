@@ -1,0 +1,124 @@
+---
+/**
+ * /tools/business-cards — generate a print-ready PDF business card for every
+ * Active team member.
+ *
+ * The actual PDFs are generated at build time by scripts/build-team-assets.mjs
+ * and live at /share/tools/business-cards/<slug>.pdf. Both this page and the
+ * generated assets are gated by src/middleware.ts.
+ *
+ * `prerender = false` is required: see src/pages/tools/index.astro for the
+ * explanation.
+ */
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import { getTeamProfiles } from '../../lib/notion';
+
+const profiles = await getTeamProfiles();
+---
+
+<Base
+  title="Business cards"
+  description="Print-ready PDF business cards for Centella staff and contractors."
+>
+  <section class="section">
+    <div class="container page-simple">
+      <p class="eyebrow"><a href="/tools" class="eyebrow__link">← Tools</a></p>
+      <h1 class="page-heading">Business cards</h1>
+      <p class="page-copy">
+        Print-ready PDF, 85&nbsp;&times;&nbsp;55&nbsp;mm with 3&nbsp;mm bleed and crop marks.
+        Hand the file to any standard printer (Moo EU, Solopress, Helloprint, your local press).
+        Each card is regenerated from your Notion profile on every site deploy &mdash; if
+        anything looks wrong, fix it in Notion and ask Pablo to redeploy.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {profiles.length === 0 ? (
+        <p class="empty">
+          No active team profiles found in Notion yet. Add some to the Team Profiles database
+          (with Status = Active) and redeploy.
+        </p>
+      ) : (
+        <ul class="people">
+          {profiles.map((person) => (
+            <li class="person">
+              <div class="person__id">
+                <p class="person__name">{person.name}</p>
+                {person.titleRole && <p class="person__role">{person.titleRole}</p>}
+              </div>
+              <a
+                class="btn btn--secondary"
+                href={`/share/tools/business-cards/${person.slug}.pdf`}
+                download
+              >
+                Download PDF
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .eyebrow__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .eyebrow__link:hover { color: var(--color-accent); }
+
+  .empty {
+    color: var(--color-text-muted);
+    text-align: center;
+    padding-block: var(--space-12);
+  }
+
+  .people {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .person {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    background: var(--bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+  }
+
+  .person__id { min-width: 0; }
+
+  .person__name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-lg);
+  }
+
+  .person__role {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

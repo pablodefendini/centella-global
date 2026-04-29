@@ -6,6 +6,40 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — `/tools` follow-ups: shared user+password, and the prerender gotcha
+
+Two follow-ups after the initial `/tools` section landed.
+
+**Auth model is now user + password, not just password.** Switched the middleware to require both `TOOLS_USERNAME` and `TOOLS_PASSWORD` (initial values: `staff` / `centella`). Both must match; both are required at startup or the middleware returns 503. Reason: even for an internal-only section, "any username + shared password" was unnecessarily lax — the cost of asking staff to remember a username and a password is negligible compared to the small but real reduction in attack surface.
+
+**Bug found and fixed: middleware on prerendered routes can't read request headers.** With `output: 'static'`, every page prerenders by default. The middleware *does* run, but at prerender time — when there's no real HTTP request and therefore no `Authorization` header. So my Basic Auth gate was firing once at build with empty headers, baking a 401 response into the prerendered output, and serving that 401 forever. Looked like the auth was working (browser saw a `WWW-Authenticate` prompt) but no credentials would ever satisfy it because the middleware had already decided "no auth header" before any client ever connected.
+
+The fix: add `export const prerender = false;` to each gated page (`src/pages/tools/index.astro`, `src/pages/tools/business-cards.astro`, `src/pages/tools/email-signatures.astro`). That makes them server-rendered per request, the middleware runs at request time with real headers in scope, and the gate works as designed. Annotated this as a hard constraint in CLAUDE.md so we don't re-introduce it.
+
+**Dev-vs-prod gap on `/share/tools/*` static assets.** In production, `vercel({ edgeMiddleware: true })` compiles the middleware into an Edge Function that gates *all* requests, including static assets — so a direct PDF URL hits the gate. In `astro dev`, middleware doesn't run in front of static asset serving. This is fine in practice because `/share/tools/*` files only exist *after* a build (`scripts/build-team-assets.mjs` writes into `dist/` and `.vercel/output/static/`, not into the dev server's source tree), so they aren't reachable in dev anyway.
+
+**Debugging trail worth documenting** (so the next person spends an hour, not three): the symptoms were a 401 with apparently-correct credentials. The dead ends were browser auth cache, Node version mismatch (Node 18 vs the required 20), env-var hot-reload semantics. The actual signal was a one-line warning in the dev server log: `Astro.request.headers was used when rendering the route ... is not available on prerendered pages.` That's the one to look for.
+
+---
+
+## 2026-04-29 — `/tools` section: staff-only, build-time-generated brand assets
+
+Stood up a `/tools` section as a staff-and-contractor-only space for self-serve branded assets. Two generators today: business-card PDFs at `/tools/business-cards` and transparent-PNG email signatures at `/tools/email-signatures`. Each lists every Active row in a new "Team Profiles" Notion DB and renders one asset per person. Decisions worth keeping:
+
+**Auth: HTTP Basic Auth via Astro edge middleware, not Vercel's built-in Password Protection.** Vercel's project-level Password Protection is all-or-nothing (or production-vs-preview). To scope the gate to `/tools/*` and `/share/tools/*` without locking down the rest of the production site, used Astro middleware (`src/middleware.ts`) compiled to a Vercel Edge Function via `vercel({ edgeMiddleware: true })`. Single shared password (`TOOLS_PASSWORD` env var); username field is ignored. Middleware fails closed when the env var is missing — never patch that to allow through. The protected-prefixes list lives in `PROTECTED_PREFIXES`; broaden it there if a new staff-only path lands.
+
+**Asset storage: build output, not committed.** Wrestled with this. The existing `share/` convention is "locally-built, committed, copied verbatim by `copy-share.mjs`" — that pattern works for decks (a deck shipped on date X must be bit-identical to the deployed copy) but is wrong here because Notion is the source of truth and the team will edit profiles independently of code commits. Picked: `scripts/build-team-assets.mjs` runs *between* `astro build` and `copy-share.mjs`, writes directly into `dist/share/tools/...` and `.vercel/output/static/share/tools/...`, never touches the repo's `share/` directory. Every Vercel deploy is fresh from Notion. Future `git status` won't be polluted by binary deltas. The flip side: assets only refresh when something triggers a Vercel deploy — relying on the existing `VERCEL_DEPLOY_HOOK_URL` (already wired to Notion) for that.
+
+**Render pipeline: `pdfkit` + `svg-to-pdfkit` for the PDF, `@resvg/resvg-js` for the PNG.** Considered Puppeteer (too heavy, needs Chromium binary on Vercel build) and Satori (good at JSX-y layouts but weaker for arbitrary SVG with print bleed). Picked the pure-Node combination: vector PDF preserved end-to-end (no rasterizing the card), transparent PNG rendered straight from SVG, no headless browser. Card geometry: 85×55mm international + 3mm bleed = 91×61mm artboard (no US 3.5"×2" variant emitted; if a team member needs that we'll add a parallel `<slug>-us.pdf` later). Email signature: 600×180px source rendered at 2× density. Note for future template work: `resvg-js` enforces XML 1.0 strictly and rejects `--` inside SVG comments — the smoke test caught this before the build did.
+
+**SVG templates as scaffolding, not finished design.** Pablo will redo the visuals later. The interpolation contract was the load-bearing thing: tokens are `{{name}}`, `{{titleRole}}`, `{{email}}`, `{{phone}}`, `{{pronouns}}`, `{{linkedin}}`, `{{website}}`, `{{linkedinDisplay}}`, `{{websiteDisplay}}`. When the real designs land, registering the Barlow superfamily for both renderers (`doc.registerFont(...)` for PDFKit and `font.fontFiles` for Resvg) is the next pickup; until then the placeholders use Helvetica which is built into PDFKit. Also added a preview helper at `scripts/preview-team-assets.mjs` (`npm run team-assets:preview`) that renders against a fixture profile so template iteration doesn't require live Notion creds.
+
+**Notion schema (Team Profiles):** Name (title), Slug (rich text — manual, like Events), Status (select: Active/Inactive — only Active renders), Title/Role, Email, Pronouns, Phone, LinkedIn (URL), Website (URL), Photo (file). New env var `NOTION_TEAM_PROFILES_DB_ID` added to `.env.example`. The DB itself was not auto-created; the content team adds the DB and the integration in Notion, and Pablo flips the env vars in Vercel project settings.
+
+**Files added:** `src/middleware.ts`, `src/pages/tools/{index,business-cards,email-signatures}.astro`, `src/templates/{business-card,email-signature}.svg`, `scripts/build-team-assets.mjs`, `scripts/preview-team-assets.mjs`. **Modified:** `astro.config.mjs` (edgeMiddleware), `src/lib/notion.ts` + `types.ts` (TeamProfile + getTeamProfiles), `.env.example`, `package.json` (deps + scripts), `CLAUDE.md` (directory structure, hard constraints, patterns, commands, deploy section).
+
+---
+
 ## 2026-04-29 — Sub-brand → work-color mapping corrected (Institute is `--networking`)
 
 Spec docs were carrying a stale sub-brand mapping that didn't match the actual implementation. The Sub-Brands table in `design.md` and the styleguide page mapped Centella Institute to `--violet`; the homepage pillars and share-lobby manifest already used `--networking`. Aligned everything to the correct mapping:

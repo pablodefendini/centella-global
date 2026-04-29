@@ -61,6 +61,25 @@ export interface Sponsor {
 }
 
 /**
+ * Team Profile — internal staff/contractor profiles used by the /tools section
+ * to generate branded business cards and email signatures at build time.
+ * Source DB: NOTION_TEAM_PROFILES_DB_ID. Not public-facing content.
+ */
+export interface TeamProfile {
+  id: string;
+  name: string;
+  slug: string;
+  status: 'Active' | 'Inactive';
+  titleRole: string;
+  email: string;
+  phone: string;
+  pronouns: string;
+  linkedin: string | null;
+  website: string | null;
+  photo: string | null;
+}
+
+/**
  * Rendered Notion page content — the HTML output of the block-to-HTML mapper.
  */
 export interface RenderedContent {

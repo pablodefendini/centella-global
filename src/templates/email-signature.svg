@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PLACEHOLDER email signature template.
+  Replace this with the real design once it is ready. Token model is identical
+  to business-card.svg (see that file for the list). Geometry below.
+
+  Geometry: 600 x 180 px at 1x. The build script renders at 2x density
+  (1200 x 360) and exports as a transparent PNG. Background is intentionally
+  transparent (no rect filling the canvas). Mail clients on light AND dark
+  themes will composite this over their own background, so anything that
+  depended on a paper color would clash on dark mode.
+
+  Color choices need to read on BOTH light and dark backgrounds. The brand
+  text token at #F7EDFF is unreadable on a white background; the brand deep
+  token at #060607 is unreadable on a dark one. Until the real design picks
+  a strategy (typically: pick a darkish accent that has 4.5:1 against
+  #FFFFFF AND a lightish accent that has 4.5:1 against #060607, then use the
+  darker for body and the lighter for accent), this placeholder uses
+  near black plus violet. That reads on light, barely OK on dark. Real
+  design will fix.
+
+  Note for editors: SVG parsers reject double dashes inside comments (XML
+  rule), so do not type two consecutive hyphens in here.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="600"
+  height="180"
+  viewBox="0 0 600 180"
+>
+  <!-- Vertical brand bar (left edge), 4 px wide. -->
+  <rect x="0" y="0" width="4" height="180" fill="#C77DFF" />
+
+  <g font-family="Helvetica, sans-serif">
+    <!-- Name + title -->
+    <text x="24" y="40" font-size="22" font-weight="500" fill="#060607">{{name}}</text>
+    <text x="24" y="62" font-size="14" font-weight="400" fill="#C77DFF">{{titleRole}}</text>
+
+    <!-- Contact lines -->
+    <text x="24" y="92"  font-size="13" font-weight="400" fill="#060607">{{email}}</text>
+    <text x="24" y="112" font-size="13" font-weight="400" fill="#060607">{{phone}}</text>
+    <text x="24" y="132" font-size="13" font-weight="400" fill="#060607">{{linkedinDisplay}}</text>
+    <text x="24" y="152" font-size="13" font-weight="400" fill="#060607">{{websiteDisplay}}</text>
+  </g>
+
+  <!-- Brand mark: replace with real logo path. -->
+  <g transform="translate(560, 24)">
+    <text font-family="Helvetica, sans-serif" font-size="14" font-weight="700" fill="#C77DFF" text-anchor="end">CENTELLA</text>
+  </g>
+</svg>

@@ -1,0 +1,137 @@
+---
+/**
+ * /tools — staff & contractor archive of brand-asset generators.
+ *
+ * This whole subtree (and /share/tools/*) is HTTP Basic Auth gated
+ * by src/middleware.ts. If you're seeing this page, you're already
+ * authenticated.
+ *
+ * `prerender = false` is required: middleware that reads request headers
+ * (the auth check) cannot run on prerendered routes. Each /tools page
+ * needs to be server-rendered per request so the gate fires with real
+ * Authorization headers in scope.
+ */
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tools"
+  description="Centella brand-asset generators for staff and contractors."
+>
+  <section class="section">
+    <div class="container page-simple">
+      <p class="eyebrow">Centella staff &amp; contractors</p>
+      <h1 class="page-heading">Brand-asset tools</h1>
+      <p class="page-copy">
+        Generate on-brand assets for yourself, with a reproducible build behind every download.
+        Each tool pulls from the Team Profiles database in Notion, so updates flow through on the
+        next site deploy. If your details look stale, edit your profile in Notion and ping the site
+        to redeploy.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="tools-grid">
+        <a href="/tools/business-cards" class="tool-tile" data-accent="advisory">
+          <span class="tool-tile__eyebrow">Print</span>
+          <h2 class="tool-tile__title">Business cards</h2>
+          <p class="tool-tile__copy">
+            Print-ready PDF, 85&nbsp;&times;&nbsp;55&nbsp;mm with 3&nbsp;mm bleed.
+            One per active team member.
+          </p>
+          <span class="tool-tile__cta">Open <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="/tools/email-signatures" class="tool-tile" data-accent="networking">
+          <span class="tool-tile__eyebrow">Mail</span>
+          <h2 class="tool-tile__title">Email signatures</h2>
+          <p class="tool-tile__copy">
+            Transparent PNG sized for Gmail, Apple Mail, and Outlook. Drop it into your client&rsquo;s
+            signature field and you&rsquo;re done.
+          </p>
+          <span class="tool-tile__cta">Open <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .tools-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .tools-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .tool-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-8);
+    border-radius: 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .tool-tile:hover,
+  .tool-tile:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 0 24px color-mix(in oklab, var(--accent) 25%, transparent);
+    outline: none;
+  }
+
+  .tool-tile[data-accent='advisory'] { --accent: var(--advisory); }
+  .tool-tile[data-accent='networking'] { --accent: var(--networking); }
+
+  .tool-tile__eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+  }
+
+  .tool-tile__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-3xl);
+    margin: 0;
+    line-height: var(--leading-tight);
+  }
+
+  .tool-tile__copy {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  .tool-tile__cta {
+    margin-top: var(--space-4);
+    font-family: var(--font-semi);
+    font-weight: 600;
+    color: var(--accent);
+  }
+</style>

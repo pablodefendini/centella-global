@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PLACEHOLDER business card template.
+  Replace this with the real design once it is ready. The token substitution
+  pipeline is what is load-bearing: anything wrapped in {{double curly braces}}
+  gets replaced by scripts/build-team-assets.mjs with the matching field from
+  the Notion Team Profile. Available tokens:
+    {{name}} {{titleRole}} {{email}} {{phone}} {{pronouns}}
+    {{linkedin}} {{website}}
+  Optional helpers (pre-computed by the script for convenience):
+    {{linkedinDisplay}}   the URL with the protocol stripped
+    {{websiteDisplay}}    same
+  Empty fields render as empty strings (no "undefined" leakage).
+
+  Geometry: international business card 85 x 55 mm with 3 mm bleed all around,
+  giving a 91 x 61 mm artboard. Trim is the inner rect at 3,3,88,58. The safe
+  zone for content is another 3 mm inside the trim: keep important text at
+  least 6 mm from the artboard edge.
+
+  Note for editors: the SVG parser rejects double dashes inside comments
+  (XML rule), so use prose punctuation in here, never long dashes built from
+  consecutive hyphens.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="91mm"
+  height="61mm"
+  viewBox="0 0 91 61"
+>
+  <!-- Bleed background: extends to artboard edge so any cut shift still
+       leaves the printer with paper edge color. Replace with real brand
+       color or photo when the design lands. -->
+  <rect x="0" y="0" width="91" height="61" fill="#1E1A28" />
+
+  <!-- Trim rect (visualization aid; remove or set stroke to none in the real
+       design). The actual printer will trim along this rectangle edges. -->
+  <rect x="3" y="3" width="85" height="55" fill="none" stroke="#C77DFF" stroke-width="0.1" stroke-dasharray="0.5 0.5" opacity="0.4" />
+
+  <!-- Crop marks at trim corners (3 mm long, sit in the bleed area). -->
+  <g stroke="#F7EDFF" stroke-width="0.15" opacity="0.7">
+    <line x1="0"  y1="3"  x2="2"  y2="3"  /><line x1="3"  y1="0"  x2="3"  y2="2"  />
+    <line x1="89" y1="3"  x2="91" y2="3"  /><line x1="88" y1="0"  x2="88" y2="2"  />
+    <line x1="0"  y1="58" x2="2"  y2="58" /><line x1="3"  y1="59" x2="3"  y2="61" />
+    <line x1="89" y1="58" x2="91" y2="58" /><line x1="88" y1="59" x2="88" y2="61" />
+  </g>
+
+  <!-- Content. Helvetica is the safe default for vector SVG to PDF (no font
+       registration needed). When the real design uses Barlow, the build
+       script needs to register the font with PDFKit before svg-to-pdfkit
+       can embed it. See scripts/build-team-assets.mjs TODO comment. -->
+  <g font-family="Helvetica, sans-serif" fill="#F7EDFF">
+    <text x="6" y="20" font-size="6" font-weight="500">{{name}}</text>
+    <text x="6" y="26" font-size="3" fill="#C77DFF">{{titleRole}}</text>
+
+    <text x="6" y="42" font-size="2.6" font-weight="400">{{email}}</text>
+    <text x="6" y="46.5" font-size="2.6" font-weight="400">{{phone}}</text>
+    <text x="6" y="51" font-size="2.4" fill="#F7EDFF" opacity="0.65">{{linkedinDisplay}}</text>
+
+    <!-- Pronouns: small, set in the safe zone, omitted gracefully when empty. -->
+    <text x="85" y="20" font-size="2.4" text-anchor="end" fill="#F7EDFF" opacity="0.5">{{pronouns}}</text>
+
+    <!-- Brand mark: replace with real logo (path or embedded SVG). -->
+    <text x="85" y="51" font-size="3" font-weight="700" text-anchor="end" fill="#C77DFF">CENTELLA</text>
+  </g>
+</svg>

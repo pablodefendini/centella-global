@@ -12,6 +12,7 @@ import type {
   Speaker,
   Attendee,
   Sponsor,
+  TeamProfile,
   RenderedContent,
 } from './types';
 
@@ -26,6 +27,7 @@ const BLOG_DB = import.meta.env.NOTION_BLOG_DB_ID;
 const SPEAKERS_DB = import.meta.env.NOTION_SPEAKERS_DB_ID;
 const ATTENDEES_DB = import.meta.env.NOTION_ATTENDEES_DB_ID;
 const SPONSORS_DB = import.meta.env.NOTION_SPONSORS_DB_ID;
+const TEAM_PROFILES_DB = import.meta.env.NOTION_TEAM_PROFILES_DB_ID;
 
 // --- Helpers for extracting Notion property values ---
 
@@ -71,6 +73,14 @@ function getFile(prop: any): string | null {
 
 function getRelationIds(prop: any): string[] {
   return prop?.relation?.map((r: any) => r.id) ?? [];
+}
+
+function getEmail(prop: any): string {
+  return prop?.email ?? '';
+}
+
+function getPhone(prop: any): string {
+  return prop?.phone_number ?? '';
 }
 
 // --- Events ---
@@ -286,6 +296,48 @@ async function getSponsorById(id: string): Promise<Sponsor | null> {
   } catch {
     return null;
   }
+}
+
+// --- Team Profiles (staff + contractors, /tools section only) ---
+
+/**
+ * Returns Active team profiles. Used at build time by scripts/build-team-assets.mjs
+ * (to render per-person business cards + email signatures) AND by the /tools pages
+ * (to list each person with download links). Not exposed in any public-facing route.
+ *
+ * If NOTION_TEAM_PROFILES_DB_ID is unset, returns an empty array — lets the build
+ * succeed before the Notion DB is created.
+ */
+export async function getTeamProfiles(): Promise<TeamProfile[]> {
+  if (!TEAM_PROFILES_DB) return [];
+
+  const response = await notion.databases.query({
+    database_id: TEAM_PROFILES_DB,
+    filter: {
+      property: 'Status',
+      select: { equals: 'Active' },
+    },
+    sorts: [{ property: 'Name', direction: 'ascending' }],
+  });
+
+  return response.results.map(pageToTeamProfile);
+}
+
+function pageToTeamProfile(page: NotionPage): TeamProfile {
+  const props = page.properties;
+  return {
+    id: page.id,
+    name: getText(props['Name']),
+    slug: getText(props['Slug']),
+    status: (getSelect(props['Status']) || 'Active') as TeamProfile['status'],
+    titleRole: getText(props['Title/Role']),
+    email: getEmail(props['Email']),
+    phone: getPhone(props['Phone']),
+    pronouns: getText(props['Pronouns']),
+    linkedin: getUrl(props['LinkedIn']),
+    website: getUrl(props['Website']),
+    photo: getFile(props['Photo']),
+  };
 }
 
 // --- Notion Block Renderer ---
