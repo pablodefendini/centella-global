@@ -1,74 +1,668 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
 import EventCard from '../components/EventCard.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
 import { getPublishedEvents } from '../lib/notion';
 
 const events = await getPublishedEvents();
 const now = new Date();
 const upcoming = events.filter((e) => new Date(e.dateStart) >= now);
 const past = events.filter((e) => new Date(e.dateStart) < now).reverse();
+
+const networkPanels = [
+  {
+    icon: 'solidarity',
+    title: 'They turn isolated efforts into coordinated action.',
+  },
+  {
+    icon: 'globe-grid',
+    title: 'They move knowledge across borders.',
+  },
+  {
+    icon: 'growth',
+    title: 'They sustain momentum.',
+  },
+] as const;
+
+const programs = [
+  {
+    index: '01',
+    icon: 'learning',
+    name: 'New Global Leadership',
+    lede: 'A next-generation global candidate academy.',
+    body:
+      "To fast-track progressive changemakers with cutting-edge, ethics-first training designed to fuel impact-driven campaigns and win groundbreaking elections worldwide. Tailored, values-driven, tech-forward education and training for diverse progressive candidates worldwide.",
+  },
+  {
+    index: '02',
+    icon: 'presentation',
+    name: 'The Centella Global Forum',
+    lede:
+      'An intentionally small, curated forum for bold progressive leaders focused on real collaboration and action.',
+    body:
+      'An annual power forum that unites visionary progressive leaders in a dynamic forum to co-create bold campaign strategies, forge unstoppable alliances, and ignite transformative change.',
+  },
+  {
+    index: '03',
+    icon: 'laboratory',
+    name: 'Leadership Labs',
+    lede: 'Focused workshops powering leaders with game-changing skills to drive real impact.',
+    body:
+      "Year-round accelerator cohorts tackling today's toughest thematic and technical challenges — from digital organizing to strategic communications — empowering leaders to master the tools for real-world change.",
+  },
+] as const;
 ---
 
 <Base
   title="Centella Institute"
-  description="Centella Institute events: upcoming gatherings and our archive of past convenings."
+  description="Training and community for today's leaders. Centella builds networks where power grows over time."
   pageAccent="var(--networking)"
   pageLogo="/centella-institute-logo.svg"
   pageLogoWidth={3943}
 >
-  <section class="section">
+  <!-- ── Hero / page title ──────────────────────────── -->
+  <section class="section institute-hero" aria-labelledby="institute-hero-heading">
     <div class="container">
-      <h1 class="page-heading">Centella Institute</h1>
-      <p class="page-intro text-muted">
-        We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action.
+      <h1 id="institute-hero-heading" class="display institute-hero__title">
+        Training and community for{' '}
+        <span class="display__accent display__accent--coral-orange">today's leaders</span>.
+      </h1>
+      <p class="lede institute-hero__lede">
+        Centella builds networks where power grows over time.
       </p>
-      <p class="page-intro text-muted">
-        Explore upcoming gatherings and our archive of past events.
-      </p>
+    </div>
+  </section>
 
-      {upcoming.length > 0 && (
-        <div class="events-section">
-          <h2 class="events-section__label text-muted">Upcoming</h2>
-          <div class="grid grid--2">
-            {upcoming.map((event) => (
-              <EventCard event={event} />
-            ))}
+  <!-- ── Centella Events (tabbed UI, horizontal scroll) ─ -->
+  <section class="section institute-events" aria-labelledby="institute-events-heading">
+    <div class="container institute-section-intro">
+      <h2 id="institute-events-heading" class="institute-section-title">Centella Events</h2>
+      <p class="lede institute-section-lede">
+        Convenings, summits, and labs — the rooms where strategy meets the streets.
+      </p>
+    </div>
+
+    {events.length > 0 ? (
+      <div class="institute-tabs" role="region" aria-label="Centella Events listing">
+        {/* Radio inputs power the tab switch with zero JS. */}
+        <input
+          type="radio"
+          name="institute-events-tab"
+          id="institute-events-upcoming"
+          class="institute-tabs__input"
+          checked
+        />
+        <input
+          type="radio"
+          name="institute-events-tab"
+          id="institute-events-past"
+          class="institute-tabs__input"
+        />
+
+        <div class="container">
+          <div class="institute-tabs__triggers">
+            <label for="institute-events-upcoming" class="institute-tabs__trigger">
+              <span class="institute-tabs__trigger-label">Upcoming</span>
+              <span class="institute-tabs__trigger-count">{upcoming.length}</span>
+            </label>
+            <label for="institute-events-past" class="institute-tabs__trigger">
+              <span class="institute-tabs__trigger-label">Past</span>
+              <span class="institute-tabs__trigger-count">{past.length}</span>
+            </label>
           </div>
         </div>
-      )}
 
-      {past.length > 0 && (
-        <div class="events-section">
-          <h2 class="events-section__label text-muted">Past Events</h2>
-          <div class="grid grid--2">
-            {past.map((event) => (
-              <EventCard event={event} />
-            ))}
+        <div class="institute-tabs__panels">
+          <div
+            class="institute-tabs__panel institute-tabs__panel--upcoming"
+            aria-label="Upcoming events"
+          >
+            <div class="container">
+              {upcoming.length > 0 ? (
+                <div class="institute-scroller" tabindex="0">
+                  <ul class="institute-scroller__track" role="list">
+                    {upcoming.map((event) => (
+                      <li class="institute-scroller__item">
+                        <EventCard event={event} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p class="institute-empty text-muted">
+                  Nothing on the calendar yet. Get on the list below — we'll let you know first.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div
+            class="institute-tabs__panel institute-tabs__panel--past"
+            aria-label="Past events"
+          >
+            <div class="container">
+              {past.length > 0 ? (
+                <div class="institute-scroller" tabindex="0">
+                  <ul class="institute-scroller__track" role="list">
+                    {past.map((event) => (
+                      <li class="institute-scroller__item">
+                        <EventCard event={event} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p class="institute-empty text-muted">
+                  Past convenings will live here once we've held the next round.
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      )}
-
-      {events.length === 0 && (
-        <p class="text-muted" style="margin-top: var(--space-8);">
+      </div>
+    ) : (
+      <div class="container">
+        <p class="institute-empty text-muted">
           No events published yet. Check back soon.
         </p>
-      )}
+      </div>
+    )}
+  </section>
+
+  <!-- ── Networks Matter (3 tone-coded panels) ──────── -->
+  <section class="section institute-networks" aria-labelledby="institute-networks-heading">
+    <div class="container institute-section-intro">
+      <h2 id="institute-networks-heading" class="institute-section-title">
+        Networks matter.
+      </h2>
+    </div>
+
+    <div class="container">
+      <div class="institute-panels" role="list">
+        {networkPanels.map((p) => (
+          <article class="institute-panel tone-surface" role="listitem">
+            <div class="institute-panel__frame">
+              <span class="institute-panel__icon-wrap" aria-hidden="true">
+                <Icon name={p.icon} size={32} class="institute-panel__icon" />
+              </span>
+              <p class="institute-panel__title">{p.title}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Programs (Connection is power) ─────────────── -->
+  <section class="section institute-programs" aria-labelledby="institute-programs-heading">
+    <div class="container institute-section-intro">
+      <h2 id="institute-programs-heading" class="institute-section-title institute-programs__title">
+        <span class="display__accent display__accent--coral-orange">Connection is power.</span>{' '}
+        We're building the bridges.
+      </h2>
+      <p class="lede institute-section-lede">
+        The Centella Institute is focused on building leadership networks by creating
+        intentional in-person, and online spaces where values-driven, left-of-center
+        leaders from around the world can connect, strategize, and turn bold ideas into
+        collective action.
+      </p>
+    </div>
+
+    <div class="container">
+      <ol class="institute-programs__list" role="list">
+        {programs.map((p) => (
+          <li class="institute-program">
+            <div class="institute-program__head">
+              <span class="institute-program__index eyebrow" aria-hidden="true">
+                Program {p.index}
+              </span>
+              <span class="institute-program__icon-wrap" aria-hidden="true">
+                <Icon name={p.icon} size={24} class="institute-program__icon" />
+              </span>
+              <h3 class="institute-program__name">{p.name}</h3>
+            </div>
+            <div class="institute-program__body">
+              <p class="lede institute-program__lede">{p.lede}</p>
+              <p class="institute-program__copy">{p.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── CTA / signup ───────────────────────────────── -->
+  <section class="section institute-cta" aria-labelledby="institute-cta-heading">
+    <div class="container">
+      <div class="institute-cta__panel tone-surface">
+        <div class="institute-cta__frame">
+          <h2 id="institute-cta-heading" class="institute-cta__title">
+            Step into the network.
+          </h2>
+          <p class="lede institute-cta__lede">
+            If you're running for office, leading a movement, or organizing across borders —
+            get on our list. We'll be in touch when applications open for New Global
+            Leadership cohorts, the Centella Global Forum, and Leadership Labs.
+          </p>
+          <MailchimpForm tag="institute-inquiry" />
+          <p class="institute-cta__fineprint">
+            One email per program. We send only when there's a room worth showing up for.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .events-section {
+  /* ─────────────────────────────────────────────────────
+     Page-local styles for /centella-institute.
+     Tokens only — no new color, spacing, or radius values.
+     Key color: var(--networking). All tone-coded surfaces
+     stay inside the networking family; the hero accent and
+     the programs section title accent both use the approved
+     coral → orange gradient (networking + global), the
+     Institute's identity pairing.
+
+     Tabs: zero-JS pattern. Two visually-hidden radio inputs
+     control which panel is visible via the sibling selector
+     (#id:checked ~ .panels .panel--*). Keyboard arrow keys
+     move between radios for free; labels expose accessible
+     names. We don't use ARIA role="tablist" because that
+     contract requires JS-driven roving focus management.
+     ───────────────────────────────────────────────────── */
+
+  /* Hero */
+  .institute-hero {
+    padding-top: var(--space-16);
+  }
+
+  .institute-hero__title {
+    color: var(--color-text);
+    max-width: min(100%, 22ch);
+    margin: 0;
+  }
+
+  .institute-hero__lede {
+    margin: var(--space-8) 0 0;
+    color: var(--color-text-muted);
+    max-width: min(100%, var(--prose-max-ch));
+  }
+
+  /* Section heading & intro — shared across events / networks / programs */
+  .institute-section-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: min(100%, var(--prose-max-ch));
     margin-bottom: var(--space-12);
   }
 
-  .events-section__label {
-    margin-bottom: var(--space-6);
+  .institute-section-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
   }
 
-  @media (max-width: 639px) {
-    .events-section__label {
-      margin-bottom: var(--space-4);
+  .institute-section-lede {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Events tabs (CSS-only) ─────────────────────── */
+  .institute-tabs {
+    display: contents; /* let inputs participate in sibling selectors at this level */
+  }
+
+  /* Visually hidden but focusable. Mirrors the .sr-only pattern. */
+  .institute-tabs__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .institute-tabs__triggers {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+  }
+
+  .institute-tabs__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .institute-tabs__trigger:hover {
+    color: var(--color-text);
+  }
+
+  .institute-tabs__trigger-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    padding: 0 var(--space-2);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0;
+  }
+
+  /* Active tab: trigger label + chip light up in the page key */
+  #institute-events-upcoming:checked
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-upcoming'],
+  #institute-events-past:checked
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-past'] {
+    color: var(--networking);
+    background: color-mix(in srgb, var(--networking) 12%, transparent);
+  }
+
+  #institute-events-upcoming:checked
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-upcoming']
+    .institute-tabs__trigger-count,
+  #institute-events-past:checked
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-past']
+    .institute-tabs__trigger-count {
+    background: color-mix(in srgb, var(--networking) 22%, transparent);
+    color: var(--networking);
+  }
+
+  /* Focus ring on the visible label when its hidden radio is focused */
+  #institute-events-upcoming:focus-visible
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-upcoming'],
+  #institute-events-past:focus-visible
+    ~ .container
+    .institute-tabs__triggers
+    label[for='institute-events-past'] {
+    outline: 2px solid var(--networking);
+    outline-offset: 2px;
+  }
+
+  /* Panels: hide all by default, show the one whose radio is checked */
+  .institute-tabs__panel { display: none; }
+
+  #institute-events-upcoming:checked
+    ~ .institute-tabs__panels
+    .institute-tabs__panel--upcoming,
+  #institute-events-past:checked
+    ~ .institute-tabs__panels
+    .institute-tabs__panel--past {
+    display: block;
+  }
+
+  /* ── Horizontal scroller for event cards ──────── */
+  .institute-scroller {
+    /* break out of the container gutter so cards bleed to the viewport edge */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--networking) 35%, transparent) transparent;
+  }
+
+  .institute-scroller:focus-visible {
+    outline: 2px solid var(--networking);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .institute-scroller__track {
+    display: flex;
+    gap: var(--space-6);
+    padding-block: var(--space-2) var(--space-4);
+    margin: 0;
+    list-style: none;
+  }
+
+  .institute-scroller__item {
+    flex: 0 0 min(85%, 22rem);
+    scroll-snap-align: start;
+    display: flex;
+  }
+
+  /* Make EventCard fill its scroller slot */
+  .institute-scroller__item :global(.event-card) {
+    width: 100%;
+  }
+
+  @media (min-width: 720px) {
+    .institute-scroller__item {
+      flex-basis: 22rem;
+    }
+  }
+
+  .institute-empty {
+    margin: 0;
+    padding-block: var(--space-8);
+  }
+
+  /* ── Networks Matter — three tone-coded panels (networking) ── */
+  .institute-panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .institute-panels { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .institute-panels { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .institute-panel {
+    border-radius: 8px;             /* medium panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--networking-dark);
+    color: var(--networking);
+  }
+
+  .institute-panel__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    height: 100%;
+  }
+
+  .institute-panel__icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    padding: var(--space-2);
+  }
+
+  .institute-panel__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+  }
+
+  /* ── Programs (editorial vertical stack) ───────── */
+  .institute-programs__title {
+    max-width: min(100%, 22ch);
+  }
+
+  .institute-programs__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .institute-program {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding-block: var(--space-12);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 720px) {
+    .institute-program {
+      grid-template-columns: minmax(14rem, 1fr) 2fr;
+      gap: var(--space-12);
+    }
+  }
+
+  .institute-program__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .institute-program__index {
+    color: var(--networking);
+  }
+
+  .institute-program__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 4px;
+    color: var(--networking);
+    background: color-mix(in srgb, var(--networking) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--networking) 30%, transparent);
+  }
+
+  .institute-program__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-2xl), 3.5vw, var(--text-3xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    max-width: 14ch;
+  }
+
+  .institute-program__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: min(100%, var(--prose-max-ch));
+  }
+
+  .institute-program__lede {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .institute-program__copy {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  /* ── CTA — one large networking panel hosting the form ── */
+  .institute-cta__panel {
+    border-radius: 16px;            /* large panel — per radius rule (4 / 8 / 16) */
+    padding: var(--space-2);
+    background: var(--networking-dark);
+    color: var(--networking);
+  }
+
+  .institute-cta__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-12) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 720px) {
+    .institute-cta__frame {
+      padding: var(--space-16) var(--space-12);
+    }
+  }
+
+  .institute-cta__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    max-width: 22ch;
+  }
+
+  .institute-cta__lede {
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: min(100%, var(--prose-max-ch));
+  }
+
+  .institute-cta__fineprint {
+    margin: 0;
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: color-mix(in srgb, var(--networking) 70%, transparent);
+  }
+
+  /* Reduced motion: everything already on transitions, but kill horizontal
+     scroll-snap inertia for users who request it. */
+  @media (prefers-reduced-motion: reduce) {
+    .institute-scroller {
+      scroll-behavior: auto;
     }
   }
 </style>

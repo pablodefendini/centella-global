@@ -19,9 +19,19 @@
  * src/middleware.ts.
  *
  * SVG templates live at src/templates/{business-card,email-signature}.svg
- * and use {{token}} interpolation. Available tokens: name, titleRole,
- * email, phone, pronouns, linkedin, website, plus pre-computed
- * linkedinDisplay / websiteDisplay (protocol-stripped variants).
+ * and use {{token}} interpolation. Available tokens: name, title, role,
+ * bio, biography, email, phone, pronouns, linkedin, website, plus
+ * pre-computed linkedinDisplay / websiteDisplay (protocol-stripped variants).
+ *
+ * Title vs Role: Title is the person's standing job title at Centella
+ * (e.g. "Co-founder") and is what the default templates render. Role is
+ * a contextual function that's exposed as a token but not used by the
+ * default card or signature designs.
+ *
+ * Bio vs Biography: Bio is a short one-liner intended for next-to-name
+ * placement on team cards. Biography is long-form prose for a future
+ * team-detail surface. Both are exposed as tokens; neither is used by
+ * the default card or signature designs.
  *
  * Fail-safe behavior:
  *   - If NOTION_TEAM_PROFILES_DB_ID is unset: log + exit 0 (no-op).
@@ -106,12 +116,15 @@ async function fetchActiveTeamProfiles() {
       name: getTitleText(p['Name']),
       slug: getRichText(p['Slug']),
       status: getSelect(p['Status']),
-      titleRole: getRichText(p['Title/Role']),
+      title: getRichText(p['Title']),
+      role: getRichText(p['Role']),
       email: getEmail(p['Email']),
       phone: getPhone(p['Phone']),
       pronouns: getRichText(p['Pronouns']),
       linkedin: getUrl(p['LinkedIn']),
       website: getUrl(p['Website']),
+      bio: getRichText(p['Bio']),
+      biography: getRichText(p['Biography']),
     };
   });
 }
@@ -132,7 +145,10 @@ const stripProtocol = (url) => (url ? url.replace(/^https?:\/\//, '').replace(/\
 function buildTokenContext(profile) {
   return {
     name: profile.name,
-    titleRole: profile.titleRole,
+    title: profile.title,
+    role: profile.role,
+    bio: profile.bio,
+    biography: profile.biography,
     email: profile.email,
     phone: profile.phone,
     pronouns: profile.pronouns,

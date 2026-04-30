@@ -9,6 +9,7 @@ import { Client } from '@notionhq/client';
 import type {
   Event,
   BlogPost,
+  BlogPostEvent,
   Speaker,
   Attendee,
   Sponsor,
@@ -92,7 +93,7 @@ export async function getPublishedEvents(): Promise<Event[]> {
       property: 'Status',
       select: { equals: 'Published' },
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
   });
 
   return Promise.all(response.results.map(pageToEvent));
@@ -106,10 +107,10 @@ export async function getFeaturedEvents(): Promise<Event[]> {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
         { property: 'Featured', checkbox: { equals: true } },
-        { property: 'Date Start', date: { on_or_after: now } },
+        { property: 'Date', date: { on_or_after: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
   });
 
   return Promise.all(response.results.map(pageToEvent));
@@ -124,10 +125,10 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     filter: {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
-        { property: 'Date Start', date: { on_or_after: now } },
+        { property: 'Date', date: { on_or_after: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'ascending' }],
+    sorts: [{ property: 'Date', direction: 'ascending' }],
     page_size: 1,
   });
 
@@ -140,10 +141,10 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     filter: {
       and: [
         { property: 'Status', select: { equals: 'Published' } },
-        { property: 'Date Start', date: { before: now } },
+        { property: 'Date', date: { before: now } },
       ],
     },
-    sorts: [{ property: 'Date Start', direction: 'descending' }],
+    sorts: [{ property: 'Date', direction: 'descending' }],
     page_size: 1,
   });
 
@@ -184,8 +185,8 @@ async function pageToEvent(page: NotionPage): Promise<Event> {
     name: getText(props['Name']),
     slug: getText(props['Slug']),
     status: getSelect(props['Status']) as Event['status'],
-    dateStart: getDate(props['Date Start']),
-    dateEnd: getDateEnd(props['Date End']),
+    dateStart: getDate(props['Date']),
+    dateEnd: getDateEnd(props['Date']),
     location: getText(props['Location']),
     tagline: getText(props['Tagline']),
     heroImage: getFile(props['Hero Image']),
@@ -211,7 +212,7 @@ export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
     sorts: [{ property: 'Published Date', direction: 'descending' }],
   });
 
-  return response.results.map(pageToBlogPost);
+  return Promise.all(response.results.map(pageToBlogPost));
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -229,8 +230,11 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   return pageToBlogPost(response.results[0]);
 }
 
-function pageToBlogPost(page: NotionPage): BlogPost {
+async function pageToBlogPost(page: NotionPage): Promise<BlogPost> {
   const props = page.properties;
+  const eventIds = getRelationIds(props['Event']);
+  const event = eventIds.length ? await getBlogPostEventById(eventIds[0]) : null;
+
   return {
     id: page.id,
     title: getText(props['Title']),
@@ -241,7 +245,29 @@ function pageToBlogPost(page: NotionPage): BlogPost {
     tags: getMultiSelect(props['Tags']),
     summary: getText(props['Summary']),
     heroImage: getFile(props['Hero Image']),
+    event,
   };
+}
+
+/**
+ * Lightweight Event lookup used only by `pageToBlogPost` to resolve the
+ * `Event` relation. Returns just enough to render a "From [Event]" link
+ * (id, slug, name) — does not fetch speakers/attendees/sponsors. Returns
+ * null on any failure so a broken or deleted relation never blocks a
+ * blog post from rendering.
+ */
+async function getBlogPostEventById(id: string): Promise<BlogPostEvent | null> {
+  try {
+    const page = await notion.pages.retrieve({ page_id: id });
+    const props = (page as any).properties;
+    return {
+      id: page.id,
+      slug: getText(props['Slug']),
+      name: getText(props['Name']),
+    };
+  } catch {
+    return null;
+  }
 }
 
 // --- Speakers ---
@@ -253,7 +279,8 @@ async function getSpeakerById(id: string): Promise<Speaker | null> {
     return {
       id: page.id,
       name: getText(props['Name']),
-      titleRole: getText(props['Title/Role']),
+      title: getText(props['Title']),
+      role: getText(props['Role']),
       organization: getText(props['Organization']),
       photo: getFile(props['Photo']),
     };
@@ -271,7 +298,8 @@ async function getAttendeeById(id: string): Promise<Attendee | null> {
     return {
       id: page.id,
       name: getText(props['Name']),
-      titleRole: getText(props['Title/Role']),
+      title: getText(props['Title']),
+      role: getText(props['Role']),
       organization: getText(props['Organization']),
       photo: getFile(props['Photo']),
     };
@@ -330,13 +358,16 @@ function pageToTeamProfile(page: NotionPage): TeamProfile {
     name: getText(props['Name']),
     slug: getText(props['Slug']),
     status: (getSelect(props['Status']) || 'Active') as TeamProfile['status'],
-    titleRole: getText(props['Title/Role']),
+    title: getText(props['Title']),
+    role: getText(props['Role']),
     email: getEmail(props['Email']),
     phone: getPhone(props['Phone']),
     pronouns: getText(props['Pronouns']),
     linkedin: getUrl(props['LinkedIn']),
     website: getUrl(props['Website']),
     photo: getFile(props['Photo']),
+    bio: getText(props['Bio']),
+    biography: getText(props['Biography']),
   };
 }
 

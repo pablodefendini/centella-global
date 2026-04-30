@@ -5,8 +5,10 @@
   pipeline is what is load-bearing: anything wrapped in {{double curly braces}}
   gets replaced by scripts/build-team-assets.mjs with the matching field from
   the Notion Team Profile. Available tokens:
-    {{name}} {{titleRole}} {{email}} {{phone}} {{pronouns}}
+    {{name}} {{title}} {{role}} {{email}} {{phone}} {{pronouns}}
     {{linkedin}} {{website}}
+  Title is the standing job title (rendered below); Role is a contextual
+  function and is available as a token but unused by this default design.
   Optional helpers (pre-computed by the script for convenience):
     {{linkedinDisplay}}   the URL with the protocol stripped
     {{websiteDisplay}}    same
@@ -50,7 +52,7 @@
        can embed it. See scripts/build-team-assets.mjs TODO comment. -->
   <g font-family="Helvetica, sans-serif" fill="#F7EDFF">
     <text x="6" y="20" font-size="6" font-weight="500">{{name}}</text>
-    <text x="6" y="26" font-size="3" fill="#C77DFF">{{titleRole}}</text>
+    <text x="6" y="26" font-size="3" fill="#C77DFF">{{title}}</text>
 
     <text x="6" y="42" font-size="2.6" font-weight="400">{{email}}</text>
     <text x="6" y="46.5" font-size="2.6" font-weight="400">{{phone}}</text>

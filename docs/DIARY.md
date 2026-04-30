@@ -6,6 +6,145 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 33 — April 29, 2026: Centella Institute page
+
+The Institute landing was still a placeholder events listing while Advisory and Impact had full sub-brand pages. Closed that gap today.
+
+Five sections, structurally lined up with the other two sub-brands so the family resemblance is obvious. Hero with the page title + lede on top. Then the Centella Events section as a tabbed UI — Upcoming / Past — each tab a horizontal scroller of event cards. Then Networks-Matter as three tone-coded panels in the networking family (coral on coral-dark, the canonical recipe). Then the three Institute programs — New Global Leadership, the Centella Global Forum, Leadership Labs — as a vertical editorial stack with numbered eyebrows. Then the CTA panel with the Mailchimp form.
+
+The tab UI is the bit I'm most pleased with. Hard project rule: no new client-side script bundles, period. I didn't want to violate that just to flip between two lists. Solved it with two visually-hidden `<input type="radio">` elements followed by the trigger labels and the panel content. The browser already handles the click, the keyboard arrow keys, the focus management. CSS does the rest — `:checked + ~` sibling selectors swap which label looks active and which panel is visible. Zero JS. Doesn't claim `role="tablist"` because that ARIA contract demands JS-driven roving focus, but the markup is fully accessible as radio inputs with proper labels. Documented it in CLAUDE.md as a reusable pattern — next time the design needs a binary content switch, this is the move.
+
+The trigger labels carry a small count chip ("Upcoming 0", "Past 3"). Doubles as visual feedback when one bucket is empty: the chip just reads `0` and the panel falls through to a friendly empty state. Saves a render branch.
+
+Hero accent: `display__accent--coral-orange` — networking + global. Each sub-brand pairs its work-color with one other family on the hero gradient. Advisory pairs with violet (the principal brand). Impact pairs with advisory (its operational cousin — capital and strategy). Institute pairs with global because the Institute is about scale and reach: bringing leaders across borders into the same room. Three sub-brands, three distinct identity gradients, no overlap. Used the same gradient on the programs-section title so "Connection is power" is the accent phrase — the call-out that introduces the three programs.
+
+Programs section deliberately is NOT a panel grid. Each program has substantial body copy and deserves space to breathe. So they're a vertical stack of editorial blocks: numbered eyebrow ("Program 01"), icon chip, display-typography name on the left; lede + body paragraph on the right. Hairline border between each. Stacks to single column on mobile. Feels like a magazine table of contents, not a feature grid. Right call for content this dense.
+
+CTA copy is new — "Step into the network." with a lede that names the three audiences (running for office, leading a movement, organizing across borders) and the three programs. Form tag is `institute-inquiry`, matching the convention from advisory and impact.
+
+The Networks-Matter panels added a fifth page to the tone-panel duplication count. Updated CLAUDE.md to mark the `<TonePanel>` component extraction as overdue rather than "trigger on the next page" — five pages is too many for a copy-paste pattern. Next pickup that touches any tone-panel page should pull the extraction in.
+
+`astro check` couldn't run from where I was working (vite cache permissions on the mounted `node_modules`), but the file matches the shape of advisory.astro / impact.astro structurally and the icons all resolve against `src/assets/icons/`. Will run a real build the next time I'm in the repo natively.
+
+---
+
+## Entry 32 — April 29, 2026: Bio + Biography on Team Profiles
+
+Fourth schema cleanup in this session. Two new content fields on Team Profiles: `Bio` (short one-liner) and `Biography` (long-form prose). Both rich text in Notion, both plumbed through the type, the notion.ts reader, the build-team-assets.mjs token context, and the preview-team-assets.mjs fixture. Exposed as `{{bio}}` and `{{biography}}` in SVG templates; the default card and signature designs don't use either.
+
+The split: Bio is the one-liner that goes next to a person's name on a team-grid card. Biography is the prose that fills a future team-detail page. Could've been one combined field, but splitting now means the future about-centella team-grid pipeline (still open) doesn't have to truncate or guess which field to show — the data model says "this is the short version, that's the long version."
+
+No public rendering today. The /tools pages aren't bio surfaces, and the about-centella team grid is still on placeholders waiting on the photo-download pipeline. When that lands, it consumes bio + biography directly.
+
+`tsc --noEmit` clean. Same deferral on `astro build` as the prior three entries.
+
+---
+
+## Entry 31 — April 29, 2026: collapsed Events `Date Start` + `Date End` into a single `Date` property
+
+While walking through the schema spec for the corporate Notion, noticed a long-running quirk in the reader code. The old model had two separate Date properties on Events, `Date Start` and `Date End`. The reader read `dateEnd` from the *end* of the `Date End` property's range — which only fires when `Date End` is configured as a date range, not a single date. So under the natural single-date setup, `.end` was always null and `dateEnd` always came back null. `formatDateRange()` was rendering single-day strings even for multi-day events. Hidden in plain sight; never broke anything because we had no Events data yet.
+
+Cleanest fix: collapse into one `Date` property that holds either a single date or a date range — Notion's native shape for this. Reader pulls `dateStart` from `.start` and `dateEnd` from `.end` of the same property; `dateEnd` is null for single-day events and populated for multi-day. Consumer signature stays the same — `dateStart: string, dateEnd: string | null` — so nothing in `Event.astro` or `EventCard.astro` had to change.
+
+Touched four query sites in `notion.ts` to update filters and sort orders from `Date Start` to `Date`. Notion's date filter operators (`on_or_after`, `before`) check against the start of a range, so the filter behavior is unchanged.
+
+`tsc --noEmit` clean. Same deferral on `astro build` as the previous two entries — corporate Notion isn't wired up yet, no point fetching against the old schema.
+
+Three schema-cleanup commits in one session now, all stacking on the same branch ahead of the corporate-Notion CMS migration: Title/Role split, Blog Posts Event relation, and now the Date collapse. New corporate workspace gets all three from day one — zero migration cost.
+
+---
+
+## Entry 30 — April 29, 2026: Blog Posts get an `Event` relation
+
+Same session as Entry 29, same rationale: cleaning up the schema before the corporate Notion CMS migration so the new workspace is created with the right shape from day one. Added a single-event relation on Blog Posts pointing at Events. A post can now be tagged as "from" the event it covers — recap, write-up, post-mortem — without burying the connection in tags or in body copy.
+
+Two-way relation in Notion, which means the Events DB gets a reciprocal "Blog Posts" property automatically. Not building any event-side surface today, but the data path is there if I want a "Related posts" block on event pages later.
+
+Single cardinality — `event: BlogPostEvent | null` on `BlogPost`. Property name is singular; if a post legitimately mentions multiple events, the body text handles the secondaries.
+
+Renders in two places: the blog post detail page gets a "From [Event Name]" eyebrow above the date, linking to `/events/{slug}/`. The listing card shows "From [Event Name]" as plain text — can't link from the card because the whole card is already an `<a>` to the post and nesting anchors is invalid HTML. If I want a clickable event-link on the listing later, the fix is restructuring the card with a CSS pseudo-element overlay for the post link. Deferred — small value, real CSS work.
+
+Code-side: `pageToBlogPost` is now async. One extra Notion fetch per post to resolve the relation (build-time only). Added `getBlogPostEventById` as a lightweight retriever — returns just id/slug/name, doesn't drag in speakers/attendees/sponsors the way `pageToEvent` does. Fails closed: returns null on any error so a broken or deleted relation never blocks a post from rendering.
+
+Edge case I'm leaving to content team: if the related event is Draft or Archived, the post still renders but the "From" link 404s (because `/events/[slug]` filters by Published). Flagged in CLAUDE.md.
+
+`tsc --noEmit` clean. Same deferral as Entry 29 on running `astro build` — the personal Notion still has the old schema, so a build wouldn't tell us anything useful. The first deploy against the corporate Notion is the real validation gate.
+
+---
+
+## Entry 29 — April 29, 2026: split `Title/Role` into Title + Role across Speakers, Attendees, Team Profiles
+
+About to migrate the Notion CMS from my personal account to the Centella corporate one. While lining up the schema for the corporate workspace, realized `Title/Role` had been doing two jobs and that this was the moment to split it. Fresh corporate workspace means no legacy data to migrate, so it's a free cleanup.
+
+Title is the person's standing job title at their org. Role is their contextual function. On a speaker card for an event, what people care about is "Keynote Speaker" — that's Role. On a business card or email signature, what matters is "Co-founder" — that's Title. One field jammed together meant every surface had to render the same string; splitting them lets each surface render the right thing.
+
+Touched: `src/lib/types.ts` (Speaker, Attendee, TeamProfile interfaces), `src/lib/notion.ts` (three read sites — `getSpeakerById`, `getAttendeeById`, `pageToTeamProfile`), `scripts/build-team-assets.mjs` and `scripts/preview-team-assets.mjs`, both SVG templates (`{{titleRole}}` → `{{title}}`), `tools/business-cards.astro` and `tools/email-signatures.astro`, and `SpeakerCard.astro` — which now stacks Name → Role at body weight → Title muted → Organization muted. Both `{{title}}` and `{{role}}` are exposed as template tokens for the SVGs; only `{{title}}` is rendered by the default card and signature designs. CLAUDE.md updated to reflect the new schema.
+
+`tsc --noEmit` clean. Skipped `astro build` because it would have fetched from the personal Notion, which still has the old `Title/Role` property, and produced empty values for Title and Role — useless signal. The real test is the next deploy after the corporate Notion is wired up: build will fail loudly on a property-name typo, which is the right behavior.
+
+---
+
+## Entry 28 — April 29, 2026: design refinement pass on the new color scale generator
+
+> **Update at end of session:** Pablo flagged that the step interior still looks broken in the actual render despite this pass — the static-review claims below describe the *intent* of the changes, not the result on screen. Deprioritized; logged in CLAUDE.md → "Pending / planned work" with diagnosis hypotheses and a suggested next move (drop the inline hex `<input>`, use a copy-on-click button). Don't treat this entry as the final state of the generator.
+
+Came back to the generator from Entry 27 with a fresh-eyes critique pass and made it noticeably tighter. Three categories of fix.
+
+**Information order.** The override hint used to live *below* the scale, which meant users hit the swatches without knowing they could click them. Promoted it above, paired in one row with the OKLab/HSL/RGB toggle and a small "Interpolation" label so the row reads as "here's what you can do, and here's how the interpolation works." That's the meta-info you want before touching the scale, not after.
+
+**Action hierarchy.** The action row was four ghost buttons in identical styling: Reset, Copy CSS, Copy JSON, Copy Tailwind. Visually, that says "all four are equally important" — but Copy CSS is what 80% of users want. Made Copy CSS the lone primary (filled violet, dark text), JSON and Tailwind ghost, and pushed Reset to the right with `margin-left: auto` and a `disabled` state when there are no overrides to reset. Now there's nothing to read; the most-likely-next-action is the obvious filled button.
+
+**Anchor primacy.** The KEY anchor (step 5) is conceptually the driver of the whole scale, but the three input groups read as identical. Two changes: the KEY input's label is colored violet (others stay muted), and all three inputs get faintly role-tinted borders via `color-mix` against `--violet-dark` / `--violet` / `--violet-light`. On the scale itself, the key step now gets a violet outer ring + brighter inner highlight so it visibly anchors. Subtle enough that nothing screams; loud enough that you can't miss which step is the input you typed.
+
+**Step affordance.** The original step picker was a transparent overlay on top of an otherwise-passive swatch — clickability was invisible. Added a 2px translateY hover lift on every step so they read as interactive, and bumped the inline hex input from `text-xs` (~10px, below the 12px floor for tabular data) to `text-sm` with `font-variant-numeric: tabular-nums`. Override indicator changed from `5*` to a small dot in the top-right of overridden steps, plus an aria-label addition so screen readers say "step 5, #C77DFF, overridden, key" instead of mumbling about asterisks.
+
+**Toast copy normalized.** Used to be a mix: "Copied", "CSS copied", "Loaded violet". Now everything follows one form — "Copied #C77DFF" for single hex, "Copied scale (CSS)" for exports, "Copied violet (CSS)" for palette CSS, "Loaded violet" for palette load, "Reset to interpolated values" for reset. Same pattern, predictable read.
+
+**Brand palette card simplification.** The per-palette card head used to show: keychip + name + three anchor mini-chips with hex codes inline. Too much chrome for what's already shown in the 9-step scale right below it. Cut the anchor row entirely — the scale itself shows step 1 (dark anchor), step 5 (key, ringed), and step 9 (light anchor). Replaced with the canonical token name (`--violet`, `--advisory`, etc.) as a code chip, which is the actually-useful identifier. Moved the Copy CSS / Load buttons up into the head, smaller (`csg-btn--small`), so the full-width 9-step scale can be the visual anchor of the card.
+
+`tsc --noEmit` clean, ARIA labels added on the live region and the dynamically-built scale steps, focus-visible outlines on every interactive element. CLAUDE.md doesn't change; MEMORY.md doesn't change. Just this entry.
+
+---
+
+## Entry 27 — April 29, 2026: the styleguide gets a 9-step color scale generator wired to the design tokens
+
+Replaced the old Color Scale Generator on `/styleguide` — the one that took a single base color and spat out a primary/alt/dark/light quartet — with a proper 9-step interpolator. Three anchors (dark = step 1, key = step 5, light = step 9) and the missing six steps fall out of an interpolation in the color space of your choice: OKLab by default (perceptually uniform), HSL, or RGB. Every step is editable inline; overrides survive across anchor and color-space changes; the asterisk on the step number tells you which steps are off the curve. Copy any single hex, or export the whole scale as CSS custom properties, JSON, or a Tailwind `colors.custom` block.
+
+The new tool came in as a self-contained HTML page with hardcoded Tailwind-blue defaults and a generic dark-purple shell. The actual work was the token translation pass — every `#1a1a2e` → `var(--bg-surface)`, every `#444` → `var(--color-border)`, every `#667eea` → `var(--violet)`, every `8px` radius → `var(--radius-lg)`, etc. The shell radius wanted `12px`, which is exactly the use case `design.md` calls out by name for `--radius-xl` ("Large surfaces, e.g. color scale generator shell"). Nice when a token's documented exemplar turns out to be the thing in front of you.
+
+The piece I'm most happy with is that the brand-palettes section below the generator doesn't duplicate the hex values. It reads them off the existing `colorFamilies` frontmatter array — the same array that drives the swatches in section 5 of the styleguide. The shape lines up perfectly: `primary`/`dark`/`light` from the array becomes `key`/`dark`/`light` for the generator. So the canonical brand colors live in one place, and adding a seventh family means typing it once. No risk of the styleguide drifting from itself.
+
+Two implementation notes for the next time this comes up:
+
+- The security hook on the repo (correctly) blocks any `innerHTML` assignment in `<script>` blocks. The old generator used template strings for the swatch grid; the new one uses a tiny `el(tag, attrs, children)` helper that wraps `createElement` + `setAttribute` + `append`. The data going through the helper is all hex strings I just computed, so XSS isn't a real risk here, but the helper is cleaner anyway and the policy is right to be uniform about it.
+- OKLab matters for cross-hue scales. The Centella Violet → Networking interpolation goes through a clean magenta-coral midpoint in OKLab; in HSL it rotates through the hue wheel and produces an unwanted purple band; in RGB it washes out around step 5. Try it on the page — the toggle is right there. This is why OKLab is the default.
+
+The brand palette block now also doubles as a load-into-the-generator UI: each palette has a "Load in generator" button that swaps the three anchors and scrolls the page back to the generator, so you can take e.g. the Investment family and immediately rederive its 9-step scale in another color space. That's the thing I'd actually want to do during a campaign — start from a brand family, see all nine steps, override one or two, copy as CSS.
+
+What's left: nothing for this iteration. This is a pure styleguide enhancement — the tokens, families, and `colorFamilies` array were already wired correctly. CLAUDE.md doesn't need an update because the pattern (single source of truth in the frontmatter array) was already implicit; `docs/MEMORY.md` doesn't need one because no decision moved from open to locked. Just this entry.
+
+---
+
+## Entry 26 — April 29, 2026: Advisory, Impact, and About get their content; the share lobby grows a sub-lobby
+
+Long Cowork session, mostly content-shaped. The three sub-brand landing pages were placeholders — `<h1>Advising leaders</h1>` and a single sentence each — and the homepage pillars were promising leaders to "learn more about Centella Advisory" with no Centella Advisory to learn about. Filled out two of them today (Advisory and Impact) and built a brand-new umbrella page at `/about-centella/`. Pablo handed me content blocks and the design system + brand-voice guidelines to apply; I laid them out.
+
+The thing worth writing down is that *the same panel pattern works everywhere*. The homepage pillars use a tone-coded surface — `--<family>-dark` ground, `--<family>` foreground, an 8px-radius inner frame at 30% currentColor opacity, an icon chip at 16% bg + 35% border, the body in `--color-text` and the title in `--color-text` against the muted accent. I'd built it once on the homepage. Used the same recipe today for the three Advisory strategy panels (advisory family), the four Impact problem panels, the three Impact solution panels, and the three About pillars. Each composition stays inside its sub-brand's color family, which honors the "max two color families per composition" rule from the brand guide. Different sections, same shape, no new tokens. That's the pattern I want extracted as a `<TonePanel>` component when the next page that needs one shows up.
+
+The other unifying move was on the hero accent. Sub-brand pages key the page accent to their sub-brand color (Advisory → `--advisory`, Impact → `--investment`) and the hero's gradient accent uses an approved gradient that pairs the page key with another family — `display__accent--cyan-violet` for Advisory (advisory + violet principal), `display__accent--lime-teal` for Impact (investment + advisory). About Centella, being umbrella-neutral, doesn't override `--page-accent` and reuses the homepage hero's `data-random-accent-gradient` so each page load picks one of the six approved gradients. So the hero accent reads as "I am about Centella the whole" vs "I am about this specific sub-brand." That distinction is now load-bearing across the site.
+
+Three nav items got added — Share, Work, Tools — between Blog and Styleguide, plus About Centella inserted right after Home. Both `SiteHeader.astro` and `SiteFooter.astro` use the same `navLinks` array shape, so it was a copy-paste-twice change. The interesting part was that the Work entry needed a real route. `/share/work/` had no `index.html`; it was a parent directory holding per-project mockups. Vercel would 404. Two options: drop the Work entry (against what Pablo asked for), or generate a sub-lobby. Picked the second. Patched `scripts/build-share-index.mjs` to support a new `subLobbies` map in the manifest — keyed by directory name — that filters projects whose artifacts live under that prefix and emits `share/<kind>/index.html` with the same Centella chrome plus a breadcrumb back to `/share/`. `share/work/index.html` is now a real route showing one project today (Prime Movers), and any future work project added to the manifest with a `work/...` artifact will auto-appear. The same machinery would emit `share/presentations/index.html` if I added a `subLobbies.presentations` block; haven't yet — Pablo only asked for Work — but it's there if we want symmetry.
+
+Then a thing that bit me on the way out the door. Pablo reported `/share/` and `/share/work/` 404'ing in `astro dev`. Right — `astro dev` only knows `src/pages/` and `public/`; the `share/` directory at the repo root only exists in the deploy bundle, mirrored by `copy-share.mjs` at build time. So the share lobby works in `npm run preview` (which reads `dist/`) and in production (which reads `.vercel/output/static/`), but in dev it's invisible. CLAUDE.md called out the same dev-vs-prod gap on `/tools/*` static-asset gating; this is the analog for share. Closed it with a small Vite plugin in `astro.config.mjs` (`apply: 'serve'` so it only runs in dev) that intercepts `/share/*` requests, maps them to `<repo>/share/*`, redirects directory URLs to the trailing-slash form so relative hrefs resolve, guards against path traversal, and falls through to Astro's 404 if the file's missing. Smoke-tested against a live dev server: `/share/` 200, `/share/work` 301, `/share/work/` 200, `/share/nope` 404. Production unchanged — `apply: 'serve'` scopes the plugin to dev only.
+
+What the team grid on About Centella exposed: the `getTeamProfiles()` function from `src/lib/notion.ts` is sitting right there, but Notion's signed file URLs expire, which is fine for the auth-gated `/tools/*` (rebuilt on every deploy, only seen by staff) but a real liability on a public About page (a stale signed URL = a broken portrait on a high-traffic page). So the team grid currently renders 8 placeholder circles with a clear `// swap for <img src="/team/<slug>.webp">` marker in the source. The pickup is a build-time pipeline that pulls photos out of Notion into `public/team/`, mirrored on every Vercel deploy. Same shape as the team-asset pipeline already in flight. Open question on CLAUDE.md.
+
+What I keep wanting to write down — and might finally now — is that *the second time I write a panel by hand is the last time I should write one by hand.* I noticed the duplication while writing the third copy of `.tone-surface` panel CSS today (advisory, then impact, then about). Didn't extract because each page was its own ticket and the duplication is small (~30 lines of CSS, ~12 lines of markup). But the next page that needs a tone panel is the trigger — at that point it stops being incidental and becomes a refactor. Made a note in CLAUDE.md.
+
+Same docs-triad rule as always: this entry; a couple decision-log entries in `docs/MEMORY.md`; CLAUDE.md updated for the new directory entries, the section-panel pattern, sub-lobby support in `build-share-index.mjs`, the dev-mode share-serving plugin, and the team-photo open question; README updated for the new routes; `design.md` got a "Tone-coded section panels" entry under Components so the pattern lives next to its peers.
+
+---
+
 ## Entry 25 — April 29, 2026: the prerender-vs-middleware lesson I'm going to remember
 
 Followed up on the `/tools` section the same day I built it, partly to test it end-to-end and partly because I wanted a real username, not just "any username + password is the only thing that matters." Easy first change: middleware now checks both `TOOLS_USERNAME` and `TOOLS_PASSWORD` against env vars; both required, both fail closed. We'll boot it with `staff` / `centella` and rotate before sharing.

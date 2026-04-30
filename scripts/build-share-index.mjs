@@ -11,6 +11,14 @@
  *   - warn about any top-level entry under share/ that isn't represented
  *     in the manifest (so Pablo knows to add a description for it)
  *
+ * Sub-lobbies. The manifest may declare a `subLobbies` map keyed by
+ * directory name under share/ (e.g. "work"). For each entry the script
+ * filters projects whose artifacts live under that directory, rewrites
+ * hrefs to be relative to the sub-lobby, and emits
+ * share/<kind>/index.html with the same Centella chrome plus a breadcrumb
+ * back to /share/. This is what makes /share/work/ a real route — Vercel
+ * can then serve it without a 404.
+ *
  * Run via: npm run share:index
  * Chained from: npm run share:build (after astro build, decks, work).
  *
@@ -70,8 +78,8 @@ if (orphans.length) {
   );
 }
 
-// 2. Render and write.
-const html = renderPage(manifest);
+// 2. Render and write the main lobby.
+const html = renderPage({ site: manifest.site, projects: manifest.projects });
 writeFileSync(outPath, html, 'utf8');
 
 const kb = (Buffer.byteLength(html, 'utf8') / 1024).toFixed(1);
@@ -80,6 +88,54 @@ console.log(
     (missing ? ` (${missing} missing artifact(s))` : '') +
     (orphans.length ? ` (${orphans.length} orphan(s))` : ''),
 );
+
+// 3. Sub-lobbies (e.g. share/work/index.html). Optional.
+//    Keyed by directory name under share/. For each entry, filter projects
+//    whose artifacts live under that directory, rewrite hrefs relative to
+//    the sub-lobby, and render with a breadcrumb back to /share/.
+const subLobbies = manifest.subLobbies || {};
+for (const [kind, cfg] of Object.entries(subLobbies)) {
+  const subDir = join(shareDir, kind);
+  if (!existsSync(subDir)) {
+    console.warn(
+      `[build-share-index] subLobby "${kind}": share/${kind}/ does not exist on disk — skipping`,
+    );
+    continue;
+  }
+
+  const prefix = `${kind}/`;
+  const filtered = (manifest.projects || [])
+    .filter((p) => (p.artifacts || []).some((a) => String(a.href).startsWith(prefix)))
+    .map((p) => ({
+      ...p,
+      artifacts: (p.artifacts || [])
+        .filter((a) => String(a.href).startsWith(prefix))
+        .map((a) => ({ ...a, href: String(a.href).slice(prefix.length) })),
+    }));
+
+  if (!filtered.length) {
+    console.warn(
+      `[build-share-index] subLobby "${kind}": no manifest projects reference share/${kind}/ — skipping`,
+    );
+    continue;
+  }
+
+  const subHtml = renderPage({
+    site: cfg.site || {},
+    projects: filtered,
+    breadcrumb: cfg.breadcrumb || {
+      href: '../',
+      label: manifest.site?.eyebrow || 'Centella · Share',
+    },
+  });
+  const subOut = join(subDir, 'index.html');
+  writeFileSync(subOut, subHtml, 'utf8');
+
+  const skb = (Buffer.byteLength(subHtml, 'utf8') / 1024).toFixed(1);
+  console.log(
+    `[build-share-index] wrote share/${kind}/index.html — ${filtered.length} project(s), ${skb} KB`,
+  );
+}
 
 // ----------------------------------------------------------------
 
@@ -100,6 +156,13 @@ function renderPage(m) {
     : '';
 
   const cards = (m.projects || []).map(renderCard).join('\n');
+
+  // Eyebrow: defaults to "Centella · Share" for the main lobby; sub-lobbies
+  // pass a breadcrumb that prepends a back-link to the parent.
+  const baseEyebrow = esc(site.eyebrow || 'Centella · Share');
+  const eyebrowHtml = m.breadcrumb
+    ? `<a href="${esc(m.breadcrumb.href)}">${esc(m.breadcrumb.label)}</a> · ${baseEyebrow}`
+    : baseEyebrow;
 
   return `<!doctype html>
 <html lang="en">
@@ -193,6 +256,14 @@ function renderPage(m) {
     text-transform: uppercase;
     color: var(--color-text-dim);
     margin: 0 0 var(--space-6);
+  }
+  .eyebrow a {
+    transition: color var(--transition-base);
+  }
+  .eyebrow a:hover,
+  .eyebrow a:focus-visible {
+    color: var(--color-text);
+    outline: none;
   }
 
   .display {
@@ -369,7 +440,7 @@ function renderPage(m) {
 
 <header class="hero">
   <div class="container">
-    <p class="eyebrow">Centella · Share</p>
+    <p class="eyebrow">${eyebrowHtml}</p>
     <h1 class="display">${esc(headline.lead || '')} <span class="display__accent ${accentClass}">${esc(headline.accent || '')}</span></h1>
     <p class="lede">${esc(site.lede || '')}</p>
   </div>

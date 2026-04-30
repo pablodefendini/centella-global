@@ -34,12 +34,28 @@ export interface BlogPost {
   tags: string[];
   summary: string;
   heroImage: string | null;
+  /**
+   * Optional Notion relation to a single Event. When set, blog post pages
+   * render a "From [Event]" eyebrow link to /events/{slug}, and listing
+   * cards show "From [Event]" as plain text. The link 404s if the related
+   * event isn't Published — content team's responsibility.
+   */
+  event: BlogPostEvent | null;
+}
+
+export interface BlogPostEvent {
+  id: string;
+  slug: string;
+  name: string;
 }
 
 export interface Speaker {
   id: string;
   name: string;
-  titleRole: string;
+  /** Their standing job title at their org (e.g. "Strategy Director"). */
+  title: string;
+  /** Their contextual function in this event (e.g. "Keynote Speaker"). */
+  role: string;
   organization: string;
   photo: string | null;
 }
@@ -47,7 +63,10 @@ export interface Speaker {
 export interface Attendee {
   id: string;
   name: string;
-  titleRole: string;
+  /** Their standing job title at their org. */
+  title: string;
+  /** Their contextual function in this event (e.g. "Founding Partner"). */
+  role: string;
   organization: string;
   photo: string | null;
 }
@@ -70,13 +89,20 @@ export interface TeamProfile {
   name: string;
   slug: string;
   status: 'Active' | 'Inactive';
-  titleRole: string;
+  /** Their job title at Centella (e.g. "Co-founder", "Senior Strategist"). Goes on cards and email signatures. */
+  title: string;
+  /** Their contextual function (e.g. "Strategy lead, Latin America"). Available as a template token but not rendered by default. */
+  role: string;
   email: string;
   phone: string;
   pronouns: string;
   linkedin: string | null;
   website: string | null;
   photo: string | null;
+  /** Short one-liner shown next to the name on team cards / listings. */
+  bio: string;
+  /** Long-form biographical prose for team-detail surfaces (future). */
+  biography: string;
 }
 
 /**

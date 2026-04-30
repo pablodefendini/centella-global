@@ -475,46 +475,88 @@ const subbrands = [
         <h2>Color Scale Generator</h2>
       </div>
       <p class="sg-paragraph">
-        Extend the system for campaigns, sub-brands, or new contexts. Enter any base
-        color — the tool generates primary, alternate, dark, and light variants using
-        the same tonal logic that produced the core families above.
+        Pick three anchors — dark, key, light — and the tool fills the six steps in
+        between. OKLab interpolation by default; toggle to HSL or RGB to compare.
+        Override any step inline. Export as CSS, JSON, or Tailwind.
       </p>
 
       <div class="csg" id="csg">
-        <div class="csg-controls">
-          <label class="csg-control">
-            <span class="sg-voice-label">Base color</span>
+        <div class="csg-inputs">
+          <label class="csg-input-group csg-input-group--dark">
+            <span class="sg-voice-label">Dark</span>
             <div class="csg-input-row">
-              <input type="color" id="csg-picker" value="#C77DFF" aria-label="Base color picker" />
-              <input type="text" id="csg-hex" value="#C77DFF" maxlength="7" aria-label="Base color hex" />
+              <input type="color" id="csg-dark-picker" value="#1E1A28" aria-label="Dark anchor color" />
+              <input type="text" id="csg-dark-hex" value="#1E1A28" maxlength="7" aria-label="Dark anchor hex" spellcheck="false" autocomplete="off" />
             </div>
           </label>
-          <label class="csg-control">
-            <span class="sg-voice-label">Name <span class="sg-muted">(optional)</span></span>
-            <input type="text" id="csg-name" placeholder="e.g. Campaign Teal" class="csg-name-input" />
-          </label>
-          <div class="csg-presets">
-            <span class="sg-voice-label">Quick start</span>
-            <div class="csg-preset-row">
-              <button type="button" data-hex="#C77DFF" data-name="Centella Violet" style="background: #C77DFF;"></button>
-              <button type="button" data-hex="#00E5FF" data-name="Advisory Blue" style="background: #00E5FF;"></button>
-              <button type="button" data-hex="#FF6B6B" data-name="Networking Red" style="background: #FF6B6B;"></button>
-              <button type="button" data-hex="#CCFF00" data-name="Investment Green" style="background: #CCFF00;"></button>
-              <button type="button" data-hex="#FF9500" data-name="Global Orange" style="background: #FF9500;"></button>
-              <button type="button" data-hex="#FF66C4" data-name="Tech Pink" style="background: #FF66C4;"></button>
+          <label class="csg-input-group csg-input-group--key">
+            <span class="sg-voice-label">Key</span>
+            <div class="csg-input-row">
+              <input type="color" id="csg-key-picker" value="#C77DFF" aria-label="Key anchor color" />
+              <input type="text" id="csg-key-hex" value="#C77DFF" maxlength="7" aria-label="Key anchor hex" spellcheck="false" autocomplete="off" />
             </div>
+          </label>
+          <label class="csg-input-group csg-input-group--light">
+            <span class="sg-voice-label">Light</span>
+            <div class="csg-input-row">
+              <input type="color" id="csg-light-picker" value="#F7EDFF" aria-label="Light anchor color" />
+              <input type="text" id="csg-light-hex" value="#F7EDFF" maxlength="7" aria-label="Light anchor hex" spellcheck="false" autocomplete="off" />
+            </div>
+          </label>
+        </div>
+
+        <div class="csg-meta-row">
+          <p class="csg-hint">Edit any step inline. <span class="csg-hint-asterisk" aria-hidden="true">*</span> marks an override.</p>
+          <div class="csg-space-toggle" role="tablist" aria-label="Interpolation color space">
+            <span class="csg-space-label" aria-hidden="true">Interpolation</span>
+            <button type="button" class="csg-space-btn is-active" data-space="oklab" role="tab" aria-selected="true">OKLab</button>
+            <button type="button" class="csg-space-btn" data-space="hsl" role="tab" aria-selected="false">HSL</button>
+            <button type="button" class="csg-space-btn" data-space="rgb" role="tab" aria-selected="false">RGB</button>
           </div>
         </div>
 
-        <div class="csg-output" id="csg-output">
-          <!-- swatches injected by script -->
+        <div class="csg-scale" id="csg-scale" role="list" aria-label="9-step color scale"></div>
+
+        <div class="csg-actions">
+          <button type="button" class="csg-btn csg-btn--primary" id="csg-copy-css">Copy CSS</button>
+          <button type="button" class="csg-btn csg-btn--ghost" id="csg-copy-json">Copy JSON</button>
+          <button type="button" class="csg-btn csg-btn--ghost" id="csg-copy-tw">Copy Tailwind</button>
+          <button type="button" class="csg-btn csg-btn--ghost csg-btn--reset" id="csg-reset" disabled>Reset</button>
         </div>
 
-        <details class="csg-css">
-          <summary>Copy as CSS custom properties</summary>
-          <pre><code id="csg-css-out"></code></pre>
+        <details class="csg-output-block">
+          <summary>Preview output</summary>
+          <pre><code id="csg-output-out"></code></pre>
         </details>
       </div>
+
+      <h3 style="margin-top: var(--space-12);">Brand palettes</h3>
+      <p class="sg-paragraph">
+        The six core families expanded into 9-step scales using the same interpolator.
+        Click a step to copy its hex; load a palette into the generator to derive a
+        campaign variant or inspect it in another color space.
+      </p>
+
+      <div class="csg-palettes" id="csg-palettes">
+        {colorFamilies.map((f) => (
+          <article class="csg-palette" data-key-slug={f.key}>
+            <header class="csg-palette-head">
+              <div class="csg-palette-id">
+                <span class="csg-palette-keychip" style={`background: ${f.primary};`} aria-hidden="true"></span>
+                <h4 class="csg-palette-name">{f.label}</h4>
+                <code class="csg-palette-token">--{f.key}</code>
+              </div>
+              <div class="csg-palette-actions">
+                <button type="button" class="csg-btn csg-btn--ghost csg-btn--small" data-palette-action="copy-css" data-key-slug={f.key} data-anchor-dark={f.dark} data-anchor-key={f.primary} data-anchor-light={f.light} aria-label={`Copy ${f.label} as CSS`}>Copy CSS</button>
+                <button type="button" class="csg-btn csg-btn--ghost csg-btn--small" data-palette-action="load" data-key-slug={f.key} data-anchor-dark={f.dark} data-anchor-key={f.primary} data-anchor-light={f.light} aria-label={`Load ${f.label} into generator`}>Load</button>
+              </div>
+            </header>
+            <div class="csg-palette-scale" data-key-slug={f.key} data-anchor-dark={f.dark} data-anchor-key={f.primary} data-anchor-light={f.light} role="list" aria-label={`${f.label} 9-step scale`}></div>
+          </article>
+        ))}
+      </div>
+
+      <div class="csg-toast" id="csg-toast" role="status" aria-live="polite"></div>
     </section>
 
     <!-- ── 7. Visual Language ───────────────────────── -->
@@ -825,98 +867,320 @@ import Icon from '../components/Icon.astro';
     return L > 0.5 ? '#060607' : '#F7EDFF';
   }
 
-  // Derive the family — modeled on Centella core palette relationships.
-  function derive(hex: string) {
-    const hsl = hexToHsl(hex);
-    if (!hsl) return null;
-    const primary = hslToHex(hsl);
-    const alt = hslToHex({
-      h: (hsl.h + 18) % 360,
-      s: Math.max(20, Math.min(100, hsl.s + 6)),
-      l: Math.max(35, Math.min(80, hsl.l - 8)),
-    });
-    const dark = hslToHex({
-      h: (hsl.h + 6) % 360,
-      s: Math.min(30, hsl.s * 0.32),
-      l: 11,
-    });
-    const light = hslToHex({
-      h: hsl.h,
-      s: Math.max(hsl.s, 60),
-      l: 95,
-    });
-    return { primary, alt, dark, light };
+  // OKLab — perceptually uniform interpolation. Anchors map to 1/5/9; the
+  // missing steps are interpolated in OKLab (default), HSL, or RGB. The
+  // perceptual default keeps lightness changes visually even across hues.
+  type Oklab = { L: number; a: number; b: number };
+
+  function rgbToOklab({ r, g, b }: RGB): Oklab {
+    const lin = (c: number) => {
+      c /= 255;
+      return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    };
+    const lr = lin(r), lg = lin(g), lb = lin(b);
+    const l_ = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
+    const m_ = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
+    const s_ = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+    return {
+      L: 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+      a: 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+      b: 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_,
+    };
+  }
+  function oklabToRgb({ L, a, b }: Oklab): RGB {
+    const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+    const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+    const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
+    const lr = l_ ** 3, lg = m_ ** 3, lb = s_ ** 3;
+    let r =  4.0767416621 * lr - 3.3077115913 * lg + 0.2309699292 * lb;
+    let g = -1.2684380046 * lr + 2.6097574011 * lg - 0.3413193965 * lb;
+    let bl = -0.0041960863 * lr - 0.7034186147 * lg + 1.7076147010 * lb;
+    const enc = (c: number) => c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+    return {
+      r: Math.max(0, Math.min(255, enc(r) * 255)),
+      g: Math.max(0, Math.min(255, enc(g) * 255)),
+      b: Math.max(0, Math.min(255, enc(bl) * 255)),
+    };
   }
 
-  function slug(name: string) {
-    return name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'custom';
+  type ColorSpace = 'oklab' | 'hsl' | 'rgb';
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+  function interpolate(hex1: string, hex2: string, t: number, space: ColorSpace): string {
+    const r1 = hexToRgb(hex1)!;
+    const r2 = hexToRgb(hex2)!;
+    if (space === 'rgb') {
+      return rgbToHex({ r: lerp(r1.r, r2.r, t), g: lerp(r1.g, r2.g, t), b: lerp(r1.b, r2.b, t) });
+    }
+    if (space === 'hsl') {
+      const h1 = rgbToHsl(r1);
+      const h2 = rgbToHsl(r2);
+      // Hue wrap shortest path
+      let a = h1.h, b = h2.h;
+      if (Math.abs(b - a) > 180) { if (a < b) a += 360; else b += 360; }
+      return hslToHex({
+        h: lerp(a, b, t) % 360,
+        s: lerp(h1.s, h2.s, t),
+        l: lerp(h1.l, h2.l, t),
+      });
+    }
+    const k1 = rgbToOklab(r1);
+    const k2 = rgbToOklab(r2);
+    return rgbToHex(oklabToRgb({
+      L: lerp(k1.L, k2.L, t),
+      a: lerp(k1.a, k2.a, t),
+      b: lerp(k1.b, k2.b, t),
+    }));
   }
 
-  const picker = document.getElementById('csg-picker') as HTMLInputElement;
-  const hexInput = document.getElementById('csg-hex') as HTMLInputElement;
-  const nameInput = document.getElementById('csg-name') as HTMLInputElement;
-  const output = document.getElementById('csg-output')!;
-  const cssOut = document.getElementById('csg-css-out')!;
-  const presetRow = document.querySelector('.csg-preset-row')!;
+  // 9-step scale: dark (1) → key (5) → light (9).
+  function buildScale(dark: string, key: string, light: string, space: ColorSpace): string[] {
+    const out: string[] = [];
+    for (let i = 0; i < 5; i++) out.push(interpolate(dark, key, i / 4, space));
+    for (let i = 1; i <= 4; i++) out.push(interpolate(key, light, i / 4, space));
+    return out.map((c) => c.toUpperCase());
+  }
 
-  function render(hex: string, name: string) {
-    const family = derive(hex);
-    if (!family) return;
-    const s = slug(name || 'custom');
-    const variants: Array<[string, string, string]> = [
-      ['Primary', family.primary, `--${s}`],
-      ['Alternate', family.alt, `--${s}-alt`],
-      ['Dark', family.dark, `--${s}-dark`],
-      ['Light', family.light, `--${s}-light`],
-    ];
-    output.innerHTML = variants
-      .map(([label, val, token]) => `
-        <div class="csg-swatch">
-          <div class="csg-chip" style="background: ${val}; color: ${textOn(val)};">
-            <span class="csg-chip-name">${label}</span>
-            <button type="button" class="csg-copy" data-copy="${val}" aria-label="Copy ${val}">copy</button>
-          </div>
-          <div class="csg-meta">
-            <code class="sg-code">${token}</code>
-            <span class="sg-muted">${val}</span>
-          </div>
-        </div>
-      `).join('');
+  // Tiny DOM helper — avoids innerHTML so we never inject untrusted markup.
+  function el<K extends keyof HTMLElementTagNameMap>(
+    tag: K,
+    attrs: Record<string, string | number | boolean | undefined> = {},
+    children: (Node | string)[] = [],
+  ): HTMLElementTagNameMap[K] {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === false) continue;
+      if (k === 'class') node.className = String(v);
+      else if (k === 'style') node.setAttribute('style', String(v));
+      else if (k.startsWith('data-') || k.startsWith('aria-') || k === 'role' || k === 'title' || k === 'type' || k === 'value' || k === 'maxLength') {
+        if (k === 'maxLength') (node as HTMLInputElement).maxLength = Number(v);
+        else if (k === 'value' && (tag === 'input')) (node as HTMLInputElement).value = String(v);
+        else node.setAttribute(k, String(v));
+      } else {
+        node.setAttribute(k, String(v));
+      }
+    }
+    for (const c of children) node.append(c);
+    return node;
+  }
 
-    cssOut.textContent = variants.map(([, val, token]) => `${token}: ${val};`).join('\n');
+  // ── Generator state ─────────────────────────────────
+  const csgEl = document.getElementById('csg')!;
+  const darkPicker = document.getElementById('csg-dark-picker') as HTMLInputElement;
+  const darkHex = document.getElementById('csg-dark-hex') as HTMLInputElement;
+  const keyPicker = document.getElementById('csg-key-picker') as HTMLInputElement;
+  const keyHex = document.getElementById('csg-key-hex') as HTMLInputElement;
+  const lightPicker = document.getElementById('csg-light-picker') as HTMLInputElement;
+  const lightHex = document.getElementById('csg-light-hex') as HTMLInputElement;
+  const scaleEl = document.getElementById('csg-scale')!;
+  const outputEl = document.getElementById('csg-output-out')!;
+  const toastEl = document.getElementById('csg-toast')!;
+  const resetBtn = document.getElementById('csg-reset') as HTMLButtonElement;
 
-    output.querySelectorAll<HTMLButtonElement>('.csg-copy').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        await navigator.clipboard.writeText(btn.dataset.copy!);
-        const prev = btn.textContent;
-        btn.textContent = 'copied';
-        setTimeout(() => { btn.textContent = prev; }, 1200);
+  let space: ColorSpace = 'oklab';
+  let scale: string[] = [];
+  let overrides: Record<number, string> = {};
+  let toastTimer: number | undefined;
+
+  function showToast(msg: string) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-visible');
+    if (toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1800);
+  }
+
+  async function copyToClipboard(text: string, msg = 'Copied') {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(msg);
+    } catch {
+      showToast('Clipboard unavailable');
+    }
+  }
+
+  function regenerate(preserveOverrides = true) {
+    if (!preserveOverrides) overrides = {};
+    scale = buildScale(darkHex.value, keyHex.value, lightHex.value, space);
+    for (const [i, c] of Object.entries(overrides)) scale[Number(i)] = c.toUpperCase();
+    renderScale();
+    renderOutput();
+    syncResetState();
+  }
+
+  function syncResetState() {
+    resetBtn.disabled = Object.keys(overrides).length === 0;
+  }
+
+  function buildStepNode(color: string, i: number, overridden: boolean): HTMLDivElement {
+    const text = textOn(color);
+    const stepNum = i + 1;
+
+    const stepPicker = el('input', {
+      type: 'color',
+      class: 'csg-step-picker',
+      value: color,
+      'data-i': i,
+      'aria-label': `Step ${stepNum} color picker`,
+    }) as HTMLInputElement;
+    stepPicker.addEventListener('input', () => updateStep(i, stepPicker.value));
+
+    const num = el('span', { class: 'csg-step-num' }, [`${stepNum}${overridden ? '*' : ''}`]);
+
+    const hexInp = el('input', {
+      type: 'text',
+      class: 'csg-step-hex',
+      value: color,
+      maxLength: 7,
+      'data-i': i,
+      'aria-label': `Step ${stepNum} hex`,
+    }) as HTMLInputElement;
+    hexInp.addEventListener('input', () => {
+      const v = hexInp.value.startsWith('#') ? hexInp.value : '#' + hexInp.value;
+      if (/^#[0-9a-f]{6}$/i.test(v)) updateStep(i, v);
+    });
+    hexInp.addEventListener('blur', () => { hexInp.value = scale[i]; });
+
+    const copyBtn = el('button', {
+      type: 'button',
+      class: 'csg-step-copy',
+      'aria-label': `Copy ${color}`,
+    }, ['Copy']) as HTMLButtonElement;
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyToClipboard(color, `Copied ${color}`);
+    });
+
+    const content = el('div', { class: 'csg-step-content' }, [num, hexInp, copyBtn]);
+    const step = el('div', {
+      class: `csg-step${i === 4 ? ' is-key' : ''}${overridden ? ' is-overridden' : ''}`,
+      style: `background: ${color}; color: ${text};`,
+      'data-i': i,
+      role: 'listitem',
+      'aria-label': `Step ${stepNum}, ${color}${overridden ? ', overridden' : ''}${i === 4 ? ' (key)' : ''}`,
+    }, [stepPicker, content]) as HTMLDivElement;
+
+    return step;
+  }
+
+  function renderScale() {
+    scaleEl.replaceChildren();
+    scale.forEach((color, i) => {
+      const overridden = Object.prototype.hasOwnProperty.call(overrides, i);
+      scaleEl.appendChild(buildStepNode(color, i, overridden));
+    });
+  }
+
+  function updateStep(i: number, color: string) {
+    overrides[i] = color.toUpperCase();
+    scale[i] = color.toUpperCase();
+    renderScale();
+    renderOutput();
+  }
+
+  function renderOutput() {
+    outputEl.textContent = `:root {\n${scale.map((c, i) => `  --color-${(i + 1) * 100}: ${c};`).join('\n')}\n}`;
+  }
+
+  function bindAnchor(picker: HTMLInputElement, hex: HTMLInputElement) {
+    picker.addEventListener('input', () => { hex.value = picker.value.toUpperCase(); regenerate(true); });
+    hex.addEventListener('input', () => {
+      const v = hex.value.startsWith('#') ? hex.value : '#' + hex.value;
+      if (/^#[0-9a-f]{6}$/i.test(v)) { picker.value = v; regenerate(true); }
+    });
+    hex.addEventListener('blur', () => {
+      let v = hex.value;
+      if (!v.startsWith('#')) v = '#' + v;
+      if (/^#[0-9a-f]{6}$/i.test(v)) { hex.value = v.toUpperCase(); picker.value = v; }
+      else { hex.value = picker.value.toUpperCase(); }
+    });
+  }
+  bindAnchor(darkPicker, darkHex);
+  bindAnchor(keyPicker, keyHex);
+  bindAnchor(lightPicker, lightHex);
+
+  csgEl.querySelectorAll<HTMLButtonElement>('.csg-space-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      space = (btn.dataset.space ?? 'oklab') as ColorSpace;
+      csgEl.querySelectorAll<HTMLButtonElement>('.csg-space-btn').forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      regenerate(true);
+      renderPalettes();
+    });
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if (resetBtn.disabled) return;
+    regenerate(false);
+    showToast('Reset to interpolated values');
+  });
+  document.getElementById('csg-copy-css')!.addEventListener('click', () => {
+    copyToClipboard(`:root {\n${scale.map((c, i) => `  --color-${(i + 1) * 100}: ${c};`).join('\n')}\n}`, 'Copied scale (CSS)');
+  });
+  document.getElementById('csg-copy-json')!.addEventListener('click', () => {
+    const obj = scale.reduce((a, c, i) => ({ ...a, [(i + 1) * 100]: c }), {});
+    copyToClipboard(JSON.stringify(obj, null, 2), 'Copied scale (JSON)');
+  });
+  document.getElementById('csg-copy-tw')!.addEventListener('click', () => {
+    const tw = `colors: {\n  custom: {\n${scale.map((c, i) => `    ${(i + 1) * 100}: '${c}',`).join('\n')}\n  }\n}`;
+    copyToClipboard(tw, 'Copied scale (Tailwind)');
+  });
+
+  // ── Brand palettes ──────────────────────────────────
+  function renderPalettes() {
+    document.querySelectorAll<HTMLElement>('.csg-palette-scale').forEach((host) => {
+      const dark = host.dataset.anchorDark!;
+      const key = host.dataset.anchorKey!;
+      const light = host.dataset.anchorLight!;
+      const steps = buildScale(dark, key, light, space);
+      host.replaceChildren();
+      steps.forEach((color, i) => {
+        const text = textOn(color);
+        const stepNum = i + 1;
+        const btn = el('button', {
+          type: 'button',
+          class: `csg-palette-step${i === 4 ? ' is-key' : ''}`,
+          style: `background: ${color}; color: ${text};`,
+          title: `${color} — click to copy`,
+          'aria-label': `Step ${stepNum}, ${color}${i === 4 ? ' (key)' : ''}, click to copy`,
+          role: 'listitem',
+        }, [
+          el('span', { class: 'csg-palette-step-num' }, [String(stepNum)]),
+          el('span', { class: 'csg-palette-step-hex' }, [color]),
+        ]) as HTMLButtonElement;
+        btn.addEventListener('click', () => copyToClipboard(color, `Copied ${color}`));
+        host.appendChild(btn);
       });
     });
   }
 
-  function sync(hex: string, name?: string) {
-    if (!/^#[0-9a-f]{6}$/i.test(hex)) return;
-    picker.value = hex;
-    hexInput.value = hex.toUpperCase();
-    if (name !== undefined) nameInput.value = name;
-    render(hex, nameInput.value);
-  }
-
-  picker.addEventListener('input', () => sync(picker.value));
-  hexInput.addEventListener('input', () => {
-    const v = hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value;
-    if (/^#[0-9a-f]{6}$/i.test(v)) sync(v);
-  });
-  nameInput.addEventListener('input', () => render(hexInput.value, nameInput.value));
-
-  presetRow.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
-    b.addEventListener('click', () => sync(b.dataset.hex!, b.dataset.name));
+  document.querySelectorAll<HTMLButtonElement>('[data-palette-action]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.paletteAction!;
+      const slugVal = btn.dataset.keySlug!;
+      const dark = btn.dataset.anchorDark!;
+      const key = btn.dataset.anchorKey!;
+      const light = btn.dataset.anchorLight!;
+      if (action === 'copy-css') {
+        const steps = buildScale(dark, key, light, space);
+        const css = `:root {\n${steps.map((c, i) => `  --${slugVal}-${(i + 1) * 100}: ${c};`).join('\n')}\n}`;
+        copyToClipboard(css, `Copied ${slugVal} (CSS)`);
+      } else if (action === 'load') {
+        darkHex.value = dark.toUpperCase(); darkPicker.value = dark;
+        keyHex.value = key.toUpperCase();   keyPicker.value = key;
+        lightHex.value = light.toUpperCase(); lightPicker.value = light;
+        regenerate(false);
+        showToast(`Loaded ${slugVal}`);
+        csgEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   });
 
   // initial render
-  render('#C77DFF', 'Centella Violet');
-  nameInput.value = 'Centella Violet';
+  regenerate(false);
+  renderPalettes();
 
   // ── Icon tile click-to-copy ────────────────────────
   document.querySelectorAll<HTMLLIElement>('.sg-icon-tile').forEach((tile) => {
@@ -1423,24 +1687,50 @@ import Icon from '../components/Icon.astro';
     font: inherit;
   }
 
-  /* ── Color Scale Generator ── */
+  /* ── Color Scale Generator ─────────────────────────
+     Shell: --radius-xl is the canonical "large surface"
+     token, called out in design.md for this exact use. */
   .csg {
     background: var(--bg-surface);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin-top: var(--space-6);
+    position: relative;
   }
-  .csg-controls {
+
+  /* Anchor inputs — three columns at desktop. The KEY column reads as
+     primary via a faint violet halo on the hex input; dark/light get
+     subtle role-tinted borders. The hex inputs are the data field;
+     the picker is a thin chip on the left. */
+  .csg-inputs {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
   }
   @media (min-width: 720px) {
-    .csg-controls { grid-template-columns: 1fr 1fr 1fr; align-items: end; }
+    .csg-inputs {
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: end;
+      gap: var(--space-6);
+    }
   }
-  .csg-control { display: flex; flex-direction: column; gap: var(--space-2); }
+  .csg-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .csg-input-group .sg-voice-label {
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+  }
+  .csg-input-group--key .sg-voice-label { color: var(--violet); }
   .csg-input-row {
     display: flex;
     gap: var(--space-2);
@@ -1451,105 +1741,493 @@ import Icon from '../components/Icon.astro';
     height: 48px;
     padding: 0;
     border: 1.5px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     background: var(--bg-elevated);
     cursor: pointer;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
   }
-  .csg-input-row input[type="text"],
-  .csg-name-input {
+  .csg-input-row input[type="color"]:hover {
+    transform: translateY(-1px);
+    border-color: var(--color-text-muted);
+  }
+  .csg-input-row input[type="text"] {
     flex: 1;
     padding: var(--space-3) var(--space-4);
     background: var(--bg-elevated);
     color: var(--color-text);
     border: 1.5px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   }
-  .csg-name-input {
-  }
-  .csg-input-row input:focus, .csg-name-input:focus {
+  .csg-input-row input:focus {
     outline: none;
     border-color: var(--violet);
-    box-shadow: 0 0 0 3px rgba(199,125,255,0.15);
+    box-shadow: var(--shadow-focus);
   }
+  /* Subtle role-tinted borders on the anchor hex inputs */
+  .csg-input-group--dark  .csg-input-row input[type="text"] { border-color: color-mix(in srgb, var(--violet-dark) 60%, var(--color-border)); }
+  .csg-input-group--key   .csg-input-row input[type="text"] { border-color: color-mix(in srgb, var(--violet) 35%, var(--color-border)); }
+  .csg-input-group--light .csg-input-row input[type="text"] { border-color: color-mix(in srgb, var(--violet-light) 25%, var(--color-border)); }
 
-  .csg-presets { display: flex; flex-direction: column; gap: var(--space-2); }
-  .csg-preset-row {
+  /* Meta row: hint + interpolation toggle, side-by-side, sitting
+     above the scale so users see what's editable before interacting. */
+  .csg-meta-row {
     display: flex;
-    gap: var(--space-2);
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    margin-bottom: var(--space-3);
   }
-  .csg-preset-row button {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--color-border);
+  .csg-hint {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .csg-hint-asterisk {
+    color: var(--violet);
+    font-weight: 600;
+  }
+  .csg-space-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1);
+    background: var(--bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .csg-space-label {
+    padding: 0 var(--space-2) 0 var(--space-3);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-dim);
+  }
+  .csg-space-btn {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: transform var(--transition-fast), border-color var(--transition-fast);
+    transition: color var(--transition-fast), background var(--transition-fast);
   }
-  .csg-preset-row button:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-text);
+  .csg-space-btn:hover { color: var(--color-text); }
+  .csg-space-btn:focus-visible { outline: 2px solid var(--violet); outline-offset: 1px; }
+  .csg-space-btn.is-active {
+    background: var(--violet);
+    color: var(--bg-deep);
   }
 
-  .csg-output {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--space-4);
-  }
-  .csg-swatch {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    overflow: hidden;
-    background: var(--bg-elevated);
-  }
-  .csg-chip {
-    height: 110px;
-    padding: var(--space-3) var(--space-4);
+  /* The 9-step scale.
+     Default state is clean: just a step number eyebrow and the
+     hex value as plain centered text. The hex INPUT sits flush
+     in the swatch with no chrome — it looks like text until you
+     interact with it. Copy button is hidden until you hover the
+     step. The key step (5) gets a single inset white highlight
+     so it reads as the anchor without piling on rings. */
+  .csg-scale {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-6);
+    isolation: isolate;
   }
-  .csg-chip-name {
-  }
-  .csg-copy {
-    padding: var(--space-1) var(--space-3);
-    background: rgba(0,0,0,0.25);
-    color: inherit;
-    border: 1px solid currentColor;
-    border-radius: 4px;
-    cursor: pointer;
-    opacity: 0.85;
-    transition: opacity var(--transition-fast);
-  }
-  .csg-copy:hover { opacity: 1; }
-  .csg-meta {
-    padding: var(--space-3) var(--space-4);
+  .csg-step {
+    flex: 1;
+    min-width: 0;
+    height: 120px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-2);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--transition-fast) var(--ease);
+  }
+  .csg-step:hover,
+  .csg-step:focus-within { transform: translateY(-2px); z-index: 2; }
+  .csg-step.is-key {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+  }
+  .csg-step.is-overridden::after {
+    content: '';
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  .csg-step-picker {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    border: none;
+  }
+  .csg-step-content {
+    pointer-events: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--space-1);
+    z-index: 1;
+  }
+  .csg-step-num {
+    font-family: var(--font-semi);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 2px;
+  }
+  /* Hex input: invisible chrome by default. Reveal a soft chip
+     when the step is hovered/focused, and a stronger chip when
+     the input itself is focused. */
+  .csg-step-hex {
+    width: 100%;
+    max-width: 9ch;
+    box-sizing: border-box;
+    padding: 2px 4px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    pointer-events: auto;
+    cursor: text;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+  }
+  .csg-step:hover .csg-step-hex,
+  .csg-step:focus-within .csg-step-hex {
+    background: color-mix(in srgb, currentColor 14%, transparent);
+    border-color: color-mix(in srgb, currentColor 24%, transparent);
+  }
+  .csg-step-hex:focus {
+    outline: none;
+    background: color-mix(in srgb, currentColor 22%, transparent);
+    border-color: color-mix(in srgb, currentColor 55%, transparent);
+  }
+  /* Copy button: only visible while the step is engaged. Sits
+     under the hex as a small ghost chip, never competes with
+     the hex for attention. */
+  .csg-step-copy {
+    pointer-events: auto;
+    padding: 1px 6px;
+    background: transparent;
+    color: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 32%, transparent);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-semi);
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+  }
+  .csg-step:hover .csg-step-copy,
+  .csg-step:focus-within .csg-step-copy {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+  .csg-step-copy:hover {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 14%, transparent);
   }
 
-  .csg-css {
-    margin-top: var(--space-8);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-6);
+  /* Narrow viewport: 9 columns at ~40px each is unreadable.
+     Flip the scale to stacked rows so the interior has room. */
+  @media (max-width: 720px) {
+    .csg-scale { flex-direction: column; }
+    .csg-step {
+      height: 56px;
+      flex: 0 0 auto;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-4);
+    }
+    .csg-step:hover,
+    .csg-step:focus-within { transform: translateX(2px); }
+    .csg-step-content {
+      flex-direction: row;
+      width: auto;
+      gap: var(--space-3);
+    }
+    .csg-step-num { margin-bottom: 0; }
+    .csg-step-hex { max-width: 12ch; }
+    .csg-step-copy { opacity: 0.85; transform: none; }
   }
-  .csg-css summary {
+
+  /* Action row: Copy CSS is primary (filled violet);
+     JSON/Tailwind/Reset are ghost. Reset is disabled
+     while there are no overrides, signaling that there's
+     nothing to undo. */
+  .csg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+  .csg-btn {
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    color: var(--color-text);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     cursor: pointer;
-    color: var(--violet);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
   }
-  .csg-css pre {
-    margin-top: var(--space-4);
+  .csg-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+    border-color: var(--violet);
+  }
+  .csg-btn--primary {
+    background: var(--violet);
+    color: var(--bg-deep);
+    border-color: var(--violet);
+  }
+  .csg-btn--primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--violet) 30%, transparent);
+  }
+  .csg-btn--ghost {
+    color: var(--color-text-muted);
+  }
+  .csg-btn--ghost:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
+  .csg-btn--reset { margin-left: auto; }
+  .csg-btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .csg-btn[disabled]:hover {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+  .csg-btn--small {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    border-width: 1px;
+  }
+
+  /* Output preview */
+  .csg-output-block {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+  }
+  .csg-output-block summary {
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: var(--space-2) 0;
+    list-style-position: outside;
+  }
+  .csg-output-block summary:hover { color: var(--violet); }
+  .csg-output-block[open] summary { color: var(--violet); }
+  .csg-output-block pre {
+    margin-top: var(--space-3);
     padding: var(--space-4);
     background: var(--bg-deep);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     overflow-x: auto;
   }
-  .csg-css code {
-    color: var(--accent-lime);
+  .csg-output-block code {
+    color: var(--investment);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
     white-space: pre;
+  }
+
+  /* Toast — pinned to the bottom of the viewport while a copy/load
+     is fresh, then fades. Single source of feedback for everything
+     in the section, so the user never has to hunt for confirmation. */
+  .csg-toast {
+    position: fixed;
+    left: 50%;
+    bottom: var(--space-8);
+    transform: translateX(-50%) translateY(8px);
+    padding: var(--space-3) var(--space-5, 1.25rem);
+    background: var(--bg-elevated);
+    color: var(--color-text);
+    border: 1px solid color-mix(in srgb, var(--violet) 35%, var(--color-border));
+    border-radius: var(--radius-lg);
+    font-family: var(--font-semi);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow-card);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    z-index: 50;
+  }
+  .csg-toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Brand palettes — same shell language as the generator
+     (radius-xl, surface bg). Action buttons live in the head,
+     not at the bottom, so the swatches anchor the visual weight
+     of the card. */
+  .csg-palettes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .csg-palette {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    transition: border-color var(--transition-fast);
+  }
+  .csg-palette:hover { border-color: color-mix(in srgb, var(--color-text-muted) 40%, var(--color-border)); }
+  .csg-palette-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .csg-palette-id {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .csg-palette-keychip {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+  }
+  .csg-palette-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-lg);
+    line-height: 1.1;
+  }
+  .csg-palette-token {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-dim);
+    background: var(--bg-elevated);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+  .csg-palette-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .csg-palette-scale {
+    display: flex;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    isolation: isolate;
+  }
+  .csg-palette-step {
+    flex: 1;
+    min-width: 0;
+    min-height: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: var(--space-2) var(--space-1);
+    border: none;
+    cursor: pointer;
+    transition: transform var(--transition-fast) var(--ease);
+  }
+  .csg-palette-step:hover {
+    transform: scaleY(1.08);
+    z-index: 1;
+  }
+  .csg-palette-step:focus-visible {
+    outline: 2px solid var(--violet);
+    outline-offset: -2px;
+    z-index: 2;
+  }
+  .csg-palette-step.is-key {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+  }
+  .csg-palette-step-num {
+    font-family: var(--font-semi);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    opacity: 0.55;
+  }
+  .csg-palette-step-hex {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+    /* clip cleanly if column is too narrow for the hex */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .csg-palette-scale { flex-direction: column; }
+    .csg-palette-step {
+      flex-direction: row;
+      justify-content: space-between;
+      min-height: 40px;
+      padding: 0 var(--space-3);
+      gap: var(--space-3);
+    }
+    .csg-palette-step:hover { transform: translateX(2px); }
   }
 
   /* Axes demo */

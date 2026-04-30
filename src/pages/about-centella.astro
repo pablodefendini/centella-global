@@ -1,0 +1,602 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+
+/**
+ * About Centella — umbrella page introducing the organization, the moment,
+ * the team, and the three pillars of work. Keyed to the neutral default
+ * --page-accent (--violet-light) so the chrome stays principal-brand-neutral.
+ *
+ * Open question (follow-up): wire the team grid to getTeamProfiles() from
+ * src/lib/notion.ts. Notion's signed file URLs expire, so a public-page
+ * pipeline needs photos copied to public/team/<slug>.<ext> at build time
+ * before we can use real portraits here. Until then: 8 placeholder slots.
+ */
+
+const moments = [
+  {
+    icon: 'action',
+    title: 'Act fast',
+    body: 'Rapidly monitor changing political, technological and social contexts and swiftly deploy creative, pragmatic strategies and with precision.',
+  },
+  {
+    icon: 'trust',
+    title: 'Lead boldly',
+    body: 'Leaders must be effective, ethical, and values-based — principled decision makers that inspire collective action while remaining accountable to the communities they serve.',
+  },
+  {
+    icon: 'power-fist',
+    title: 'Mobilize deep',
+    body: 'Movements need concrete alternatives rooted in material realities and a vision for long-term systemic change.',
+  },
+  {
+    icon: 'globe-grid',
+    title: 'Work from local to global',
+    body: "Solidarity across borders and a connected, multi-scale approach aren't optional — collaboration is the path toward prosperity.",
+  },
+  {
+    icon: 'tools',
+    title: 'Democratize digital power',
+    body: 'Technology must be affordable, accessible, and effective to organizers worldwide, not always confined to elites.',
+  },
+] as const;
+
+const regionalStats = [
+  {
+    region: 'Latin America',
+    figure: '18.9 million',
+    body: 'Instagram users in Latin America. Same density as in the U.S.',
+  },
+  {
+    region: 'Africa',
+    figure: '$3.2 billion',
+    body: "Value of the creator economy in Africa, projected to grow 5× by 2030.",
+  },
+  {
+    region: 'Asia',
+    figure: '$135 billion',
+    body: "Value of the creator economy in Asia, projected to grow 6× by 2030.",
+  },
+] as const;
+
+// 8 placeholder portrait slots until team photos are wired up. Each slot is
+// a circular surface; replace `src` with a real /team/<slug>.webp once the
+// build pipeline copies team photos out of Notion.
+const teamPortraits = Array.from({ length: 8 }, (_, i) => ({
+  alt: `Centella team member ${i + 1}`,
+  src: null,
+}));
+
+const formula = [
+  {
+    title: 'Sharper strategies',
+    body: 'Ignite winning campaigns with data-driven insight and bold creative vision that cuts through the noise.',
+  },
+  {
+    title: 'Shared learning',
+    body: 'Build unstoppable networks through solidarity, knowledge exchange, and the power of collective momentum.',
+  },
+  {
+    title: 'Accessible technology',
+    body: 'Empower voices everywhere with affordable, effective digital tools.',
+  },
+] as const;
+
+const pillars = [
+  {
+    icon: 'hands-clasping',
+    tone: 'advisory',
+    title: 'Advising leaders',
+    body: 'We support leaders with hands-on coaching and strategy development to help them win campaigns and deliver lasting change.',
+    cta: 'Learn more',
+    href: '/centella-advisory/',
+  },
+  {
+    icon: 'globe-grid',
+    tone: 'networking',
+    title: 'Building networks',
+    body: 'We create and facilitate spaces that connect movement leaders across borders, accelerating ideas into collective action.',
+    cta: 'Learn more',
+    href: '/centella-institute/',
+  },
+  {
+    icon: 'money-bag',
+    tone: 'investment',
+    title: 'Investing in tech',
+    body: 'We fund and advise next-generation civic-tech created in the Global South, where scarce resources can go further.',
+    cta: 'Learn more',
+    href: '/centella-impact/',
+  },
+] as const;
+---
+
+<Base
+  title="About Centella"
+  description="Movement builders from the Global South. We partner with leaders, networks, and civic-tech founders refusing to accept the status quo."
+>
+  <!-- ── Hero ───────────────────────────────────────── -->
+  <section class="section about-hero" aria-labelledby="about-hero-heading">
+    <div class="container">
+      <h1 id="about-hero-heading" class="display about-hero__title">
+        We believe in the power of{' '}
+        <span class="display__accent" data-random-accent-gradient>sustained growth</span>.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ── Section 1 — Meet the moment ────────────────── -->
+  <section class="section about-moments" aria-labelledby="about-moments-heading">
+    <div class="container about-section-intro">
+      <h2 id="about-moments-heading" class="about-section-title">
+        It's time to meet the moment.
+      </h2>
+      <p class="lede about-section-lede">To start winning again, we need to:</p>
+    </div>
+
+    <div class="container">
+      <ul class="about-moments-grid" role="list">
+        {moments.map((m) => (
+          <li class="about-moment">
+            <span class="about-moment__icon-wrap" aria-hidden="true">
+              <Icon name={m.icon} size={32} class="about-moment__icon" />
+            </span>
+            <h3 class="about-moment__title">{m.title}</h3>
+            <p class="about-moment__body">{m.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Section 2 — Flip the script ────────────────── -->
+  <section class="section about-flip" aria-labelledby="about-flip-heading">
+    <div class="container about-section-intro">
+      <h2 id="about-flip-heading" class="about-section-title">…and flip the script.</h2>
+    </div>
+
+    <div class="container about-flip__featured">
+      <span class="about-flip__featured-icon" aria-hidden="true">
+        <Icon name="globe" size={56} />
+      </span>
+      <p class="about-flip__featured-stat">80%</p>
+      <p class="lede about-flip__featured-body">
+        of the world's population is in the Global South, most of them under 30.
+      </p>
+    </div>
+
+    <div class="container">
+      <ul class="about-flip-grid" role="list">
+        {regionalStats.map((s) => (
+          <li class="about-flip-card">
+            <p class="about-flip-card__region">{s.region}</p>
+            <p class="about-flip-card__figure">{s.figure}</p>
+            <p class="about-flip-card__body">{s.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Section 3 — The team ───────────────────────── -->
+  <section class="section about-team" aria-labelledby="about-team-heading">
+    <div class="container about-section-intro">
+      <h2 id="about-team-heading" class="about-section-title">
+        We are movement builders from the Global South.
+      </h2>
+      <p class="lede about-section-lede">
+        With practical experience, strong convictions, decades of experience turning scarce
+        resources into historic victories, and a focus on sustainability.
+      </p>
+    </div>
+
+    <div class="container">
+      {/* Placeholder portrait grid — see frontmatter note. Swap each .about-portrait
+          for an <img src="/team/<slug>.webp" alt="<name>"> once team photos are wired. */}
+      <ul class="about-team-grid" role="list" aria-label="Centella team portraits">
+        {teamPortraits.map((p) => (
+          <li class="about-team-cell">
+            <span class="about-portrait" aria-label={p.alt}></span>
+          </li>
+        ))}
+      </ul>
+
+      <p class="lede about-team__closing">
+        Centered in the Global South, connected worldwide — we partner with those who refuse
+        to accept the status quo.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Section 4 — The approach ───────────────────── -->
+  <section class="section about-formula" aria-labelledby="about-formula-heading">
+    <div class="container about-section-intro">
+      <h2 id="about-formula-heading" class="about-section-title">Our winning formula.</h2>
+    </div>
+
+    <div class="container">
+      <ul class="about-formula-grid" role="list">
+        {formula.map((f) => (
+          <li class="about-formula-card">
+            <h3 class="about-formula-card__title">{f.title}</h3>
+            <p class="about-formula-card__body">{f.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Section 5 — The work (three pillars) ──────── -->
+  <section class="section about-pillars" aria-labelledby="about-pillars-heading">
+    <div class="container about-section-intro">
+      <h2 id="about-pillars-heading" class="about-section-title">
+        Grounded in three pillars of work.
+      </h2>
+    </div>
+
+    <div class="container">
+      <div class="about-pillars-grid" role="list">
+        {pillars.map((p) => (
+          <article class:list={['about-pillar', 'tone-surface', `about-pillar--${p.tone}`]} role="listitem">
+            <div class="about-pillar__frame">
+              <span class="about-pillar__icon-wrap" aria-hidden="true">
+                <Icon name={p.icon} size={32} class="about-pillar__icon" />
+              </span>
+              <h3 class="about-pillar__title">{p.title}</h3>
+              <p class="about-pillar__body">{p.body}</p>
+              <a href={p.href} class="about-pillar__cta">
+                {p.cta}
+                <span aria-hidden="true"> →</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 6 — Email signup ───────────────────── -->
+  <section class="section about-signup" aria-labelledby="about-signup-heading">
+    <div class="container about-signup__inner">
+      <h2 id="about-signup-heading" class="about-section-title about-signup__title">
+        Stay close to the work.
+      </h2>
+      <p class="lede about-signup__lede">
+        Occasional dispatches from Centella — campaigns we're shaping, leaders we're backing,
+        and the civic-tech we're building for the Global South.
+      </p>
+      <MailchimpForm tag="centella-newsletter" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ─────────────────────────────────────────────────────
+     Page-local styles for /about-centella.
+     Tokens only — no new color, spacing, or radius values.
+     Page is principal-brand-neutral (default --page-accent =
+     --violet-light); each section sets its own local accent
+     where needed (Section 2 keys to --global; Section 5
+     pillars to advisory / networking / investment).
+     ───────────────────────────────────────────────────── */
+
+  /* Hero */
+  .about-hero { padding-top: var(--space-16); }
+
+  .about-hero__title {
+    color: var(--color-text);
+    max-width: min(100%, 22ch);
+    margin: 0;
+  }
+
+  /* Shared section intro */
+  .about-section-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: min(100%, var(--prose-max-ch));
+    margin-bottom: var(--space-12);
+  }
+
+  .about-section-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .about-section-lede { margin: 0; color: var(--color-text-muted); }
+
+  /* ── Section 1 — Meet the moment (icon cards, 2-col) ── */
+  .about-moments-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .about-moments-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .about-moment {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .about-moment__icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--violet);
+    background: color-mix(in srgb, var(--violet) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--violet) 30%, transparent);
+    padding: var(--space-2);
+  }
+
+  .about-moment__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .about-moment__body {
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  /* ── Section 2 — Flip the script (stats, --global key) ── */
+  .about-flip__featured {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-16);
+    color: var(--global);
+  }
+
+  .about-flip__featured-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--global);
+  }
+
+  .about-flip__featured-stat {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(4rem, 14vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--global);
+  }
+
+  .about-flip__featured-body {
+    margin: 0;
+    color: var(--color-text);
+    max-width: 48ch;
+  }
+
+  .about-flip-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .about-flip-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .about-flip-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 3px solid var(--global);
+  }
+
+  .about-flip-card__region {
+    margin: 0;
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--global);
+  }
+
+  .about-flip-card__figure {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(var(--text-4xl), 5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .about-flip-card__body {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Section 3 — The team (4×2 portrait grid) ── */
+  .about-team-grid {
+    list-style: none;
+    margin: 0 0 var(--space-12);
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .about-team-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .about-team-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-portrait {
+    /* Placeholder circle; swap for <img> with the same shape later. */
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--color-border);
+  }
+
+  .about-team__closing {
+    margin: 0 auto;
+    color: var(--color-text);
+    text-align: center;
+    max-width: 52ch;
+  }
+
+  /* ── Section 4 — Winning formula (3 plain cards) ── */
+  .about-formula-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .about-formula-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .about-formula-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .about-formula-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+
+  .about-formula-card__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .about-formula-card__body {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Section 5 — Three pillars (tone-surface panels) ── */
+  /* Mirrors src/pages/index.astro home-min__pillar pattern.
+     If a future PR extracts a Pillar component, replace this block. */
+  .about-pillars-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) { .about-pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .about-pillars-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .about-pillar {
+    border-radius: 8px;
+    padding: var(--space-2);
+    color: var(--color-text);
+  }
+
+  .about-pillar--advisory   { background: var(--advisory-dark);   color: var(--advisory); }
+  .about-pillar--networking { background: var(--networking-dark); color: var(--networking); }
+  .about-pillar--investment { background: var(--investment-dark); color: var(--investment); }
+
+  .about-pillar__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+  }
+
+  .about-pillar__icon-wrap {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    padding: var(--space-2);
+  }
+
+  .about-pillar__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+  }
+
+  .about-pillar__body {
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  .about-pillar__cta {
+    margin-top: auto;
+    color: currentColor;
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── Section 6 — Email signup ── */
+  .about-signup__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: min(100%, 36rem);
+  }
+
+  .about-signup__title { max-width: 18ch; }
+
+  .about-signup__lede { margin: 0; color: var(--color-text-muted); }
+</style>

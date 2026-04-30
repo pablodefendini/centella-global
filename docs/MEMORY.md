@@ -6,6 +6,138 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Centella Institute page laid out (hero, events tabs, networks panels, programs, CTA)
+
+The Institute landing page got promoted from the placeholder events listing into a full sub-brand page, structurally aligned with Advisory and Impact. Five sections: hero, Centella Events tab section (Upcoming / Past), Networks-Matter tone panels, three-program editorial stack (New Global Leadership / Centella Global Forum / Leadership Labs), CTA panel.
+
+Page key color stays `--networking` (already declared on `<body>` via `pageAccent`). Hero accent and the programs-section title both use `display__accent--coral-orange` — networking + global, the approved gradient pairing for Institute. That choice is deliberate: Advisory pairs with violet (the principal brand), Impact pairs with advisory (its operational cousin), Institute pairs with global (its scale-and-reach character). Three sub-brands, three distinct identity gradients, all anchored to one work-color each.
+
+Tab UI is CSS-only — two visually-hidden `<input type="radio">` elements precede the trigger labels and the panel content; `:checked + ~` sibling selectors swap the active label and visible panel. No new client-side script bundle, no hydration. Skipped `role="tablist"` because the proper ARIA contract requires JS-driven roving focus; the radio pattern gives keyboard arrow-key navigation for free, plus `:focus-visible` paints a tone ring on the active label. Documented in CLAUDE.md as a reusable pattern.
+
+Each tab's content is a horizontal scroller (overflow-x: auto + scroll-snap-type: x mandatory). Cards size to `min(85%, 22rem)` on mobile, `22rem` on tablet+, breaking out of the container gutter via negative inline margin so they bleed to the viewport edge on small screens — standard "edge-to-edge scroller in a container" pattern. Trigger labels include a count chip showing the tab's item count, which doubles as feedback when one bucket is empty (the chip reads `0` and the panel falls through to a friendly empty state).
+
+Networks-Matter panels use the canonical tone-panel recipe — networking-dark ground, networking foreground, 8px radius, inner frame at currentColor 30%, icon chip at currentColor 16/35%. Three panels, all networking family, satisfying the "max two color families per composition" rule.
+
+Programs section is intentionally NOT a panel grid. Each program (New Global Leadership / Centella Global Forum / Leadership Labs) is a vertical editorial block with a numbered eyebrow ("Program 01"), an icon chip, a display-typography name, a `.lede`, and a body paragraph. Two-column layout at ≥720px (head column on the left, body column on the right), stacked on mobile, separated by hairline borders. The program copy is too dense to fit comfortably inside small panels, and the editorial layout reinforces that these are substantive programs — not bullet points.
+
+CTA copy is fresh, written in Centella voice: "Step into the network." with a lede that names the three audiences (running for office, leading a movement, organizing across borders) and the three programs. Form tag is `institute-inquiry`, matching the `advisory-inquiry` / `impact-inquiry` convention.
+
+That brings the tone-panel pattern to five pages of duplication (homepage pillars, Advisory strategies, Institute Networks-Matter, Impact problems/solutions, About Centella three-pillars). The `<TonePanel>` extraction was already on the pickup list at four — adding Institute moved it from "trigger on the next page that needs one" to overdue. Updated CLAUDE.md to mark it overdue.
+
+`astro check` couldn't run from the sandbox (vite cache permissions error in the mounted node_modules), but the file is syntactically clean by inspection — same structural shape as advisory.astro / impact.astro, no new imports beyond Icon + EventCard + MailchimpForm, all icon names verified against `src/assets/icons/`.
+
+---
+
+## 2026-04-29 — Bio + Biography on Team Profiles
+
+Added two new content fields on the Team Profiles DB ahead of the corporate Notion CMS migration: `Bio` (rich text — short one-liner) and `Biography` (rich text — long-form prose). Both are plumbed through `TeamProfile`, the notion.ts reader, and the build-team-assets.mjs token context. Available as `{{bio}}` and `{{biography}}` in the SVG templates; unused by the default card and signature designs.
+
+Semantic split: `Bio` is the line you'd put next to a person's name on a team card grid — a single-sentence summary. `Biography` is the long-form prose for a future team-detail surface. Splitting them now means the about-centella team-grid pipeline (open work item) doesn't have to truncate or pick which field to show.
+
+No public-page rendering today. The /tools pages don't surface bios. About Centella's team grid is still on placeholders pending the photo pipeline (open work item in CLAUDE.md). When the team-grid pipeline lands, it consumes `bio` for the grid card and `biography` for the future detail page.
+
+---
+
+## 2026-04-29 — Collapsed Events `Date Start` + `Date End` into a single `Date` property
+
+The old model had two separate Date properties — `Date Start` and `Date End` — but the reader code read `dateEnd` from the *end* of the `Date End` property's range, which only fires when `Date End` is configured as a range. As a single-date property (the natural setup), `.end` is always null, so `dateEnd` was always null and `formatDateRange()` rendered single-day strings even for multi-day events. Quirk hidden in plain sight.
+
+Fixed by collapsing into one `Date` property that holds either a single date or a date range — Notion's native shape for this. Reader pulls `dateStart` from `.start` and `dateEnd` from `.end` of the same property; `dateEnd` is null for single-day events and populated for multi-day. Consumer signature stays exactly as it was (`dateStart: string, dateEnd: string | null`); only the underlying Notion property changes.
+
+All four query sites (`getPublishedEvents`, `getFeaturedEvents`, `getHomepageLatestEvent`, sort orders) updated to filter and sort on `Date` instead of `Date Start`. Notion's date filter operators (`on_or_after`, `before`) check against the start of a range, so the filter logic is unchanged.
+
+Made the change while we still had no Events data anywhere — same window as the corporate Notion CMS migration. Avoided having to migrate dates between schemas; the new corporate workspace gets the clean shape from day one.
+
+---
+
+## 2026-04-29 — Blog Posts get an `Event` relation
+
+Added a single-event relation on the Blog Posts DB pointing at Events. Lets us tag a post as "from" or "about" a specific event (recap, summary, post-mortem) without overloading tags or burying the connection in body copy. Two-way relation in Notion, so the Events DB picks up a reciprocal "Blog Posts" property for free — no event-side rendering today, but the data path exists when we want a "Related posts" block on event pages.
+
+Cardinality: single. The property name is singular and the type is `event: BlogPostEvent | null` on `BlogPost`. If a post legitimately ties to multiple events, the body text handles the secondary mentions; the relation is for the canonical "this post is from that event" link.
+
+Render surfaces: post detail page gets a "From [Event Name]" eyebrow above the date, linking to `/events/{slug}/`. Listing card (`BlogPostCard`) shows "From [Event Name]" as plain text — can't make it a clickable link from the card because the whole card is already wrapped in `<a href="/blog/{slug}/">` and nesting links is invalid HTML. If we want a clickable event-link on the card later, the fix is restructuring the card with a CSS pseudo-element overlay for the post link, leaving inline content free for additional anchors. Deferred until someone asks for it.
+
+Code shape: `pageToBlogPost` is now async (one extra Notion fetch per post to resolve the relation, build-time only — no runtime impact). Added `getBlogPostEventById` as a lightweight retriever that returns just `id`, `slug`, and `name` — does not pull speakers/attendees/sponsors like `pageToEvent` does. Returns null on any failure so a deleted-relation or broken-id doesn't block the post from rendering.
+
+Edge: if the related event is Draft or Archived, the post still renders, but the "From" link 404s on the public site (because `/events/[slug]` filters by Published). Documented in CLAUDE.md as the content team's responsibility.
+
+---
+
+## 2026-04-29 — Title vs Role split on Speakers, Attendees, Team Profiles
+
+The Notion property `Title/Role` was doing double duty across three databases: it was both a person's standing job title (what goes on a business card) and their contextual function in the moment (what reads "Keynote Speaker" on an event card). Split into two properties — `Title` and `Role` — across Speakers, Attendees, and Team Profiles, and updated every consumer to match.
+
+Semantic: **Title = standing job title** (the stable line — "Strategy Director at Acme", "Co-founder, Centella"); **Role = contextual function** (the situational line — "Keynote Speaker", "Panel Moderator", "Founding Partner", "Advisor"). Title is what goes wherever the person's *identity* is the point: business cards, email signatures, the future team-page render. Role earns top billing on speaker cards because the page is about the event, not their LinkedIn.
+
+`SpeakerCard` now stacks Name → Role at body weight → Title muted → Organization muted. The `/tools/*` pages and the SVG templates (`business-card.svg`, `email-signature.svg`) render Title only; Role is exposed as a `{{role}}` template token but unused by the default designs. Attendee data carries both fields but no public renderer exists yet — placeholder for when notable-attendee callouts ship.
+
+Made the change *before* migrating the CMS to the corporate Notion workspace (planned, not yet executed) so the corporate databases are created with the clean schema from day one and there's no legacy data to bring along.
+
+---
+
+## 2026-04-29 — Three new content pages: Advisory, Impact, About Centella (and the tone-coded section-panel pattern they share)
+
+The three sub-brand pages were placeholders. Today: full Advisory and Impact landing pages with content from Pablo, plus a brand-new umbrella page at `/about-centella/`. All three follow the same load-bearing structure pattern: a display hero, one or more sections framed as eyebrowless h2 + lede, panel grids that diagnose problems and present solutions, a CTA panel hosting `MailchimpForm` with a section-specific tag.
+
+**Tone-coded section-panel pattern (now consistent across the site).** First built on the homepage pillars (`.home-min__pillar`); reused today on Advisory strategies (3 panels, advisory family), Impact problems (4 panels, investment family), Impact solutions (3 panels, investment family), and About Centella's three-pillars section (3 panels, one per sub-brand color family). Recipe:
+
+- Outer panel: `--<family>-dark` background, `--<family>` text color, 8px (or 16px for hero CTA panels) border-radius, `--space-2` outer padding.
+- Inner frame: `1px solid color-mix(in srgb, currentColor 30%, transparent)`, `border-radius: inherit`, `--space-8 var(--space-6)` padding.
+- Icon chip: `--space-2` padding, 4px radius, `color-mix(... 16%, transparent)` background, `color-mix(... 35%, transparent)` border.
+- Title in `--color-text`, body in `--color-text-muted`. CTA inherits `currentColor` and follows `.tone-surface` link rules.
+
+This pattern is ripe for extraction into a `<TonePanel>` component. Held off this session because the duplication is small (~30 lines of CSS per page, ~12 lines of markup) and each page was on its own ticket — but the next page that needs a tone panel is the trigger. Flagged in CLAUDE.md under "Pending / planned work."
+
+**Hero accent gradient as identity signal.** Sub-brand pages key `--page-accent` to their sub-brand color and use a specific approved gradient on the hero accent that pairs the page key with another family: Advisory hero uses `display__accent--cyan-violet` (advisory + violet principal); Impact uses `display__accent--lime-teal` (investment + advisory); the Impact "We can do better. We can build better." aspirational beat reuses the same lime-teal gradient. About Centella, being umbrella-neutral, uses `data-random-accent-gradient` on the hero accent for per-load random gradient variation — same treatment as the homepage hero. So the hero gradient reads as "I am about Centella the whole" vs "I am about this specific sub-brand." That distinction is load-bearing now and worth preserving on future pages.
+
+**Service / item lists with icon-left rows.** The Advisory page introduces a different shape from tone panels: a vertical list of service items, each row a 3rem icon chip on the left (advisory-tinted) + title-only on the right, separated by hairline borders. Used for the seven Core Services. Pattern lives in `centella-advisory.astro`; if a second page needs it, extract.
+
+**Stat cards keyed to `--global`.** About Centella's "Flip the script" section uses `--global` (the brand's "scale & reach. cross-border connection. Accent only." color) as the section-local accent — a featured 80% stat with the globe icon, plus three regional stat cards under 3px global-orange top borders. This is the first place we've used `--global` as a section key — it's documented in `design.md` as "Accent only," and the stat treatment respects that (small accent in the eyebrow + top border, not in the figure or body text).
+
+**Continent/region maps NOT added.** About Centella's Section 2 spec from Pablo described "continent map illustrations" for the regional stats. Held to the design.md hard rule ("Use only icons that already exist in `src/assets/icons/`. Do not add new icon files unless there is explicit approval in the task requirements") — there are no continent shapes in the icon library. Used a strong typographic eyebrow + accent-bar treatment instead. If continent maps land later, they'd go in `src/assets/icons/{latam,africa,asia}.svg` with explicit approval and replace the typographic-only treatment.
+
+**Team-photo wiring is the open question on About Centella.** `getTeamProfiles()` already exists in `src/lib/notion.ts` and is wired to the Team Profiles DB; it returns photos as Notion file URLs. Notion's signed file URLs expire, which is fine for the `/tools/*` section (auth-gated, rebuilt on every deploy, only seen by staff) but unworkable on a public About page where a stale signed URL = a broken portrait on a high-traffic page. So the team grid currently renders 8 placeholder circles with a `// swap for <img src="/team/<slug>.webp">` marker in the source. The pickup: a build-time pipeline that copies team photos from Notion → `public/team/` so the public About page references stable local paths. Same shape as the existing team-asset pipeline (`scripts/build-team-assets.mjs`). Documented in CLAUDE.md as the open question for this page.
+
+**Form copy on About Section 6 — went past the placeholder.** Pablo's spec said "(Copy here is clearly placeholder — needs a real headline + supporting line before launch.)" Wrote a real headline + lede in brand voice instead: *"Stay close to the work."* / *"Occasional dispatches from Centella — campaigns we're shaping, leaders we're backing, and the civic-tech we're building for the Global South."* Tag: `centella-newsletter`. Easy to swap if Pablo wants different copy.
+
+**Files added:** `src/pages/about-centella.astro`. **Files substantively rewritten:** `src/pages/centella-advisory.astro` (was a one-section placeholder), `src/pages/centella-impact.astro` (same).
+
+---
+
+## 2026-04-29 — Nav restructure (About + Share/Work/Tools); /share/ sub-lobby pattern; dev-mode share serving
+
+Three related changes that landed in the same window because they all touch site navigability.
+
+**Nav: four new entries across header + footer.** Both `SiteHeader.astro` and `SiteFooter.astro` use the same `navLinks` array shape; updated both. Order: Home → About Centella → three sub-brand pages → Blog → Share → Work → Tools → Styleguide. About Centella sits right after Home (high-priority discoverability for an umbrella page); Share/Work/Tools cluster between Blog and Styleguide so the sub-brand work-pages stay together at the top and the publish-tray + dev/staff entries trail below.
+
+**Share lobby grew a sub-lobby pattern (`subLobbies` in `_index.json`).** The Work nav entry pointed at `/share/work/`, which had no `index.html` and would 404 on Vercel. Refactored `scripts/build-share-index.mjs` to support an optional `subLobbies` map keyed by directory name under `share/`. For each entry, the script filters projects whose artifacts have an href starting with that prefix, strips the prefix from each href so links resolve relative to the sub-lobby, and emits `share/<kind>/index.html` with the same Centella chrome plus a breadcrumb back to `/share/`. The breadcrumb is rendered by adding an optional `breadcrumb` parameter to `renderPage(m)` and reading the eyebrow from `site.eyebrow` (defaulting to `Centella · Share` for the main lobby, preserving prior behavior).
+
+The manifest schema now supports:
+
+```jsonc
+{
+  "site": { "title": "...", "eyebrow": "...", ... },
+  "subLobbies": {
+    "work": {
+      "site": { "title": "...", "eyebrow": "Work", "headline": {...}, "lede": "...", "footer": "..." }
+    }
+    // future: "presentations": { ... } — same machinery
+  },
+  "projects": [ ... ]
+}
+```
+
+Today only `subLobbies.work` is defined; Pablo asked for Work, not Presentations. Adding Presentations later is a manifest-only edit (script handles it generically). When a manifest sub-lobby's directory doesn't exist on disk OR no projects match the prefix, the script logs a warning and skips — no broken HTML.
+
+**Dev-mode middleware for `share/*` (closes the dev-vs-prod gap).** In production, `scripts/copy-share.mjs` mirrors `share/` into `dist/share/` and `.vercel/output/static/share/` at build time, so Vercel serves `/share/*` directly. But `astro dev` only knows `src/pages/` and `public/` — `share/` at the repo root is invisible to it, so `/share/` and `/share/work/` 404 in dev. CLAUDE.md already called out a similar dev-vs-prod gap on `/tools/*` static-asset gating; this is the analog for share.
+
+Closed it with a Vite plugin in `astro.config.mjs` (`apply: 'serve'` so it only runs in dev) that intercepts `/share/*` requests, maps them to `<repo>/share/*`, redirects directory URLs to trailing-slash form so relative hrefs resolve, and guards against path traversal. Smoke-tested live: `/share/` → 200, `/share/work` → 301, `/share/work/` → 200, `/share/nope` → 404. Production behavior is unchanged because the plugin is dev-only.
+
+**Files modified:** `src/components/SiteHeader.astro`, `src/components/SiteFooter.astro` (nav), `scripts/build-share-index.mjs` (sub-lobby support), `share/_index.json` (added `eyebrow` on `site` + new `subLobbies.work` block), `astro.config.mjs` (Vite dev plugin). **Files added:** `share/work/index.html` (generated, committed alongside other share/ artifacts).
+
+---
+
 ## 2026-04-29 — `/tools` follow-ups: shared user+password, and the prerender gotcha
 
 Two follow-ups after the initial `/tools` section landed.
