@@ -6,6 +6,28 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 33 — April 29, 2026: Centella Institute page
+
+The Institute landing was still a placeholder events listing while Advisory and Impact had full sub-brand pages. Closed that gap today.
+
+Five sections, structurally lined up with the other two sub-brands so the family resemblance is obvious. Hero with the page title + lede on top. Then the Centella Events section as a tabbed UI — Upcoming / Past — each tab a horizontal scroller of event cards. Then Networks-Matter as three tone-coded panels in the networking family (coral on coral-dark, the canonical recipe). Then the three Institute programs — New Global Leadership, the Centella Global Forum, Leadership Labs — as a vertical editorial stack with numbered eyebrows. Then the CTA panel with the Mailchimp form.
+
+The tab UI is the bit I'm most pleased with. Hard project rule: no new client-side script bundles, period. I didn't want to violate that just to flip between two lists. Solved it with two visually-hidden `<input type="radio">` elements followed by the trigger labels and the panel content. The browser already handles the click, the keyboard arrow keys, the focus management. CSS does the rest — `:checked + ~` sibling selectors swap which label looks active and which panel is visible. Zero JS. Doesn't claim `role="tablist"` because that ARIA contract demands JS-driven roving focus, but the markup is fully accessible as radio inputs with proper labels. Documented it in CLAUDE.md as a reusable pattern — next time the design needs a binary content switch, this is the move.
+
+The trigger labels carry a small count chip ("Upcoming 0", "Past 3"). Doubles as visual feedback when one bucket is empty: the chip just reads `0` and the panel falls through to a friendly empty state. Saves a render branch.
+
+Hero accent: `display__accent--coral-orange` — networking + global. Each sub-brand pairs its work-color with one other family on the hero gradient. Advisory pairs with violet (the principal brand). Impact pairs with advisory (its operational cousin — capital and strategy). Institute pairs with global because the Institute is about scale and reach: bringing leaders across borders into the same room. Three sub-brands, three distinct identity gradients, no overlap. Used the same gradient on the programs-section title so "Connection is power" is the accent phrase — the call-out that introduces the three programs.
+
+Programs section deliberately is NOT a panel grid. Each program has substantial body copy and deserves space to breathe. So they're a vertical stack of editorial blocks: numbered eyebrow ("Program 01"), icon chip, display-typography name on the left; lede + body paragraph on the right. Hairline border between each. Stacks to single column on mobile. Feels like a magazine table of contents, not a feature grid. Right call for content this dense.
+
+CTA copy is new — "Step into the network." with a lede that names the three audiences (running for office, leading a movement, organizing across borders) and the three programs. Form tag is `institute-inquiry`, matching the convention from advisory and impact.
+
+The Networks-Matter panels added a fifth page to the tone-panel duplication count. Updated CLAUDE.md to mark the `<TonePanel>` component extraction as overdue rather than "trigger on the next page" — five pages is too many for a copy-paste pattern. Next pickup that touches any tone-panel page should pull the extraction in.
+
+`astro check` couldn't run from where I was working (vite cache permissions on the mounted `node_modules`), but the file matches the shape of advisory.astro / impact.astro structurally and the icons all resolve against `src/assets/icons/`. Will run a real build the next time I'm in the repo natively.
+
+---
+
 ## Entry 32 — April 29, 2026: Bio + Biography on Team Profiles
 
 Fourth schema cleanup in this session. Two new content fields on Team Profiles: `Bio` (short one-liner) and `Biography` (long-form prose). Both rich text in Notion, both plumbed through the type, the notion.ts reader, the build-team-assets.mjs token context, and the preview-team-assets.mjs fixture. Exposed as `{{bio}}` and `{{biography}}` in SVG templates; the default card and signature designs don't use either.

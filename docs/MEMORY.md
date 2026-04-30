@@ -6,6 +6,28 @@ Append new entries at the top.
 
 ---
 
+## 2026-04-29 — Centella Institute page laid out (hero, events tabs, networks panels, programs, CTA)
+
+The Institute landing page got promoted from the placeholder events listing into a full sub-brand page, structurally aligned with Advisory and Impact. Five sections: hero, Centella Events tab section (Upcoming / Past), Networks-Matter tone panels, three-program editorial stack (New Global Leadership / Centella Global Forum / Leadership Labs), CTA panel.
+
+Page key color stays `--networking` (already declared on `<body>` via `pageAccent`). Hero accent and the programs-section title both use `display__accent--coral-orange` — networking + global, the approved gradient pairing for Institute. That choice is deliberate: Advisory pairs with violet (the principal brand), Impact pairs with advisory (its operational cousin), Institute pairs with global (its scale-and-reach character). Three sub-brands, three distinct identity gradients, all anchored to one work-color each.
+
+Tab UI is CSS-only — two visually-hidden `<input type="radio">` elements precede the trigger labels and the panel content; `:checked + ~` sibling selectors swap the active label and visible panel. No new client-side script bundle, no hydration. Skipped `role="tablist"` because the proper ARIA contract requires JS-driven roving focus; the radio pattern gives keyboard arrow-key navigation for free, plus `:focus-visible` paints a tone ring on the active label. Documented in CLAUDE.md as a reusable pattern.
+
+Each tab's content is a horizontal scroller (overflow-x: auto + scroll-snap-type: x mandatory). Cards size to `min(85%, 22rem)` on mobile, `22rem` on tablet+, breaking out of the container gutter via negative inline margin so they bleed to the viewport edge on small screens — standard "edge-to-edge scroller in a container" pattern. Trigger labels include a count chip showing the tab's item count, which doubles as feedback when one bucket is empty (the chip reads `0` and the panel falls through to a friendly empty state).
+
+Networks-Matter panels use the canonical tone-panel recipe — networking-dark ground, networking foreground, 8px radius, inner frame at currentColor 30%, icon chip at currentColor 16/35%. Three panels, all networking family, satisfying the "max two color families per composition" rule.
+
+Programs section is intentionally NOT a panel grid. Each program (New Global Leadership / Centella Global Forum / Leadership Labs) is a vertical editorial block with a numbered eyebrow ("Program 01"), an icon chip, a display-typography name, a `.lede`, and a body paragraph. Two-column layout at ≥720px (head column on the left, body column on the right), stacked on mobile, separated by hairline borders. The program copy is too dense to fit comfortably inside small panels, and the editorial layout reinforces that these are substantive programs — not bullet points.
+
+CTA copy is fresh, written in Centella voice: "Step into the network." with a lede that names the three audiences (running for office, leading a movement, organizing across borders) and the three programs. Form tag is `institute-inquiry`, matching the `advisory-inquiry` / `impact-inquiry` convention.
+
+That brings the tone-panel pattern to five pages of duplication (homepage pillars, Advisory strategies, Institute Networks-Matter, Impact problems/solutions, About Centella three-pillars). The `<TonePanel>` extraction was already on the pickup list at four — adding Institute moved it from "trigger on the next page that needs one" to overdue. Updated CLAUDE.md to mark it overdue.
+
+`astro check` couldn't run from the sandbox (vite cache permissions error in the mounted node_modules), but the file is syntactically clean by inspection — same structural shape as advisory.astro / impact.astro, no new imports beyond Icon + EventCard + MailchimpForm, all icon names verified against `src/assets/icons/`.
+
+---
+
 ## 2026-04-29 — Bio + Biography on Team Profiles
 
 Added two new content fields on the Team Profiles DB ahead of the corporate Notion CMS migration: `Bio` (rich text — short one-liner) and `Biography` (rich text — long-form prose). Both are plumbed through `TeamProfile`, the notion.ts reader, and the build-team-assets.mjs token context. Available as `{{bio}}` and `{{biography}}` in the SVG templates; unused by the default card and signature designs.
