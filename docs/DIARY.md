@@ -191,6 +191,8 @@ The materials assume a Notion "Publish to website" automation exists and a `#cen
 
 What I actually want to learn from this session is which parts of the workflow the team trips on so the v2 of these docs writes itself. The facilitator agenda ends with a week-after follow-up call exactly for that.
 
+**Update, same day — 1-hour variant.** Pablo asked for a compressed 1-hour version. Wrote `00b-facilitator-agenda-1h.md` as a sibling rather than a trim of the 3.5h doc, because the 1-hour shape is a real format change, not a shorter version of the same thing. At 60 minutes it's demo-led not workshop-led — facilitator drives, team watches and follows where they can — and the workbook becomes post-session homework instead of a live follow-along. Pre-retreat prep is now mandatory rather than recommended; there's no buffer to debug a teammate's GitHub auth in the room. The 60 minutes split as 5 (opening) / 20 (setup blitz) / 12 (Notion publish demo) / 15 (deck publish demo) / 8 (wrap + homework). What's deliberately cut: the repo tour, all team exercises during the session, the work/ mockups walkthrough, the deck-letterboxing demo, breaks. The success criterion is unchanged: every teammate publishes something on their own within two weeks. Documented the cuts in the 1h agenda's "What's deliberately cut" section so the trade-offs aren't hidden.
+
 ---
 
 ## Entry 22 — April 29, 2026: sub-brand mapping — spec catches up with code

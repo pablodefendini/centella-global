@@ -299,7 +299,7 @@ These exercises are the difference between "I sat through a teach-in" and "I can
 
 **2 hours:** drop §3c (the cheat sheet — they can read it later) and §5b (just demo §5c — the publish loop is the load-bearing part). You'll lose some understanding of *why* the structure is the way it is, but they'll still be able to do the work.
 
-**1 hour:** skip §2c–d and §3, just do §2a–b (get them connected) plus §4 (Notion editing) plus §5c (publish a deck). You're teaching the happy paths only — and that's fine for an intro session.
+**1 hour:** use the dedicated 1-hour agenda at [`00b-facilitator-agenda-1h.md`](./00b-facilitator-agenda-1h.md) — it's a different shape (demo-led, no breaks, workbook becomes post-session homework), not a trimmed version of this one.
 
 ---
 
