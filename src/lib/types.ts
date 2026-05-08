@@ -9,13 +9,7 @@ export interface Event {
   id: string;
   name: string;
   slug: string;
-  /**
-   * Active = visible on the site (current or past). Inactive = hidden
-   * (drafts, retired events, or anything the content team wants off the
-   * site). Past events still render at /events/past while Active — they
-   * just have a past date.
-   */
-  status: 'Active' | 'Inactive';
+  status: 'Draft' | 'Published' | 'Archived';
   dateStart: string;
   dateEnd: string | null;
   location: string;

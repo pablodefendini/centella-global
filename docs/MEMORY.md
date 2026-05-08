@@ -6,6 +6,14 @@ Append new entries at the top.
 
 ---
 
+## 2026-05-08 — Corporate Events Status is Draft/Published/Archived (reverting d514e9d)
+
+The d514e9d "fix(notion): align Events Status with Active/Inactive corporate schema" commit was wrong about the corporate schema. Corporate Events Status is `Draft / Published / Archived` — same as the original code expected. The mistake was caught when `npm run dev` ran for the first time today and Notion threw `select option "Active" not found … Available options: "Draft", "Published", "Archived"`. Reverted the relevant parts: 6 Status filters in `src/lib/notion.ts` back to `'Published'`, `Event['status']` in `src/lib/types.ts` back to the three-option union, and CLAUDE.md's Events row, Blog Posts row, and "Event visibility" Patterns bullet back to the original wording. **Kept** from d514e9d: the operational-planning columns paragraph on Events (Event start/end, Host org / client, Budget status, etc., that the website ignores) — that's still correct. **Untouched, by design:** Team Profiles really is Active/Inactive, lives in a different DB, code is right.
+
+Lesson worth keeping: paste-and-compare schema verification can lock in a wrong reading and survive a second pass that uses the same method (Entry 36 "verified" what Entry 35 had broken). The dev server (or `astro build`) is the only verifier that hits the corporate DB by `.env` ID and tells you the actual select options. Don't claim a Notion schema is verified without running one of those against it.
+
+---
+
 ## 2026-04-29 — Centella Institute page laid out (hero, events tabs, networks panels, programs, CTA)
 
 The Institute landing page got promoted from the placeholder events listing into a full sub-brand page, structurally aligned with Advisory and Impact. Five sections: hero, Centella Events tab section (Upcoming / Past), Networks-Matter tone panels, three-program editorial stack (New Global Leadership / Centella Global Forum / Leadership Labs), CTA panel.

@@ -6,6 +6,20 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 37 — May 8, 2026: The corporate Status really is Draft/Published/Archived — reverting d514e9d
+
+Started the dev server to actually look at the site for the first time today. Notion threw a hard error on the homepage: `select option "Active" not found for property "Status". Available options: "Draft", "Published", "Archived"`. So the corporate Events DB has the original enum. The whole "alignment" in Entry 35 — switching every event query and the `Event['status']` type to Active/Inactive — was wrong. Entry 36's verification pass that supposedly confirmed it was wrong too. Both ran the same paste-and-compare loop, so the same misreading survived twice. The dev server settled it in one HTTP round trip.
+
+Reverted the relevant parts of d514e9d. Six call sites in `src/lib/notion.ts` back to `select: { equals: 'Published' }` (the four Events queries plus the one in `getBlogPostBySlug` that the original commit had also flipped to Active — d514e9d wasn't even self-consistent on Blog, since `getPublishedBlogPosts` had been left on Published; Blog status was always Published, that one's just back to matching its sibling). `Event['status']` in `src/lib/types.ts` back to `'Draft' | 'Published' | 'Archived'`, JSDoc gone. CLAUDE.md's Events row back to Draft/Published/Archived, the Blog Posts "isn't Active" line back to "isn't Published", and the Patterns bullet about Event visibility back to "Only `Published` events render."
+
+What I kept from d514e9d: the operational-planning columns paragraph on Events (`Event start`/`Event end`, `Host org / client`, `Budget status (internal)`, etc., that the website ignores) — that's still correct and useful. And all the Team Profiles `Active` / `Inactive` references in `notion.ts:347`, `notion.ts:361`, and `types.ts:99` stay put — Team Profiles really is Active/Inactive, that's a different DB, and it was never the problem.
+
+Lesson, again, since paste-and-compare just earned a second strike: don't claim a Notion schema is verified without running the dev server (or `astro build`) against it. The Cowork connector OAuth limit means I can't see corporate via MCP, so paste-and-compare is the lowest-bandwidth check available — and it's wrong about as often as it's right. The Notion API itself is the most trustworthy source: any filter against the wrong select option produces an unambiguous error message that lists the actual options. Future-me: when in doubt, write the query and read the error.
+
+Updated memory to stop asserting the false claim.
+
+---
+
 ## Entry 36 — May 8, 2026: Closing the corporate-Notion verification loop, plus Speakers Bio
 
 Followed Entry 35 to its end. Walked the remaining four DBs (Blog Posts, Team Profiles, Attendees, Speakers) property-by-property against the corporate workspace via paste-and-compare, since the Cowork Notion connector is locked to my personal workspace and I can't see corporate via MCP. All four came back clean — no code changes needed for any of them.
