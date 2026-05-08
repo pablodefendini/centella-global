@@ -289,6 +289,7 @@ async function getSpeakerById(id: string): Promise<Speaker | null> {
       role: getText(props['Role']),
       organization: getText(props['Organization']),
       photo: getFile(props['Photo']),
+      bio: getText(props['Bio']),
     };
   } catch {
     return null;

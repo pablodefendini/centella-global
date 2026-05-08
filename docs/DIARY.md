@@ -6,6 +6,20 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 36 — May 8, 2026: Closing the corporate-Notion verification loop, plus Speakers Bio
+
+Followed Entry 35 to its end. Walked the remaining four DBs (Blog Posts, Team Profiles, Attendees, Speakers) property-by-property against the corporate workspace via paste-and-compare, since the Cowork Notion connector is locked to my personal workspace and I can't see corporate via MCP. All four came back clean — no code changes needed for any of them.
+
+Two non-code follow-ups landed in Notion. First: Blog Posts has both an `Event` (singular, two-way) and an `Events` (plural) relation back to Events. The code reads `Event` (singular). The plural is a leftover; deleting it in Notion. Second: Speakers has a `Bio` text column the corporate schema's been carrying that the code never read — it was sitting there as latent data while CLAUDE.md described Bio aspirationally in the Speakers data model.
+
+Wired Bio up. `bio: string` on the `Speaker` interface, `getText(props['Bio'])` in `getSpeakerById`, and a new `<p class="speaker-card__bio text-muted">` rendered below Organization on `SpeakerCard`. Styling choice worth noting: bio gets `margin-top: var(--space-2)` and a smaller `font-size: var(--text-sm)`, so it reads as biography rather than another tier of the title hierarchy. Without that separation, four muted lines stacked tight (Role, Title, Organization, Bio) would all blur into one undifferentiated identity block. The extra space + smaller type tells the eye "this is prose, not metadata."
+
+Attendees doesn't have a Bio column at all — asymmetric with Speakers. Updated the CLAUDE.md Attendees line to drop the Bio reference (it was wrong; the data didn't exist), with a note that adding it in Notion + wiring through `getAttendeeById` is straightforward when a future surface needs it. The original aspirational doc claim that Attendees had Bio came from the same era as the title-role split — assumed parity that the schema didn't ship.
+
+Sponsors verified clean as the last DB in the chain. Four expected properties (Name, Logo, URL, Tier), all present with correct types; Tier options match what the code expects (Lead, Supporting, Community). Closes the schema verification — every one of the six corporate Notion CMS databases now lines up property-by-property with what `src/lib/notion.ts` reads, and the only code change needed across the whole pass was the Events Status enum (Entry 35).
+
+---
+
 ## Entry 35 — May 8, 2026: Wiring up the Notion integration, the long way around
 
 Tried to verify the corporate Notion CMS schemas line up with what `src/lib/notion.ts` reads, and got tripped up by something I should have caught earlier. The Notion MCP I'm using in this session is OAuth'd to my *personal* Notion workspace, where there's a stale duplicate "🌐 Website CMS" page from before the corporate migration. So when I queried via MCP, every database came back with IDs that didn't match `.env` — which made me "fix" `.env` by replacing the corporate IDs with the stale personal ones, and then I went on to "fix" the code to match the stale schema. Wrong on both counts.

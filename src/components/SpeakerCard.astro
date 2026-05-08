@@ -25,6 +25,7 @@ const { speaker } = Astro.props;
   {speaker.role && <p class="speaker-card__role">{speaker.role}</p>}
   {speaker.title && <p class="speaker-card__title text-muted">{speaker.title}</p>}
   {speaker.organization && <p class="speaker-card__org text-muted">{speaker.organization}</p>}
+  {speaker.bio && <p class="speaker-card__bio text-muted">{speaker.bio}</p>}
 </div>
 
 <style>
@@ -58,7 +59,8 @@ const { speaker } = Astro.props;
 
   .speaker-card__role,
   .speaker-card__title,
-  .speaker-card__org {
+  .speaker-card__org,
+  .speaker-card__bio {
     max-width: min(100%, var(--prose-max-ch));
     margin: 0;
   }
@@ -67,5 +69,13 @@ const { speaker } = Astro.props;
      text-muted utility on the markup. */
   .speaker-card__role {
     font-weight: 500;
+  }
+
+  /* Bio sits below the identity block with extra space so it reads as
+     biography rather than another tier of the title hierarchy. */
+  .speaker-card__bio {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
 </style>

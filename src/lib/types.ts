@@ -64,6 +64,8 @@ export interface Speaker {
   role: string;
   organization: string;
   photo: string | null;
+  /** Short bio rendered on SpeakerCard below role/title/organization. Empty string when blank in Notion. */
+  bio: string;
 }
 
 export interface Attendee {
