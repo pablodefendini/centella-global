@@ -86,12 +86,18 @@ function getPhone(prop: any): string {
 
 // --- Events ---
 
+/**
+ * Returns every Active event, sorted by date ascending. Function name is
+ * historical — the Status column was originally Draft/Published/Archived
+ * and has since been simplified to Active/Inactive. Active = visible on
+ * the site (current or past); Inactive = hidden.
+ */
 export async function getPublishedEvents(): Promise<Event[]> {
   const response = await notion.databases.query({
     database_id: EVENTS_DB,
     filter: {
       property: 'Status',
-      select: { equals: 'Published' },
+      select: { equals: 'Active' },
     },
     sorts: [{ property: 'Date', direction: 'ascending' }],
   });
@@ -105,7 +111,7 @@ export async function getFeaturedEvents(): Promise<Event[]> {
     database_id: EVENTS_DB,
     filter: {
       and: [
-        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Status', select: { equals: 'Active' } },
         { property: 'Featured', checkbox: { equals: true } },
         { property: 'Date', date: { on_or_after: now } },
       ],
@@ -116,7 +122,7 @@ export async function getFeaturedEvents(): Promise<Event[]> {
   return Promise.all(response.results.map(pageToEvent));
 }
 
-/** Next upcoming published event, or if none, the most recently started past event. */
+/** Next upcoming Active event, or if none, the most recently started past Active event. */
 export async function getHomepageLatestEvent(): Promise<Event | null> {
   const now = new Date().toISOString().split('T')[0];
 
@@ -124,7 +130,7 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     database_id: EVENTS_DB,
     filter: {
       and: [
-        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Status', select: { equals: 'Active' } },
         { property: 'Date', date: { on_or_after: now } },
       ],
     },
@@ -140,7 +146,7 @@ export async function getHomepageLatestEvent(): Promise<Event | null> {
     database_id: EVENTS_DB,
     filter: {
       and: [
-        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Status', select: { equals: 'Active' } },
         { property: 'Date', date: { before: now } },
       ],
     },
@@ -158,7 +164,7 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     filter: {
       and: [
         { property: 'Slug', rich_text: { equals: slug } },
-        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Status', select: { equals: 'Active' } },
       ],
     },
   });
@@ -221,7 +227,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     filter: {
       and: [
         { property: 'Slug', rich_text: { equals: slug } },
-        { property: 'Status', select: { equals: 'Published' } },
+        { property: 'Status', select: { equals: 'Active' } },
       ],
     },
   });

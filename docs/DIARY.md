@@ -6,6 +6,43 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 35 — May 8, 2026: Wiring up the Notion integration, the long way around
+
+Tried to verify the corporate Notion CMS schemas line up with what `src/lib/notion.ts` reads, and got tripped up by something I should have caught earlier. The Notion MCP I'm using in this session is OAuth'd to my *personal* Notion workspace, where there's a stale duplicate "🌐 Website CMS" page from before the corporate migration. So when I queried via MCP, every database came back with IDs that didn't match `.env` — which made me "fix" `.env` by replacing the corporate IDs with the stale personal ones, and then I went on to "fix" the code to match the stale schema. Wrong on both counts.
+
+Caught it when I asked for the Events DB URL and it matched the *original* `.env` value I'd just overwritten. Restored `.env`, reverted every code change calibrated to the personal-workspace shape (Speaker.titleRole collapse, Date Start / Date End split, Team Profile fallbacks for missing columns) — back to the as-designed schema the recent commits already converged on. None of that detour shipped.
+
+What did need to change, once we worked through the Events DB property by property: Status options. Corporate uses **Active / Inactive**, not Draft / Published / Archived. The code's filter `select: { equals: 'Published' }` would have returned zero results on every event query. Swapped the literal in all four event queries (`getPublishedEvents`, `getFeaturedEvents`, both filters in `getHomepageLatestEvent`, `getEventBySlug`), updated the `Event['status']` enum to `'Active' | 'Inactive'`, kept `getPublishedEvents` as the function name with a comment explaining the historical mismatch — renaming to `getActiveEvents` would have propagated to every consumer for cosmetic gain. Updated CLAUDE.md's Data model section to reflect the simpler enum, and fixed the two downstream references in "Things to avoid" / "Patterns" that called out the old "Published" wording. Also added a one-liner about the operational-planning columns on Events (`Event start`, `Event end`, `Host org / client`, `Budget status (internal)`, etc.) so future-me knows those exist and the website ignores them.
+
+One open thing on Events: `Hero Image` looked like a URL property in the property panel, not Files & media. If it's URL today, `getFile(props['Hero Image'])` returns null and every event card and detail page renders without its hero. Flagged for verification in Notion — fix is on the Notion side (change the column type to Files & media), no code change.
+
+Also flagged but not done: verify the other five DBs (Blog Posts, Speakers, Attendees, Sponsors, Team Profiles) match the code. The recent commit history (`Collapse Events Date Start + Date End`, `Add Event relation on Blog Posts`, `Split Title/Role into Title + Role`, `Add Bio + Biography fields on Team Profiles`) is exactly the schema realignment that brings corporate up to the design — so the code should match. But "should" isn't "verified," and without a connector swap the only way to verify corporate is the same screenshot-and-compare loop I just did for Events. Next session.
+
+Lesson worth keeping. Whenever the MCP shows Notion DB IDs that don't match `.env`, or shows IDs that resolve to a wrong-looking schema, suspect a workspace mismatch before suspecting `.env` is wrong. Cowork has a one-Notion-workspace hard limit — you only get to OAuth one workspace at a time. If your project's CMS is on a different workspace from the one Cowork's connected to, the MCP can't see it, and you verify by paste/screenshot until you swap.
+
+---
+
+## Entry 34 — May 4, 2026: Alianza de País case-study deck for the Global Forum
+
+Building a 7–8 minute case study to give at the Centella Global Forum next week. Subject is Alianza de País — the MVC + PIP coalition in Puerto Rico's 2024 cycle that ran Juan Dalmau for governor and finished second. Through-line is narrative + identity: the move that mattered wasn't the merger or the platform, it was refusing to argue the status question and substituting "what can we govern?" in its place. País — country — does the work as the unifying word.
+
+Two artifacts:
+
+- `src/pages/share/presentations/alianza-de-pais.astro` — the deck. Ten slides, served at `/share/presentations/alianza-de-pais/`.
+- `docs/talks/alianza-de-pais.md` — speaker notes per slide, with `[FILL: …]` placeholders for the inside-view content (the moments I was in, the framing decisions, real quotes). New convention: `docs/talks/` is where talks live. Diary is for sessions, talks/ is for delivery.
+
+Decision worth flagging: I built the deck as a *slim native* deck rather than a PDF Playground export. The two existing decks (`ngl-barcelona`, `ngl-barcelona-en`) are 400KB+ each, with every Barlow weight inlined as base64 woff2 — the artifacts of an external design tool, imported. For a fast-turn talk like this one I didn't want to round-trip through PDF Playground. The native deck is ~660 lines, loads Barlow + Barlow Condensed from the same Google Fonts CDN the rest of the site uses, and ships its own minimal `<deck-stage>` web component (~170 lines) implementing the design.md contract: 1920×1080 authored canvas, letterboxed `min(vw/dw, vh/dh)` scaling, slides hidden via `[data-active]` toggle, keyboard nav (arrows, Space, PgUp/PgDn, Home/End, R, 1–9), click to advance, localStorage persistence.
+
+Two patterns in the repo for decks now, then. The PDF Playground import path is right when the deck is being designed in that tool — slide composition, interactive previews, pixel-precise layouts. The native path is right when the deck is text-heavy, the author is writing in code, and turn-around matters. Both ship through the same `/share/presentations/<slug>/` URL shape and both use `Presentation.astro`. Not extracting a shared deck-stage component yet — one instance isn't a pattern. If a second native deck lands, that triggers the extraction (the `<TonePanel>` rule applied to deck infrastructure).
+
+Did NOT add the deck to `share/_index.json`. The lobby is for finished, share-ready artifacts. This deck has `[FILL: …]` placeholders that are still placeholders, and the Forum talk hasn't happened. Once the talk is done and the placeholders are real content — or sooner, if I want to share it as a reference draft — I'll add the entry and run `npm run share:index`.
+
+Visual choices, briefly. Cover and the two pivot slides (4 — the reframe; 5 — país) get gradient accents on display type via `display__accent`: violet→coral on the cover, cyan→violet on "what we can govern" (status reframe), coral→orange on "país" (the word). Slide 3 is the only panel-heavy slide — two tone-panels (violet for PIP, networking-coral for MVC) using the canonical recipe from CLAUDE.md, deliberately picking colors that read as *different DNAs* rather than visually unified. Slide 6 is a six-item failure list with coral hairline rules — fast to scan, conversational to talk over. Slide 7 is one stat ("2nd") at 360px in the violet→coral gradient — restraint over chartjunk. Slide 9 ("the trap has a door") closes with the same coral→orange that país opened with — small visual rhyme.
+
+Did NOT run `astro build`. Same vite-cache permissions issue on the mounted node_modules I've been hitting all session. Ran a tag-balance check via grep instead — 10 sections, one deck-stage open/close pair, balanced style and script blocks. Will verify in dev next time I'm in the repo natively.
+
+---
+
 ## Entry 33 — April 29, 2026: Centella Institute page
 
 The Institute landing was still a placeholder events listing while Advisory and Impact had full sub-brand pages. Closed that gap today.
