@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/build-team-assets.mjs && node scripts/copy-share.mjs",
+    "build": "node --env-file-if-exists=.env scripts/build-team-photos.mjs && astro build && node --env-file-if-exists=.env scripts/build-team-assets.mjs && node scripts/copy-share.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "media:hero": "bash scripts/optimize-hero-media.sh",
@@ -17,8 +17,9 @@
     "work:build": "node scripts/build-work.mjs",
     "share:index": "node scripts/build-share-index.mjs",
     "share:build": "astro build && node scripts/inline-deck.mjs && node scripts/build-work.mjs && node scripts/build-share-index.mjs",
-    "team-assets:build": "node scripts/build-team-assets.mjs",
-    "team-assets:preview": "node scripts/preview-team-assets.mjs"
+    "team-assets:build": "node --env-file-if-exists=.env scripts/build-team-assets.mjs",
+    "team-assets:preview": "node scripts/preview-team-assets.mjs",
+    "team-photos:build": "node --env-file-if-exists=.env scripts/build-team-photos.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",
@@ -26,6 +27,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.0.0",
     "pdfkit": "^0.18.0",
+    "sharp": "^0.33.5",
     "svg-to-pdfkit": "^0.1.8"
   },
   "devDependencies": {

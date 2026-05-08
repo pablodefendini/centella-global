@@ -1,6 +1,45 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
+import { getTeamProfiles } from '../lib/notion';
+
+// Pull a couple of real team members for the expanding-panel showcase below.
+// Falls back to fictional examples if the corporate Team Profiles DB has no
+// Active rows yet — keeps the styleguide useful as a design reference even
+// before content is published.
+const teamProfilesForShowcase = (await getTeamProfiles()).slice(0, 2);
+
+const initialsFor = (name: string): string =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .slice(0, 2)
+    .join('');
+
+const fictionalShowcase = [
+  {
+    name: 'Juana Domínguez',
+    title: 'Strategy lead, Latin America',
+    slug: '',
+    bio: "Juana spent a decade running coalition campaigns across the Andes before joining Centella. She works most closely with candidates running their first national race — translating grassroots energy into the operational discipline that wins elections.",
+  },
+  {
+    name: 'Rashidi Ade',
+    title: 'Civic-tech partnerships, West Africa',
+    slug: '',
+    bio: "Rashidi works with the engineering teams behind organizing tools in Lagos, Accra, and Nairobi. Centella's job, on his side of the shop, is to make sure those tools land where they're needed and outlive the campaign that paid for them.",
+  },
+];
+
+const expandingShowcase = teamProfilesForShowcase.length
+  ? teamProfilesForShowcase.map((p) => ({
+      name: p.name,
+      title: p.title,
+      slug: p.slug,
+      bio: p.bio || p.biography || '',
+    }))
+  : fictionalShowcase;
 
 // All icons in src/assets/icons/, sorted case-insensitively by name.
 const iconFiles = import.meta.glob<string>('../assets/icons/*.svg', {
@@ -758,6 +797,99 @@ import Icon from '../components/Icon.astro';
         </label>
         <button type="submit" class="btn btn--primary">Submit</button>
       </form>
+
+      <h3 style="margin-top: var(--space-12);">Expanding panel</h3>
+      <p class="sg-paragraph">
+        Click-to-reveal disclosure pattern built on native
+        <code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code>. Use whenever a
+        panel needs to hold secondary content that the reader can choose to
+        open — team-member bios, FAQ answers, "more details" toggles. The
+        browser handles open/close, focus, and screen-reader announcement;
+        the only JS is what the consumer drops in (typically none).
+      </p>
+      <p class="sg-paragraph">
+        Two variants. <strong>Neutral</strong> (default) sits on the elevated
+        surface and is right for FAQ-style disclosure where the panel itself
+        is incidental to the question and answer. <strong>Toned</strong>
+        (<code>.expanding-panel--toned</code>) applies the canonical
+        tone-panel visual language — family-dark ground, family-keyed border
+        and divider — for panels that should read as on-brand identity
+        elements (team cards, sub-brand listings). Set the family by
+        overriding <code>background</code> and <code>color</code> on the
+        panel; everything else inherits via <code>currentColor</code>.
+      </p>
+
+      <h4 class="sg-subhead">Toned (advisory)</h4>
+
+      <!-- Duotone filter for the team-card photos — same defs as about-centella.
+           Maps grayscale 0 → --advisory-dark (#0E2228), 1 → --advisory (#00E5FF).
+           If a third surface needs duotone, promote these defs to Base.astro. -->
+      <svg aria-hidden="true" focusable="false" class="sg-duotone-defs">
+        <defs>
+          <filter id="duotone-advisory" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+            <feComponentTransfer>
+              <feFuncR type="table" tableValues="0.055 0"/>
+              <feFuncG type="table" tableValues="0.133 0.898"/>
+              <feFuncB type="table" tableValues="0.157 1"/>
+            </feComponentTransfer>
+          </filter>
+        </defs>
+      </svg>
+
+      <div class="sg-expand-grid sg-expand-grid--advisory">
+        {expandingShowcase.map((p) => (
+          <details class="expanding-panel expanding-panel--toned">
+            <summary class="expanding-panel__head">
+              <span class="sg-avatar sg-avatar--toned" aria-hidden="true">
+                <span class="sg-avatar__initials">{initialsFor(p.name)}</span>
+                {p.slug && (
+                  <img
+                    class="sg-avatar__img"
+                    src={`/team/${p.slug}.webp`}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.style.display='none'"
+                  />
+                )}
+              </span>
+              <span class="sg-stack">
+                <span class="sg-stack__title">{p.name}</span>
+                {p.title && <span class="sg-stack__sub sg-stack__sub--toned">{p.title}</span>}
+              </span>
+              <span class="expanding-panel__chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="expanding-panel__body">
+              {p.bio || 'Bio coming soon.'}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <h4 class="sg-subhead">Neutral (default)</h4>
+      <div class="sg-expand-grid">
+        <details class="expanding-panel">
+          <summary class="expanding-panel__head">
+            <span class="sg-stack">
+              <span class="sg-stack__title">How does Centella decide which campaigns to support?</span>
+            </span>
+            <span class="expanding-panel__chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="expanding-panel__body">
+            We work with leaders and movements whose values align with ours
+            and whose strategy stands a real chance. We aren't a grant-maker
+            or a vendor; engagements start with a discovery conversation
+            and a shared assessment of where Centella's playbook fits.
+          </div>
+        </details>
+      </div>
+
+      <p class="sg-paragraph" style="margin-top: var(--space-6);">
+        See the full markup contract in <code>src/styles/global.css</code>
+        ("Expanding Panel" section). Live consumers: the team grid on
+        <a href="/about-centella/" class="sg-inline-link">About Centella</a>.
+      </p>
     </section>
 
     <!-- ── 11. Sub-brands ───────────────────────────── -->
@@ -2341,6 +2473,106 @@ import Icon from '../components/Icon.astro';
     outline: none;
     border-color: var(--violet);
     box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.15);
+  }
+
+  /* Expanding panel — styleguide showcase */
+  .sg-subhead {
+    margin: var(--space-8) 0 var(--space-3);
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-lg);
+  }
+
+  .sg-expand-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .sg-expand-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Apply the advisory family to the toned panels in this row. The
+     .expanding-panel--toned modifier inherits everything else from currentColor. */
+  .sg-expand-grid--advisory .expanding-panel--toned {
+    background: var(--advisory-dark);
+    color: var(--advisory);
+  }
+
+  .sg-avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--advisory-dark);
+    color: var(--advisory);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-base);
+    letter-spacing: 0.02em;
+  }
+
+  /* Toned variant: borrows the icon-chip recipe (family-tinted bg, family-keyed border) */
+  .sg-avatar--toned {
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    color: currentColor;
+  }
+
+  /* Initials sit as the base layer; an img (when present) overlays. If the
+     img 404s or isn't rendered (no slug), initials show through. */
+  .sg-avatar__initials {
+    color: currentColor;
+  }
+
+  .sg-avatar__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Duotone applies only when the avatar is in the toned showcase. */
+  .sg-expand-grid--advisory .sg-avatar__img {
+    filter: url(#duotone-advisory);
+  }
+
+  .sg-duotone-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .sg-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .sg-stack__title {
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-base);
+    line-height: var(--leading-tight);
+  }
+  .sg-stack__sub {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .sg-stack__sub--toned {
+    /* Family-keyed muted: reads as "this family but quieter" */
+    color: color-mix(in srgb, currentColor 80%, transparent);
   }
 
   /* Sub-brands */

@@ -2,17 +2,30 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
+import { getTeamProfiles } from '../lib/notion';
 
 /**
  * About Centella — umbrella page introducing the organization, the moment,
  * the team, and the three pillars of work. Keyed to the neutral default
  * --page-accent (--violet-light) so the chrome stays principal-brand-neutral.
  *
- * Open question (follow-up): wire the team grid to getTeamProfiles() from
- * src/lib/notion.ts. Notion's signed file URLs expire, so a public-page
- * pipeline needs photos copied to public/team/<slug>.<ext> at build time
- * before we can use real portraits here. Until then: 8 placeholder slots.
+ * Team grid is driven by getTeamProfiles() from Notion. Photos come from
+ * public/team/<slug>.webp, written at build time by scripts/build-team-photos.mjs
+ * (Notion's signed file URLs expire, so we can't hotlink). When a profile
+ * has no photo or no slug, the panel falls back to initials.
  */
+
+const teamProfiles = await getTeamProfiles();
+
+/** Initials helper for the photo-fallback chip — first letter of each word, max 2. */
+function initialsFor(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .slice(0, 2)
+    .join('');
+}
 
 const moments = [
   {
@@ -59,14 +72,6 @@ const regionalStats = [
     body: "Value of the creator economy in Asia, projected to grow 6× by 2030.",
   },
 ] as const;
-
-// 8 placeholder portrait slots until team photos are wired up. Each slot is
-// a circular surface; replace `src` with a real /team/<slug>.webp once the
-// build pipeline copies team photos out of Notion.
-const teamPortraits = Array.from({ length: 8 }, (_, i) => ({
-  alt: `Centella team member ${i + 1}`,
-  src: null,
-}));
 
 const formula = [
   {
@@ -179,6 +184,27 @@ const pillars = [
   </section>
 
   <!-- ── Section 3 — The team ───────────────────────── -->
+  <!--
+    Duotone filter for team-panel photos. Maps grayscale 0 → --advisory-dark
+    (#0E2228) and grayscale 1 → --advisory (#00E5FF). The photo's dark areas
+    visually merge with the panel's family-dark ground; bright areas pick up
+    the family's bright color. Pure SVG, applied via CSS `filter: url(...)`
+    on the <img> element only — initials fallback is unaffected.
+    If --advisory-dark or --advisory ever change, update tableValues below.
+  -->
+  <svg aria-hidden="true" focusable="false" class="about-team-duotone-defs">
+    <defs>
+      <filter id="duotone-advisory" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.055 0"/>
+          <feFuncG type="table" tableValues="0.133 0.898"/>
+          <feFuncB type="table" tableValues="0.157 1"/>
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
   <section class="section about-team" aria-labelledby="about-team-heading">
     <div class="container about-section-intro">
       <h2 id="about-team-heading" class="about-section-title">
@@ -191,15 +217,43 @@ const pillars = [
     </div>
 
     <div class="container">
-      {/* Placeholder portrait grid — see frontmatter note. Swap each .about-portrait
-          for an <img src="/team/<slug>.webp" alt="<name>"> once team photos are wired. */}
-      <ul class="about-team-grid" role="list" aria-label="Centella team portraits">
-        {teamPortraits.map((p) => (
-          <li class="about-team-cell">
-            <span class="about-portrait" aria-label={p.alt}></span>
-          </li>
-        ))}
-      </ul>
+      {teamProfiles.length === 0 ? (
+        <p class="about-team__empty">Team profiles publishing soon.</p>
+      ) : (
+        <div class="about-team-grid" role="list" aria-label="Centella team">
+          {teamProfiles.map((person) => (
+            <details class="expanding-panel expanding-panel--toned about-team-card" role="listitem">
+              <summary class="expanding-panel__head about-team-card__head">
+                <span class="about-team-card__photo" aria-hidden="true">
+                  <span class="about-team-card__initials">{initialsFor(person.name)}</span>
+                  {person.slug && (
+                    <img
+                      class="about-team-card__photo-img"
+                      src={`/team/${person.slug}.webp`}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      onerror="this.style.display='none'"
+                    />
+                  )}
+                </span>
+                <span class="about-team-card__stack">
+                  <span class="about-team-card__name">{person.name}</span>
+                  {person.title && (
+                    <span class="about-team-card__title">{person.title}</span>
+                  )}
+                </span>
+                <span class="expanding-panel__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="expanding-panel__body about-team-card__body">
+                {person.bio || person.biography || (
+                  <span class="about-team-card__no-bio">Bio coming soon.</span>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+      )}
 
       <p class="lede about-team__closing">
         Centered in the Global South, connected worldwide — we partner with those who refuse
@@ -439,34 +493,110 @@ const pillars = [
     color: var(--color-text-muted);
   }
 
-  /* ── Section 3 — The team (4×2 portrait grid) ── */
+  /* ── Section 3 — The team (expanding panels) ── */
   .about-team-grid {
-    list-style: none;
     margin: 0 0 var(--space-12);
-    padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
   @media (min-width: 640px) {
-    .about-team-grid { grid-template-columns: repeat(4, 1fr); }
+    .about-team-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  .about-team-cell {
-    display: flex;
+  @media (min-width: 960px) {
+    .about-team-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Tone-coded team panels — advisory family on the umbrella page.
+     Single family across the grid keeps the composition inside the
+     "max two color families" rule. */
+  .about-team-card {
+    background: var(--advisory-dark);
+    color: var(--advisory);
+  }
+
+  .about-team-card__head { gap: var(--space-4); }
+
+  /* Photo wrapper: icon-chip base layer, initials inside, optional img overlay.
+     If the img fails to load (or no slug), initials show through; if it loads,
+     it covers the initials. Single visual element, graceful fallback. */
+  .about-team-card__photo {
+    position: relative;
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    overflow: hidden;
+    /* Echoes the icon-chip recipe from tone-panels: family-tinted bg + family-keyed border */
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  .about-portrait {
-    /* Placeholder circle; swap for <img> with the same shape later. */
-    display: block;
+  .about-team-card__initials {
+    color: currentColor;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-base);
+    letter-spacing: 0.02em;
+  }
+
+  .about-team-card__photo-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background: var(--bg-elevated);
-    border: 1px solid var(--color-border);
+    height: 100%;
+    object-fit: cover;
+    /* Duotone filter — defs live above this section. Maps photo grayscale
+       to the advisory family. Photo shadows merge with panel ground. */
+    filter: url(#duotone-advisory);
+  }
+
+  /* Visually hidden SVG defs container — defines the filter referenced above. */
+  .about-team-duotone-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .about-team-card__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .about-team-card__name {
+    /* Per tone-panel rule: title in --color-text on family-dark grounds */
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-base);
+    line-height: var(--leading-tight);
+  }
+
+  .about-team-card__title {
+    /* Family-keyed muted: currentColor at reduced opacity reads as "advisory but quieter" */
+    color: color-mix(in srgb, currentColor 80%, transparent);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+
+  .about-team-card__no-bio {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-style: italic;
+  }
+
+  .about-team__empty {
+    color: var(--color-text-muted);
+    text-align: center;
+    margin: 0 0 var(--space-12);
   }
 
   .about-team__closing {

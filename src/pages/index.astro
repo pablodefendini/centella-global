@@ -282,10 +282,19 @@ const foundationalPillars = [
     gap: var(--space-4);
   }
 
+  @media (min-width: 640px) {
+    .home-min__pillars-list { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .home-min__pillars-list { grid-template-columns: repeat(3, 1fr); }
+  }
+
   .home-min__pillar {
     border-radius: 8px;
     padding: var(--space-2);
     color: var(--color-text);
+    height: 100%;
   }
 
   .home-min__pillar-frame {
@@ -295,6 +304,7 @@ const foundationalPillars = [
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+    height: 100%;
   }
 
   .home-min__pillar--advisory {

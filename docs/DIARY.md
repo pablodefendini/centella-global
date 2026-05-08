@@ -6,6 +6,60 @@ I'm rebuilding the site from scratch using Astro, Notion as the CMS, and Vercel 
 
 ---
 
+## Entry 40 — May 8, 2026: Polish pass — sizes, layered photos, duotone, and the gotchas worth remembering
+
+Closing pass on the team grid in the same session. Three pieces, plus three gotchas that landed in the wall before the right thing did.
+
+**Padding silent-zero.** `--space-5` doesn't exist in this design system — the scale is `1, 2, 3, 4, 6, 8, 12, 16, 24, 32`. I'd been using `var(--space-5)` in the expanding-panel base CSS, and CSS quietly resolved unknown custom properties to nothing, which meant zero padding on the body and zero vertical padding on the head. Pablo flagged it as "needs padding" — I fixed all three sites (`__head`, `__body`, the toned `__head` override) to use `--space-4` / `--space-6`. Lesson: when adding a CSS custom property to a value, look it up in the scale first. The token system is the contract; using a token that doesn't exist isn't an error, it's a silent fallback to zero.
+
+**Photo / initials layering.** Original markup did either-or: `<img>` if a slug existed, `<span class="...initials">` otherwise. The problem: a profile with a slug but a missing photo file (because the pipeline hadn't downloaded it, or the Photo column in Notion was empty) would render `<img src="/team/...webp">` against a 404 and you'd get a broken-image icon. Restructured: photo wrapper is one element with the icon-chip recipe (family-tinted bg, family-keyed border) holding initials as a base layer; a conditional `<img>` overlays when slug is set, and an inline `onerror="this.style.display='none'"` hides it on 404 so the initials show through. Same setup on `/about-centella/` and the styleguide showcase. Inline onerror is ~20 chars and isn't a JS bundle — fine under the static-first rule. Bumped the circle from 3rem (about-centella) and 2.5rem (styleguide) to a unified 4rem on both pages.
+
+**Duotone, the real one.** Pablo asked for a duotone filter keyed to the panel family — photos that read as Centella-shaped, not just photos pasted into a brand surface. Did it with SVG: `feColorMatrix` with luminance weights to grayscale the image, then `feComponentTransfer` with two-stop `tableValues` mapping shadow→highlight per channel. For advisory: shadow `#0E2228` → highlight `#00E5FF`. Applied via `filter: url(#duotone-advisory)` on the img only, so the initials fallback isn't affected. Defs are inlined per consuming page (about-centella + styleguide showcase) — when a third surface needs duotone, those defs get promoted to `Base.astro` and the per-page copies deleted. Per-family `tableValues` table for networking, investment, global, and tech is in design.md so the next family is a copy-paste.
+
+**The `type="table"` gotcha.** First version of the filter rendered as plain grayscale. Cause: `<feFuncR>` / `<feFuncG>` / `<feFuncB>` all default to `type="identity"` when the attribute is missing, which silently ignores `tableValues`. So my filter was running the grayscale step from `feColorMatrix` and then doing an identity transform that left the result untouched. Fix: explicit `type="table"` on every `<feFunc*>` element. Documented in design.md as a callout next to the recipe so the next person doesn't lose the same hour I did.
+
+**Slug-must-be-set-in-Notion.** When `npm run team-photos:build` ran for the first time after the env-var fix, the output was `done — written=0 skipped=7 errored=0` because none of the 7 Active corporate Team Profiles had a Slug set. Per CLAUDE.md slugs are manual ("Slugs are manually set in Notion, not auto-generated. This gives the content team control over URLs"), so this is a content task, not a bug. Pablo's setting them now.
+
+**Styleguide is now Notion-coupled.** The expanding-panel showcase pulls from `getTeamProfiles()` at build time and uses up to 2 real profiles, falling back to fictional "Juana / Rashidi" examples if the DB has no Active rows. Trade-off worth flagging: if the Team Profiles schema shifts (a column renames, a property type changes), the styleguide will throw the same kind of error that surfaced the Events Status mismatch earlier today. Real data on a design reference is a pickup-time bet.
+
+Decision worth keeping past this PR: **layered photo with initials base + onerror fallback** is the right primitive for any photo-or-fallback rendering on this codebase. Same shape can carry speakers, attendees, partner logos, anywhere a content type has an optional image. When the second consumer arrives, extract `<PhotoOrInitials>` and let the team-card / speaker-card consume it.
+
+---
+
+## Entry 39 — May 8, 2026: Toned variant of expanding-panel; team cards on-brand
+
+Same session as Entry 38. Looked at the team grid live and the cards read as generic chrome — neutral elevated surface, the photo and name floating in a box that didn't feel like Centella. The expanding-panel pattern was content-agnostic by design, but the *team* application of it needed to read as on-brand identity, not as a generic FAQ widget with portraits in it.
+
+Added a `.expanding-panel--toned` modifier in `global.css` that applies the canonical tone-panel visual language to the disclosure mechanic: family-dark ground, `currentColor 30%` border, `currentColor 30%` body divider, family-keyed chevron at 70% opacity. The consumer picks the family by setting `background` + `color` on the panel itself; everything else inherits through `currentColor` so the modifier stays family-agnostic. Team cards get `--advisory-dark` + `--advisory` — one family across the grid, satisfies the "max two color families per composition" rule, and reads as principal-brand-leaning on About Centella (which is umbrella, no `--page-accent` override).
+
+Photo treatment got the icon-chip recipe in tone scale: family-tinted border (`currentColor 35%`) on the photo itself, full chip recipe (`16% bg + 35% border`) on the initials fallback. Title text now uses `color-mix(currentColor 80%, transparent)` instead of `--color-text-muted` — same visual quietness but family-keyed instead of white-keyed, which keeps the panel inside its own color world.
+
+Styleguide showcase updated to demonstrate both variants side-by-side under `#components`. design.md's "Expanding panel" subsection now documents the variant choice — neutral for FAQ-style content, toned for on-brand identity.
+
+Tightened the empty-state copy from "Team listings load from Notion at build time. None available yet." to "Team profiles publishing soon." — the implementation detail was leaking into the public copy. Bug.
+
+Decision worth holding past this PR: when a pattern has a generic and an on-brand variant, ship both as documented siblings under the same name. The system tells you which to use when. Picking one default and forcing the other use case to override is what creates the inconsistencies CLAUDE.md ends up flagging six months later.
+
+Last beat in the same arc: duotone photos. Real one — `<feColorMatrix>` for luminance grayscale, `<feComponentTransfer>` with two-stop `tableValues` mapping shadow→highlight per channel, applied as `filter: url(#duotone-advisory)` on the `<img>`. Photo's dark areas resolve to `--advisory-dark` and visually merge with the panel's ground; bright areas resolve to `--advisory`. Initials fallback is unaffected because the filter only touches the img element. SVG defs are inlined per consuming page (about-centella + the styleguide showcase) — when a third surface needs duotone, promote them to `Base.astro`. Per-family `tableValues` table is in design.md so adding networking / investment / global / tech is a copy-paste-from-the-table operation.
+
+---
+
+## Entry 38 — May 8, 2026: Expanding-panel pattern, team-photo pipeline, and the team grid finally lights up
+
+Three pieces in one session because each one unblocked the next.
+
+**The pattern first.** I want a click-to-reveal affordance for the team grid — photo + name + title visible, bio hidden until the user clicks. The constraint ruled the design: static-first hard rule means no new JS bundle, which means `<details>`/`<summary>`. The browser handles open/close, focus, keyboard, and screen-reader announcement. I just style the box and rotate a chevron when `[open]`. Zero JS, ~80 lines of CSS in `global.css`, drawn-from-CSS-borders chevron so I don't need to add an icon asset. Consumers compose their own summary layout; the pattern only owns the box, the rotation, and the focus ring. Promoted to a styleguide showcase under `#components` with two example consumers (a team card and an FAQ-style question), and documented in `design.md` as a sibling to the tone-panel recipe. Decision worth holding: tone panels are for self-contained content every reader should see, expanding panels are for content the reader chooses to open. Different jobs, different primitives.
+
+**Then the photo pipeline.** Notion's signed file URLs expire about an hour after issue, which is fine for the auth-gated `/tools/*` (rebuilt every deploy, only ever seen by staff) but breaks any public page that hotlinks them. New `scripts/build-team-photos.mjs` runs *before* `astro build` — queries Active profiles, fetches each `Photo` URL, runs the bytes through `sharp` (800×800 cover, WebP quality 80, EXIF-honored rotation), writes to `public/team/<slug>.webp` so Astro's normal `public/`→`dist/` copy picks them up automatically. Output is gitignored. Failures are logged per-profile and the script exits 0 so a single bad fetch doesn't block the build — the page falls back to an initials chip for that person. New `sharp` dep, Vercel's Node 20 image is fine with it. Closes the "Team-photo pipeline for `/about-centella/`" item that's been sitting in CLAUDE.md's pending-work list since I first stubbed the placeholder circles.
+
+**Finally the team grid.** Replaced the eight placeholder circles in `src/pages/about-centella.astro` with `getTeamProfiles()`-driven expanding panels. Square avatar, name, title, chevron in the summary; bio (or "Bio coming soon" when the field is empty) in the body. Grid breakpoints `1 → 2@640 → 3@960`, matching the sub-brand panel pattern I just ported to the homepage pillars in the previous session. The 4-up grid that was the placeholder convention would have meant four simultaneous open bios in a row — visually noisy. Three feels better.
+
+Per-pickup discipline note: the order mattered. Building the pattern first kept the team-page implementation thin (it just composes around `.expanding-panel`). Building the photo pipeline second meant the team page could ship with real portraits without me having to deal with broken images later. If I'd done the team page first I would have ended up with one-off CSS that I'd then have to refactor when the styleguide pattern landed, and a public page leaking Notion URLs that expire.
+
+Did NOT run `npm install` or `npm run build` — same vite-cache permissions issue on the mounted node_modules from the sandbox. Pablo will run those locally; I'll watch for any sharp/Node 20 surprises in Vercel CI on first deploy.
+
+---
+
 ## Entry 37 — May 8, 2026: The corporate Status really is Draft/Published/Archived — reverting d514e9d
 
 Started the dev server to actually look at the site for the first time today. Notion threw a hard error on the homepage: `select option "Active" not found for property "Status". Available options: "Draft", "Published", "Archived"`. So the corporate Events DB has the original enum. The whole "alignment" in Entry 35 — switching every event query and the `Event['status']` type to Active/Inactive — was wrong. Entry 36's verification pass that supposedly confirmed it was wrong too. Both ran the same paste-and-compare loop, so the same misreading survived twice. The dev server settled it in one HTTP round trip.

@@ -588,6 +588,83 @@ The same shape recurs across the homepage pillars, the Advisory strategy panels,
 
 A `<TonePanel>` extraction is on the pickup list (see `CLAUDE.md` → "Pending / planned work"); until then, copy the homepage block as the canonical source.
 
+### Expanding panel (click-to-reveal)
+
+A disclosure pattern for any panel that needs a "click to see more" affordance — team-member bios, FAQ answers, "more details" toggles. Built on native `<details>`/`<summary>` so the browser handles open/close, focus, keyboard, and screen-reader announcement for free; zero JS bundle, satisfies the static-first hard constraint.
+
+**When to use it (vs. neighbors).** A `.tone-panel` is for a *self-contained* content block already at full information density (icon + title + body + CTA). An `.expanding-panel` is for a panel where the body is secondary — readers should be able to *choose* to open it. If every reader needs to read the panel's body, don't gate it behind a click.
+
+**Markup contract.** The summary content is content-agnostic — consumers compose whatever layout the page needs (avatar + name + title for team cards, a single line of text for FAQs). The pattern only owns the box, the chevron, and the rotation when open.
+
+```html
+<details class="expanding-panel">
+  <summary class="expanding-panel__head">
+    <!-- arbitrary header content -->
+    <span class="expanding-panel__chevron" aria-hidden="true"></span>
+  </summary>
+  <div class="expanding-panel__body">
+    <!-- the disclosed content -->
+  </div>
+</details>
+```
+
+**CSS (full source in `src/styles/global.css` — "Expanding Panel" section):**
+
+```css
+.expanding-panel {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+
+.expanding-panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  list-style: none;            /* hide native disclosure marker */
+  min-height: var(--touch-target-min);
+}
+
+.expanding-panel__chevron {
+  /* CSS-drawn down-chevron — square with two visible borders, rotated 45°.
+     Rotates to 225° when [open]. No icon asset needed. */
+}
+
+.expanding-panel__body {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-5);
+  color: var(--color-text-muted);
+}
+```
+
+**Two variants.**
+
+- **Neutral** (default `.expanding-panel`): elevated surface (`--bg-elevated`) with a subtle border. Right for FAQ-style disclosure where the panel chrome is incidental to the question/answer content.
+- **Toned** (`.expanding-panel.expanding-panel--toned`): applies the canonical tone-panel visual language to the disclosure mechanic — outer-padding-inner-frame nesting (family-dark ground extends as a breathing band outside a `currentColor 30%` inner frame), family-keyed body divider, family-keyed chevron. The inner frame is rendered as a `::before` overlay positioned at `inset: var(--space-2)` so the `<summary>` can stay a direct child of `<details>` (the spec requires this) while the visual nesting matches a real tone-panel. Right for panels that should read as on-brand identity elements (team cards, sub-brand listings). Consumer picks the family by overriding `background` and `color` on the panel; everything else inherits via `currentColor`.
+
+```css
+.about-team-card {
+  background: var(--advisory-dark);
+  color: var(--advisory);
+  /* .expanding-panel--toned does the rest */
+}
+```
+
+**Composition rules:**
+
+- The chevron is drawn from CSS borders — don't replace it with an `<Icon>` unless there's a specific need; the CSS version scales with `currentColor` and stays consistent without a new icon asset.
+- Stack panels in a grid using the same breakpoints the page already uses (e.g. `1 → 2@640 → 3@960` for sub-brand-style three-up grids). The panel itself doesn't impose a column count.
+- Toned panels stay inside one family per panel ("max two color families per composition" — same as tone-panels). A grid of differently-toned cards on the same page is possible only if each panel is self-contained.
+- Photo / icon affordances inside a toned panel summary should echo the icon-chip recipe — `background: color-mix(in srgb, currentColor 16%, transparent)`, `border: 1px solid color-mix(in srgb, currentColor 35%, transparent)` — so the identity stays inside the family.
+
+**Live references:**
+
+- Team grid (toned) — `src/pages/about-centella.astro` (`.about-team-card`)
+- Styleguide showcase — `src/pages/styleguide.astro` (`#components` → "Expanding panel"; both variants)
+
 ### Hero accent gradient as page-identity signal
 
 Sub-brand pages key `--page-accent` to their work-color and use a specific approved gradient on the hero accent that pairs the page key with one other family — `display__accent--cyan-violet` (advisory + violet) on Advisory; `display__accent--lime-teal` (investment + advisory) on Impact. Umbrella pages (homepage, About Centella) don't override `--page-accent` and use `data-random-accent-gradient` on the hero accent for per-load random gradient variation. The choice is deliberate: a sub-brand hero locked to one gradient reads as "I am about *this specific* sub-brand," while a random-gradient hero reads as "I am about Centella the whole." Hold this distinction on future pages.
@@ -653,6 +730,54 @@ import Icon from '../components/Icon.astro';
 - Treatments: high contrast, crushed shadows, duotone / monotone overlays, heavy grain, hard cropping, unexpected framing.
 - Should feel political, not illustrative; bold, not polite.
 - Source: Unsplash (license-verified) or original commissioned work. Never stock-photo in tone.
+
+**Duotone filter (the canonical recipe).** Photos rendered inside a tone-coded panel get a duotone treatment that maps the photo's grayscale to the panel's family — shadow tones merge with the panel ground, highlights pick up the family's bright color. Implementation is an SVG `<filter>` using `feColorMatrix` (luminance-weighted grayscale) followed by `feComponentTransfer` (two-stop component mapping per channel). Pure SVG, applied to the `<img>` via `filter: url(#duotone-<family>)` in CSS — initials fallback layers behind the img and are unaffected.
+
+```html
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
+  <defs>
+    <filter id="duotone-advisory" color-interpolation-filters="sRGB">
+      <!-- 1. Convert to grayscale via luminance weights -->
+      <feColorMatrix type="matrix" values="
+        0.299 0.587 0.114 0 0
+        0.299 0.587 0.114 0 0
+        0.299 0.587 0.114 0 0
+        0     0     0     1 0"/>
+      <!-- 2. Map grayscale 0 → shadow color (--advisory-dark = #0E2228),
+              grayscale 1 → highlight color (--advisory = #00E5FF).
+              Two-stop tableValues = linear interpolation between them. -->
+      <feComponentTransfer>
+        <!-- type="table" is REQUIRED — without it, feFunc* defaults to "identity"
+             and the tableValues are ignored (you'll get a plain grayscale photo). -->
+        <feFuncR type="table" tableValues="0.055 0"/>
+        <feFuncG type="table" tableValues="0.133 0.898"/>
+        <feFuncB type="table" tableValues="0.157 1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+```
+
+```css
+.about-team-card__photo-img { filter: url(#duotone-advisory); }
+```
+
+**Per-family filter values.** Compute `tableValues` by normalizing the family-dark and family-bright hex values to 0..1. R: `dark.r/255 bright.r/255`, G: `dark.g/255 bright.g/255`, B: `dark.b/255 bright.b/255`. One filter definition per family. If the family tokens ever change in the color system, the duotone filter values must be updated to match.
+
+| Family       | Shadow (dark)    | Highlight (bright) | tableValues                                                      |
+| ------------ | ---------------- | ------------------ | ---------------------------------------------------------------- |
+| `advisory`   | `#0E2228`        | `#00E5FF`          | R `0.055 0` · G `0.133 0.898` · B `0.157 1`                      |
+| `networking` | `#22181C`        | `#FF6B6B`          | R `0.133 1` · G `0.094 0.42` · B `0.110 0.42`                    |
+| `investment` | `#1E2413`        | `#CCFF00`          | R `0.118 0.8` · G `0.141 1` · B `0.075 0`                        |
+| `global`     | `#301C00`        | `#FF9500`          | R `0.188 1` · G `0.110 0.584` · B `0 0`                          |
+| `tech`       | `#2A1522`        | `#FF66C4`          | R `0.165 1` · G `0.082 0.4` · B `0.133 0.769`                    |
+
+**Where defs live.** Inline SVG defs are scoped to the consuming page (currently `src/pages/about-centella.astro` and `src/pages/styleguide.astro` for the team-panel showcase). When a third surface needs duotone, promote the `<filter>` block to `Base.astro` so it's defined once and referenced by every page.
+
+**Live references:**
+
+- Team panels — `src/pages/about-centella.astro` (`.about-team-card__photo-img`)
+- Styleguide showcase — `src/pages/styleguide.astro` (`.sg-expand-grid--advisory .sg-avatar__img`)
 
 ### Logo lockup
 

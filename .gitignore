@@ -40,3 +40,7 @@ yarn-error.log*
 # Stray copies elsewhere (repo root, work/ client deliverables, etc.) stay ignored.
 *-standalone.html
 !share/**/*-standalone.html
+
+# Team-member photos generated at build time by scripts/build-team-photos.mjs.
+# Notion is the source of truth; every deploy regenerates them.
+public/team/

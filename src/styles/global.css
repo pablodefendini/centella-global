@@ -490,3 +490,157 @@ p + p { margin-top: var(--space-6); }
   padding: 0;
   color: inherit;
 }
+
+/* --- Expanding Panel — click-to-reveal disclosure pattern -----------------
+ *
+ * Built on native <details>/<summary>. Browser handles open/close, focus,
+ * and screen-reader announcement; we just style the box and rotate the
+ * chevron. Zero JS.
+ *
+ * Markup contract (consumers compose their own summary layout):
+ *   <details class="expanding-panel">
+ *     <summary class="expanding-panel__head">
+ *       <!-- arbitrary header content; e.g. avatar + name + title -->
+ *       <span class="expanding-panel__chevron" aria-hidden="true"></span>
+ *     </summary>
+ *     <div class="expanding-panel__body">
+ *       <!-- the disclosed content -->
+ *     </div>
+ *   </details>
+ *
+ * The chevron is a CSS-drawn glyph (no icon asset needed). It rotates
+ * 180° when [open]. Consumers stack panels in a grid (e.g. 1 → 2@640 →
+ * 3@960) the same way the Institute panels do — the panel itself doesn't
+ * impose a column count.
+ */
+
+.expanding-panel {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-elevated);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.expanding-panel:hover {
+  border-color: color-mix(in srgb, var(--color-text) 20%, var(--color-border));
+}
+
+.expanding-panel[open] {
+  border-color: color-mix(in srgb, var(--color-text) 25%, var(--color-border));
+}
+
+.expanding-panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  cursor: pointer;
+  min-height: var(--touch-target-min);
+  list-style: none;          /* hide default disclosure marker (Firefox) */
+}
+
+.expanding-panel__head::-webkit-details-marker {
+  display: none;             /* hide default disclosure marker (Safari/Chrome) */
+}
+
+.expanding-panel__head:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: -2px;
+}
+
+.expanding-panel__chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 0.625rem;            /* 10px chevron — scales with rem */
+  height: 0.625rem;
+  /* CSS-drawn down-chevron: a square with two visible borders, rotated 45°.
+     The square's bottom-right corner becomes the apex pointing down. */
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  color: var(--color-text-muted);
+  transform: rotate(45deg);
+  transition: transform var(--transition-fast);
+}
+
+.expanding-panel[open] .expanding-panel__chevron {
+  /* Same square, rotated to point up instead of down. */
+  transform: rotate(225deg);
+}
+
+.expanding-panel__body {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-6);
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expanding-panel,
+  .expanding-panel__chevron {
+    transition: none;
+  }
+}
+
+/* ── Tone-coded variant ─────────────────────────────────────────────────────
+ *
+ * Applies the canonical tone-panel visual language (design.md → Components →
+ * "Tone-coded section panels") to the expanding-panel mechanic. Consumers
+ * pick the family by setting background + color on the panel itself:
+ *
+ *   .about-team-card {
+ *     background: var(--advisory-dark);
+ *     color: var(--advisory);
+ *   }
+ *
+ * The modifier handles the rest — borders, divider, chevron — by mixing
+ * with currentColor so they always key to the chosen family. Stay inside
+ * one family per panel (the "max two color families per composition" rule).
+ */
+
+.expanding-panel--toned {
+  /* Outer breathing band of family-dark ground — same recipe as tone-panels. */
+  position: relative;
+  padding: var(--space-2);
+  border-color: transparent;     /* the inner frame is on ::before, not on this border */
+}
+
+/* Inner frame — keys to the chosen family via currentColor.
+   Drawn as a non-interactive overlay so it doesn't break <details>/<summary>
+   semantics (clicks pass through to the summary underneath). */
+.expanding-panel--toned::before {
+  content: '';
+  position: absolute;
+  inset: var(--space-2);
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color var(--transition-fast);
+}
+
+.expanding-panel--toned:hover::before,
+.expanding-panel--toned[open]::before {
+  border-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+/* Generous interior padding — closer to tone-panel scale than the neutral default. */
+.expanding-panel--toned > .expanding-panel__head {
+  padding: var(--space-6);
+}
+
+.expanding-panel--toned > .expanding-panel__body {
+  padding: var(--space-6);
+  border-top-color: color-mix(in srgb, currentColor 30%, transparent);
+  color: var(--color-text-muted);
+}
+
+.expanding-panel--toned .expanding-panel__head:focus-visible {
+  outline-color: currentColor;
+}
+
+.expanding-panel--toned .expanding-panel__chevron {
+  color: color-mix(in srgb, currentColor 70%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expanding-panel--toned::before { transition: none; }
+}
