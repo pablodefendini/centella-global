@@ -606,11 +606,50 @@
   .practical-row .p-value strong { font-weight: 700; }
 
   @media print {
-    html, body { background: white !important; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    /* Named page contexts so each spread renders on a page sized to its
+       own trim — cover is 6×9 portrait, facing spreads are 12×9 landscape.
+       Without these rules, Safari/Quartz collapses everything into one
+       tall continuous page. */
+    @page cover-page { size: 6in 9in; margin: 0; }
+    @page spread-page { size: 12in 9in; margin: 0; }
+    @page { size: 12in 9in; margin: 0; }
+
+    html, body { background: white !important; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: auto; }
     body::before { content: ""; position: fixed; inset: 0; background: white; z-index: -1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .doc-header, .spread-label, .legend { display: none; }
-    .spread { box-shadow: none; margin: 0; page-break-after: always; }
+    .doc-header, .spread-label, .legend { display: none !important; }
+
+    /* Each spread fills its own page; break after every spread except the last. */
+    .spread {
+      box-shadow: none !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+      aspect-ratio: auto !important;  /* let the @page size drive geometry */
+      height: 9in !important;
+      page-break-after: always;
+      page-break-inside: avoid;
+      break-after: page;
+      break-inside: avoid;
+    }
+    .spread:last-of-type {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    /* The cover is .spread.single — 6×9 portrait, named page context. */
+    .spread.single {
+      page: cover-page;
+      width: 6in !important;
+      height: 9in !important;
+    }
+    /* All other spreads — 12×9 landscape, named page context. */
+    .spread:not(.single) {
+      page: spread-page;
+      width: 12in !important;
+      height: 9in !important;
+    }
+    /* Remove the dev gutter between facing pages in print. */
+    .spread::after { display: none !important; }
   }
 </style>
 </head>
