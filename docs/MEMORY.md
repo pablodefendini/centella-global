@@ -6,6 +6,74 @@ Append new entries at the top.
 
 ---
 
+## 2026-05-11 — Prime Movers cover, take four: SVG abstract centerpiece; corner labels removed; logo asset is the wrong brand
+
+Fourth round of cover revisions on the same day, plus a brand-identity flag.
+
+**Cover now centers on an abstract motion graphic** — the upper ~55% of the cover is filled by an inline SVG composition: a primary saturated-orange ribbon sweeps diagonally from lower-left to upper-right (drawn as two bezier curves forming a closed shape with a linear-gradient fill, plus a thin white highlight on its leading edge and a deepened-orange shadow on its trailing edge); a secondary amber ribbon traces a complementary arc behind it; faint navy contour lines underneath suggest wind/current. The composition implies motion through compositional gesture — direction, layering, depth-of-field falloff via opacity — without animation-coded devices. Built as a placeholder for an AI-generated bitmap. The replacement workflow is documented in `work/prime-movers-20th/assets/cover-image-prompt.md`: a full Gemini Nano Banana 2 prompt + replacement instructions for swapping the SVG with a generated `.jpg` once Pablo has access to image-gen tooling.
+
+**MOVERS shrunk** — from 144px (echo-trail era) to 76px. The abstract graphic is now the cover device; the type is a supporting label.
+
+**Corner labels stripped** — Hunt Alternatives logo, "Spring 2026" top-right tag, "Spring 2026" / "Hunt Alternatives" bottom corner metadata all gone. "The Cabot House" dropped from the date line. The cover now has: outer + inner frames, SVG abstract in the upper half, title block ("Prime / MOVERS / Meeting the Moment"), date line, and the orange "Convened by Hunt Alternatives" band at the foot. That's it.
+
+**Image-gen tooling gap.** Image generation MCPs (Nano Banana / Gemini, DALL-E, Hugging Face Gradio apps) aren't connected in this Cowork session. Hugging Face MCP would host generation but requires connecting via the registry. For now, the SVG placeholder ships; the AI prompt is documented for future use. Next time this comes up, suggest connecting the Hugging Face MCP before promising image generation as part of a deliverable.
+
+**The asset file `work/prime-movers-20th/assets/swanee-hunt-logo.png` is misnamed for the project's needs.** The file shows the Swanee Hunt personal logo (the multicolored compass mark with "SWANEE HUNT" wordmark). The brochure is for the Hunt Alternatives organization, which is a different brand. Pablo's instruction: don't redraw a Hunt Alternatives logo — wait for him to provide the correct asset. Until then, the cover doesn't include any logo. When the Hunt Alternatives asset arrives, it should go in `work/prime-movers-20th/assets/` alongside the Swanee Hunt file (don't overwrite — they're different organizations and both may be useful for different surfaces).
+
+---
+
+## 2026-05-11 — Prime Movers cover, take three: gradient implies motion; DM Sans throughout; no eyebrows
+
+Third round of revisions to the Prime Movers brochure (`work/prime-movers-20th/`) on the same day. Three cross-cutting rules from Pablo that now apply project-wide:
+
+**(1) Banned Inter.** Cross-project rule (also in CLAUDE.md and auto-memory): don't use Inter for anything, anywhere. Active substitution on this codebase is DM Sans (geometric humanist, 100–1000 weight range, on Google Fonts), with Cormorant Garamond italic as the second voice. Centella's other approved non-Inter sans-serifs: Manrope, Public Sans, Space Grotesk, Geist Sans, IBM Plex Sans. System stack should be `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif` — never include Inter. Note: the index page's chrome describing the four historical mockups kept Inter (those are reference history and shouldn't be retyped); the rule applies to new design work.
+
+**(2) Banned eyebrow-style headings.** Cross-project rule (also in CLAUDE.md and auto-memory): no small uppercase letterspaced category labels above headings. Banned visual signature: small font (10–12px), `text-transform: uppercase`, wide `letter-spacing` (~0.1em+), often in mono or a contrasting weight, sitting above a heading as a category tag. Replacements: sentence-case body type for functional metadata (folios, attribution, contact details), or italic Cormorant Garamond in deepened orange for "second voice" section labels. Where the eyebrow was decorative-only, drop the wrapper entirely and let the heading or content lead.
+
+**(3) Cover redesigned as static gradient that implies motion.** The previous take used kinetic typography (echo-trail MOVERS) + speed-line streaks + forward-arrow + motion-trail dots — all screen-faithful devices that don't survive print reproduction. Replaced with a layered atmospheric composition: three radial gradients (large warm-orange ellipse in the lower-left at 22% × 88%, medium amber ellipse in the upper-right at 78% × 22%, wide low-opacity orange wash along the bottom) creating a diagonal energy axis. A single subtle SVG arc traces an implied trajectory between the two hot points — two thin curving paths drawn in low-opacity orange and amber, no arrowhead, just a curve. Solid "MOVERS" in DM Sans 800, italic Cormorant theme below. Print-faithful — every motion cue is a static gradient or path.
+
+**Pattern worth keeping — implying motion through gradient asymmetry.** Two off-center radial gradients at opposing corners of a frame: the brighter one anchored at the "origin" position (lower-left for left-to-right reading order), the smaller one at the "destination" position (upper-right). Squashing the gradients into horizontally-stretched ellipses reinforces the directional sweep. A single subtle curving SVG path between them is the "trajectory hint". Useful for any future cover or hero element where motion needs to be implied rather than literal — and for any print artifact where animation-coded devices would fail reproduction.
+
+**Pattern worth dropping for print — kinetic/echo typography.** Chromatic-offset echo trails on display type read great on screen but fail in print: at scale, the ghost layers either blend with the solid layer (registration tolerance) or look like a printing defect. Use kinetic typography for screen-only artifacts; for print, the composition has to carry the motion implication.
+
+**Centella type system (current state).** For the revised brochure and any new Centella visual work: DM Sans (display + body, single family) + Cormorant Garamond (italic accent, second voice, open-quote glyph). JetBrains Mono dropped entirely from the brochure — without eyebrows there's no native role for mono on this artifact. The four historical-options pages keep their original Inter + Cormorant + Lora + Open Sans systems untouched.
+
+---
+
+## 2026-05-11 — Prime Movers cover: MOVERS as motion graphic; anniversary year removed throughout
+
+Second round of revisions to the Prime Movers brochure (`work/prime-movers-20th/`) after a quick client feedback follow-up. Three things:
+
+**(1) Stage 2 promoted above the four originals in the design-review index.** The revised, client-approved direction (`option-a-revised.html`) is now the first thing on the page; the four original directions sit below under a "First round · for reference" divider. Pattern is reusable for future feedback rounds — promote the approved direction, demote the historical alternatives, never delete them.
+
+**(2) Every anniversary-year reference stripped.** The client doesn't want the brochure to focus on the anniversary year. Removed: the giant "20<sup>th</sup>" cover display, "MMVI · MMXXVI" Roman dates, "The Twentieth" band copy, "Vol. XX · 2026" tag, "Twenty years on" inside the welcome quote, "Welcome to the twentieth" headline, "Twenty years on, the question is the same" thought-piece lede, "Twenty years has bought us the right to be undistracted" from the conduct list. Same scrub through the index page. Only place "anniversary" still appears: a dev-comment requirement note inside a CSS `/* */` block at the top of `option-a-revised.html`, which never renders to screen — that's intentional documentation for future maintainers.
+
+**(3) Cover redesigned as a motion graphic.** With the "20<sup>th</sup>" anchor gone, the word **MOVERS** itself became the cover device: Inter Tight 800 at 138px, with two echo-layer ghosts of the same word offset toward the upper-left — far ghost in amber `#FFC130` at 42% opacity, near ghost in orange `#FF7A1F` at 55% — so the word reads as captured mid-stride with a chromatic-offset motion blur trailing behind it. Six diagonal speed-line streaks at -8° sweep across the page (four orange, two amber, opacity 0.22 to 0.38). A forward orange arrow with a three-dot motion trail (tapering opacity 0.25 → 0.70) points into the italic Cormorant theme line "Meeting the Moment" in deepened orange. The kinetic story: *Prime MOVERS moving forward, meeting their moment.*
+
+**Pattern worth keeping — kinetic typography for verbs.** When a cover title contains a verb-noun ("MOVERS", "PIONEERS", "BUILDERS"), the most economical way to depict motion graphically is to make the type itself kinetic via chromatic-offset echo layers — two ghost copies of the word in accent colors offset toward one direction, plus the solid front layer in the ink color. Reads as motion blur without animation. Three layers is the sweet spot: one is bland, two is symmetric, four+ is muddy. The direction the ghosts trail toward implies the direction of motion (we offset up-and-left → motion reads as forward-down-right). Useful for any future cover or hero element where motion needs to live in the typography itself.
+
+**Pattern worth keeping — chromatic streaks at a consistent tilt.** Six speed-line streaks at the same angle (-8°), in a single color family with one variant, at low opacity, with tapered gradient ends (`linear-gradient(to right, transparent, color, color, transparent)`) — minimum viable atmospheric motion. The consistent tilt makes them read as wind/slipstream rather than random decoration. Bleeding the streaks past the inner frame on both sides implies velocity continues past the page edge.
+
+**File-state gotcha.** When the Edit tool runs immediately after a bash-tool file write, Edit errors with "File has been modified since read" because Edit's read-state cache predates the bash write. Workaround: do the read-and-replace inline via Python (`with open(p) as f: s = f.read(); s = s.replace(...); with open(p, 'w') as f: f.write(s)`) or do a fresh Read first to refresh Edit's tracker. Bash and the file tools don't share their state caches.
+
+---
+
+## 2026-05-11 — Prime Movers brochure: client picked A, asked for C's palette and quote treatment
+
+Client feedback on the four design directions for the Prime Movers & the Next Generation 20th-anniversary brochure (`work/prime-movers-20th/`) approved Option A and asked for: (1) less cover whitespace, (2) Option C's palette (orange + dark blues, no heavy black), (3) Option C's inside design — specifically the pull-quote treatment and color usage — ported onto A's layout, (4) a new program title: "Prime Movers: Meeting the Moment" (drops "& the Next Generation" from the cover; retained as a cohort label inside).
+
+**Revised file lives at `work/prime-movers-20th/mockups/option-a-revised.html`**, mirrored at `share/work/prime-movers-20th/option-a-revised.html`. It keeps A's modern type stack (Inter Tight / Inter / JetBrains Mono), facing-spread layout, modular bio grid, and pocket-spread structure. The whole `--B-*` palette is replaced by `--R-*`: sunny cream `#FFFAEC` paper, WWP navy `#1B3A52` ink (no near-black anywhere), punchy orange `#FF7A1F` as the primary accent fill, amber `#FFC130` as the secondary pop. Feature blocks flipped — both bright fills now take navy text on top (no more cream-on-deep-fill). Cover redesigned to fill its empty middle: outer navy frame, Roman dates in Cormorant italic, oversized "20<sup>th</sup>", centered title plate with the new theme in an orange chip, orange bottom band.
+
+**Pull-quote graft.** Borrowed Option C's structural recipe (top double-rule, bottom single-rule, centered italic, oversized italic open-quote glyph in deepened orange) but kept the body type in Inter Tight italic. Cormorant Garamond is loaded but used in exactly one place — the `::before` open-quote glyph that opens every pull-quote. Otherwise the file is pure Inter, which preserves the "modern look" the client approved. Reach for this approach whenever a feedback round asks to port one option's *treatment* (rather than its full identity) onto another option.
+
+**Stage 2 in `mockups/index.html`.** The four original options stay completely intact; a new "Stage 2 — after client feedback" section sits between the four-option grid and the comparison table, keyed to the orange-and-navy palette so it reads at a glance as the revised direction. The pattern is reusable for future feedback rounds — append a new stage section, don't replace the prior round.
+
+**Gotcha worth keeping — never retype a base64 data URI.** First version of the revised file had a corrupted Hunt-logo `data:image/png;base64,...` because I reproduced the base64 string instead of copying its bytes. Fix: Python regex that pulls the exact `<img src="data:..." alt="Hunt Alternatives">` from `option-a-contemporary.html` and substitutes it into the new file. Rule: if a data URI is in an existing file, use sed/Python to copy it; never paraphrase opaque payloads.
+
+**Gotcha worth keeping — `npm run work:build` fails inside the bash sandbox.** The script clears `share/work/<project>/` before copying, and the sandbox can't unlink files written by a previous deploy (returns `EPERM` on `unlinkSync`). Direct `cp <src> <dst>` works because it goes through a different syscall path and overwrites instead of unlinking first. When mirroring `share/` updates from the sandbox, `cp` is the workaround; the full `work:build` script is fine to run on the host outside the sandbox.
+
+---
+
 ## 2026-05-08 — Polish pass: layered photos, duotone filter, and three gotchas
 
 Closing pass on the team grid in the same session. Three things shipped, three gotchas worth keeping in institutional memory.

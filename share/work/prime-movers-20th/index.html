@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Prime Movers 20th — Four Design Directions</title>
+<title>Prime Movers — Design Directions</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&family=Lora:ital,wght@0,500;1,500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&family=Lora:ital,wght@0,500;1,500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #14130f;
@@ -165,6 +165,176 @@
     border-top: 1px solid var(--rule); max-width: 80ch;
   }
   .footnote em { color: var(--ink-soft); }
+
+  /* ============ STAGE 2 ============ */
+  /* New section appended after the four-option grid to surface the
+     post-feedback revision without disturbing the original four
+     directions. The treatment uses the revised palette (orange +
+     dark blue) so the stage reads at a glance as "this is what we
+     did with the feedback". */
+  .stage-2 {
+    margin: 24px 0 56px;
+    padding: 32px;
+    background: #1f1d18;
+    border-left: 4px solid #FF7A1F;
+    border-radius: 2px;
+  }
+  .stage-2 .stage-meta {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
+    color: #FF7A1F; margin: 0 0 10px;
+  }
+  .stage-2 h2 {
+    font-family: "Cormorant Garamond", serif; font-weight: 400;
+    font-size: 36px; line-height: 1.1; letter-spacing: -0.015em;
+    color: var(--ink); margin: 0 0 12px;
+  }
+  .stage-2 h2 em { font-style: italic; color: #FF7A1F; }
+  .stage-2 .stage-lede {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
+    font-size: 19px; line-height: 1.4; max-width: 70ch; color: var(--ink-soft);
+    margin: 0 0 24px;
+  }
+  .stage-2 .feedback-list {
+    margin: 0 0 24px; padding: 16px 20px;
+    background: rgba(255, 122, 31, 0.08);
+    border: 1px solid rgba(255, 122, 31, 0.25);
+    border-radius: 4px;
+  }
+  .stage-2 .feedback-list .fb-label {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 15px;
+    color: #FF7A1F; margin-bottom: 10px;
+  }
+  .stage-2 .feedback-list ul {
+    margin: 0; padding-left: 18px;
+    font-size: 13px; line-height: 1.7; color: var(--ink-soft);
+  }
+  .stage-2 .feedback-list ul li { margin-bottom: 4px; }
+  .stage-2 .feedback-list ul li strong { color: var(--ink); font-weight: 600; }
+  .stage-revision {
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+  @media (max-width: 900px) { .stage-revision { grid-template-columns: 1fr; } }
+  .stage-revision:hover { background: #25221c; }
+  .stage-revision .rev-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 14px; }
+  .stage-revision .rev-badge {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
+    color: #FF7A1F;
+  }
+  .stage-revision .rev-name {
+    font-family: "Cormorant Garamond", serif; font-weight: 500;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.01em;
+    color: var(--ink); margin: 0;
+  }
+  .stage-revision .rev-name em { font-style: italic; color: #FF7A1F; }
+  .stage-revision .rev-feel {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
+    font-size: 15px; line-height: 1.4; color: var(--ink-soft);
+  }
+  .stage-revision .rev-changes {
+    font-family: "Fira Sans", system-ui, sans-serif; font-size: 12px; line-height: 1.65; color: var(--ink-soft);
+    margin: 0; padding-left: 18px;
+  }
+  .stage-revision .rev-changes li { margin-bottom: 4px; }
+  .stage-revision .rev-changes li strong { color: var(--ink); font-weight: 600; }
+  .stage-revision .rev-swatches { display: flex; gap: 4px; margin-top: 4px; }
+  .stage-revision .rev-swatches .sw { width: 28px; height: 28px; border-radius: 2px; }
+  .stage-revision .rev-sw1 { background: #FFFAEC; }
+  .stage-revision .rev-sw2 { background: #1B3A52; }
+  .stage-revision .rev-sw3 { background: #FF7A1F; }
+  .stage-revision .rev-sw4 { background: #FFC130; }
+  .stage-revision .rev-meta {
+    margin-top: auto; padding-top: 10px;
+    font-size: 11px; color: var(--ink-faint);
+    border-top: 1px solid var(--rule);
+  }
+  .stage-revision .rev-open {
+    margin-top: 4px; padding: 10px 16px;
+    background: #FF7A1F; color: #14130f; border: 1px solid #FF7A1F;
+    font-family: "Fira Sans", system-ui, sans-serif; font-size: 14px; font-weight: 600;
+    text-align: center;
+    align-self: flex-start;
+  }
+  /* Cover preview — a stylized rendering of the revised cover so
+     the stage entry shows what changed at a glance. */
+  .rev-preview {
+    background:
+      radial-gradient(ellipse 90% 55% at 22% 88%, rgba(255,122,31,0.34), transparent 65%),
+      radial-gradient(ellipse 60% 40% at 78% 22%, rgba(255,193,48,0.30), transparent 70%),
+      radial-gradient(ellipse 140% 70% at 50% 100%, rgba(255,122,31,0.10), transparent 75%),
+      #FFFAEC;
+    position: relative; min-height: 320px;
+    padding: 24px 24px 60px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    color: #1B3A52;
+  }
+  .rev-preview .rp-frame { position: absolute; inset: 14px; border: 0.75px solid #1B3A52; pointer-events: none; }
+  .rev-preview .rp-frame-inner { position: absolute; inset: 18px; border: 0.5px solid #1B3A52; opacity: 0.35; pointer-events: none; }
+  /* Preview thumbnail — scaled-down rendering of the new gradient cover.
+     Static layered radials + a subtle SVG trajectory arc + solid MOVERS.
+     No streaks, no echo, no animated devices — print-faithful preview. */
+  .rev-preview .rp-frame { position: absolute; inset: 14px; border: 0.75px solid #1B3A52; pointer-events: none; z-index: 3; }
+  .rev-preview .rp-frame-inner { position: absolute; inset: 18px; border: 0.5px solid #1B3A52; opacity: 0.35; pointer-events: none; z-index: 3; }
+  .rev-preview .rp-arc { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .rev-preview .rp-arc svg { width: 100%; height: 100%; display: block; }
+  .rev-preview .rp-prime {
+    font-family: "Fira Sans", system-ui, sans-serif; font-weight: 400;
+    font-size: 14px; letter-spacing: 0.02em; color: #1B3A52;
+    margin-bottom: -3px;
+    position: relative; z-index: 4;
+  }
+  .rev-preview .rp-movers {
+    font-family: "Fira Sans", system-ui, sans-serif; font-weight: 800;
+    font-size: 58px; line-height: 0.88; letter-spacing: -0.045em;
+    color: #1B3A52;
+    position: relative; z-index: 4;
+    display: block;
+  }
+  .rev-preview .rp-theme {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500;
+    font-size: 20px; color: #A33D0E;
+    margin-top: 8px;
+    position: relative; z-index: 4;
+  }
+  .rev-preview .rp-band {
+    position: absolute; left: 0; right: 0; bottom: 38px;
+    background: #FF7A1F; color: #1B3A52;
+    padding: 8px 18px;
+    font-family: "Fira Sans", system-ui, sans-serif; font-size: 11px; letter-spacing: -0.005em; font-weight: 700;
+    text-align: center;
+    z-index: 4;
+  }
+  .rev-preview .rp-band em {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 13px;
+  }
+
+  /* ============ ORIGINALS INTRO ============ */
+  /* Sits above the four-option grid now that Stage 2 has been promoted
+     to the top of the page. Reads as a section break that demotes the
+     four originals to "for reference" without hiding them. */
+  .originals-intro {
+    max-width: 1200px; margin: 8px 0 24px;
+    padding: 28px 0 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .originals-intro .originals-meta {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
+    color: var(--ink-faint); margin-bottom: 10px;
+  }
+  .originals-intro .originals-h {
+    font-family: "Cormorant Garamond", serif; font-weight: 400;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.01em;
+    color: var(--ink-soft); margin: 0 0 8px;
+  }
+  .originals-intro .originals-sub {
+    font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.6;
+    color: var(--ink-faint); max-width: 70ch; margin: 0;
+  }
 </style>
 </head>
 <body>
@@ -192,8 +362,8 @@
 <div class="container">
 
 <header class="header">
-  <h1>Four design <em>directions</em>.</h1>
-  <p class="lede">Four directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers &amp; the Next Generation, Meeting the Moment, the Twentieth. Each option carries the same section list and the same content slots; what varies is typography, palette emphasis, and structural register.</p>
+  <h1>Design <em>directions</em>.</h1>
+  <p class="lede">Four directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers, Meeting the Moment. Each option carries the same section list and the same content slots; what varies is typography, palette emphasis, and structural register. <strong style="color: #FF7A1F;">Stage 2, at the top</strong>, carries the revised direction the client approved out of this initial round. The four original directions remain below for reference.</p>
   <div class="caveats">
     <strong>What you're looking at, and what you're not.</strong> All copy in these mockups is placeholder — including participant names. Bios, welcomes, the thought piece, even the names in the bio grids are stand-ins until real content lands. <strong>Nothing here is typeset for production.</strong> These are layout and typography studies meant to be reacted to, not proofed.
   </div>
@@ -202,11 +372,71 @@
   </div>
 </header>
 
+<!-- ============ STAGE 2 — REVISED DIRECTION ============ -->
+<section class="stage-2">
+  <p class="stage-meta">After client feedback</p>
+  <h2>Option A, <em>revised.</em></h2>
+  <p class="stage-lede">The client approved Option A for its modern look and bright color use. We pulled it forward with three asks: a cover with less empty space, Option C&rsquo;s color palette (orange + dark blues, no heavy black), and Option C&rsquo;s inside quote and color treatment. The new program title is <em>Prime Movers: Meeting the Moment</em>.</p>
+
+  <div class="feedback-list">
+    <div class="fb-label">Feedback received, resolved here</div>
+    <ul>
+      <li><strong>Cover whitespace + implied movement</strong> — the original A cover read as too empty. Rebuilt as a static gradient composition: two layered radial blooms set a diagonal energy axis from lower-left to upper-right, with a subtle SVG arc tracing the implied trajectory. Print-faithful — no motion devices that depend on screen.</li>
+      <li><strong>Color scheme</strong> — prefer Option C&rsquo;s orange + dark blues. Avoid heavy black; use dark blue instead. Resolved.</li>
+      <li><strong>Inside design</strong> — liked Option C&rsquo;s quote treatment and color usage. Applied to A&rsquo;s layout.</li>
+      <li><strong>Program title</strong> — &ldquo;Prime Movers: Meeting the Moment&rdquo; (drops &ldquo;&amp; the Next Generation&rdquo; from the cover; retained inside as a cohort label).</li>
+    </ul>
+  </div>
+
+  <a class="stage-revision" href="option-a-revised.html">
+    <div class="rev-body">
+      <div class="rev-badge">Option A, revised</div>
+      <h3 class="rev-name">Prime Movers<em>:</em> Meeting the Moment</h3>
+      <div class="rev-feel">Option A&rsquo;s modern movement, warmed and brightened. Sunny cream, WWP navy, punchy orange, amber pop. Fira Sans throughout; Cormorant Garamond glyph borrowed for the interior pull-quote treatment.</div>
+      <ul class="rev-changes">
+        <li><strong>New cover — static gradient that implies motion</strong> — print-faithful atmospheric composition. Two layered radial blooms create a diagonal energy axis (warm orange in the lower-left, amber in the upper-right). A single subtle SVG arc traces an implied trajectory across the page. Solid &ldquo;MOVERS&rdquo; in navy, italic Cormorant theme &ldquo;Meeting the Moment&rdquo; below.</li>
+        <li><strong>New palette</strong> — sunny cream <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FFFAEC</code> + WWP navy <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#1B3A52</code> + orange <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FF7A1F</code> + amber <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FFC130</code>. No near-black anywhere.</li>
+        <li><strong>New quote treatment</strong> — C&rsquo;s double-rule pull-quote with oversized italic open-quote in deepened orange, set in Fira Sans italic.</li>
+        <li><strong>Inverted feature blocks</strong> — orange fills (cover band, pocket page, accent module) and amber fills (welcome panel, urgent row) all take navy text on top. AAA on body text throughout.</li>
+      </ul>
+      <div class="rev-swatches">
+        <div class="sw rev-sw1" title="#FFFAEC sunny cream"></div>
+        <div class="sw rev-sw2" title="#1B3A52 WWP navy"></div>
+        <div class="sw rev-sw3" title="#FF7A1F punchy orange"></div>
+        <div class="sw rev-sw4" title="#FFC130 amber"></div>
+      </div>
+      <div class="rev-meta">Fira Sans · Cormorant Garamond glyph for the quote mark only</div>
+      <div class="rev-open">View all eight spreads →</div>
+    </div>
+    <div class="rev-preview" aria-hidden="true">
+      <div class="rp-arc">
+        <svg viewBox="0 0 320 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M -20 290 C 80 250, 160 190, 240 130 S 340 40, 380 20" fill="none" stroke="rgba(163,61,14,0.24)" stroke-width="1" stroke-linecap="round" />
+          <path d="M -10 270 C 90 230, 170 170, 250 110 S 350 20, 390 0" fill="none" stroke="rgba(255,193,48,0.20)" stroke-width="0.7" stroke-linecap="round" />
+        </svg>
+      </div>
+      <div class="rp-frame"></div>
+      <div class="rp-frame-inner"></div>
+      <div class="rp-prime">Prime</div>
+      <div class="rp-movers">MOVERS</div>
+      <div class="rp-theme">Meeting the Moment</div>
+      <div class="rp-band">Convened by <em>Hunt Alternatives</em></div>
+    </div>
+  </a>
+</section>
+
+<!-- ============ ORIGINALS — FOUR DIRECTIONS PRESENTED FOR REVIEW ============ -->
+<section class="originals-intro">
+  <div class="originals-meta">First round, for reference</div>
+  <h2 class="originals-h">The four directions presented for review.</h2>
+  <p class="originals-sub">These are the four directions originally shared with the client. Option A was approved with the revisions captured above.</p>
+</section>
+
 <section class="options">
   <a class="option opt-a" href="option-a-contemporary.html">
     <div class="badge">Option A · Contemporary</div>
     <h2 class="name">Contemporary, <em>progressive.</em></h2>
-    <div class="feel">Now, not nostalgia — and not solemn. The 20-year mark as momentum. Warm off-white paper, deep navy ink, ultramarine blocks, neon-yellow pop.</div>
+    <div class="feel">Now, not nostalgia — and not solemn. Reads as forward momentum. Warm off-white paper, deep navy ink, ultramarine blocks, neon-yellow pop.</div>
     <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-warm"></div></div>
     <div class="meta">Inter Tight · Inter · JetBrains Mono (labels)</div>
     <div class="open"><span>View all eight spreads →</span></div>
@@ -214,7 +444,7 @@
   <a class="option opt-b" href="option-b-warm.html">
     <div class="badge">Option B · Spring Bloom</div>
     <h2 class="name">Warm, <em>pastel.</em></h2>
-    <div class="feel">Twenty years as rebirth. Soft cream paper, deep aubergine ink, five pastel spring hues — cherry blossom, fresh leaf, robin&rsquo;s-egg sky, wisteria, daffodil.</div>
+    <div class="feel">Reads as rebirth and hope. Soft cream paper, deep aubergine ink, five pastel spring hues — cherry blossom, fresh leaf, robin&rsquo;s-egg sky, wisteria, daffodil.</div>
     <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-terracotta"></div><div class="swatch s-teal"></div></div>
     <div class="meta">Lora · Source Serif 4 · Inter (labels)</div>
     <div class="open"><span>View all eight spreads →</span></div>
@@ -222,7 +452,7 @@
   <a class="option opt-c" href="option-c-classical.html">
     <div class="badge">Option C · Heritage · WWP 2001</div>
     <h2 class="name">Heritage, <em>warm.</em></h2>
-    <div class="feel">Punchier rendering of the original Women Waging Peace 2001 program book — sunny cream paper, navy display ink, three saturated band colors (orange, amber, lime green) lifted directly from the cover. Warm amber rules instead of cool navy ones. The 20-year mark by way of its origin, keyed up.</div>
+    <div class="feel">Punchier rendering of the original Women Waging Peace 2001 program book — sunny cream paper, navy display ink, three saturated band colors (orange, amber, lime green) lifted directly from the cover. Warm amber rules instead of cool navy ones. Heritage by way of origin, keyed up.</div>
     <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-gold"></div><div class="swatch s-leaf"></div></div>
     <div class="meta">Cormorant Garamond · Inter (labels)</div>
     <div class="open"><span>View all fourteen pages →</span></div>
@@ -315,7 +545,7 @@
     <div class="cell label">Cover device</div>
     <div class="cell body">Asymmetric grid, "20<sup>th</sup>" with ultramarine chip, navy band</div>
     <div class="cell body">Spring-sunrise gradient (blossom → wisteria → buttercup) and serif headline plate</div>
-    <div class="cell body">Ornamental double-frame, "MMVI · MMXXVI" Roman dates, orange / amber / lime band wash quoting the WWP cover</div>
+    <div class="cell body">Ornamental double-frame, orange / amber / lime band wash quoting the WWP cover</div>
     <div class="cell body"><strong>Swanee Hunt logo</strong>, occasion bar in teal-deep on gold rules, 11-dot compass strip</div>
 
     <div class="cell label">Box motif</div>
@@ -351,7 +581,7 @@
   </ol>
 </section>
 
-<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code> · <code>option-d-hunt-branded.html</code>. Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser&rsquo;s print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
+<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code> · <code>option-d-hunt-branded.html</code> · <code>option-a-revised.html</code> (stage 2). Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser&rsquo;s print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
 
 </div>
 </body>
