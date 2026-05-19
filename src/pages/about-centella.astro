@@ -27,6 +27,15 @@ function initialsFor(name: string): string {
     .join('');
 }
 
+/**
+ * Color cycle for team panels. Order matches the styleguide colorFamilies
+ * array (principal brand first, then work colors). Each panel keys to one
+ * family — bg + foreground + duotone filter. With 7 active profiles, the
+ * 7th wraps back to violet. The "max two color families per composition"
+ * rule still holds because each panel is its own composition.
+ */
+const teamFamilies = ['violet', 'advisory', 'networking', 'investment', 'global', 'tech'] as const;
+
 const moments = [
   {
     icon: 'action',
@@ -185,21 +194,65 @@ const pillars = [
 
   <!-- ── Section 3 — The team ───────────────────────── -->
   <!--
-    Duotone filter for team-panel photos. Maps grayscale 0 → --advisory-dark
-    (#0E2228) and grayscale 1 → --advisory (#00E5FF). The photo's dark areas
-    visually merge with the panel's family-dark ground; bright areas pick up
-    the family's bright color. Pure SVG, applied via CSS `filter: url(...)`
-    on the <img> element only — initials fallback is unaffected.
-    If --advisory-dark or --advisory ever change, update tableValues below.
+    Duotone filters for team-panel photos. One per family. Each maps the
+    photo's grayscale luminance to that family's dark→bright color range.
+    The grayscale step (feColorMatrix) is shared shape; only the
+    feFunc* tableValues change per family.
+    Critical: <feFunc*> must carry type="table" — without it the function
+    defaults to "identity" and tableValues are silently ignored.
+    Per-family tableValues are computed by normalizing each family's
+    --<family>-dark / --<family> hex values to 0..1 (R/G/B). If the
+    family tokens ever change, update the corresponding values here.
+    See design.md → Photography → Duotone filter for the full table.
   -->
   <svg aria-hidden="true" focusable="false" class="about-team-duotone-defs">
     <defs>
+      <filter id="duotone-violet" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.118 0.78"/>
+          <feFuncG type="table" tableValues="0.102 0.49"/>
+          <feFuncB type="table" tableValues="0.157 1"/>
+        </feComponentTransfer>
+      </filter>
       <filter id="duotone-advisory" color-interpolation-filters="sRGB">
         <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
         <feComponentTransfer>
           <feFuncR type="table" tableValues="0.055 0"/>
           <feFuncG type="table" tableValues="0.133 0.898"/>
           <feFuncB type="table" tableValues="0.157 1"/>
+        </feComponentTransfer>
+      </filter>
+      <filter id="duotone-networking" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.133 1"/>
+          <feFuncG type="table" tableValues="0.094 0.42"/>
+          <feFuncB type="table" tableValues="0.110 0.42"/>
+        </feComponentTransfer>
+      </filter>
+      <filter id="duotone-investment" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.118 0.8"/>
+          <feFuncG type="table" tableValues="0.141 1"/>
+          <feFuncB type="table" tableValues="0.075 0"/>
+        </feComponentTransfer>
+      </filter>
+      <filter id="duotone-global" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.188 1"/>
+          <feFuncG type="table" tableValues="0.110 0.584"/>
+          <feFuncB type="table" tableValues="0 0"/>
+        </feComponentTransfer>
+      </filter>
+      <filter id="duotone-tech" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.165 1"/>
+          <feFuncG type="table" tableValues="0.082 0.4"/>
+          <feFuncB type="table" tableValues="0.133 0.769"/>
         </feComponentTransfer>
       </filter>
     </defs>
@@ -221,8 +274,10 @@ const pillars = [
         <p class="about-team__empty">Team profiles publishing soon.</p>
       ) : (
         <div class="about-team-grid" role="list" aria-label="Centella team">
-          {teamProfiles.map((person) => (
-            <details class="expanding-panel expanding-panel--toned about-team-card" role="listitem">
+          {teamProfiles.map((person, i) => {
+            const family = teamFamilies[i % teamFamilies.length];
+            return (
+            <details name="centella-team" class:list={['expanding-panel', 'expanding-panel--toned', 'expanding-panel--floating', 'about-team-card', `about-team-card--${family}`]} role="listitem">
               <summary class="expanding-panel__head about-team-card__head">
                 <span class="about-team-card__photo" aria-hidden="true">
                   <span class="about-team-card__initials">{initialsFor(person.name)}</span>
@@ -251,7 +306,8 @@ const pillars = [
                 )}
               </div>
             </details>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -509,13 +565,27 @@ const pillars = [
     .about-team-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
-  /* Tone-coded team panels — advisory family on the umbrella page.
-     Single family across the grid keeps the composition inside the
-     "max two color families" rule. */
-  .about-team-card {
-    background: var(--advisory-dark);
-    color: var(--advisory);
-  }
+  /* Team panels cycle through the six families in display order. Each
+     panel is its own composition — the "max two color families per
+     composition" rule applies per panel, not to the aggregate, so a
+     grid of differently-toned cards is brand-legal. The duotone filter
+     for each panel keys to the same family via the .about-team-card--<family>
+     class below.
+     --tone-dark / --tone are exposed as custom properties so children
+     (the floating body in particular) can pick them up via inheritance. */
+  .about-team-card--violet     { --tone-dark: var(--violet-dark);     --tone: var(--violet);     background: var(--tone-dark); color: var(--tone); }
+  .about-team-card--advisory   { --tone-dark: var(--advisory-dark);   --tone: var(--advisory);   background: var(--tone-dark); color: var(--tone); }
+  .about-team-card--networking { --tone-dark: var(--networking-dark); --tone: var(--networking); background: var(--tone-dark); color: var(--tone); }
+  .about-team-card--investment { --tone-dark: var(--investment-dark); --tone: var(--investment); background: var(--tone-dark); color: var(--tone); }
+  .about-team-card--global     { --tone-dark: var(--global-dark);     --tone: var(--global);     background: var(--tone-dark); color: var(--tone); }
+  .about-team-card--tech       { --tone-dark: var(--tech-dark);       --tone: var(--tech);       background: var(--tone-dark); color: var(--tone); }
+
+  .about-team-card--violet     .about-team-card__photo-img { filter: url(#duotone-violet); }
+  .about-team-card--advisory   .about-team-card__photo-img { filter: url(#duotone-advisory); }
+  .about-team-card--networking .about-team-card__photo-img { filter: url(#duotone-networking); }
+  .about-team-card--investment .about-team-card__photo-img { filter: url(#duotone-investment); }
+  .about-team-card--global     .about-team-card__photo-img { filter: url(#duotone-global); }
+  .about-team-card--tech       .about-team-card__photo-img { filter: url(#duotone-tech); }
 
   .about-team-card__head { gap: var(--space-4); }
 
@@ -551,9 +621,8 @@ const pillars = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Duotone filter — defs live above this section. Maps photo grayscale
-       to the advisory family. Photo shadows merge with panel ground. */
-    filter: url(#duotone-advisory);
+    /* Duotone filter is set per-family by .about-team-card--<family>
+       above. Defs live in the SVG block at the top of this section. */
   }
 
   /* Visually hidden SVG defs container — defines the filter referenced above. */

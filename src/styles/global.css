@@ -601,7 +601,11 @@ p + p { margin-top: var(--space-6); }
   /* Outer breathing band of family-dark ground — same recipe as tone-panels. */
   position: relative;
   padding: var(--space-2);
-  border-color: transparent;     /* the inner frame is on ::before, not on this border */
+  /* Remove the base 1px border entirely — keeping it (even transparent)
+     pushes the padding box 1px inward, which throws off ::before's
+     inset calculation and creates a 1px misalignment with the body's
+     inner frame at the head/body join. */
+  border: 0;
 }
 
 /* Inner frame — keys to the chosen family via currentColor.
@@ -643,4 +647,92 @@ p + p { margin-top: var(--space-6); }
 
 @media (prefers-reduced-motion: reduce) {
   .expanding-panel--toned::before { transition: none; }
+}
+
+/* ── Floating modifier ─────────────────────────────────────────────────────
+ *
+ * .expanding-panel--floating: when [open], the body becomes position:
+ * absolute below the head and floats over content below. The panel's
+ * grid cell stays the same height as the closed state, so other panels
+ * in the grid don't shift when one is opened. Composes with neutral or
+ * toned variants — orthogonal concern.
+ *
+ * Trade-off: an open body can extend past the section's bottom and
+ * overlap whatever's underneath. Acceptable for short content like
+ * team bios; revisit if a consumer needs longer floating bodies.
+ */
+
+.expanding-panel--floating {
+  /* Already has position: relative from .expanding-panel--toned, but set
+     it here too so the modifier works on neutral panels. */
+  position: relative;
+}
+
+.expanding-panel--floating[open] {
+  /* The base .expanding-panel sets overflow: hidden so rounded corners
+     clip the head's contents. The floating body is positioned outside
+     the panel's box and would be clipped by that — switch to visible
+     while open so the floating body actually shows. */
+  overflow: visible;
+  z-index: 2;
+}
+
+.expanding-panel--floating[open] > .expanding-panel__body {
+  position: absolute;
+  /* Body extends from 16px above the panel's bottom (overlapping the
+     panel's outer padding band by 8 + body's own outer band by 8) so
+     body's inner frame top aligns with head's inner frame bottom. */
+  top: calc(100% - var(--space-2) * 2);
+  left: 0;
+  right: 0;
+  /* No border on the body itself — the inner frame is on ::before below. */
+  border: none;
+  /* Outer band (var(--space-2)) + inner content padding (var(--space-6))
+     on every side. Content sits inside the inner frame at the same
+     inset from body edge as the head's content sits from panel edge. */
+  padding: calc(var(--space-2) + var(--space-6));
+  background-color: var(--bg-elevated);
+  /* Drop shadow communicates elevation above siblings. */
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Body's inner frame — drawn as ::before pseudo, inset by var(--space-2)
+   from body's edges. No top border so it joins head's frame seamlessly. */
+.expanding-panel--floating[open] > .expanding-panel__body::before {
+  content: '';
+  position: absolute;
+  inset: var(--space-2);
+  /* Set borders explicitly per side — avoid any cascade quirks from
+     using the `border` shorthand and then trying to override one side. */
+  border-top: 0;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  border-radius: 0 0 8px 8px;
+  pointer-events: none;
+}
+
+/* When floating + toned: opaque family-keyed bg + family-keyed inner
+   frame on body. */
+.expanding-panel--toned.expanding-panel--floating[open] > .expanding-panel__body {
+  background-color: var(--tone-dark, var(--bg-elevated));
+}
+
+.expanding-panel--toned.expanding-panel--floating[open] > .expanding-panel__body::before {
+  /* Override the per-side colors set above to family-keyed. Don't
+     touch border-top — it must stay at 0 width. */
+  border-right-color: color-mix(in srgb, currentColor 30%, transparent);
+  border-bottom-color: color-mix(in srgb, currentColor 30%, transparent);
+  border-left-color: color-mix(in srgb, currentColor 30%, transparent);
+}
+
+/* When toned + floating + open, drop head frame's bottom edge so head
+   and body share one continuous inner frame (head's frame: top + sides;
+   body's frame: sides + bottom; no horizontal seam at the join).
+   Explicit width: 0 belt-and-suspenders against any cascade quirks. */
+.expanding-panel--toned.expanding-panel--floating[open]::before {
+  border-bottom-width: 0;
+  border-bottom-style: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }

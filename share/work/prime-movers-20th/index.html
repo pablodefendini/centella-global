@@ -2,338 +2,476 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Prime Movers — Design Directions</title>
+<title>Prime Movers · 20th Anniversary — Deliverables</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="description" content="Centella's deliverables for the Prime Movers 20th-anniversary convening — program brochure and pre-packet, plus the original design directions explored.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&family=Lora:ital,wght@0,500;1,500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@300;500;800&family=Barlow+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
 <style>
+  /* Centella tokens — derived from src/styles/global.css. Inlined so this
+     file is fully self-contained at /share/work/prime-movers-20th/index.html. */
   :root {
-    --bg: #14130f;
-    --bg-2: #1f1d18;
-    --ink: #f4ecd8;
-    --ink-soft: #b8b1a0;
-    --ink-faint: #7a7568;
-    --rule: #2d2a23;
-    /* Each option's signature accent — pulled from that option's own palette. */
-    --contemporary: #E8FF3A; /* A — Contemporary: neon-yellow pop on warm paper */
-    --warm:         #F8C8D5; /* B — Spring Bloom: cherry blossom */
-    --classical:    #FF7A1F; /* C — Heritage / WWP: punchy orange */
-    --hunt:         #0581A9; /* D — Hunt Compass: brand teal (single blue in the compass) */
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Inter", system-ui, sans-serif; overflow-x: hidden; }
-  body { line-height: 1.55; padding-bottom: 96px; }
+    /* Principal brand */
+    --violet:        #C77DFF;
+    --violet-dark:   #1E1A28;
+    --violet-light:  #F7EDFF;
 
-  /* Full-bleed Centella logo divider — spans 100vw, no padding, lets the SVG aspect ratio determine height */
+    /* Work colors */
+    --advisory:      #00E5FF;
+    --advisory-dark: #0E2228;
+    --networking:    #FF6B6B;
+    --investment:    #CCFF00;
+    --global:        #FF9500;
+    --tech:          #FF66C4;
+
+    /* Surface & text */
+    --bg-deep:           #060607;
+    --bg-primary:        #080809;
+    --bg-surface:        #0D0D0F;
+    --bg-elevated:       #151517;
+    --color-text:        #F7EDFF;
+    --color-text-muted:  rgba(247, 237, 255, 0.6);
+    --color-text-dim:    rgba(247, 237, 255, 0.35);
+    --color-border:      rgba(247, 237, 255, 0.08);
+
+    /* Page accent — this page keys to advisory (cyan), matching the
+       Prime Movers card on the share lobby. */
+    --page-accent: var(--advisory);
+
+    /* Typography — Barlow superfamily, one family, many voices. */
+    --font-display: 'Barlow Condensed', system-ui, sans-serif;
+    --font-heading: 'Barlow', system-ui, sans-serif;
+    --font-body:    'Barlow', system-ui, sans-serif;
+    --font-semi:    'Barlow Semi Condensed', system-ui, sans-serif;
+
+    /* Spacing scale (4px base) */
+    --space-1:  0.25rem;
+    --space-2:  0.5rem;
+    --space-3:  0.75rem;
+    --space-4:  1rem;
+    --space-6:  1.5rem;
+    --space-8:  2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-24: 6rem;
+
+    --max-width: 72rem;
+    --gutter:    var(--space-6);
+
+    --leading-tight:   1.15;
+    --leading-normal:  1.6;
+    --leading-relaxed: 1.75;
+
+    --transition-base: 250ms ease;
+
+    /* Approved gradients */
+    --grad-cyan-violet:   linear-gradient(135deg, var(--advisory),  var(--violet));
+    --grad-violet-coral:  linear-gradient(135deg, var(--violet),    var(--networking));
+    --grad-cyan-lime:     linear-gradient(135deg, var(--advisory),  var(--investment));
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-deep);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  /* Full-bleed Centella logo divider — spans 100vw, fills with violet-light. */
   .brand-divider {
     width: 100vw;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid var(--rule);
-    background: var(--bg);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--bg-deep);
   }
   .brand-divider svg {
     display: block;
     width: 100vw;
     height: auto;
-    fill: rgba(244, 236, 216, 0.10);
+    fill: rgba(247, 237, 255, 0.10);
   }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-
-  .header { margin-top: 48px; margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
-  .header h1 {
-    font-family: "Cormorant Garamond", serif; font-weight: 400;
-    font-size: 56px; line-height: 1.05; letter-spacing: -0.015em;
-    margin: 0 0 16px; color: var(--ink);
-  }
-  .header h1 em { font-style: italic; color: var(--warm); }
-  .header .lede {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
-    font-size: 22px; line-height: 1.4; max-width: 70ch; color: var(--ink-soft);
-  }
-  .header .caveats {
-    margin-top: 20px;
-    font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.6;
-    color: var(--ink-soft); max-width: 70ch;
-    border-left: 2px solid var(--rule); padding-left: 16px;
-  }
-  .header .caveats strong { color: var(--ink); font-weight: 600; }
-
-  .options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 56px; }
-  @media (max-width: 1100px) { .options { grid-template-columns: 1fr 1fr; } }
-  .option {
-    background: var(--bg-2); padding: 28px;
-    border-top: 3px solid currentColor;
-    color: var(--contemporary);
-    text-decoration: none;
-    display: flex; flex-direction: column; gap: 12px;
-    transition: transform 0.15s ease, background 0.15s ease;
-  }
-  .option:hover { background: #25221c; transform: translateY(-2px); }
-  .option.opt-a { color: var(--contemporary); }
-  .option.opt-b { color: var(--warm); }
-  .option.opt-c { color: var(--classical); }
-  .option.opt-d { color: var(--hunt); }
-
-  .option .badge {
-    font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: currentColor; font-weight: 600;
-  }
-  .option .name {
-    font-family: "Cormorant Garamond", serif; font-weight: 500;
-    font-size: 24px; line-height: 1.1; letter-spacing: -0.01em;
-    color: var(--ink); margin: 0;
-  }
-  .option .name em { font-style: italic; color: currentColor; }
-  .option .feel {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
-    font-size: 14px; line-height: 1.4; color: var(--ink-soft);
-  }
-  .option .swatches { display: flex; gap: 4px; margin-top: 4px; }
-  .option .swatch { width: 24px; height: 24px; border-radius: 2px; }
-  .option .meta {
-    font-size: 11px; color: var(--ink-faint); margin-top: auto; padding-top: 12px;
-    border-top: 1px solid var(--rule);
-  }
-  .option .open {
-    margin-top: 10px; padding: 8px 12px;
-    background: currentColor; border: 1px solid currentColor;
-    font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-    text-align: center; color: var(--bg); font-weight: 600;
-  }
-  .option .open span { color: var(--bg); }
-
-  /* Per-option swatch palettes. */
-  /* A — Contemporary: warm paper, navy ink, ultramarine, neon-yellow pop. */
-  .opt-a .s-paper { background: #F2F1ED; } .opt-a .s-ink { background: #0A0E2C; } .opt-a .s-accent { background: #1B2A8C; } .opt-a .s-warm { background: #E8FF3A; }
-  /* B — Spring Bloom: cream paper, aubergine ink, blossom, leaf, wisteria, buttercup. */
-  .opt-b .s-paper { background: #FBF7F0; } .opt-b .s-ink { background: #2C2A4A; } .opt-b .s-terracotta { background: #F8C8D5; } .opt-b .s-teal { background: #C5DDB8; }
-  /* C — Heritage / WWP 2001 (punchier): sunny cream, navy ink, orange + amber + lime band fills. */
-  .opt-c .s-paper { background: #FFFAEC; } .opt-c .s-ink { background: #1B3A52; } .opt-c .s-accent { background: #FF7A1F; } .opt-c .s-gold { background: #FFC130; } .opt-c .s-leaf { background: #B8DD2F; }
-  /* D — Hunt Compass: six of the ten compass colors representing the full set. */
-  .opt-d .s-d1 { background: #0581A9; } .opt-d .s-d2 { background: #8ED1FC; } .opt-d .s-d3 { background: #FCB900; }
-  .opt-d .s-d4 { background: #EB5D85; } .opt-d .s-d5 { background: #9B51E0; } .opt-d .s-d6 { background: #00D084; }
-
-  .section { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
-  .section:last-child { border-bottom: none; }
-  .section h2 {
-    font-family: "Cormorant Garamond", serif; font-weight: 400;
-    font-size: 32px; letter-spacing: -0.01em; margin: 48px 0 16px; color: var(--ink);
-  }
-  .section h2:first-child { margin-top: 0; }
-  .section p {
-    font-size: 14px; line-height: 1.65; color: var(--ink-soft);
-    max-width: 80ch; margin: 0 0 12px;
-  }
-  .section p strong { color: var(--ink); font-weight: 600; }
-  .section ol {
-    font-size: 14px; line-height: 1.7; color: var(--ink-soft);
-    max-width: 80ch; padding-left: 22px; margin: 12px 0 0;
-  }
-  .section ol li { margin-bottom: 4px; }
-  .section ol li strong { color: var(--ink); font-weight: 600; }
-  .section code {
-    font-family: "JetBrains Mono", monospace; font-size: 12px;
-    background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; color: #d4cab2;
+  /* ============ HERO ============ */
+  header.hero {
+    padding: var(--space-24) 0 var(--space-12);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  /* Side-by-side comparison grid (4 options) */
-  .grid3 {
-    display: grid; grid-template-columns: 140px repeat(4, 1fr); gap: 14px;
-    border-top: 1px solid var(--rule); margin-top: 16px;
+  h1.display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.75rem, 8vw, 5.25rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--space-6);
+    max-width: 24ch;
+    color: var(--color-text);
   }
-  .grid3 .cell { padding: 12px 0; font-size: 12px; line-height: 1.5; border-bottom: 1px solid var(--rule); }
-  .grid3 .cell.label {
-    font-family: "Inter", sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--ink-faint); font-weight: 500; padding-right: 16px;
+  .display__accent {
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-color: transparent;
+    background-image: var(--grad-cyan-violet);
+    background-repeat: no-repeat;
   }
-  .grid3 .cell.body { color: var(--ink); }
-  .grid3 .col-head {
-    padding: 8px 0 12px; font-family: "Inter", sans-serif; font-size: 11px;
-    letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
-    border-bottom: 1px solid var(--rule);
-  }
-  .grid3 .col-head.a { color: var(--contemporary); }
-  .grid3 .col-head.b { color: var(--warm); }
-  .grid3 .col-head.c { color: var(--classical); }
-  .grid3 .col-head.d { color: var(--hunt); }
 
-  .footnote {
-    font-size: 12px; color: var(--ink-faint); margin-top: 56px; padding-top: 24px;
-    border-top: 1px solid var(--rule); max-width: 80ch;
+  p.lede {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.24rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin: 0 0 var(--space-8);
   }
-  .footnote em { color: var(--ink-soft); }
+  p.lede strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
 
-  /* ============ STAGE 2 ============ */
-  /* New section appended after the four-option grid to surface the
-     post-feedback revision without disturbing the original four
-     directions. The treatment uses the revised palette (orange +
-     dark blue) so the stage reads at a glance as "this is what we
-     did with the feedback". */
-  .stage-2 {
-    margin: 24px 0 56px;
-    padding: 32px;
-    background: #1f1d18;
-    border-left: 4px solid #FF7A1F;
-    border-radius: 2px;
+  .caveat {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: 70ch;
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    background: var(--bg-surface);
+    border-left: 2px solid var(--page-accent);
+    border-radius: 0 4px 4px 0;
   }
-  .stage-2 .stage-meta {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
-    color: #FF7A1F; margin: 0 0 10px;
+  .caveat strong { color: var(--color-text); font-weight: 500; }
+
+  /* ============ DELIVERABLES ============ */
+  main.content {
+    padding: var(--space-16) 0 var(--space-24);
   }
-  .stage-2 h2 {
-    font-family: "Cormorant Garamond", serif; font-weight: 400;
-    font-size: 36px; line-height: 1.1; letter-spacing: -0.015em;
-    color: var(--ink); margin: 0 0 12px;
+
+  .deliverables {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-bottom: var(--space-24);
   }
-  .stage-2 h2 em { font-style: italic; color: #FF7A1F; }
-  .stage-2 .stage-lede {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
-    font-size: 19px; line-height: 1.4; max-width: 70ch; color: var(--ink-soft);
-    margin: 0 0 24px;
+
+  .deliverable {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--card-accent, var(--page-accent));
+    border-radius: 6px;
+    transition: transform var(--transition-base),
+                border-color var(--transition-base),
+                box-shadow var(--transition-base);
   }
-  .stage-2 .feedback-list {
-    margin: 0 0 24px; padding: 16px 20px;
-    background: rgba(255, 122, 31, 0.08);
-    border: 1px solid rgba(255, 122, 31, 0.25);
+  @media (min-width: 720px) {
+    .deliverable { grid-template-columns: 1fr 1fr; gap: var(--space-12); }
+  }
+  .deliverable:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--card-accent, var(--page-accent)) 35%, var(--color-border));
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .deliverable__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .deliverable__kind {
+    font-family: var(--font-semi);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--card-accent, var(--page-accent));
+    margin: 0;
+  }
+  .deliverable__title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3vw, 1.907rem);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--color-text);
+  }
+  .deliverable__title em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--card-accent, var(--page-accent));
+  }
+  .deliverable__desc {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 56ch;
+  }
+  .deliverable__meta {
+    margin-top: var(--space-2);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-semi);
+    font-weight: 500;
+    font-size: 0.806rem;
+    color: var(--color-text-dim);
+  }
+  .deliverable__open {
+    margin-top: var(--space-4);
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    background: transparent;
+    border: 1px solid var(--card-accent, var(--page-accent));
+    border-radius: 4px;
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--card-accent, var(--page-accent));
+    transition: background var(--transition-base), color var(--transition-base);
+  }
+  .deliverable__open::after {
+    content: '→';
+    transition: transform var(--transition-base);
+  }
+  .deliverable:hover .deliverable__open {
+    background: var(--card-accent, var(--page-accent));
+    color: var(--bg-deep);
+  }
+  .deliverable:hover .deliverable__open::after {
+    transform: translateX(4px);
+  }
+
+  /* Spec column — quiet supporting information about the deliverable. */
+  .deliverable__spec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-deep);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
   }
-  .stage-2 .feedback-list .fb-label {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 15px;
-    color: #FF7A1F; margin-bottom: 10px;
+  .deliverable__spec-h {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-text);
+    margin: 0;
   }
-  .stage-2 .feedback-list ul {
-    margin: 0; padding-left: 18px;
-    font-size: 13px; line-height: 1.7; color: var(--ink-soft);
+  .deliverable__spec dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-2) var(--space-4);
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
-  .stage-2 .feedback-list ul li { margin-bottom: 4px; }
-  .stage-2 .feedback-list ul li strong { color: var(--ink); font-weight: 600; }
-  .stage-revision {
-    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px;
-    background: var(--bg);
-    border: 1px solid var(--rule);
+  .deliverable__spec dt { color: var(--color-text-dim); font-weight: 500; }
+  .deliverable__spec dd { margin: 0; color: var(--color-text); }
+
+  /* ============ HISTORICAL ARCHIVE ============ */
+  .archive {
+    padding-top: var(--space-16);
+    border-top: 1px solid var(--color-border);
+    opacity: 0.9;
+  }
+  .archive-h {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.75rem, 4vw, 2.364rem);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+  }
+  .archive-sub {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-text-dim);
+    max-width: 64ch;
+    margin: 0 0 var(--space-8);
+  }
+
+  .archive-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+  @media (min-width: 640px)  { .archive-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .archive-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .archive-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-4) var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
-    overflow: hidden;
-    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: background var(--transition-base), color var(--transition-base);
+  }
+  .archive-item:hover {
+    background: var(--bg-elevated);
+    color: var(--color-text);
+  }
+  .archive-item__label {
+    font-family: var(--font-semi);
+    font-weight: 500;
+    font-size: 0.806rem;
+    color: var(--color-text-dim);
+    margin: 0;
+  }
+  .archive-item__title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: var(--leading-tight);
+    letter-spacing: -0.005em;
+    margin: 0;
     color: inherit;
   }
-  @media (max-width: 900px) { .stage-revision { grid-template-columns: 1fr; } }
-  .stage-revision:hover { background: #25221c; }
-  .stage-revision .rev-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 14px; }
-  .stage-revision .rev-badge {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
-    color: #FF7A1F;
-  }
-  .stage-revision .rev-name {
-    font-family: "Cormorant Garamond", serif; font-weight: 500;
-    font-size: 28px; line-height: 1.1; letter-spacing: -0.01em;
-    color: var(--ink); margin: 0;
-  }
-  .stage-revision .rev-name em { font-style: italic; color: #FF7A1F; }
-  .stage-revision .rev-feel {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400;
-    font-size: 15px; line-height: 1.4; color: var(--ink-soft);
-  }
-  .stage-revision .rev-changes {
-    font-family: "Fira Sans", system-ui, sans-serif; font-size: 12px; line-height: 1.65; color: var(--ink-soft);
-    margin: 0; padding-left: 18px;
-  }
-  .stage-revision .rev-changes li { margin-bottom: 4px; }
-  .stage-revision .rev-changes li strong { color: var(--ink); font-weight: 600; }
-  .stage-revision .rev-swatches { display: flex; gap: 4px; margin-top: 4px; }
-  .stage-revision .rev-swatches .sw { width: 28px; height: 28px; border-radius: 2px; }
-  .stage-revision .rev-sw1 { background: #FFFAEC; }
-  .stage-revision .rev-sw2 { background: #1B3A52; }
-  .stage-revision .rev-sw3 { background: #FF7A1F; }
-  .stage-revision .rev-sw4 { background: #FFC130; }
-  .stage-revision .rev-meta {
-    margin-top: auto; padding-top: 10px;
-    font-size: 11px; color: var(--ink-faint);
-    border-top: 1px solid var(--rule);
-  }
-  .stage-revision .rev-open {
-    margin-top: 4px; padding: 10px 16px;
-    background: #FF7A1F; color: #14130f; border: 1px solid #FF7A1F;
-    font-family: "Fira Sans", system-ui, sans-serif; font-size: 14px; font-weight: 600;
-    text-align: center;
-    align-self: flex-start;
-  }
-  /* Cover preview — a stylized rendering of the revised cover so
-     the stage entry shows what changed at a glance. */
-  .rev-preview {
-    background:
-      radial-gradient(ellipse 90% 55% at 22% 88%, rgba(255,122,31,0.34), transparent 65%),
-      radial-gradient(ellipse 60% 40% at 78% 22%, rgba(255,193,48,0.30), transparent 70%),
-      radial-gradient(ellipse 140% 70% at 50% 100%, rgba(255,122,31,0.10), transparent 75%),
-      #FFFAEC;
-    position: relative; min-height: 320px;
-    padding: 24px 24px 60px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    color: #1B3A52;
-  }
-  .rev-preview .rp-frame { position: absolute; inset: 14px; border: 0.75px solid #1B3A52; pointer-events: none; }
-  .rev-preview .rp-frame-inner { position: absolute; inset: 18px; border: 0.5px solid #1B3A52; opacity: 0.35; pointer-events: none; }
-  /* Preview thumbnail — scaled-down rendering of the new gradient cover.
-     Static layered radials + a subtle SVG trajectory arc + solid MOVERS.
-     No streaks, no echo, no animated devices — print-faithful preview. */
-  .rev-preview .rp-frame { position: absolute; inset: 14px; border: 0.75px solid #1B3A52; pointer-events: none; z-index: 3; }
-  .rev-preview .rp-frame-inner { position: absolute; inset: 18px; border: 0.5px solid #1B3A52; opacity: 0.35; pointer-events: none; z-index: 3; }
-  .rev-preview .rp-arc { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-  .rev-preview .rp-arc svg { width: 100%; height: 100%; display: block; }
-  .rev-preview .rp-prime {
-    font-family: "Fira Sans", system-ui, sans-serif; font-weight: 400;
-    font-size: 14px; letter-spacing: 0.02em; color: #1B3A52;
-    margin-bottom: -3px;
-    position: relative; z-index: 4;
-  }
-  .rev-preview .rp-movers {
-    font-family: "Fira Sans", system-ui, sans-serif; font-weight: 800;
-    font-size: 58px; line-height: 0.88; letter-spacing: -0.045em;
-    color: #1B3A52;
-    position: relative; z-index: 4;
-    display: block;
-  }
-  .rev-preview .rp-theme {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500;
-    font-size: 20px; color: #A33D0E;
-    margin-top: 8px;
-    position: relative; z-index: 4;
-  }
-  .rev-preview .rp-band {
-    position: absolute; left: 0; right: 0; bottom: 38px;
-    background: #FF7A1F; color: #1B3A52;
-    padding: 8px 18px;
-    font-family: "Fira Sans", system-ui, sans-serif; font-size: 11px; letter-spacing: -0.005em; font-weight: 700;
-    text-align: center;
-    z-index: 4;
-  }
-  .rev-preview .rp-band em {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 13px;
+  .archive-item__title em { font-style: italic; font-weight: 500; }
+  .archive-item__line {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-text-dim);
+    margin: 0;
   }
 
-  /* ============ ORIGINALS INTRO ============ */
-  /* Sits above the four-option grid now that Stage 2 has been promoted
-     to the top of the page. Reads as a section break that demotes the
-     four originals to "for reference" without hiding them. */
-  .originals-intro {
-    max-width: 1200px; margin: 8px 0 24px;
-    padding: 28px 0 16px;
-    border-top: 1px solid var(--rule);
+  /* Collapsible comparison — folded by default; click to expand. */
+  details.archive-detail {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-6);
+    margin-top: var(--space-4);
   }
-  .originals-intro .originals-meta {
-    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16px;
-    color: var(--ink-faint); margin-bottom: 10px;
+  details.archive-detail > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    font-family: var(--font-semi);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    user-select: none;
+    transition: color var(--transition-base);
   }
-  .originals-intro .originals-h {
-    font-family: "Cormorant Garamond", serif; font-weight: 400;
-    font-size: 28px; line-height: 1.1; letter-spacing: -0.01em;
-    color: var(--ink-soft); margin: 0 0 8px;
+  details.archive-detail > summary::-webkit-details-marker { display: none; }
+  details.archive-detail > summary::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--transition-base);
   }
-  .originals-intro .originals-sub {
-    font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.6;
-    color: var(--ink-faint); max-width: 70ch; margin: 0;
+  details.archive-detail[open] > summary::before { transform: rotate(45deg); }
+  details.archive-detail > summary:hover { color: var(--color-text); }
+
+  /* Comparison grid */
+  .compare {
+    display: grid;
+    grid-template-columns: 120px repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .compare__cell {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+  .compare__cell--label {
+    font-family: var(--font-semi);
+    font-weight: 500;
+    font-size: 0.806rem;
+    color: var(--color-text-dim);
+    padding-right: var(--space-4);
+  }
+  .compare__cell--head {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .compare__cell strong { color: var(--color-text); font-weight: 500; }
+  @media (max-width: 800px) {
+    .compare { font-size: 0.806rem; grid-template-columns: 90px repeat(4, 1fr); }
+  }
+
+  /* ============ FOOTNOTE ============ */
+  footer.footnote {
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-8) 0 var(--space-16);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-dim);
+    max-width: 80ch;
+  }
+  footer.footnote code {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--bg-surface);
+    color: var(--color-text-muted);
+  }
+  footer.footnote em { font-style: italic; color: var(--color-text-muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
   }
 </style>
 </head>
@@ -359,230 +497,196 @@
   </svg>
 </div>
 
-<div class="container">
-
-<header class="header">
-  <h1>Design <em>directions</em>.</h1>
-  <p class="lede">Four directions for the Prime Movers &amp; the Next Generation reunion brochure — Prime Movers, Meeting the Moment. Each option carries the same section list and the same content slots; what varies is typography, palette emphasis, and structural register. <strong style="color: #FF7A1F;">Stage 2, at the top</strong>, carries the revised direction the client approved out of this initial round. The four original directions remain below for reference.</p>
-  <div class="caveats">
-    <strong>What you're looking at, and what you're not.</strong> All copy in these mockups is placeholder — including participant names. Bios, welcomes, the thought piece, even the names in the bio grids are stand-ins until real content lands. <strong>Nothing here is typeset for production.</strong> These are layout and typography studies meant to be reacted to, not proofed.
-  </div>
-  <div class="caveats" style="margin-top: 12px;">
-    <strong>Palettes — four distinct registers.</strong> Each option carries its own palette logic. <strong>A</strong> — warm off-white + deep navy ink + ultramarine and neon-yellow fills (foundation-rigorous with high-voltage moments). <strong>B</strong> — soft cream + deep aubergine ink + five pastel spring hues (rebirth, botanical). <strong>C</strong> — a punchier rendering of the original <em>Women Waging Peace</em> 2001 program book: sunny cream paper, navy display ink for type, three saturated band colors (orange, amber, lime green) lifted from the cover, warm amber decorative rules. <strong>D</strong> — white paper + Hunt-brown ink + a ten-color compass drawn from Swanee Hunt&rsquo;s current digital identity, with the logo as cover device. Body copy clears WCAG AAA on all four; brights are fills with dark text on top, or decorative non-text glyphs.
+<header class="hero">
+  <div class="container">
+    <h1 class="display">Prime Movers, <span class="display__accent">Meeting the Moment.</span></h1>
+    <p class="lede">Two deliverables for the twentieth-anniversary convening — the <strong>program brochure</strong> handed out on site, and the <strong>pre-packet</strong> mailed to attendees a few weeks before. Same visual system, two formats.</p>
+    <p class="caveat"><strong>What you're looking at.</strong> All copy is placeholder — names, bios, welcomes, the thought piece, the practical addresses and phone numbers. Bios and quote attributions are stand-ins until real content lands. Nothing here is typeset for production.</p>
   </div>
 </header>
 
-<!-- ============ STAGE 2 — REVISED DIRECTION ============ -->
-<section class="stage-2">
-  <p class="stage-meta">After client feedback</p>
-  <h2>Option A, <em>revised.</em></h2>
-  <p class="stage-lede">The client approved Option A for its modern look and bright color use. We pulled it forward with three asks: a cover with less empty space, Option C&rsquo;s color palette (orange + dark blues, no heavy black), and Option C&rsquo;s inside quote and color treatment. The new program title is <em>Prime Movers: Meeting the Moment</em>.</p>
+<main class="content">
+  <div class="container">
 
-  <div class="feedback-list">
-    <div class="fb-label">Feedback received, resolved here</div>
-    <ul>
-      <li><strong>Cover whitespace + implied movement</strong> — the original A cover read as too empty. Rebuilt as a static gradient composition: two layered radial blooms set a diagonal energy axis from lower-left to upper-right, with a subtle SVG arc tracing the implied trajectory. Print-faithful — no motion devices that depend on screen.</li>
-      <li><strong>Color scheme</strong> — prefer Option C&rsquo;s orange + dark blues. Avoid heavy black; use dark blue instead. Resolved.</li>
-      <li><strong>Inside design</strong> — liked Option C&rsquo;s quote treatment and color usage. Applied to A&rsquo;s layout.</li>
-      <li><strong>Program title</strong> — &ldquo;Prime Movers: Meeting the Moment&rdquo; (drops &ldquo;&amp; the Next Generation&rdquo; from the cover; retained inside as a cohort label).</li>
-    </ul>
-  </div>
+    <!-- ============ PRIMARY DELIVERABLES ============ -->
+    <section class="deliverables" aria-label="Primary deliverables">
 
-  <a class="stage-revision" href="option-a-revised.html">
-    <div class="rev-body">
-      <div class="rev-badge">Option A, revised</div>
-      <h3 class="rev-name">Prime Movers<em>:</em> Meeting the Moment</h3>
-      <div class="rev-feel">Option A&rsquo;s modern movement, warmed and brightened. Sunny cream, WWP navy, punchy orange, amber pop. Fira Sans throughout; Cormorant Garamond glyph borrowed for the interior pull-quote treatment.</div>
-      <ul class="rev-changes">
-        <li><strong>New cover — static gradient that implies motion</strong> — print-faithful atmospheric composition. Two layered radial blooms create a diagonal energy axis (warm orange in the lower-left, amber in the upper-right). A single subtle SVG arc traces an implied trajectory across the page. Solid &ldquo;MOVERS&rdquo; in navy, italic Cormorant theme &ldquo;Meeting the Moment&rdquo; below.</li>
-        <li><strong>New palette</strong> — sunny cream <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FFFAEC</code> + WWP navy <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#1B3A52</code> + orange <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FF7A1F</code> + amber <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">#FFC130</code>. No near-black anywhere.</li>
-        <li><strong>New quote treatment</strong> — C&rsquo;s double-rule pull-quote with oversized italic open-quote in deepened orange, set in Fira Sans italic.</li>
-        <li><strong>Inverted feature blocks</strong> — orange fills (cover band, pocket page, accent module) and amber fills (welcome panel, urgent row) all take navy text on top. AAA on body text throughout.</li>
-      </ul>
-      <div class="rev-swatches">
-        <div class="sw rev-sw1" title="#FFFAEC sunny cream"></div>
-        <div class="sw rev-sw2" title="#1B3A52 WWP navy"></div>
-        <div class="sw rev-sw3" title="#FF7A1F punchy orange"></div>
-        <div class="sw rev-sw4" title="#FFC130 amber"></div>
+      <!-- Program brochure: facing-spread 12×9, handed out on site -->
+      <a class="deliverable" href="program.html" style="--card-accent: var(--advisory);">
+        <div class="deliverable__body">
+          <p class="deliverable__kind">Program brochure</p>
+          <h2 class="deliverable__title">Prime Movers<em>: Meeting the Moment</em></h2>
+          <p class="deliverable__desc">The book attendees pick up on site. Eight facing spreads at 12×9: cover, two welcomes, thought piece, two bio spreads, practical, and agenda pocket. Sunny cream paper, WWP navy ink, punchy orange and amber accents.</p>
+          <p class="deliverable__meta">Approved direction — the brochure we&rsquo;re going to print.</p>
+          <span class="deliverable__open">Open the program</span>
+        </div>
+        <aside class="deliverable__spec">
+          <h3 class="deliverable__spec-h">At a glance</h3>
+          <dl>
+            <dt>Format</dt><dd>Facing spread, 12×9</dd>
+            <dt>Pages</dt><dd>8 spreads, saddle-stitched</dd>
+            <dt>Distribution</dt><dd>Picked up on site at the convening</dd>
+            <dt>Pocket</dt><dd>Inside back cover, holds the agenda insert</dd>
+            <dt>Type</dt><dd>Fira Sans throughout, Cormorant glyph in the pull-quote</dd>
+          </dl>
+        </aside>
+      </a>
+
+      <!-- Pre-packet: single-page 6×9, mailed to attendees in advance -->
+      <a class="deliverable" href="pre-packet.html" style="--card-accent: var(--violet);">
+        <div class="deliverable__body">
+          <p class="deliverable__kind">Pre-packet</p>
+          <h2 class="deliverable__title">Before you <em>arrive.</em></h2>
+          <p class="deliverable__desc">Mailed to attendees a few weeks before the convening. Ten single-page 6×9 sheets — what to expect, where to be, who else is coming, what to bring. Same visual system as the program brochure, recast for sequential reference.</p>
+          <p class="deliverable__meta">Sent in advance — sets context before the room is in the room.</p>
+          <span class="deliverable__open">Open the pre-packet</span>
+        </div>
+        <aside class="deliverable__spec">
+          <h3 class="deliverable__spec-h">At a glance</h3>
+          <dl>
+            <dt>Format</dt><dd>Single page, 6×9 portrait</dd>
+            <dt>Pages</dt><dd>10 sheets</dd>
+            <dt>Distribution</dt><dd>Mailed a few weeks before the convening</dd>
+            <dt>Sections</dt><dd>Welcome · bios · code of conduct · maps · emergency contacts</dd>
+            <dt>Type</dt><dd>Same as the program brochure</dd>
+          </dl>
+        </aside>
+      </a>
+
+    </section>
+
+    <!-- ============ HISTORICAL ARCHIVE ============ -->
+    <section class="archive" aria-label="Archived design directions">
+      <h2 class="archive-h">Design directions explored.</h2>
+      <p class="archive-sub">The four directions originally presented to the client. Option A was approved and became the visual system above. Kept here for reference — we don&rsquo;t engage with these anymore.</p>
+
+      <div class="archive-grid">
+        <a class="archive-item" href="option-a-contemporary.html">
+          <p class="archive-item__label">Option A</p>
+          <h3 class="archive-item__title">Contemporary, <em>progressive.</em></h3>
+          <p class="archive-item__line">Warm off-white, deep navy ink, ultramarine and neon-yellow.</p>
+        </a>
+        <a class="archive-item" href="option-b-warm.html">
+          <p class="archive-item__label">Option B</p>
+          <h3 class="archive-item__title">Warm, <em>pastel.</em></h3>
+          <p class="archive-item__line">Cream, aubergine ink, five pastel spring hues.</p>
+        </a>
+        <a class="archive-item" href="option-c-classical.html">
+          <p class="archive-item__label">Option C</p>
+          <h3 class="archive-item__title">Heritage, <em>warm.</em></h3>
+          <p class="archive-item__line">Sunny cream, WWP navy, orange and amber band fills.</p>
+        </a>
+        <a class="archive-item" href="option-d-hunt-branded.html">
+          <p class="archive-item__label">Option D</p>
+          <h3 class="archive-item__title">Hunt-branded, <em>compass.</em></h3>
+          <p class="archive-item__line">White, Hunt brown, ten compass colors as markers.</p>
+        </a>
       </div>
-      <div class="rev-meta">Fira Sans · Cormorant Garamond glyph for the quote mark only</div>
-      <div class="rev-open">View all eight spreads →</div>
-    </div>
-    <div class="rev-preview" aria-hidden="true">
-      <div class="rp-arc">
-        <svg viewBox="0 0 320 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M -20 290 C 80 250, 160 190, 240 130 S 340 40, 380 20" fill="none" stroke="rgba(163,61,14,0.24)" stroke-width="1" stroke-linecap="round" />
-          <path d="M -10 270 C 90 230, 170 170, 250 110 S 350 20, 390 0" fill="none" stroke="rgba(255,193,48,0.20)" stroke-width="0.7" stroke-linecap="round" />
-        </svg>
-      </div>
-      <div class="rp-frame"></div>
-      <div class="rp-frame-inner"></div>
-      <div class="rp-prime">Prime</div>
-      <div class="rp-movers">MOVERS</div>
-      <div class="rp-theme">Meeting the Moment</div>
-      <div class="rp-band">Convened by <em>Hunt Alternatives</em></div>
-    </div>
-  </a>
-</section>
 
-<!-- ============ ORIGINALS — FOUR DIRECTIONS PRESENTED FOR REVIEW ============ -->
-<section class="originals-intro">
-  <div class="originals-meta">First round, for reference</div>
-  <h2 class="originals-h">The four directions presented for review.</h2>
-  <p class="originals-sub">These are the four directions originally shared with the client. Option A was approved with the revisions captured above.</p>
-</section>
+      <details class="archive-detail">
+        <summary>How they differed — comparison table</summary>
+        <div class="compare">
+          <div class="compare__cell compare__cell--label">&nbsp;</div>
+          <div class="compare__cell compare__cell--head">A · Contemporary</div>
+          <div class="compare__cell compare__cell--head">B · Warm</div>
+          <div class="compare__cell compare__cell--head">C · Classical</div>
+          <div class="compare__cell compare__cell--head">D · Hunt-Branded</div>
 
-<section class="options">
-  <a class="option opt-a" href="option-a-contemporary.html">
-    <div class="badge">Option A · Contemporary</div>
-    <h2 class="name">Contemporary, <em>progressive.</em></h2>
-    <div class="feel">Now, not nostalgia — and not solemn. Reads as forward momentum. Warm off-white paper, deep navy ink, ultramarine blocks, neon-yellow pop.</div>
-    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-warm"></div></div>
-    <div class="meta">Inter Tight · Inter · JetBrains Mono (labels)</div>
-    <div class="open"><span>View all eight spreads →</span></div>
-  </a>
-  <a class="option opt-b" href="option-b-warm.html">
-    <div class="badge">Option B · Spring Bloom</div>
-    <h2 class="name">Warm, <em>pastel.</em></h2>
-    <div class="feel">Reads as rebirth and hope. Soft cream paper, deep aubergine ink, five pastel spring hues — cherry blossom, fresh leaf, robin&rsquo;s-egg sky, wisteria, daffodil.</div>
-    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-terracotta"></div><div class="swatch s-teal"></div></div>
-    <div class="meta">Lora · Source Serif 4 · Inter (labels)</div>
-    <div class="open"><span>View all eight spreads →</span></div>
-  </a>
-  <a class="option opt-c" href="option-c-classical.html">
-    <div class="badge">Option C · Heritage · WWP 2001</div>
-    <h2 class="name">Heritage, <em>warm.</em></h2>
-    <div class="feel">Punchier rendering of the original Women Waging Peace 2001 program book — sunny cream paper, navy display ink, three saturated band colors (orange, amber, lime green) lifted directly from the cover. Warm amber rules instead of cool navy ones. Heritage by way of origin, keyed up.</div>
-    <div class="swatches"><div class="swatch s-paper"></div><div class="swatch s-ink"></div><div class="swatch s-accent"></div><div class="swatch s-gold"></div><div class="swatch s-leaf"></div></div>
-    <div class="meta">Cormorant Garamond · Inter (labels)</div>
-    <div class="open"><span>View all fourteen pages →</span></div>
-  </a>
-  <a class="option opt-d" href="option-d-hunt-branded.html">
-    <div class="badge">Option D · Hunt Compass</div>
-    <h2 class="name">Hunt-branded, <em>compass.</em></h2>
-    <div class="feel">Direct extension of Swanee Hunt&rsquo;s identity. Logo as cover device and inner-page mark, ten compass colors as section markers, Open Sans throughout.</div>
-    <div class="swatches"><div class="swatch s-d1"></div><div class="swatch s-d2"></div><div class="swatch s-d3"></div><div class="swatch s-d4"></div><div class="swatch s-d5"></div><div class="swatch s-d6"></div></div>
-    <div class="meta">Open Sans · Logo as device</div>
-    <div class="open"><span>View all eight spreads →</span></div>
-  </a>
-</section>
+          <div class="compare__cell compare__cell--label">Reads as</div>
+          <div class="compare__cell">Forward-looking, current movement</div>
+          <div class="compare__cell">Affectionate, hopeful, garden-soft</div>
+          <div class="compare__cell">Institutional weight, milestone occasion</div>
+          <div class="compare__cell">Continuity with Hunt&rsquo;s digital identity</div>
 
-<section class="section">
-  <h2>How they differ</h2>
-  <div class="grid3">
-    <div class="cell label">&nbsp;</div>
-    <div class="col-head a">A · Contemporary</div>
-    <div class="col-head b">B · Warm</div>
-    <div class="col-head c">C · Classical</div>
-    <div class="col-head d">D · Hunt-Branded</div>
+          <div class="compare__cell compare__cell--label">Color emphasis</div>
+          <div class="compare__cell">Ultramarine fills + neon-yellow pop</div>
+          <div class="compare__cell">Five pastels — blossom, leaf, sky, wisteria, daffodil</div>
+          <div class="compare__cell">Hunt green + gold</div>
+          <div class="compare__cell">Eleven compass colors</div>
 
-    <div class="cell label">Reads as</div>
-    <div class="cell body">Forward-looking, current movement</div>
-    <div class="cell body">Affectionate, hopeful, garden-soft</div>
-    <div class="cell body">Institutional weight, milestone occasion</div>
-    <div class="cell body">Continuity with Hunt&rsquo;s digital identity</div>
+          <div class="compare__cell compare__cell--label">Logo treatment</div>
+          <div class="compare__cell">Logo on cover-mark (top-left)</div>
+          <div class="compare__cell">Logo in cover-meta strip</div>
+          <div class="compare__cell">Logo on cover bottom + title page</div>
+          <div class="compare__cell"><strong>Logo as cover device</strong></div>
 
-    <div class="cell label">Color emphasis</div>
-    <div class="cell body">Ultramarine fills + neon-yellow pop</div>
-    <div class="cell body">Five pastels — blossom, leaf, sky, wisteria, daffodil</div>
-    <div class="cell body">Hunt green + gold</div>
-    <div class="cell body">Eleven compass colors</div>
+          <div class="compare__cell compare__cell--label">Format</div>
+          <div class="compare__cell">Facing spread, 12×9</div>
+          <div class="compare__cell">Facing spread, 12×9</div>
+          <div class="compare__cell">Single page, 6×9</div>
+          <div class="compare__cell">Facing spread, 12×9</div>
 
-    <div class="cell label">Logo treatment</div>
-    <div class="cell body">Logo on cover-mark (top-left)</div>
-    <div class="cell body">Logo in cover-meta strip</div>
-    <div class="cell body">Logo on cover bottom + title page</div>
-    <div class="cell body"><strong>Logo as cover device</strong></div>
+          <div class="compare__cell compare__cell--label">Pages shown</div>
+          <div class="compare__cell">8 spreads</div>
+          <div class="compare__cell">8 spreads</div>
+          <div class="compare__cell">14 pages</div>
+          <div class="compare__cell">8 spreads</div>
 
-    <div class="cell label">Format</div>
-    <div class="cell body">Facing spread, 12×9</div>
-    <div class="cell body">Facing spread, 12×9</div>
-    <div class="cell body">Single page, 6×9</div>
-    <div class="cell body">Facing spread, 12×9</div>
+          <div class="compare__cell compare__cell--label">Display type</div>
+          <div class="compare__cell">Inter Tight, heavy weight</div>
+          <div class="compare__cell">Lora italic-forward</div>
+          <div class="compare__cell">Cormorant Garamond, italic emphasis</div>
+          <div class="compare__cell">Open Sans Light (300), display-tracked</div>
 
-    <div class="cell label">Pages shown</div>
-    <div class="cell body">8 spreads</div>
-    <div class="cell body">8 spreads</div>
-    <div class="cell body">14 pages</div>
-    <div class="cell body">8 spreads</div>
+          <div class="compare__cell compare__cell--label">Body</div>
+          <div class="compare__cell">Inter, ragged-right, modular blocks</div>
+          <div class="compare__cell">Source Serif 4, generous leading</div>
+          <div class="compare__cell">Cormorant Garamond, justified with hyphenation</div>
+          <div class="compare__cell">Open Sans</div>
 
-    <div class="cell label">Display type</div>
-    <div class="cell body">Inter Tight, heavy weight</div>
-    <div class="cell body">Lora italic-forward</div>
-    <div class="cell body">Cormorant Garamond, italic emphasis</div>
-    <div class="cell body">Open Sans Light (300), display-tracked</div>
+          <div class="compare__cell compare__cell--label">Paper / ground</div>
+          <div class="compare__cell">Warm off-white #F2F1ED</div>
+          <div class="compare__cell">Soft cream #FBF7F0</div>
+          <div class="compare__cell">Pale ivory #FBFCF7</div>
+          <div class="compare__cell">White #FFFFFF</div>
 
-    <div class="cell label">Body</div>
-    <div class="cell body">Inter, ragged-right, modular blocks</div>
-    <div class="cell body">Source Serif 4, generous leading</div>
-    <div class="cell body">Cormorant Garamond, justified with hyphenation</div>
-    <div class="cell body">Open Sans</div>
+          <div class="compare__cell compare__cell--label">Ink</div>
+          <div class="compare__cell">Navy-cast near-black #0A0E2C</div>
+          <div class="compare__cell">Deep aubergine #2C2A4A</div>
+          <div class="compare__cell">Deepest brown #200C0A</div>
+          <div class="compare__cell">Hunt brown #3E1913</div>
 
-    <div class="cell label">Paper / ground</div>
-    <div class="cell body">Warm off-white #F2F1ED</div>
-    <div class="cell body">Soft cream #FBF7F0</div>
-    <div class="cell body">Pale ivory #FBFCF7</div>
-    <div class="cell body">White #FFFFFF</div>
+          <div class="compare__cell compare__cell--label">Body contrast</div>
+          <div class="compare__cell">16.7:1 (AAA)</div>
+          <div class="compare__cell">12.8:1 (AAA)</div>
+          <div class="compare__cell">18.2:1 (AAA)</div>
+          <div class="compare__cell">15.5:1 (AAA)</div>
 
-    <div class="cell label">Ink</div>
-    <div class="cell body">Navy-cast near-black #0A0E2C</div>
-    <div class="cell body">Deep aubergine #2C2A4A</div>
-    <div class="cell body">Deepest brown #200C0A</div>
-    <div class="cell body">Hunt brown #3E1913</div>
+          <div class="compare__cell compare__cell--label">Accent text</div>
+          <div class="compare__cell">Ultra #1B2A8C (10.6:1)</div>
+          <div class="compare__cell">Blossom-deep #883A5C (7.0:1)</div>
+          <div class="compare__cell">Green-deep #0E6E55 (6.0:1)</div>
+          <div class="compare__cell">Compass-deep variants per section</div>
 
-    <div class="cell label">Body contrast</div>
-    <div class="cell body">16.7:1 (AAA)</div>
-    <div class="cell body">12.8:1 (AAA)</div>
-    <div class="cell body">18.2:1 (AAA)</div>
-    <div class="cell body">15.5:1 (AAA)</div>
+          <div class="compare__cell compare__cell--label">Cover device</div>
+          <div class="compare__cell">Asymmetric grid, "20<sup>th</sup>" with ultramarine chip, navy band</div>
+          <div class="compare__cell">Spring-sunrise gradient (blossom → wisteria → buttercup) and serif headline plate</div>
+          <div class="compare__cell">Ornamental double-frame, orange / amber / lime band wash quoting the WWP cover</div>
+          <div class="compare__cell"><strong>Swanee Hunt logo</strong>, occasion bar in teal-deep on gold rules, 11-dot compass strip</div>
 
-    <div class="cell label">Accent text</div>
-    <div class="cell body">Ultra #1B2A8C (10.6:1)</div>
-    <div class="cell body">Blossom-deep #883A5C (7.0:1)</div>
-    <div class="cell body">Green-deep #0E6E55 (6.0:1)</div>
-    <div class="cell body">Compass-deep variants per section</div>
+          <div class="compare__cell compare__cell--label">Box motif</div>
+          <div class="compare__cell">Modular blocks, mono labels, stat rows; neon-yellow welcome panel + ultramarine pocket</div>
+          <div class="compare__cell">Italic numerals, ornament glyphs, photo-forward bios; pastel washes on emphasis</div>
+          <div class="compare__cell">Outset label cut into top border, warm amber rules; lime / orange / amber roman numerals</div>
+          <div class="compare__cell">Quiet single-rule frames with colored 4px section-rule (one of ten)</div>
 
-    <div class="cell label">Cover device</div>
-    <div class="cell body">Asymmetric grid, "20<sup>th</sup>" with ultramarine chip, navy band</div>
-    <div class="cell body">Spring-sunrise gradient (blossom → wisteria → buttercup) and serif headline plate</div>
-    <div class="cell body">Ornamental double-frame, orange / amber / lime band wash quoting the WWP cover</div>
-    <div class="cell body"><strong>Swanee Hunt logo</strong>, occasion bar in teal-deep on gold rules, 11-dot compass strip</div>
+          <div class="compare__cell compare__cell--label">Quote treatment</div>
+          <div class="compare__cell">Inverted dark box with neon-yellow edge; ultramarine alt-fill with cream text</div>
+          <div class="compare__cell">Italic, mauve inner frame, Lora display; blossom open-quote glyph</div>
+          <div class="compare__cell">Centered italic, double-rule top + single below; deepened-orange open-quote</div>
+          <div class="compare__cell">Open Sans italic on faint paper-2, with coral, purple, orange, or blue open-quote glyph</div>
+        </div>
+      </details>
+    </section>
 
-    <div class="cell label">Box motif</div>
-    <div class="cell body">Modular blocks, mono labels, stat rows; neon-yellow welcome panel + ultramarine pocket</div>
-    <div class="cell body">Italic numerals, ornament glyphs, photo-forward bios; pastel washes on emphasis</div>
-    <div class="cell body">Outset label cut into top border, warm amber rules; lime / orange / amber roman numerals</div>
-    <div class="cell body">Quiet single-rule frames with colored 4px section-rule (one of ten)</div>
-
-    <div class="cell label">Quote treatment</div>
-    <div class="cell body">Inverted dark box with neon-yellow edge; ultramarine alt-fill with cream text</div>
-    <div class="cell body">Italic, mauve inner frame, Lora display; blossom open-quote glyph</div>
-    <div class="cell body">Centered italic, double-rule top + single below; deepened-orange open-quote</div>
-    <div class="cell body">Open Sans italic on faint paper-2, with coral, purple, orange, or blue open-quote glyph</div>
   </div>
-</section>
+</main>
 
-<section class="section">
-  <h2>What&rsquo;s the same in all four</h2>
-  <p><strong>Trim &amp; format.</strong> 6×9 portrait, saddle-stitched, ~28–36pp depending on bio length. Pocket on the inside back cover holds a separately-printed agenda insert — lets the body of the book go to the printer early while the agenda stays fluid until morning of.</p>
-  <h2>Section order</h2>
-  <ol>
-    <li>Cover</li>
-    <li>Welcome — Ambassador Hunt</li>
-    <li>Welcome — Giovanna Alvarez Negretti <em style="color: var(--ink-faint);">(more logistical)</em></li>
-    <li>Thought piece — Swanee</li>
-    <li>Bios of Prime Movers</li>
-    <li>Bios of Next Generation Leaders</li>
-    <li>Maps to locations</li>
-    <li>Code of Conduct</li>
-    <li>Emergency contacts</li>
-    <li>Pharmacy / Hospital / Emergency</li>
-    <li>Agenda <em style="color: var(--ink-faint);">(separate insert in pocket on inside back cover)</em></li>
-  </ol>
-</section>
+<footer class="footnote">
+  <div class="container">
+    Active deliverables: <code>program.html</code> · <code>pre-packet.html</code>. Archived directions: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code> · <code>option-d-hunt-branded.html</code>. Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser's print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em>
+  </div>
+</footer>
 
-<p class="footnote">Mockup files: <code>option-a-contemporary.html</code> · <code>option-b-warm.html</code> · <code>option-c-classical.html</code> · <code>option-d-hunt-branded.html</code> · <code>option-a-revised.html</code> (stage 2). Each is a self-contained HTML file. Open in a browser; print-to-PDF works through the browser&rsquo;s print dialog. <em>All names, bios, quote attributions, addresses, and phone numbers are placeholders.</em></p>
-
-</div>
 </body>
 </html>

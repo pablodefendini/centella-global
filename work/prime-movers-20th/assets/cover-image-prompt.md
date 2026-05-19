@@ -1,6 +1,6 @@
 # Cover image generation prompt
 
-For the Prime Movers brochure cover (`mockups/option-a-revised.html`).
+For the Prime Movers program brochure cover (`mockups/program.html`).
 
 The current cover ships with a hand-built inline SVG abstract as a placeholder — print-faithful and good enough to review. When you want to upgrade to a bitmap rendered by Gemini Nano Banana 2 (or another image model), use the prompt below.
 
@@ -34,6 +34,6 @@ The current cover ships with a hand-built inline SVG abstract as a placeholder �
 
 Once generated:
 1. Save the bitmap to `work/prime-movers-20th/assets/cover-motion.jpg` (or .webp).
-2. In `mockups/option-a-revised.html`, find the `<svg class="cover-art">…</svg>` block in the cover section and replace it with `<img src="../assets/cover-motion.jpg" class="cover-art" alt="">` (or embed as a data URI for self-contained sharing — same pattern as the Hunt logo was, before it was removed).
+2. In `mockups/program.html`, find the `<svg class="cover-art">…</svg>` block in the cover section and replace it with `<img src="../assets/cover-motion.jpg" class="cover-art" alt="">` (or embed as a data URI for self-contained sharing — same pattern as the Hunt logo was, before it was removed).
 3. The `.cover-art` CSS rule already positions and sizes the element; the bitmap should inherit those constraints.
-4. Re-run `cp work/prime-movers-20th/mockups/option-a-revised.html share/work/prime-movers-20th/option-a-revised.html` to mirror.
+4. Re-run `cp work/prime-movers-20th/mockups/program.html share/work/prime-movers-20th/program.html` to mirror.

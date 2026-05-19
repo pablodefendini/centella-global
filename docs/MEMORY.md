@@ -6,6 +6,32 @@ Append new entries at the top.
 
 ---
 
+## 2026-05-19 — Expanding-panel `--floating` modifier; team grid cycles six families; exclusive accordion via `name=`; Alianza deck; Prime Movers consolidation
+
+Four threads, one cycle.
+
+**(1) `.expanding-panel--floating` is the new open-behavior modifier.** When `[open]`, the body becomes `position: absolute` directly below the head and floats over content beneath, with a drop shadow. The panel's grid cell stays at its closed-state height, so siblings don't reflow. Composes orthogonally with neutral or toned variants. Use when reflow on open would be jarring (team cards, dense card grids). Leave it off when in-flow growth is expected (FAQ-style stacks). Live consumers: about-centella team grid, styleguide showcase. Trade-off documented in `design.md`: a long floating body can extend past the section's bottom and overlap content below; fine for short bios, wrong for paragraph-heavy bodies. Pick per use case.
+
+**Implementation gotchas worth keeping.** (a) `.expanding-panel` sets `overflow: hidden` to clip rounded corners on the head — that has to flip to `overflow: visible` while `[open]` or the floating body gets clipped at the panel edge. (b) When toned + floating + open, both head and body draw their own inner frame from a `::before` pseudo, and the visual seam at the join is awful unless head's frame loses its bottom edge and body's frame loses its top edge — the two frames merge into one continuous outline. Done with explicit per-side `border-top: 0` etc. (using the `border` shorthand creates cascade quirks). (c) `--tone-dark` and `--tone` exposed as custom properties on the panel root so the floating body inherits them — without that, the floating body would land on the page's neutral background.
+
+**(2) Team grid cycles six color families instead of being locked to advisory.** Cards iterate violet → advisory → networking → investment → global → tech, wrapping at index 6 back to violet. "Max two color families per composition" rule still holds because each card is its own composition; the rule is per-panel, not aggregate. Duotone filters had to follow — each page that uses the team-card recipe now defines six `<filter>` SVG defs (one per family, derived from each family's `--<family>-dark` / `--<family>` hex), and a `.<card>--<family>` class wires each card to its filter URL on the photo. Per-family CSS rules in both `about-centella.astro` and `styleguide.astro`. Violet duotone `tableValues` were missing from `design.md`'s table — added.
+
+**(3) Exclusive accordion via `name=` on `<details>`.** Native HTML attribute that turns multiple sibling `<details>` into a mutually-exclusive accordion: opening one auto-closes the rest. Zero JS, satisfies the static-first rule. Applied to the team grid (`name="centella-team"`) and the styleguide showcase (`name="sg-team"`). Combined with the floating modifier, this is now the canonical disclosure pattern for grids: open one, the others close, nothing reflows. Reach for this combination on any future expanding-panel grid (speakers, sponsors). The toned variant is the right visual default for identity-coded panels; neutral is right for FAQ-style stacks.
+
+**(4) Alianza de País deck for Centella Global Forum 2026.** New presentation at `src/pages/share/presentations/alianza-de-pais.astro` — ten slides telling the story of a Puerto Rican coalition that reframed sovereignty as a governance question. Through-line: "narrative + identity." 7–8 min target, 5–10 min budget. Companion speaker notes at `docs/talks/alianza-de-pais.md` — new directory for talk prep (notes, beats, fill-in placeholders, navigation crib). The two files cross-link. Lives at `/share/presentations/alianza-de-pais/` via the normal Astro page route. Not yet in the share lobby (`share/_index.json` entry + `inline-deck.mjs` standalone bundle pending — follow-up before the talk ships). New `docs/talks/` directory: pattern is one `<slug>.md` per talk, separate from `docs/` site documentation.
+
+**(5) Prime Movers consolidation after client sign-off on Option A revised.** `option-a-revised.html` renamed to `program.html` everywhere (mockups, share mirror, PDFs). Added `pre-packet.html` — same visual system as program brochure, single-page 6×9 format intended to be mailed to attendees a few weeks before the convening. Index hub rebuilt as a deliverables page surfacing both program (advisory-keyed) and pre-packet (violet-keyed) as cards, with the four original design directions still browsable below under "First round · for reference". `cover-image-prompt.md` updated to reference `program.html`. Two new assets: `logo-ha.png` (the correct Hunt Alternatives logo Pablo flagged he'd provide back in the May 11 round — `swanee-hunt-logo.png` next to it is a different brand and stays separate) and `map.png` (location/venue map for the program). Attendees list and a paginated PDF variant exist in the working tree but aren't committed in this round — not finalized.
+
+**(6) `public/icons/` committed as a designer drop.** 36 SVGs at Title Case names with spaces, dropped in from a designer. Not referenced at runtime — `src/assets/icons/` (kebab-case, 32 files) is the canonical set used by the `<Icon>` component. The stash is committed so it's available when the next normalization pass adds the four extras (`Handshake`, `Meeting`, `Money Tree`, `Rocket Launch`) and any others.
+
+**Patterns worth keeping (cross-cutting).**
+
+- *Exclusive accordion + floating modifier on grids.* Native HTML, zero JS, no reflow, no five-things-open. Default for any future expanding-panel grid.
+- *Duotone filters key to families; defs duplicated across pages until a third consumer triggers extraction.* Promote to `Base.astro` when speaker photos or sponsor logos arrive.
+- *Tone-coded panels expose `--tone-dark` and `--tone` as custom properties.* Nested elements (floating body, anything else) pick them up via inheritance instead of re-deriving from the class name. Should be baked into the eventual `<TonePanel>` extraction.
+
+---
+
 ## 2026-05-11 — Prime Movers cover, take four: SVG abstract centerpiece; corner labels removed; logo asset is the wrong brand
 
 Fourth round of cover revisions on the same day, plus a brand-identity flag.

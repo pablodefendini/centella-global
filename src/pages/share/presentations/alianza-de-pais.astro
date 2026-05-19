@@ -1,0 +1,657 @@
+---
+import Presentation from '../../../layouts/Presentation.astro';
+---
+<Presentation title="Alianza de País — Centella Global Forum" lang="en">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@300;400;500;700;800&family=Barlow+Semi+Condensed:wght@500;600&display=swap"
+/>
+
+<style is:global>
+  /* ============================================================
+     Centella tokens (subset) — derived from src/styles/global.css
+     and design.md. Decks own their own viewport, so we inline only
+     what this deck uses.
+     ============================================================ */
+  :root {
+    --violet: #C77DFF;
+    --violet-dark: #1E1A28;
+    --violet-light: #F7EDFF;
+    --networking: #FF6B6B;
+    --advisory: #00E5FF;
+    --investment: #CCFF00;
+    --global: #FF9500;
+    --tech: #FF66C4;
+
+    --bg-deep: #060607;
+    --bg-primary: #080809;
+    --bg-surface: #0D0D0F;
+    --bg-elevated: #151517;
+
+    --color-text: #F7EDFF;
+    --color-text-muted: rgba(247, 237, 255, 0.6);
+    --color-text-dim: rgba(247, 237, 255, 0.35);
+    --color-border: rgba(247, 237, 255, 0.08);
+
+    --font-display: "Barlow Condensed", system-ui, sans-serif;
+    --font-heading: "Barlow", system-ui, sans-serif;
+    --font-body: "Barlow", system-ui, sans-serif;
+    --font-semi: "Barlow Semi Condensed", system-ui, sans-serif;
+
+    --grad-violet-coral: linear-gradient(135deg, var(--violet), var(--networking));
+    --grad-cyan-violet: linear-gradient(135deg, var(--advisory), var(--violet));
+    --grad-coral-orange: linear-gradient(135deg, var(--networking), var(--global));
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-deep);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    overflow: hidden;
+  }
+
+  /* ============================================================
+     Stage / scaler — letterboxed 1920×1080 design canvas.
+     ============================================================ */
+  deck-stage {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-deep);
+    overflow: hidden;
+  }
+  deck-stage .ds-fit {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  deck-stage .ds-canvas {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: center center;
+    flex-shrink: 0;
+    background: var(--bg-deep);
+  }
+  deck-stage .slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    box-sizing: border-box;
+    padding: 96px 128px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 240ms ease;
+  }
+  deck-stage .slide[data-active] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* ============================================================
+     Bottom-center counter overlay
+     ============================================================ */
+  .ds-overlay {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 6px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-family: var(--font-semi);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 240ms ease, transform 240ms ease;
+    z-index: 100;
+    pointer-events: none;
+    user-select: none;
+    font-feature-settings: "tnum" 1;
+  }
+  .ds-overlay[data-visible] {
+    opacity: 0.85;
+    transform: translate(-50%, 0);
+  }
+  .ds-overlay .sep { color: var(--color-text-dim); }
+  .ds-overlay .total { color: var(--color-text-muted); }
+
+  /* ============================================================
+     Slide typography
+     ============================================================ */
+  .eyebrow {
+    font-family: var(--font-semi);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 48px 0;
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 168px;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0;
+  }
+  .display--lg { font-size: 200px; }
+  .display--md { font-size: 132px; }
+  .display--sm { font-size: 96px; }
+  .display__accent {
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: var(--grad-violet-coral);
+    background-repeat: no-repeat;
+  }
+  .display__accent--cyan-violet { background-image: var(--grad-cyan-violet); }
+  .display__accent--coral-orange { background-image: var(--grad-coral-orange); }
+
+  .lede {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+    max-width: 1200px;
+    margin: 48px 0 0 0;
+  }
+  .lede--lg { font-size: 44px; }
+  .meta {
+    font-family: var(--font-semi);
+    font-size: 18px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-top: auto;
+  }
+  .meta strong { color: var(--color-text-muted); font-weight: 600; }
+
+  /* Two-column DNA panel layout (slide 03) */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 64px;
+  }
+  .dna-card {
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--violet-dark);
+  }
+  .dna-card--coral { background: #22181C; }
+  .dna-card__frame {
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, var(--violet) 30%, transparent);
+    padding: 36px 40px 40px;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .dna-card--coral .dna-card__frame {
+    border-color: color-mix(in srgb, var(--networking) 30%, transparent);
+  }
+  .dna-card__label {
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 16px;
+  }
+  .dna-card--coral .dna-card__label { color: var(--networking); }
+  .dna-card__name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 56px;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 24px 0;
+  }
+  .dna-card__body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Failure list (slide 06) */
+  .failure-list {
+    list-style: none;
+    margin: 56px 0 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 64px;
+    max-width: 1400px;
+  }
+  .failure-list li {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 56px;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--color-text);
+    padding-left: 32px;
+    border-left: 2px solid var(--networking);
+  }
+
+  /* Result stat (slide 07) */
+  .stat {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 360px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: var(--grad-violet-coral);
+    background-repeat: no-repeat;
+    margin: 0;
+  }
+  .stat-caveat {
+    font-family: var(--font-semi);
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin: 0 0 16px 0;
+  }
+
+  /* Closing slide */
+  .closing {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  .closing .display { text-align: center; }
+  .closing .lede {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .closing .meta {
+    margin-top: 96px;
+    text-align: center;
+  }
+
+  /* Print: one slide per page */
+  @media print {
+    deck-stage {
+      position: static;
+      background: white;
+    }
+    deck-stage .ds-fit {
+      position: static;
+      display: block;
+    }
+    deck-stage .ds-canvas {
+      width: 1920px;
+      height: 1080px;
+      transform: none !important;
+      page-break-after: always;
+    }
+    deck-stage .slide {
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: absolute;
+      page-break-after: always;
+    }
+    .ds-overlay { display: none; }
+  }
+
+  ::selection { background: rgba(199, 125, 255, 0.25); color: var(--color-text); }
+</style>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 01 — Cover -->
+  <section class="slide" data-label="Cover">
+    <p class="eyebrow">Centella Global Forum · 2026</p>
+    <h1 class="display display--lg">
+      <span class="display__accent">Alianza</span> de País.
+    </h1>
+    <p class="lede lede--lg">
+      How a Puerto Rican coalition reframed sovereignty as a question of governance — and broke a seventy-year duopoly in the process.
+    </p>
+    <p class="meta"><strong>Pablo Defendini</strong> · Centella</p>
+  </section>
+
+  <!-- 02 — The trap -->
+  <section class="slide" data-label="The trap">
+    <p class="eyebrow">01 / The trap</p>
+    <h2 class="display">
+      Three letters define <span class="display__accent">Puerto Rican</span> politics.
+    </h2>
+    <p class="lede">
+      Statehood. Commonwealth. Independence.
+      Every governance debate collapsed into the status question. And every party that took the sovereignty side stayed locked at three to five percent of the vote — for seventy years.
+    </p>
+  </section>
+
+  <!-- 03 — Two parties, two DNAs -->
+  <section class="slide" data-label="The coalition">
+    <p class="eyebrow">02 / The coalition</p>
+    <h2 class="display display--md">
+      Two parties. Two DNAs.
+    </h2>
+    <div class="two-col">
+      <div class="dna-card">
+        <div class="dna-card__frame">
+          <p class="dna-card__label">PIP</p>
+          <h3 class="dna-card__name">Partido Independentista Puertorriqueño</h3>
+          <p class="dna-card__body">
+            Decades-old. Independentista by name and by record. Deep grassroots, ideological roots, a base that never grew past the ceiling the status frame imposed on them.
+          </p>
+        </div>
+      </div>
+      <div class="dna-card dna-card--coral">
+        <div class="dna-card__frame">
+          <p class="dna-card__label">MVC</p>
+          <h3 class="dna-card__name">Movimiento Victoria Ciudadana</h3>
+          <p class="dna-card__body">
+            Newer. Cross-ideological by design. Built around anti-corruption and good governance, with members who agreed on nothing about status and a lot about how the island is run.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — The pivot -->
+  <section class="slide" data-label="The reframe">
+    <p class="eyebrow">03 / The reframe</p>
+    <h2 class="display display--lg">
+      Not what we should be.<br/>
+      <span class="display__accent display__accent--cyan-violet">What we can govern.</span>
+    </h2>
+    <p class="lede">
+      The campaign's central move was to refuse the status frame entirely — and substitute a question voters were already living.
+    </p>
+  </section>
+
+  <!-- 05 — País -->
+  <section class="slide" data-label="País">
+    <p class="eyebrow">04 / The word</p>
+    <h2 class="display display--lg">
+      <span class="display__accent display__accent--coral-orange">País.</span>
+    </h2>
+    <p class="lede lede--lg">
+      Country.
+      The coalition's name claimed national identity without forcing voters to commit to a status outcome upfront. We are already a country. The question is whether we can govern ourselves with dignity.
+    </p>
+  </section>
+
+  <!-- 06 — The case the duopoly already made -->
+  <section class="slide" data-label="The proof">
+    <p class="eyebrow">05 / The case the duopoly already made</p>
+    <h2 class="display display--md">
+      Governance failure. On the record.
+    </h2>
+    <ul class="failure-list">
+      <li>An energy grid that fails routinely</li>
+      <li>A school system in retreat</li>
+      <li>An accelerating brain drain</li>
+      <li>An imposed fiscal control board</li>
+      <li>A public sector hollowed by austerity</li>
+      <li>Corruption case after corruption case</li>
+    </ul>
+    <p class="lede">
+      The Alianza could speak to all of it without ever needing the word "independence."
+    </p>
+  </section>
+
+  <!-- 07 — Result -->
+  <section class="slide" data-label="Result">
+    <p class="eyebrow">06 / Result</p>
+    <p class="stat-caveat">Juan Dalmau · Governor's race · 2024</p>
+    <p class="stat">2<sup style="font-size: 0.35em; vertical-align: super; -webkit-text-fill-color: var(--color-text-muted); color: var(--color-text-muted); background: none;">nd</sup></p>
+    <p class="lede lede--lg">
+      First time in modern Puerto Rican history that a candidate from outside the PNP/PPD duopoly came that close. The framework worked at the ballot box.
+    </p>
+  </section>
+
+  <!-- 08 — The lesson -->
+  <section class="slide" data-label="The lesson">
+    <p class="eyebrow">07 / The lesson</p>
+    <h2 class="display">
+      When a wedge locks you out, <span class="display__accent">don't argue the wedge.</span>
+    </h2>
+    <p class="lede">
+      The Alianza did not win the status debate. It refused it.
+      It moved the conversation to a question voters were already living, and let the answer pull people into a coalition they would not have joined under the old frame.
+      Identity work before policy work — not after.
+    </p>
+  </section>
+
+  <!-- 09 — Unfinished -->
+  <section class="slide" data-label="Unfinished">
+    <p class="eyebrow">08 / Unfinished</p>
+    <h2 class="display">
+      The trap has <span class="display__accent display__accent--coral-orange">a door.</span>
+    </h2>
+    <p class="lede">
+      Whether the framework survives the messy work of post-election coalition governance — and whether 2028 brings a real majority — is unfinished.
+      The story isn't that the Alianza solved the trap. The story is that it found a door.
+      Many of you are working on your own version of this trap.
+    </p>
+  </section>
+
+  <!-- 10 — Closing -->
+  <section class="slide closing" data-label="Closing">
+    <h2 class="display display--lg">
+      Thank you.
+    </h2>
+    <p class="lede lede--lg">Discussion?</p>
+    <p class="meta"><strong>Pablo Defendini</strong> · pablo@centellaglobal.com</p>
+  </section>
+
+</deck-stage>
+
+<div class="ds-overlay" data-overlay>
+  <span class="count"><span data-current>1</span><span class="sep">/</span><span class="total" data-total>10</span></span>
+</div>
+
+<script is:inline>
+  /**
+   * Minimal <deck-stage> for Centella decks built natively (not from
+   * PDF Playground exports). Mirrors the design.md contract:
+   *   - Authored at 1920×1080
+   *   - Letterboxed scaling: min(vw/dw, vh/dh)
+   *   - Slides hidden via data-active toggle (kept in DOM for state)
+   *   - Keyboard nav: arrows, Space, PgUp/PgDn, Home/End, R to reset, 1–9
+   *   - Click anywhere advances; Shift+Click goes back
+   *   - localStorage persistence keyed by path
+   */
+  (() => {
+    if (customElements.get('deck-stage')) return;
+
+    class DeckStage extends HTMLElement {
+      connectedCallback() {
+        const dw = parseInt(this.getAttribute('width') || '1920', 10);
+        const dh = parseInt(this.getAttribute('height') || '1080', 10);
+        this._dw = dw;
+        this._dh = dh;
+
+        // Collect existing slide elements (skip <style>, <script>, comments).
+        const slides = Array.from(this.children).filter(
+          (el) => el.tagName && el.tagName.toLowerCase() === 'section'
+        );
+
+        // Build fit/canvas wrappers and move slides into the canvas.
+        const fit = document.createElement('div');
+        fit.className = 'ds-fit';
+        const canvas = document.createElement('div');
+        canvas.className = 'ds-canvas';
+        slides.forEach((s) => canvas.appendChild(s));
+        fit.appendChild(canvas);
+
+        // Remove anything left behind (text nodes, stray non-section els).
+        while (this.firstChild) this.removeChild(this.firstChild);
+        this.appendChild(fit);
+
+        this._slides = slides;
+        this._canvas = canvas;
+        this._index = 0;
+        this._overlay = document.querySelector('[data-overlay]');
+        this._countEl = document.querySelector('[data-current]');
+        this._totalEl = document.querySelector('[data-total]');
+        if (this._totalEl) this._totalEl.textContent = String(slides.length);
+
+        // Restore last slide index from localStorage.
+        try {
+          const key = 'deck-stage:slide:' + location.pathname;
+          const saved = parseInt(localStorage.getItem(key) || '0', 10);
+          if (Number.isFinite(saved) && saved >= 0 && saved < slides.length) {
+            this._index = saved;
+          }
+        } catch (_) { /* ignore */ }
+
+        this._fit = this._fit.bind(this);
+        this._onKey = this._onKey.bind(this);
+        this._onClick = this._onClick.bind(this);
+        this._hideOverlay = this._hideOverlay.bind(this);
+
+        this._fit();
+        this._render();
+
+        window.addEventListener('resize', this._fit);
+        window.addEventListener('keydown', this._onKey);
+        this.addEventListener('click', this._onClick);
+        this._showOverlay();
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('resize', this._fit);
+        window.removeEventListener('keydown', this._onKey);
+        this.removeEventListener('click', this._onClick);
+      }
+
+      _fit() {
+        if (!this._canvas) return;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const scale = Math.min(w / this._dw, h / this._dh);
+        this._canvas.style.transform = 'scale(' + scale + ')';
+      }
+
+      _render() {
+        this._slides.forEach((s, i) => {
+          if (i === this._index) s.setAttribute('data-active', '');
+          else s.removeAttribute('data-active');
+        });
+        if (this._countEl) this._countEl.textContent = String(this._index + 1);
+        try {
+          localStorage.setItem(
+            'deck-stage:slide:' + location.pathname,
+            String(this._index)
+          );
+        } catch (_) { /* ignore */ }
+      }
+
+      _go(delta) {
+        const next = Math.max(0, Math.min(this._slides.length - 1, this._index + delta));
+        if (next !== this._index) {
+          this._index = next;
+          this._render();
+        }
+        this._showOverlay();
+      }
+
+      _goTo(i) {
+        const next = Math.max(0, Math.min(this._slides.length - 1, i));
+        if (next !== this._index) {
+          this._index = next;
+          this._render();
+        }
+        this._showOverlay();
+      }
+
+      _onKey(e) {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'PageDown':
+          case ' ':
+          case 'Spacebar':
+            e.preventDefault();
+            this._go(+1);
+            break;
+          case 'ArrowLeft':
+          case 'PageUp':
+            e.preventDefault();
+            this._go(-1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            this._goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            this._goTo(this._slides.length - 1);
+            break;
+          case 'r':
+          case 'R':
+            e.preventDefault();
+            this._goTo(0);
+            break;
+          default:
+            // Number keys 1–9 jump to slide.
+            if (/^[1-9]$/.test(e.key)) {
+              e.preventDefault();
+              this._goTo(parseInt(e.key, 10) - 1);
+            }
+        }
+      }
+
+      _onClick(e) {
+        // Don't hijack clicks on real links/buttons inside slides.
+        if (e.target.closest && e.target.closest('a, button')) return;
+        if (e.shiftKey) this._go(-1);
+        else this._go(+1);
+      }
+
+      _showOverlay() {
+        if (!this._overlay) return;
+        this._overlay.setAttribute('data-visible', '');
+        clearTimeout(this._overlayTimer);
+        this._overlayTimer = setTimeout(this._hideOverlay, 1800);
+      }
+
+      _hideOverlay() {
+        if (!this._overlay) return;
+        this._overlay.removeAttribute('data-visible');
+      }
+    }
+
+    customElements.define('deck-stage', DeckStage);
+  })();
+</script>
+</Presentation>
