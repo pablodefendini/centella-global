@@ -637,22 +637,29 @@
     .spread::after { display: none !important; }
   }
 
-  /* ============ DENSE BIO GRID (added for compressed bio pages) ============ */
+  /* ============ BIO GRID (one column per page, larger photo) ============
+     Each cohort spread page renders one column of bios. Photo sits in a
+     1/6-of-row column, square, with name/role/text in the remaining 5/6.
+     Switched from the original two-column dense layout so each entry gets
+     more visual presence and real bio paragraphs can breathe. */
   .bios-dense {
-    display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; row-gap: 0;
+    display: block;
     margin-top: 8px;
   }
   .bios-dense .bio {
-    grid-template-columns: 38px 1fr; gap: 10px;
-    padding: 7px 0;
+    display: grid;
+    grid-template-columns: 1fr 5fr; /* photo ≈ 1/6 of row width */
+    gap: 16px;
+    padding: 12px 0;
     border-top: 1px solid var(--rule);
   }
-  .bios-dense .bio:nth-of-type(1),
-  .bios-dense .bio:nth-of-type(2) {
+  .bios-dense .bio:first-of-type {
     border-top: 2px solid var(--ink);
   }
   .bios-dense .bio-photo {
-    width: 38px; height: 38px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
   .bios-dense .bio-name { font-size: 16px; line-height: 1.1; }
   .bios-dense .bio-role { font-size: 16px; margin-bottom: 2px; }
@@ -665,6 +672,10 @@
     color: var(--accent-deep);
     font-family: var(--display); font-weight: 700; font-size: 16px;
     letter-spacing: -0.02em;
+  }
+  /* Scaled-up initials chip for the larger one-column photo cells. */
+  .bios-dense .bio-photo--initials {
+    font-size: 24px;
   }
 
   /* ============ VENUES PAGE (transplanted from pre-packet, scoped) ============ */
@@ -902,11 +913,14 @@
   </div>
 </div>
 
-<!-- =================== SPREAD 4 — Prime Movers bios =================== -->
-<div class="spread-label"><span class="num">5</span> <span>Participant bios — Prime Movers</span> <span class="desc">— TODO placeholders · 12 cards left, 11 cards right</span></div>
+<!-- =================== SPREAD 4 — Prime Movers bios, part 1 ===================
+     One column per page, larger photos (1/6 of column width, square).
+     Split across two spreads because the looser layout no longer fits 23
+     entries on a single facing pair. Distribution: 6/6/6/5. -->
+<div class="spread-label"><span class="num">5</span> <span>Participant bios — Prime Movers (1/2)</span> <span class="desc">— TODO placeholders · 6 cards left, 6 cards right</span></div>
 <div class="spread">
   <div class="page left">
-    <h1 class="h1" style="font-size:24px; margin-bottom: 6px;">Prime Movers</h1>
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">Prime <span class="accent">Movers</span>.</h1>
     <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">P0</div>
@@ -956,6 +970,12 @@
           <div class="bio-text">Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.</div>
         </div>
       </div>
+    </div>
+    <div class="folio"><span>Prime Movers</span><span>7</span></div>
+  </div>
+  <div class="page right">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">&nbsp;</h1>
+    <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">P0</div>
         <div>
@@ -1005,10 +1025,17 @@
         </div>
       </div>
     </div>
-    <div class="folio"><span>Prime Movers</span><span>7</span></div>
+    <div class="folio"><span>Prime Movers</span><span>8</span></div>
   </div>
-  <div class="page right">
-    <h1 class="h1" style="font-size:24px; margin-bottom: 6px;">&nbsp;</h1>
+</div>
+
+<!-- =================== SPREAD 4b — Prime Movers bios, part 2 ===================
+     Continuation spread for the remaining 11 Prime Movers entries. Heading
+     repeats on the left page so this spread is self-contained at a glance. -->
+<div class="spread-label"><span class="num">6</span> <span>Participant bios — Prime Movers (2/2)</span> <span class="desc">— TODO placeholders · 6 cards left, 5 cards right</span></div>
+<div class="spread">
+  <div class="page left">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">Prime <span class="accent">Movers</span>.</h1>
     <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">P1</div>
@@ -1058,6 +1085,12 @@
           <div class="bio-text">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</div>
         </div>
       </div>
+    </div>
+    <div class="folio"><span>Prime Movers</span><span>9</span></div>
+  </div>
+  <div class="page right">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">&nbsp;</h1>
+    <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">P1</div>
         <div>
@@ -1099,15 +1132,17 @@
         </div>
       </div>
     </div>
-    <div class="folio"><span>Prime Movers</span><span>8</span></div>
+    <div class="folio"><span>Prime Movers</span><span>10</span></div>
   </div>
 </div>
 
-<!-- =================== SPREAD 5 — Next Generation Leaders bios =================== -->
-<div class="spread-label"><span class="num">6</span> <span>Participant bios — Next Generation Leaders</span> <span class="desc">— TODO placeholders · 8 cards each side</span></div>
+<!-- =================== SPREAD 5 — Next Generation Leaders bios, part 1 ===================
+     One column per page, larger photos. 16 entries split 4/4/4/4 across two
+     spreads to leave breathing room as real bio paragraphs replace lorem ipsum. -->
+<div class="spread-label"><span class="num">7</span> <span>Participant bios — Next Generation Leaders (1/2)</span> <span class="desc">— TODO placeholders · 4 cards left, 4 cards right</span></div>
 <div class="spread">
   <div class="page left">
-    <h1 class="h1" style="font-size:24px; margin-bottom: 6px;">Next Generation Leaders</h1>
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">Next Generation <span class="accent">Leaders</span>.</h1>
     <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">NG</div>
@@ -1141,6 +1176,12 @@
           <div class="bio-text">Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus.</div>
         </div>
       </div>
+    </div>
+    <div class="folio"><span>Next Generation</span><span>11</span></div>
+  </div>
+  <div class="page right">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">&nbsp;</h1>
+    <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">NG</div>
         <div>
@@ -1174,10 +1215,16 @@
         </div>
       </div>
     </div>
-    <div class="folio"><span>Next Generation</span><span>9</span></div>
+    <div class="folio"><span>Next Generation</span><span>12</span></div>
   </div>
-  <div class="page right">
-    <h1 class="h1" style="font-size:24px; margin-bottom: 6px;">&nbsp;</h1>
+</div>
+
+<!-- =================== SPREAD 5b — Next Generation Leaders bios, part 2 ===================
+     Continuation spread with the remaining 8 Next Gen entries. -->
+<div class="spread-label"><span class="num">8</span> <span>Participant bios — Next Generation Leaders (2/2)</span> <span class="desc">— TODO placeholders · 4 cards left, 4 cards right</span></div>
+<div class="spread">
+  <div class="page left">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">Next Generation <span class="accent">Leaders</span>.</h1>
     <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">NG</div>
@@ -1211,6 +1258,12 @@
           <div class="bio-text">Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus.</div>
         </div>
       </div>
+    </div>
+    <div class="folio"><span>Next Generation</span><span>13</span></div>
+  </div>
+  <div class="page right">
+    <h1 class="h1" style="font-size:24px; margin-bottom: 12px;">&nbsp;</h1>
+    <div class="bios-dense">
       <div class="bio">
         <div class="bio-photo bio-photo--initials" aria-hidden="true">NG</div>
         <div>
@@ -1244,12 +1297,12 @@
         </div>
       </div>
     </div>
-    <div class="folio"><span>Next Generation</span><span>10</span></div>
+    <div class="folio"><span>Next Generation</span><span>14</span></div>
   </div>
 </div>
 
 <!-- =================== SPREAD 6 — Venues + Practical things =================== -->
-<div class="spread-label"><span class="num">7</span> <span>Venues + Practical things</span> <span class="desc">— left: venues page from pre-packet · right: practical info</span></div>
+<div class="spread-label"><span class="num">9</span> <span>Venues + Practical things</span> <span class="desc">— left: venues page from pre-packet · right: practical info</span></div>
 <div class="spread">
   <div class="page left venues-page">
 
@@ -1278,7 +1331,7 @@
       <div class="dc-detail">No suits, no ties. Comfortable shoes.</div>
     </div>
 
-    <div class="folio"><span>Venues</span><span>11</span></div>
+    <div class="folio"><span>Venues</span><span>15</span></div>
   </div>
   <div class="page right">
     <h1 class="h1" style="font-size: 32px; margin-bottom: 8px;">Practical things</h1>
@@ -1306,12 +1359,12 @@
         <div class="p-value">Lobby, 7:00 AM – 6:00 PM daily, throughout the convening.</div>
       </div>
     </div>
-    <div class="folio"><span>Practical things</span><span>12</span></div>
+    <div class="folio"><span>Practical things</span><span>16</span></div>
   </div>
 </div>
 
 <!-- =================== SPREAD 7 — Agenda pocket page =================== -->
-<div class="spread-label"><span class="num">8</span> <span>Agenda pocket page</span> <span class="desc">— left: orange marker page · right: inside back cover with pocket</span></div>
+<div class="spread-label"><span class="num">10</span> <span>Agenda pocket page</span> <span class="desc">— left: orange marker page · right: inside back cover with pocket</span></div>
 <div class="spread">
   <div class="page left pocket-page">
     <div class="marker">Agenda <span class="arrow">→</span></div>
@@ -1321,7 +1374,7 @@
 </div>
 
 <!-- =================== BACK COVER =================== -->
-<div class="spread-label"><span class="num">9</span> <span>Back cover</span> <span class="desc">— framed, paper · single page, 6 × 9 · Hunt Alternatives signature at foot</span></div>
+<div class="spread-label"><span class="num">11</span> <span>Back cover</span> <span class="desc">— framed, paper · single page, 6 × 9 · Hunt Alternatives signature at foot</span></div>
 <div class="spread single">
   <div class="page cover back-cover">
     <div class="cover-frame"></div>
