@@ -6,6 +6,70 @@ Append new entries at the top.
 
 ---
 
+## 2026-05-20 — Program brochure caught up to pre-packet: companion-document rule, `.theme-line`, `.emergency-line`
+
+A revision pass on `work/prime-movers-20th/mockups/program.html` that landed three decisions worth remembering past the session.
+
+**Pre-packet and program are companion documents in one palette.** Yesterday added `--R-gold-soft: #FFE5A0` and `--R-orange-soft: #FFD0A8` to the pre-packet for AAA contrast under black body text on Swanee's letter and the thought-piece. Today the same tokens went into program.html, and `.welcome-left` (yellow field) + `.pocket-page` (orange field) were repointed to them. The rule is: pre-packet and program share the same local palette (Fira Sans / Cormorant Garamond / WWP navy / R-orange / R-gold) and ship as companion deliverables for the same convening. Any palette decision that lands in one should be evaluated for porting to the other in the same session. They are not independent documents; they're two views of the same brochure system.
+
+**`.theme-line` — italic-serif sub-headline below a welcome-letter H1.** Added today for Swanee's welcome letter. The H1 is one word ("Welcome"); the theme line is the punchy phrase ("Prime Movers: Meeting the Moment!") in Cormorant Garamond italic 24px in `--accent-deep`, with `margin: -6px 0 18px` to pull it tight under the H1. Echoes the cover's italic-serif "Meeting the Moment" treatment — same voice, different page. This is the right pattern instead of an eyebrow (still banned per the no-eyebrow rule in CLAUDE.md). Reusable: Giovanna's welcome letter will likely want it when her copy arrives. If a third welcome surface ships, that's the trigger to keep the class shared but rename it to something less Swanee-specific (e.g. `.welcome-theme`) — for now the name is fine because there's exactly one consumer.
+
+**`.emergency-line` — single-line sans-serif callout inside `.practical-row.urgent`.** For rows that should read as a single declarative sentence instead of the label-above/value-below split that the rest of the practical-rows use. 14px Fira Sans medium with weight-800 emphasis on the actionable token (911). Scoped to `.practical-row.urgent .emergency-line` today because the only consumer is the emergency callout. If a non-urgent practical-row eventually wants the same single-line treatment, generalize the selector at that point — don't pre-generalize.
+
+**Code-of-conduct intro tone calibration.** Page 6's lorem replaced with: "You've each been in rooms that worked, and rooms that didn't. The difference is usually the agreements made explicit. These are ours." Pablo trimmed an earlier draft ("Here are ours for this one — five lines, each earning its place") to the punchier last line. The trim is instructive: when the H1 already says "A code for the room.", the intro doesn't need to count the rules or promise they all earn their place — the reader will see that themselves. The shortest credible framing wins.
+
+**Sandbox unlink limitation hit again.** Couldn't delete `mockups/program.html.bak` from the sandbox — same EPERM-on-mount thing already documented in CLAUDE.md under the "Don't try `npm run work:build` from a sandboxed shell" pattern. Worth a reminder that it bites any kind of unlink, not just rimraf on the share/ tree. Pablo handles cleanup locally.
+
+---
+
+## 2026-05-19 — Prime Movers PDFs: build_pdf.py + Download-PDF buttons go live; per-project Python venv pattern
+
+Stood up the missing PDF render pipeline that the print CSS had been pointing at for weeks. Three things landed together.
+
+**Per-project WeasyPrint renderer.** `work/prime-movers-20th/build_pdf.py` (~130 lines) renders `mockups/pre-packet.html` and `mockups/program.html` to sibling PDFs. Self-bootstraps a `.venv-pdf/` next to itself on first run (creates venv, pip-installs weasyprint, `os.execv`s back into the venv interpreter). Subsequent runs are fast. CLI takes optional `pre-packet` or `program` to render just one. Wired as `npm run prime-movers:pdf` in package.json. The `.venv-pdf/` and `__pycache__/` are git-ignored.
+
+**Output goes in `mockups/`, not the project root.** The pre-packet button used to point at `../pre-packet.pdf` (PDF one level up from the HTML). That broke in the share/ mirror, because `scripts/build-work.mjs` flattens `work/<project>/mockups/` → `share/work/<project>/` — one level shallower. The fix: PDF lives in `mockups/` next to the HTML; button uses a same-directory `href="pre-packet.pdf"`. Same href resolves correctly in both `work/<project>/mockups/` (local file://) and `share/work/<project>/` (live site). Lesson is general — any relative path inside `work/<project>/mockups/` that climbs above the mockups dir will break in the share/ mirror. Keep everything intra-`mockups/`.
+
+**Download-PDF buttons are now real downloads, not browser-print triggers.** Both `pre-packet.html` and `program.html` previously had `<button onclick="window.print()">Download PDF</button>` chips that opened the browser's Save-as-PDF dialog. Replaced with `<a class="pdf-export-btn" href="<name>.pdf" download>` so the button serves the actual WeasyPrint-rendered file. The `.pdf-export-btn` CSS rule gained `display: inline-block` and `text-decoration: none` so the anchor renders identically to the original button. The print-CSS rule that hides the button was already class-based, works for `<a>` too. Better outcome: recipients always get the typographically-correct render, not their browser's print engine.
+
+**Prime Movers PDFs are committed to git.** They're build artifacts but Vercel can't regenerate them (Vercel builds run Node, not Python+WeasyPrint+pango). The "don't commit team-asset artifacts" rule in CLAUDE.md is specifically about Notion-driven team assets that Vercel DOES rebuild every deploy; doesn't apply here. Different pattern: HTML is source-of-truth, PDFs are locally-built deliverables committed alongside so `/share/work/prime-movers-20th/<name>.pdf` serves the latest blessed render after `npm run share:build`. Pablo runs `npm run prime-movers:pdf` locally when he wants to regenerate, then commits.
+
+Pattern documented in CLAUDE.md under "Print-ready PDFs from mockups." Future per-project renderers should follow the same shape.
+
+---
+
+## 2026-05-19 — Prime Movers pre-packet revisions, round 2 (Val): soft tones, all-black body, normalized type sizes
+
+Second pickup of Val's revisions on `work/prime-movers-20th/mockups/pre-packet.html`. The thread is consistent: she found the saturated brights (gold on the Swanee letter, orange on the thought piece) too dark for blue body text, and the agenda's wall-of-bold hard to scan.
+
+**Two new soft tones.** Added `--R-gold-soft: #FFE5A0` and `--R-orange-soft: #FFD0A8` to the file's local palette. Swanee's letter (`.welcome-page`) now uses gold-soft; thought-piece (`.request-page`) uses orange-soft. Both clear AAA contrast for black body text — gold-soft against `#000` is ~16:1, orange-soft against `#000` is ~14:1. Validates the "Bright Centella palettes on light grounds" pattern in CLAUDE.md: bright family colors fail AA on light grounds, but the right answer is to lighten the ground, not to weaken the rule.
+
+**Body switches to black; titles stay blue.** Across both pages: salutation, body paragraphs, guiding-questions list, deadlines key/value list → `color: #000`. Title (h1), markers, and signature stay `var(--ink)` (the WWP blue). Then a second pickup: all body text on page 2 and 4 normalized to 14px (page 3 body size) — salutation was 20px, guiding-questions were 16px, request-body and deadlines were 16px; all now 14px.
+
+**Convener line removed.** The `<div class="sig-meta">Convener · Prime Movers</div>` under "Ambassador Swanee Hunt" is gone. The border-top line above the signature block on `.welcome-page` is also gone (the `.welcome-page--soft` variant keeps its own thicker border because it cascades).
+
+**"Ambassador Hunt" → "Swanee" in Lisa & Pablo's letter.** Single occurrence on page 3. The casual-register first name matches the rest of the facilitators' tone.
+
+**Agenda: bold only on plenary titles.** `.ag-band`, `.ag-time`, `.ag-title` all dropped to weight 500. Added two rules to make the plenary/breakout distinction work: `.ag-title strong { font-weight: inherit }` neutralizes the browser-default bold on the `<strong>BREAKOUT SESSIONS:</strong>` prefixes inside non-plenary rows, and `.ag-row--plenary .ag-title { font-weight: 700 }` (with a sibling override on `strong`) brings bold back exclusively for plenary rows.
+
+**Mirror parity maintained via `cp -f`.** `npm run work:build` still hits sandbox EPERM, so I `cp -f`'d both updated HTML files into `share/work/prime-movers-20th/`. Next host-shell `share:build` will redo identically.
+
+---
+
+## 2026-05-19 — Prime Movers map swapped at print resolution; inlined-asset trade-off reaffirmed
+
+Swapped the Venues-page map in both `program.html` and `pre-packet.html` (and their share mirrors) to a properly-labeled brand-colored map at 2847×1642 (2.4MB PNG on disk, ~3.2MB after base64 expansion). Both HTML files now sit around 3.5MB each, up from ~470KB.
+
+**Why we ate the page-weight cost.** The Prime Movers brochure and pre-packet are *handoff artifacts* — single-file HTML deliverables shared as files (printed for the program, emailed as the pre-packet). They are not served from the public site. The "everything inlined as data URIs" pattern is the right answer for handoff: the recipient gets one file that opens in any browser with no broken assets, and it can be printed without proxy issues. The cost is page weight.
+
+**Don't apply this pattern to public pages.** For anything served from `centellaglobal.com`, use a `<picture>` element with `srcset` and externalized image assets so the browser can pick the right resolution and cache the bytes. Inlining a 3MB image into a public page is wrong; inlining it into a brochure you mail to a hundred convening attendees is fine.
+
+**Mechanics worth remembering.** Regex byte-exact swap of the `src="data:image/png;base64,..."` attribute on the `<img>` whose alt starts `"Map of the three Washington, D.C. venues..."`. The CLAUDE.md "don't paraphrase base64" rule applies; the alt text is the stable, descriptive anchor that makes find-and-replace cheap inside base64-heavy HTML. Verification: SHA-256 of decoded bytes against the source `assets/map.png` (`2947c38f0c7920c2…`) — all four files match. Mirrored work/ → share/ with `cp -f`, not `npm run work:build` (sandbox unlink-permission workaround already documented).
+
+**Pattern reinforced.** Keep `alt` text descriptive and unique-within-file — it's what makes the next swap fast. Generic alts like `"map"` would not have worked here.
+
+---
+
 ## 2026-05-19 — Expanding-panel `--floating` modifier; team grid cycles six families; exclusive accordion via `name=`; Alianza deck; Prime Movers consolidation
 
 Four threads, one cycle.

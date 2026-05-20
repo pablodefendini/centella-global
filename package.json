@@ -19,7 +19,8 @@
     "share:build": "astro build && node scripts/inline-deck.mjs && node scripts/build-work.mjs && node scripts/build-share-index.mjs",
     "team-assets:build": "node --env-file-if-exists=.env scripts/build-team-assets.mjs",
     "team-assets:preview": "node scripts/preview-team-assets.mjs",
-    "team-photos:build": "node --env-file-if-exists=.env scripts/build-team-photos.mjs"
+    "team-photos:build": "node --env-file-if-exists=.env scripts/build-team-photos.mjs",
+    "prime-movers:pdf": "python3 work/prime-movers-20th/build_pdf.py"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",

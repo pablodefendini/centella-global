@@ -44,3 +44,11 @@ yarn-error.log*
 # Team-member photos generated at build time by scripts/build-team-photos.mjs.
 # Notion is the source of truth; every deploy regenerates them.
 public/team/
+
+# Per-project Python venvs for one-off WeasyPrint builds (work/<project>/build_pdf.py).
+# Self-bootstraps on first run — do not commit.
+work/**/.venv-pdf/
+
+# Python bytecode caches (created by work/<project>/build_pdf.py at runtime).
+__pycache__/
+*.pyc
