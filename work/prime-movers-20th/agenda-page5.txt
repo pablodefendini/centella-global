@@ -1,0 +1,42 @@
+# Prime Movers · Pre-Packet · Page 05 — Agenda
+# Edit freely below and hand back. Format per row is:
+#   TIME | TITLE | PLACE
+# Use [PLENARY], [BREAKOUT], or leave blank as the optional row type tag at the
+# start of the title. Day headers are lines that start with "DAY:".
+# Lines starting with # are comments and will be ignored.
+
+HEADLINE: Three days, mapped.
+DATES:    May 26 – 28, 2026
+LOCATION: Washington, D.C.
+FOLIO:    Overview agenda
+
+
+DAY: Tuesday, May 26
+
+Daytime – 6:00 pm | Arrivals & unstructured time with Swanee | TreeHouse
+6:00 pm – …       | Opening Reception & welcome fare TreeTalk | TreeHouse
+
+
+DAY: Wednesday, May 27
+
+8:00 – 8:45 am    | Breakfast | Omni Shoreham
+9:00 – 10:30 am   | [PLENARY] PLENARY SESSION I: Framing the Moment | Omni Shoreham
+11:00 am – 12:30 pm | [PLENARY] PLENARY SESSION II: The Landscape | Omni Shoreham
+12:30 – 1:30 pm   | Lunch | Aerie Conservatory
+2:00 – 3:30 pm    | [BREAKOUT] BREAKOUT SESSIONS: Thematic Deep Dives | Omni Shoreham
+3:30 – 5:00 pm    | [BREAKOUT] BREAKOUT SESSIONS: Relationship Building through Peer Walks | Omni Shoreham
+5:00 – 6:00 pm    | [PLENARY] PLENARY III: Where Are We Now? | Omni Shoreham
+7:00 – 10:00 pm   | Dinner, TreeTalk, Cross Movement Ideas | TreeHouse
+
+
+DAY: Thursday, May 28
+
+8:00 – 8:45 am    | Breakfast | Omni Shoreham
+9:00 – 10:30 am   | [PLENARY] PLENARY SESSION IV: "The Offense We Need" — Collaborative Strategy | Omni Shoreham
+10:30 am – 12:00 pm | [BREAKOUT] BREAKOUT SESSIONS: Action Planning | Omni Shoreham
+12:00 – 1:00 pm   | Lunch | Aerie Conservatory
+1:30 – 3:00 pm    | [BREAKOUT] BREAKOUT SESSIONS: "Mini Pitches" | Omni Shoreham
+3:00 – 4:00 pm    | [PLENARY] PLENARY V: Next Steps & Infrastructure | Omni Shoreham
+4:00 – 5:00 pm    | [PLENARY] Closing Circle | Omni Shoreham
+5:00 – 7:00 pm    | Reflection and Individual Gatherings | Various
+7:00 – 8:30 pm    | Dinner & Reflections, informal goodbyes | TreeHouse

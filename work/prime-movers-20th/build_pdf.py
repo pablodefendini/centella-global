@@ -5,6 +5,7 @@ Usage:
     ./build_pdf.py                # render every mockup
     ./build_pdf.py pre-packet     # render only pre-packet.html -> pre-packet.pdf
     ./build_pdf.py program        # render only program.html    -> program.pdf
+    ./build_pdf.py inserts        # render only inserts.html    -> inserts.pdf
 
 Output PDFs land alongside the source HTML inside mockups/, so the
 "Download PDF" button in each mockup can use a same-directory href
@@ -32,6 +33,7 @@ VENV_PY = VENV_DIR / "bin" / "python"
 DOCS: dict[str, Path] = {
     "pre-packet": MOCKUPS_DIR / "pre-packet.html",
     "program":    MOCKUPS_DIR / "program.html",
+    "inserts":    MOCKUPS_DIR / "inserts.html",
 }
 
 

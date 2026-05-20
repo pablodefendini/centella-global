@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inserts · Prime Movers: Meeting the Moment</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =============================================================
+     Prime Movers · Pocket inserts · 4×7 portrait
+     -------------------------------------------------------------
+     Two slip-in inserts that live inside the program brochure's
+     pockets. Same visual system as program.html and pre-packet.html:
+       - Sunny cream paper, WWP navy ink, punchy orange + amber gold
+       - Fira Sans throughout, Cormorant Garamond italic as second voice
+       - No eyebrows, no Inter, no near-black
+
+     Front-pocket insert — texting contacts. Names + phone numbers
+       only (no orgs, no titles); built for "I'll text you when we're
+       breaking" coordination during the event.
+
+     Back-pocket insert — overview agenda. The detailed schedule from
+       pre-packet page 5, recast into a single take-with-you 4×7 sheet.
+     ============================================================= */
+  :root {
+    --R-paper:        #FFFAEC;
+    --R-paper-2:      #FFE9C8;
+    --R-ink:          #1B2A8C;
+    --R-orange:       #FF7A1F;
+    --R-orange-deep:  #A33D0E;
+    --R-orange-soft:  #FFD0A8;
+    --R-gold:         #FFC130;
+    --R-gold-deep:    #7A5000;
+    --R-gold-soft:    #FFE5A0;
+    --R-rule:         rgba(27, 42, 140, 0.22);
+    --R-rule-warm:    rgba(163, 61, 14, 0.40);
+
+    --paper:        var(--R-paper);
+    --paper-2:      var(--R-paper-2);
+    --ink:          var(--R-ink);
+    --ink-soft:     rgba(27, 42, 140, 0.78);
+    --ink-faint:    rgba(27, 42, 140, 0.60);
+    --accent:       var(--R-orange);
+    --accent-2:     var(--R-orange-deep);
+    --accent-warm:  var(--R-gold);
+    --accent-deep:  var(--R-orange-deep);
+    --rule:         var(--R-rule);
+    --rule-warm:    var(--R-rule-warm);
+
+    --sans:    "Fira Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --display: "Fira Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono:    "JetBrains Mono", monospace;
+    --serif:   "Cormorant Garamond", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #1a1a1c; color: var(--ink); font-family: var(--sans); }
+  body { padding: 48px 24px 96px; }
+
+  .doc-header {
+    max-width: 1200px; margin: 0 auto 32px;
+    color: #d6d4ce; font-family: var(--sans); font-size: 16px; font-weight: 400;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .doc-header .opt { color: #fff; font-weight: 600; }
+  .doc-header .meta { opacity: 0.7; }
+
+  /* Single-page sheet — 4×7 portrait, 400px wide. */
+  .sheet {
+    width: 400px; max-width: 100%;
+    margin: 0 auto 48px;
+    background: var(--paper);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.55);
+    aspect-ratio: 4 / 7;
+    position: relative; overflow: hidden;
+  }
+
+  .sheet-label {
+    width: 400px; max-width: 100%;
+    margin: 0 auto 12px;
+    font-family: var(--sans); font-size: 16px; font-weight: 400;
+    color: #d6d4ce;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .sheet-label .num { color: var(--accent); font-weight: 700; }
+  .sheet-label .desc { color: #9a978f; font-style: italic; }
+
+  .page { padding: 32px 28px 28px; display: flex; flex-direction: column; height: 100%; }
+
+  /* ============ TYPOGRAPHY ============ */
+  .h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: 28px; line-height: 0.98; letter-spacing: -0.035em;
+    margin: 0 0 10px; color: var(--ink);
+  }
+  .h1 .accent {
+    color: var(--paper);
+    background: var(--accent);
+    padding: 0 0.18em;
+    border-radius: 5px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .h1 .pop {
+    color: var(--ink);
+    background: var(--R-gold);
+    padding: 0 0.18em;
+    border-radius: 5px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .lead-serif {
+    font-family: var(--serif); font-style: italic; font-size: 12px;
+    color: var(--accent-deep); margin: 0 0 4px;
+  }
+  .insert-meta {
+    font-family: var(--sans); font-weight: 400; font-size: 10px;
+    color: var(--ink-soft); line-height: 1.4;
+    margin: 0 0 12px;
+    max-width: 36ch;
+  }
+  .insert-meta strong { color: var(--ink); font-weight: 600; }
+
+  .folio {
+    position: absolute; bottom: 14px; left: 28px; right: 28px;
+    display: flex; justify-content: space-between;
+    font-family: var(--sans); font-size: 10px; font-weight: 400;
+    color: var(--ink-faint);
+  }
+  .folio em { font-style: italic; }
+
+  /* ============ HEADER STRIP ============ */
+  /* Both inserts share a top header — a slim navy bar above the h1
+     that orients the reader: this is a Prime Movers piece, this is
+     the convening. Matches the program's cover band in feel, scaled
+     for a 4×7 sheet. */
+  .insert-strip {
+    background: var(--ink); color: var(--paper);
+    padding: 6px 10px;
+    margin: -32px -28px 14px;
+    font-family: var(--display); font-weight: 600; font-size: 10px;
+    letter-spacing: -0.005em; line-height: 1.2;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    /* Box-shadow fallback: Chrome strips background-colors when
+       "Background graphics" is off, but prints inset box-shadows. */
+    box-shadow: inset 0 0 0 9999px var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .insert-strip__title { font-weight: 700; }
+  .insert-strip__title em {
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+  }
+  .insert-strip__kind {
+    color: var(--accent-warm); font-weight: 500; font-style: italic;
+    font-family: var(--serif); font-size: 11px;
+  }
+
+  /* ============ CONTACTS INSERT ============ */
+  /* Two cohort columns, each a tight list of name + phone. Numbers
+     in JetBrains Mono so the digits line up cleanly. */
+  .contacts {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+  }
+  .cohort {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .cohort__h {
+    font-family: var(--display); font-weight: 700;
+    font-size: 13px; line-height: 1.1; letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 2px;
+  }
+  .cohort__h .accent {
+    color: var(--paper);
+    background: var(--accent);
+    padding: 0 0.18em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .cohort__h .pop {
+    color: var(--ink);
+    background: var(--R-gold);
+    padding: 0 0.18em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .cohort__count {
+    font-family: var(--serif); font-style: italic; font-size: 10px;
+    color: var(--accent-deep);
+    margin: 0 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cohort__list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column;
+  }
+  .cohort__row {
+    padding: 1.5px 0;
+    border-bottom: 0.5px solid var(--rule);
+    display: flex; flex-direction: column;
+    gap: 0;
+  }
+  .cohort__row:last-child { border-bottom: none; }
+  .cohort__name {
+    font-family: var(--sans); font-weight: 500;
+    font-size: 8.5px; line-height: 1.15;
+    color: var(--ink);
+    /* Long names wrap rather than ellipsize so nobody gets cut. */
+    word-break: break-word;
+  }
+  .cohort__phone {
+    font-family: var(--mono); font-weight: 400;
+    font-size: 8px; line-height: 1.15;
+    color: var(--accent-deep);
+    margin-top: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* The Prime Movers list runs longer than Next Gen, so let the cohort
+     column scale type if it has to. Slightly tighter for PM, slightly
+     more breathable for NG. */
+  .cohort--prime .cohort__name  { font-size: 8.3px; }
+  .cohort--prime .cohort__phone { font-size: 7.8px; }
+  .cohort--nextgen .cohort__name  { font-size: 9px; }
+  .cohort--nextgen .cohort__phone { font-size: 8.4px; }
+
+  /* Texting prompt — a small amber chip near the top, anchoring the
+     purpose of the page. */
+  .contacts-prompt {
+    background: var(--accent-warm); color: var(--ink);
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-family: var(--sans); font-weight: 500; font-size: 9px;
+    line-height: 1.35;
+    margin: 0 0 12px;
+    box-shadow: inset 0 0 0 9999px var(--accent-warm);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .contacts-prompt strong { font-weight: 700; }
+
+  /* ============ AGENDA INSERT ============ */
+  /* Compact version of pre-packet p5's agenda — same row pattern,
+     same plenary/breakout color-coding, but trimmed for 4×7. */
+  .agenda-head {
+    border-top: 2px solid var(--ink); border-bottom: 0.5px solid var(--ink);
+    padding: 8px 0;
+    margin-bottom: 6px;
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px;
+  }
+  .agenda-head .h1 { margin: 0; font-size: 24px; }
+  .agenda-head .agenda-meta {
+    font-family: var(--serif); font-style: italic; font-size: 11px;
+    color: var(--ink-soft); line-height: 1.25; text-align: right;
+  }
+  .agenda-list {
+    display: flex; flex-direction: column; gap: 1.5px;
+    margin-top: 2px;
+    margin-bottom: 14px;
+    flex: 1;
+  }
+  .ag-band {
+    background: var(--ink); color: var(--paper);
+    padding: 3px 8px;
+    font-family: var(--display); font-weight: 400;
+    font-size: 10px; letter-spacing: -0.005em;
+    border-radius: 2px;
+    margin-top: 5px;
+    box-shadow: inset 0 0 0 9999px var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ag-band:first-child { margin-top: 0; }
+  .ag-row {
+    display: grid;
+    grid-template-columns: 78px 1fr 68px;
+    gap: 6px;
+    padding: 3px 7px;
+    line-height: 1.2;
+    background: color-mix(in srgb, var(--paper-2) 55%, transparent);
+    border-radius: 2px;
+    align-items: center;
+  }
+  .ag-time {
+    font-family: var(--sans);
+    font-size: 8.5px; font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .ag-event { color: var(--ink); min-width: 0; }
+  .ag-title {
+    font-family: var(--sans); font-size: 8.5px; font-weight: 400; line-height: 1.25;
+  }
+  .ag-title strong { font-weight: inherit; }
+  .ag-row--plenary .ag-title { font-weight: 700; }
+  .ag-row--plenary .ag-title strong { font-weight: 700; }
+  .ag-place {
+    font-family: var(--serif); font-style: italic;
+    font-size: 8.5px; color: rgba(27,42,140,0.72);
+    text-align: right; line-height: 1.2;
+  }
+  .ag-row--plenary {
+    background: var(--accent-warm);
+    box-shadow: inset 0 0 0 9999px var(--accent-warm);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ag-row--breakout {
+    background: var(--accent);
+    box-shadow: inset 0 0 0 9999px var(--accent);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ag-row--breakout .ag-time,
+  .ag-row--breakout .ag-event,
+  .ag-row--breakout .ag-title,
+  .ag-row--breakout .ag-place { color: var(--ink); }
+  .ag-row--breakout .ag-place { color: rgba(27,42,140,0.78); }
+
+  /* =============================================================
+     PRINT — browser "Save as PDF" produces the same layout as the
+     server-side WeasyPrint build (work/.../build_pdf.py).
+     ============================================================= */
+  @page { size: 400px 700px; margin: 0; }
+  @media print {
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: var(--paper) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .doc-header,
+    .sheet-label,
+    .legend,
+    .pdf-export-btn { display: none !important; }
+    .sheet {
+      width: 400px !important;
+      height: 700px !important;
+      max-width: none !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      aspect-ratio: auto !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      overflow: hidden !important;
+    }
+    .sheet:last-of-type {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+    .page { overflow: hidden !important; }
+  }
+
+  /* =============================================================
+     DOWNLOAD PDF BUTTON — fixed in the viewport, hidden in print.
+     Linked directly to the pre-rendered PDF in the same directory
+     (mockups/inserts.pdf). Regenerate with:
+       npm run prime-movers:pdf
+     (or python3 work/prime-movers-20th/build_pdf.py inserts)
+     ============================================================= */
+  .pdf-export-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: var(--ink);
+    font-family: var(--sans); font-weight: 600; font-size: 14px;
+    letter-spacing: -0.005em;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .pdf-export-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  }
+  .pdf-export-btn:active { transform: translateY(0); }
+
+  /* ============ Footer mini-legend ============ */
+  .legend {
+    max-width: 800px; margin: 64px auto 0; padding: 24px 32px;
+    background: rgba(255,255,255,0.04); color: #c8c5bb;
+    font-family: var(--sans); font-size: 16px; line-height: 1.6;
+    border-left: 2px solid var(--accent);
+  }
+  .legend h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 700; color: #fff; font-size: 18px; letter-spacing: -0.01em; }
+  .legend dl { display: grid; grid-template-columns: 140px 1fr; gap: 4px 16px; margin: 12px 0 0; }
+  .legend dt { color: #fff; font-weight: 600; font-family: var(--sans); }
+  .legend dd { margin: 0; opacity: 0.85; }
+  .legend em { font-style: italic; color: #fff; opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<a
+  class="pdf-export-btn"
+  href="inserts.pdf"
+  download="prime-movers-inserts.pdf"
+  title="Download the latest print-ready PDF (regenerate with `npm run prime-movers:pdf`)"
+>Download PDF</a>
+
+<div class="doc-header" style="max-width:400px;">
+  <div><span class="opt">Pocket inserts</span> · Prime Movers: Meeting the Moment</div>
+  <div class="meta">2 sheets · 4×7 portrait · slip into the program brochure</div>
+</div>
+
+<!-- ============================================================
+     INSERT 1 — FRONT POCKET · TEXTING CONTACTS
+     Names and phone numbers only. Built for one job: text each
+     other while we're in the room together.
+     ============================================================ -->
+<div class="sheet-label"><span class="num">01</span> <span>Front pocket — texting contacts</span> <span class="desc">Phones for in-the-moment coordination</span></div>
+<div class="sheet">
+  <div class="page">
+    <div class="insert-strip">
+      <span class="insert-strip__title">Prime Movers <em>20<sup>th</sup></em> · D.C. ’26</span>
+      <span class="insert-strip__kind">Front pocket</span>
+    </div>
+
+    <h1 class="h1">Text the <span class="accent">room</span>.</h1>
+    <p class="lead-serif">For in-the-moment coordination.</p>
+    <p class="insert-meta">Phone numbers only — to text each other when we're breaking, when you're running late, when the side conversation needs to keep going somewhere else. <strong>Not for distribution outside the cohort.</strong></p>
+
+    <p class="contacts-prompt"><strong>Tip.</strong> Save a thread, not the people — most of us only need each other for these three days.</p>
+
+    <div class="contacts">
+      <!-- ===== PRIME MOVERS (24) ===== -->
+      <div class="cohort cohort--prime">
+        <h2 class="cohort__h">Prime <span class="accent">Movers</span></h2>
+        <p class="cohort__count">24 in the room</p>
+        <ul class="cohort__list">
+          <li class="cohort__row"><span class="cohort__name">Alan Khazei</span><span class="cohort__phone">+1 202-555-0101</span></li>
+          <li class="cohort__row"><span class="cohort__name">Tony Massaro</span><span class="cohort__phone">+1 202-555-0102</span></li>
+          <li class="cohort__row"><span class="cohort__name">Ben Burkett</span><span class="cohort__phone">+1 202-555-0103</span></li>
+          <li class="cohort__row"><span class="cohort__name">Jennifer W. Chrisler</span><span class="cohort__phone">+1 202-555-0104</span></li>
+          <li class="cohort__row"><span class="cohort__name">Daisy Khan</span><span class="cohort__phone">+1 202-555-0105</span></li>
+          <li class="cohort__row"><span class="cohort__name">Malcolm Lazin</span><span class="cohort__phone">+1 202-555-0106</span></li>
+          <li class="cohort__row"><span class="cohort__name">Christine Neumann-Ortiz</span><span class="cohort__phone">+1 202-555-0107</span></li>
+          <li class="cohort__row"><span class="cohort__name">LeeAnn Hall</span><span class="cohort__phone">+1 202-555-0108</span></li>
+          <li class="cohort__row"><span class="cohort__name">EunSook Lee</span><span class="cohort__phone">+1 202-555-0109</span></li>
+          <li class="cohort__row"><span class="cohort__name">Giovanna Negretti</span><span class="cohort__phone">+1 202-555-0110</span></li>
+          <li class="cohort__row"><span class="cohort__name">Alexia Salvatierra</span><span class="cohort__phone">+1 202-555-0111</span></li>
+          <li class="cohort__row"><span class="cohort__name">Rosanne Haggerty</span><span class="cohort__phone">+1 202-555-0112</span></li>
+          <li class="cohort__row"><span class="cohort__name">Maria Theresa Kumar</span><span class="cohort__phone">+1 202-555-0113</span></li>
+          <li class="cohort__row"><span class="cohort__name">Rinku Sen</span><span class="cohort__phone">+1 202-555-0114</span></li>
+          <li class="cohort__row"><span class="cohort__name">David Flink</span><span class="cohort__phone">+1 202-555-0115</span></li>
+          <li class="cohort__row"><span class="cohort__name">Saru Jayaraman</span><span class="cohort__phone">+1 202-555-0116</span></li>
+          <li class="cohort__row"><span class="cohort__name">Maya Enista Smith</span><span class="cohort__phone">+1 202-555-0117</span></li>
+          <li class="cohort__row"><span class="cohort__name">Saket Soni</span><span class="cohort__phone">+1 202-555-0118</span></li>
+          <li class="cohort__row"><span class="cohort__name">Rea Carey</span><span class="cohort__phone">+1 202-555-0119</span></li>
+          <li class="cohort__row"><span class="cohort__name">Benjamin T. Jealous</span><span class="cohort__phone">+1 202-555-0120</span></li>
+          <li class="cohort__row"><span class="cohort__name">Shawn Dove</span><span class="cohort__phone">+1 202-555-0121</span></li>
+          <li class="cohort__row"><span class="cohort__name">Maria Elena Hincapie</span><span class="cohort__phone">+1 202-555-0122</span></li>
+          <li class="cohort__row"><span class="cohort__name">Emily May</span><span class="cohort__phone">+1 202-555-0123</span></li>
+          <li class="cohort__row"><span class="cohort__name">Cristina Jimenez Moreta</span><span class="cohort__phone">+1 202-555-0124</span></li>
+        </ul>
+      </div>
+
+      <!-- ===== NEXT GENERATION LEADERS (16) ===== -->
+      <div class="cohort cohort--nextgen">
+        <h2 class="cohort__h">Next Gen <span class="pop">Leaders</span></h2>
+        <p class="cohort__count">16 · Days 1 &amp; 2</p>
+        <ul class="cohort__list">
+          <li class="cohort__row"><span class="cohort__name">Jorge Arteaga</span><span class="cohort__phone">+1 202-555-0125</span></li>
+          <li class="cohort__row"><span class="cohort__name">Malcolm Kenyatta</span><span class="cohort__phone">+1 202-555-0126</span></li>
+          <li class="cohort__row"><span class="cohort__name">Jesse Sanchez</span><span class="cohort__phone">+1 202-555-0127</span></li>
+          <li class="cohort__row"><span class="cohort__name">Sandy Ovalle</span><span class="cohort__phone">+1 202-555-0128</span></li>
+          <li class="cohort__row"><span class="cohort__name">Riana Anderson</span><span class="cohort__phone">+1 202-555-0129</span></li>
+          <li class="cohort__row"><span class="cohort__name">Sam Ames</span><span class="cohort__phone">+1 202-555-0130</span></li>
+          <li class="cohort__row"><span class="cohort__name">Jahnavi Rao</span><span class="cohort__phone">+1 202-555-0131</span></li>
+          <li class="cohort__row"><span class="cohort__name">Cole Chandler</span><span class="cohort__phone">+1 202-555-0132</span></li>
+          <li class="cohort__row"><span class="cohort__name">Jim Simpson</span><span class="cohort__phone">+1 202-555-0133</span></li>
+          <li class="cohort__row"><span class="cohort__name">Regina Shwartz</span><span class="cohort__phone">+1 202-555-0134</span></li>
+          <li class="cohort__row"><span class="cohort__name">Diana Huang</span><span class="cohort__phone">+1 202-555-0135</span></li>
+          <li class="cohort__row"><span class="cohort__name">Crystal Monds</span><span class="cohort__phone">+1 202-555-0136</span></li>
+          <li class="cohort__row"><span class="cohort__name">Fernando Mejia Lesdesma</span><span class="cohort__phone">+1 202-555-0137</span></li>
+          <li class="cohort__row"><span class="cohort__name">Julia Collins</span><span class="cohort__phone">+1 202-555-0138</span></li>
+          <li class="cohort__row"><span class="cohort__name">Darnella Y Winston</span><span class="cohort__phone">+1 202-555-0139</span></li>
+          <li class="cohort__row"><span class="cohort__name">Beatriz Lopez</span><span class="cohort__phone">+1 202-555-0140</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="folio">
+      <span><em>Front pocket · texting contacts</em></span>
+      <span>01</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     INSERT 2 — BACK POCKET · OVERVIEW AGENDA
+     The detailed schedule from pre-packet p5, recast at 4×7 for
+     the back pocket of the program brochure. Same row pattern,
+     same plenary/breakout color-coding.
+     ============================================================ -->
+<div class="sheet-label"><span class="num">02</span> <span>Back pocket — overview agenda</span> <span class="desc">Three days, detailed schedule</span></div>
+<div class="sheet">
+  <div class="page">
+    <div class="insert-strip">
+      <span class="insert-strip__title">Prime Movers <em>20<sup>th</sup></em> · D.C. ’26</span>
+      <span class="insert-strip__kind">Back pocket</span>
+    </div>
+
+    <div class="agenda-head">
+      <h1 class="h1">Three days, <span class="accent">mapped</span>.</h1>
+      <div class="agenda-meta">May 26 – 28, 2026<br>Washington, D.C.</div>
+    </div>
+
+    <div class="agenda-list">
+      <div class="ag-band">Tuesday, May 26</div>
+      <div class="ag-row">
+        <div class="ag-time">Daytime – 6:00 pm</div>
+        <div class="ag-event"><div class="ag-title">Arrivals &amp; unstructured time with Swanee</div></div>
+        <div class="ag-place">TreeHouse</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">6:00 pm – …</div>
+        <div class="ag-event"><div class="ag-title">Opening Reception &amp; TreeTalk</div></div>
+        <div class="ag-place">TreeHouse</div>
+      </div>
+
+      <div class="ag-band">Wednesday, May 27</div>
+      <div class="ag-row">
+        <div class="ag-time">8:00 – 8:45 am</div>
+        <div class="ag-event"><div class="ag-title">Breakfast</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">9:00 – 10:30 am</div>
+        <div class="ag-event"><div class="ag-title"><strong>PLENARY I:</strong> Framing the Moment</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">11:00 – 12:30 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>PLENARY II:</strong> The Landscape</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">12:30 – 1:30 pm</div>
+        <div class="ag-event"><div class="ag-title">Lunch</div></div>
+        <div class="ag-place">Aerie</div>
+      </div>
+      <div class="ag-row ag-row--breakout">
+        <div class="ag-time">2:00 – 3:30 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>BREAKOUTS:</strong> Thematic Deep Dives</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--breakout">
+        <div class="ag-time">3:30 – 5:00 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>BREAKOUTS:</strong> Peer Walks</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">5:00 – 6:00 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>PLENARY III:</strong> Where Are We Now?</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">7:00 – 10:00 pm</div>
+        <div class="ag-event"><div class="ag-title">Dinner, TreeTalk, Cross-Movement Ideas</div></div>
+        <div class="ag-place">TreeHouse</div>
+      </div>
+
+      <div class="ag-band">Thursday, May 28</div>
+      <div class="ag-row">
+        <div class="ag-time">8:00 – 8:45 am</div>
+        <div class="ag-event"><div class="ag-title">Breakfast</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">9:00 – 10:30 am</div>
+        <div class="ag-event"><div class="ag-title"><strong>PLENARY IV:</strong> "The Offense We Need"</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--breakout">
+        <div class="ag-time">10:30 – 12:00 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>BREAKOUTS:</strong> Action Planning</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">12:00 – 1:00 pm</div>
+        <div class="ag-event"><div class="ag-title">Lunch</div></div>
+        <div class="ag-place">Aerie</div>
+      </div>
+      <div class="ag-row ag-row--breakout">
+        <div class="ag-time">1:30 – 3:00 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>BREAKOUTS:</strong> "Mini Pitches"</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">3:00 – 4:00 pm</div>
+        <div class="ag-event"><div class="ag-title"><strong>PLENARY V:</strong> Next Steps</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row ag-row--plenary">
+        <div class="ag-time">4:00 – 5:00 pm</div>
+        <div class="ag-event"><div class="ag-title">Closing Circle</div></div>
+        <div class="ag-place">Omni Shoreham</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">5:00 – 7:00 pm</div>
+        <div class="ag-event"><div class="ag-title">Reflection &amp; Individual Gatherings</div></div>
+        <div class="ag-place">Various</div>
+      </div>
+      <div class="ag-row">
+        <div class="ag-time">7:00 – 8:30 pm</div>
+        <div class="ag-event"><div class="ag-title">Dinner, Reflections, informal goodbyes</div></div>
+        <div class="ag-place">TreeHouse</div>
+      </div>
+    </div>
+
+    <div class="folio">
+      <span><em>Back pocket · overview agenda</em></span>
+      <span>02</span>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <h3>About these inserts</h3>
+  <p>Two 4×7 slip-in sheets that live inside the program brochure's pockets. Same paper, ink, type, and color system as the program and pre-packet — sized to fit, pulled out for use, returned to the pocket.</p>
+  <dl>
+    <dt>Front pocket</dt>
+    <dd>Texting contacts — Prime Movers (24) and Next Generation Leaders (16). Names and phone numbers only, in two cohort columns. Built for in-the-moment coordination during the convening.</dd>
+    <dt>Back pocket</dt>
+    <dd>Overview agenda — the detailed schedule from pre-packet page 5, recast for the back-pocket take-with-you sheet. Same plenary (amber) and breakout (orange) color-coding.</dd>
+    <dt>Format</dt>
+    <dd>4×7 inches portrait, one side, full-bleed. <em>All phone numbers are placeholders</em> (NANP fictional-use 555-01XX range) until the real cohort directory is in.</dd>
+    <dt>Print</dt>
+    <dd>Browser print dialog renders to <code>4in × 7in</code> via the <code>@page</code> rule. Production PDFs are built by <code>npm run prime-movers:pdf</code> alongside <code>program.pdf</code> and <code>pre-packet.pdf</code>.</dd>
+  </dl>
+</div>
+
+</body>
+</html>

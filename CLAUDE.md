@@ -219,8 +219,8 @@ npm run share:build                         # One-shot: astro build, then bundle
 npm run team-assets:build                   # Re-run just the team-asset generator (assumes astro build has already produced an output dir)
 npm run team-assets:preview                 # Render the SVG templates against a fixture profile to /tmp/centella-preview-* — for iterating on src/templates/* without live Notion
 npm run team-photos:build                   # Re-run just the team-photo download+WebP pipeline (writes public/team/<slug>.webp)
-npm run prime-movers:pdf                    # Render work/prime-movers-20th/mockups/{pre-packet,program}.html → sibling .pdf via WeasyPrint (self-bootstraps a .venv-pdf)
-npm run prime-movers:pdf -- pre-packet      # Render just one of the two (also accepts `program`)
+npm run prime-movers:pdf                    # Render work/prime-movers-20th/mockups/{pre-packet,program,inserts}.html → sibling .pdf via WeasyPrint (self-bootstraps a .venv-pdf)
+npm run prime-movers:pdf -- pre-packet      # Render just one of the three (also accepts `program` or `inserts`)
 ```
 
 ## Deploy
